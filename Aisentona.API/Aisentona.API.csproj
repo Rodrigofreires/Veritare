@@ -14,11 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Aisentona.DataBase\Aisentona.DataBase.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Aisentona.DataBase\Aisentona.DataBase.csproj" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
