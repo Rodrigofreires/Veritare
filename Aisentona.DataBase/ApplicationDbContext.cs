@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Aisentona.DataBase
 {
-    public class ApplicationDbContext : DbContext 
+    public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-    : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
@@ -19,8 +18,5 @@ namespace Aisentona.DataBase
         public DbSet<ColaboradorTelefone> ColaboradoresTelefone { get; set; }
         public DbSet<ColaboradorPermissao> ColaboradoresPermissao { get; set; }
         public DbSet<ColaboradorTipoUsuario> ColaboradoresTipoUsuario { get; set; }
-        public DbSet<Permissao> Permissoes { get; set; }
-
-
     }
 }
