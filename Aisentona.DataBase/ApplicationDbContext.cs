@@ -7,7 +7,6 @@ namespace Aisentona.DataBase
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-
         public DbSet<Colaborador> CF_Colaborador { get; set; }
         public DbSet<ColaboradorEmail> CF_ColaboradorEmail { get; set; }
         public DbSet<ColaboradorTelefone> CF_ColaboradorTelefone { get; set; }
@@ -38,11 +37,6 @@ namespace Aisentona.DataBase
                .WithOne(c => c.TipoUsuario)
                .HasForeignKey<ColaboradorTipoUsuario>(t => t.Id_Colaborador);
 
-            // Adicione configurações semelhantes para outras entidades, se necessário
-
-
         }
-
-
     }
 }

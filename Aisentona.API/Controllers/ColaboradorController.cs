@@ -24,7 +24,7 @@ namespace Aisentona.API.Controllers
                 return BadRequest("ID inválido.");
             }
 
-            var colaborador = _colaboradorService.GetColaboradorById(id);
+            var colaborador = _colaboradorService.ListarColaboradorPorId(id);
             if (colaborador == null)
             {
                 return NotFound();
@@ -34,20 +34,62 @@ namespace Aisentona.API.Controllers
 
         // POST api/<ColaboradorController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult CreateColaborador([FromBody] Colaborador colaboradorObjeto)
         {
+            if (colaboradorObjeto is null)
+            {
+                return BadRequest("Objeto preenchido incorretamente");
+            }
+            var colaborador = _colaboradorService.CriarColaborador(
+
+                colaboradorObjeto.Id_Usuario,
+                colaboradorObjeto.Nm_Nome,
+                colaboradorObjeto.Ds_CPF,
+                colaboradorObjeto.DS_Senha,
+                colaboradorObjeto.Id_TipoUsuario
+                );
+
+            return CreatedAtAction(nameof(CreateColaborador), new { id = colaborador.Id_Usuario }, colaborador);
         }
 
-        // PUT api/<ColaboradorController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        // PUT api/<ColaboradorController>
+        [HttpPut("editar/{id}")]
+        public IActionResult UpdateColaborador(int id, [FromBody] Colaborador colaboradorDto)
         {
+            if (colaboradorDto == null)
+            {
+                return BadRequest("Objeto preenchido incorretamente");
+            }
+
+            try
+            {
+                var colaborador = _colaboradorService.EditarColaborador(id, colaboradorDto);
+                return Ok(colaborador);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
-        // DELETE api/<ColaboradorController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        // Delete api/<ColaboradorController>
+        [HttpPut("ativar-desativar/{id}")]
+        public IActionResult SwapFlagColaborador(int id, [FromBody] Colaborador colaboradorDto)
         {
+            if (colaboradorDto == null)
+            {
+                return BadRequest("Objeto preenchido incorretamente");
+            }
+
+            try
+            {
+                var colaborador = _colaboradorService.TrocarFlagAtivaColaborador(id);
+                return Ok(colaborador);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

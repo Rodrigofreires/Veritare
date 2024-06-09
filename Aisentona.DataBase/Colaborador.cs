@@ -33,8 +33,8 @@ namespace Aisentona.DataBase
         public string Ds_CPF { get; set; }
         public string DS_Senha { get; set; }
         public bool Fl_Ativo { get; set; }
-        public DateTime DT_Criacao { get; set; }
-        public DateTime DT_UltimaAlteracao { get; set; }
+        public DateTime DT_Criacao { get; set; } = DateTime.Now;
+        public DateTime DT_UltimaAlteracao { get; set; } = DateTime.Now;
         public int Id_TipoUsuario { get; set; }
         public string Ds_UltimaAlteracao { get; set; }
         
