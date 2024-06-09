@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aisentona.DataBase
 {
@@ -13,10 +8,41 @@ namespace Aisentona.DataBase
         {
         }
 
-        public DbSet<Colaborador> Colaboradores { get; set; }
-        public DbSet<ColaboradorEmail> ColaboradoresEmail { get; set; }
-        public DbSet<ColaboradorTelefone> ColaboradoresTelefone { get; set; }
-        public DbSet<ColaboradorPermissao> ColaboradoresPermissao { get; set; }
-        public DbSet<ColaboradorTipoUsuario> ColaboradoresTipoUsuario { get; set; }
+        public DbSet<Colaborador> CF_Colaborador { get; set; }
+        public DbSet<ColaboradorEmail> CF_ColaboradorEmail { get; set; }
+        public DbSet<ColaboradorTelefone> CF_ColaboradorTelefone { get; set; }
+        public DbSet<ColaboradorPermissao> CF_ColaboradorPermissao { get; set; }
+        public DbSet<ColaboradorTipoUsuario> CF_ColaboradorTipoUsuario { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ColaboradorEmail>()
+                .HasOne(e => e.Colaborador)
+                .WithOne(c => c.Emails)
+                .HasForeignKey<ColaboradorEmail>(e => e.Id_Colaborador);
+
+            modelBuilder.Entity<ColaboradorTelefone>()
+                .HasOne(t => t.Colaborador)
+                .WithOne(c => c.Telefones)
+                .HasForeignKey<ColaboradorTelefone>(t => t.Id_Colaborador);
+
+            modelBuilder.Entity<ColaboradorPermissao>()
+                .HasOne(t => t.Colaborador)
+                .WithOne(c => c.Permissoes)
+                .HasForeignKey<ColaboradorPermissao>(t => t.Id_Colaborador);
+
+            modelBuilder.Entity<ColaboradorTipoUsuario>()
+               .HasOne(t => t.Colaborador)
+               .WithOne(c => c.TipoUsuario)
+               .HasForeignKey<ColaboradorTipoUsuario>(t => t.Id_Colaborador);
+
+            // Adicione configurações semelhantes para outras entidades, se necessário
+
+
+        }
+
+
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Aisentona.DataBase
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Aisentona.DataBase
 {
     public class ColaboradorPermissao
     {
@@ -19,6 +21,7 @@
             Colaborador = colaborador;
         }
 
+        [Key]
         public int Id_Telefone { get; set; }
         public string Nm_Apelido { get; set; }
         public string Ds_Numero { get; set; }

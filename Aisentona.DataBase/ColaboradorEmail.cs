@@ -1,4 +1,6 @@
-﻿namespace Aisentona.DataBase
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Aisentona.DataBase
 {
     public class ColaboradorEmail
     {
@@ -18,7 +20,7 @@
             Colaborador = colaborador;
         }
 
-
+        [Key]
         public int Id_Email { get; set; }
         public string Ds_Email { get; set; }
         public bool Fl_Ativo { get; set; }

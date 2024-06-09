@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+﻿using Aisentona.Biz.Services;
+using Aisentona.DataBase;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Aisentona.API.Controllers
 {
@@ -8,18 +8,28 @@ namespace Aisentona.API.Controllers
     [ApiController]
     public class ColaboradorController : ControllerBase
     {
-        // GET: api/<ColaboradorController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ColaboradorService _colaboradorService;
+
+        public ColaboradorController(ColaboradorService colaboradorService)
         {
-            return new string[] { "value1", "value2" };
+            _colaboradorService = colaboradorService;
         }
 
-        // GET api/<ColaboradorController>/5
+        // GET api/<ColaboradorController>
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult GetById(int id)
         {
-            return "value";
+            if (id <= 0)
+            {
+                return BadRequest("ID inválido.");
+            }
+
+            var colaborador = _colaboradorService.GetColaboradorById(id);
+            if (colaborador == null)
+            {
+                return NotFound();
+            }
+            return Ok(colaborador);
         }
 
         // POST api/<ColaboradorController>
