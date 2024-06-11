@@ -39,7 +39,7 @@ namespace Aisentona.Biz.Services
                 Ds_CPF = cpf,
                 DS_Senha = senha,
                 Fl_Ativo = true,
-                DT_Criacao = DateTime.Now,
+                DT_Criacao = DateTime.UtcNow,
                 Id_TipoUsuario = id_TipoUsuario,
                 Ds_UltimaAlteracao = GetWindowsUsername(),
             };

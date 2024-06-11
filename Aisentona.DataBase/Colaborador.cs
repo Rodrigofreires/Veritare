@@ -10,7 +10,7 @@ namespace Aisentona.DataBase
             
         }
 
-        public Colaborador(int id_Colaborador, string nm_Nome, string ds_Cpf, string ds_Senha, bool fl_Ativo, DateTime dt_Criacao, DateTime dt_UltimaAlteracao, int id_TipoUsuario, string ds_UltimaAlteracao, ColaboradorEmail? emails, ColaboradorTelefone? telefones, ColaboradorTipoUsuario? tipoUsuario, ColaboradorPermissao? permissoes)
+        public Colaborador(int id_Colaborador, string nm_Nome, string ds_Cpf, string ds_Senha, bool fl_Ativo, DateTime dt_Criacao, DateTime dt_UltimaAlteracao, int id_TipoUsuario, string ds_UltimaAlteracao)
         {
             Id_Usuario = id_Colaborador;
             Nm_Nome = nm_Nome;
@@ -21,10 +21,6 @@ namespace Aisentona.DataBase
             DT_UltimaAlteracao = dt_UltimaAlteracao;
             Id_TipoUsuario = id_TipoUsuario;
             Ds_UltimaAlteracao = ds_UltimaAlteracao;
-            Emails = emails;
-            Telefones = telefones;
-            TipoUsuario = tipoUsuario;
-            Permissoes = permissoes;      
         }
 
         [Key]
@@ -33,8 +29,8 @@ namespace Aisentona.DataBase
         public string Ds_CPF { get; set; }
         public string DS_Senha { get; set; }
         public bool Fl_Ativo { get; set; }
-        public DateTime DT_Criacao { get; set; } = DateTime.Now;
-        public DateTime DT_UltimaAlteracao { get; set; } = DateTime.Now;
+        public DateTime DT_Criacao { get; set; } = DateTime.UtcNow;
+        public DateTime DT_UltimaAlteracao { get; set; } = DateTime.UtcNow;
         public int Id_TipoUsuario { get; set; }
         public string Ds_UltimaAlteracao { get; set; }
         

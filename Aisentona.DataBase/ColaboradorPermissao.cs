@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aisentona.DataBase
 {
@@ -8,7 +9,7 @@ namespace Aisentona.DataBase
         {
             
         }
-        public ColaboradorPermissao(int id_Telefone, string nm_Apelido, string ds_Numero, bool fl_Ativo, DateTime? dT_Criacao, DateTime dT_UltimaAlteracao, string ds_UltimaAlteracao, int id_Colaborador, Colaborador colaborador)
+        public ColaboradorPermissao(int id_Telefone, string nm_Apelido, string ds_Numero, bool fl_Ativo, DateTime? dT_Criacao, DateTime dT_UltimaAlteracao, string ds_UltimaAlteracao, int id_Colaborador)
         {
             Id_Telefone = id_Telefone;
             Nm_Apelido = nm_Apelido;
@@ -18,10 +19,9 @@ namespace Aisentona.DataBase
             DT_UltimaAlteracao = dT_UltimaAlteracao;
             Ds_UltimaAlteracao = ds_UltimaAlteracao;
             Id_Colaborador = id_Colaborador;
-            Colaborador = colaborador;
         }
 
-        [Key]
+        [Key, ForeignKey("Colaborador")]
         public int Id_Telefone { get; set; }
         public string Nm_Apelido { get; set; }
         public string Ds_Numero { get; set; }
@@ -32,6 +32,6 @@ namespace Aisentona.DataBase
         
         // Relacionamento com a tabela de Colaboradores
         public int Id_Colaborador { get; set; }
-        public Colaborador Colaborador { get; set; }
+        public virtual Colaborador Colaborador { get; set; }
     }
 }

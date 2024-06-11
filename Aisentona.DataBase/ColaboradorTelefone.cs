@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aisentona.DataBase
 {
@@ -22,7 +23,7 @@ namespace Aisentona.DataBase
             Colaborador = colaborador;
         }
 
-        [Key]
+        [Key, ForeignKey("Colaborador")]
         public int Id_Telefone { get; set; }
         public string? Nm_Apelido { get; set; }
         public string? Ds_Numero { get; set; }
@@ -33,7 +34,7 @@ namespace Aisentona.DataBase
         
         // Relacionamento com a tabela de Colaboradores
         public int Id_Colaborador { get; set; }
-        public Colaborador? Colaborador { get; set; }
+        public virtual Colaborador? Colaborador { get; set; }
 
 
     }

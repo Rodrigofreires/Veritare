@@ -19,6 +19,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Registro de serviços e repositórios
 builder.Services.AddScoped<ColaboradorService>();
+builder.Services.AddScoped<ColaboradorEmailService>();
+
 
 var app = builder.Build();
 
