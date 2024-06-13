@@ -7,8 +7,8 @@ namespace Aisentona.DataBase
     {
         public ColaboradorEmail()
         {
-            
         }
+
         public ColaboradorEmail(int id_Email, string ds_Email, bool fl_Ativo, DateTime? dt_Criacao, DateTime dt_UltimaAlteracao, string? ds_UltimaAlteracao, int id_Colaborador)
         {
             Id_Email = id_Email;
@@ -20,15 +20,17 @@ namespace Aisentona.DataBase
             Id_Colaborador = id_Colaborador;
         }
 
-        [Key, ForeignKey("Id_Colaborador")]
+        [Key]
         public int Id_Email { get; set; }
         public string Ds_Email { get; set; }
         public bool Fl_Ativo { get; set; }
         public DateTime? DT_Criacao { get; set; } = DateTime.UtcNow;
         public DateTime DT_UltimaAlteracao { get; set; } = DateTime.UtcNow;
         public string Ds_UltimaAlteracao { get; set; }
-       
+
         // Relacionamento com a tabela de Colaboradores
+        [ForeignKey("Id_Colaborador")]
         public int Id_Colaborador { get; set; }
+        public virtual Colaborador Colaborador { get; set; }
     }
 }

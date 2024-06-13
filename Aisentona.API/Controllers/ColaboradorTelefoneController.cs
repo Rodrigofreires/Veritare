@@ -6,25 +6,25 @@ namespace Aisentona.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ColaboradorEmailController : ControllerBase
+    public class ColaboradorTelefoneController : ControllerBase
     {
-        private readonly ColaboradorEmailService _colaboradorEmailService;
+        private readonly ColaboradorTelefoneService _colaboradorTelefoneService;
 
-        public ColaboradorEmailController(ColaboradorEmailService colaboradorEmailService)
+        public ColaboradorTelefoneController(ColaboradorTelefoneService colaboradorTelefoneService)
         {
-            _colaboradorEmailService = colaboradorEmailService;
+            _colaboradorTelefoneService = colaboradorTelefoneService;
         }
 
         // GET api/<ColaboradorEmailController>
         [HttpGet("{id}")]
-        public IActionResult GetEmailColaboradorById(int id)
+        public IActionResult GetTelefoneColaboradorById(int id)
         {
             if (id <= 0)
             {
                 return BadRequest("ID inválido.");
             }
 
-            var colaborador = _colaboradorEmailService.ListarEmailColaboradorPorId(id);
+            var colaborador = _colaboradorTelefoneService.ListarTelefoneColaboradorPorId(id);
             if (colaborador == null)
             {
                 return NotFound();
@@ -34,37 +34,38 @@ namespace Aisentona.API.Controllers
 
         // POST api/<ColaboradorController>
         [HttpPost]
-        public IActionResult CreateEmailColaborador([FromBody] ColaboradorEmail colaboradorObjeto)
+        public IActionResult CreateTelefoneColaborador([FromBody] ColaboradorTelefone colaboradorObjeto)
         {
             if (colaboradorObjeto is null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
-            var colaborador = _colaboradorEmailService.CriarEmailColaborador(
+            var colaborador = _colaboradorTelefoneService.CriarTelefoneColaborador(
 
-                colaboradorObjeto.Id_Email,
-                colaboradorObjeto.Ds_Email,
+                colaboradorObjeto.Id_Telefone,
+                colaboradorObjeto.Nm_Apelido,
+                colaboradorObjeto.Ds_Numero,
                 colaboradorObjeto.Fl_Ativo,
                 colaboradorObjeto.Id_Colaborador
                 );
 
-            return CreatedAtAction(nameof(CreateEmailColaborador), new { id = colaborador.Id_Email }, colaborador);
+            return CreatedAtAction(nameof(_colaboradorTelefoneService), new { id = colaborador.Id_Telefone }, colaborador);
         }
 
         // PUT api/<ColaboradorController>
         [HttpPut("editar/{id}")]
-        public IActionResult UpdateEmailColaborador(int id, [FromBody] ColaboradorEmail colaboradorEmailDto)
+        public IActionResult UpdateEmailColaborador(int id, [FromBody] ColaboradorTelefone colaboradorTelefonelDto)
         {
-            if (colaboradorEmailDto == null)
+            if (colaboradorTelefonelDto == null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
 
             try
             {
-                var colaboradorEmail = _colaboradorEmailService.EditarEmailColaborador(id, colaboradorEmailDto);
+                var colaboradorTelefone = _colaboradorTelefoneService.EditarTelefoneColaborador(id, colaboradorTelefonelDto);
 
-                return Ok(colaboradorEmail);
+                return Ok(colaboradorTelefone);
             }
             catch (KeyNotFoundException ex)
             {
@@ -74,17 +75,17 @@ namespace Aisentona.API.Controllers
 
         // Delete api/<ColaboradorController>
         [HttpPut("ativar-desativar/{id}")]
-        public IActionResult SwapFlagColaborador(int id, [FromBody] ColaboradorEmail colaboradorEmailDto)
+        public IActionResult SwapFlagColaborador(int id, [FromBody] ColaboradorTelefone colaboradorTelefonelDto)
         {
-            if (colaboradorEmailDto == null)
+            if (colaboradorTelefonelDto == null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
 
             try
             {
-                var colaboradorEmail = _colaboradorEmailService.TrocarFlagAtivaEmailColaborador(id);
-                return Ok(colaboradorEmail);
+                var colaboradorTelefone = _colaboradorTelefoneService.TrocarFlagAtivaTelefoneColaborador(id);
+                return Ok(colaboradorTelefone);
             }
             catch (KeyNotFoundException ex)
             {

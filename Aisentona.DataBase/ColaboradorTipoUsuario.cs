@@ -18,7 +18,7 @@ namespace Aisentona.DataBase
             DT_UltimaAlteracao = dT_UltimaAlteracao;
             Id_Colaborador = id_colaborador;
         }
-        [Key, ForeignKey("Colaborador")]
+        [Key, ForeignKey("Id_Colaborador")]
         public int Id_TipoUsuario { get; set; }
         public string Nm_TipoUsuario { get; set; }
         public bool Fl_Ativo { get; set; }

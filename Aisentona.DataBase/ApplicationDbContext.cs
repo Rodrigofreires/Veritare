@@ -14,6 +14,24 @@ namespace Aisentona.DataBase
         public DbSet<ColaboradorPermissao> CF_ColaboradorPermissao { get; set; }
         public DbSet<ColaboradorTipoUsuario> CF_ColaboradorTipoUsuario { get; set; }
 
- 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Colaborador>()
+                .HasOne(c => c.Emails)
+                .WithOne(e => e.Colaborador)
+                .HasForeignKey<ColaboradorEmail>(e => e.Id_Colaborador);
+
+            modelBuilder.Entity<Colaborador>()
+                .HasOne(c => c.Telefones)
+                .WithOne(t => t.Colaborador)
+                .HasForeignKey<ColaboradorTelefone>(t => t.Id_Colaborador);
+
+            modelBuilder.Entity<Colaborador>()
+                .HasOne(c => c.TipoUsuario)
+                .WithOne(t => t.Colaborador)
+                .HasForeignKey<ColaboradorTipoUsuario>(t => t.Id_Colaborador);
+
+
+        }
     }
 }

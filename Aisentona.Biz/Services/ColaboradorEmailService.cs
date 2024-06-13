@@ -82,10 +82,11 @@ namespace Aisentona.Biz.Services
 
         public ColaboradorEmail TrocarFlagAtivaEmailColaborador(int id)
         {
+
             var colaboradorEmail = _context.CF_ColaboradorEmail.Find(id);
             if (colaboradorEmail is null)
             {
-                throw new KeyNotFoundException("Colaborador não encontrado");
+                throw new KeyNotFoundException("Email Colaborador não encontrado");
             }
 
             colaboradorEmail.Fl_Ativo = !colaboradorEmail.Fl_Ativo;
