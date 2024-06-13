@@ -29,7 +29,7 @@ namespace Aisentona.Biz.Services
 
         }
 
-        public ColaboradorTelefone CriarTelefoneColaborador(int id_Telefone, string nm_Apelido, string ds_Numero, bool fl_Ativo, int id_Colaborador)
+        public ColaboradorTelefone CriarTelefoneColaborador(int id_Telefone, string nm_Apelido, string ds_Numero, bool fl_Ativo, int id_Usuario)
         {
             ColaboradorTelefone telefoneColaborador = new ColaboradorTelefone()
             {
@@ -39,26 +39,14 @@ namespace Aisentona.Biz.Services
                 Fl_Ativo = fl_Ativo,
                 DT_Criacao = DateTime.UtcNow,
                 Ds_UltimaAlteracao = GetWindowsUsername(),
-                Id_Colaborador = id_Colaborador,
+                Id_Usuario = id_Usuario,
             };
-
-            // Verifica e ajusta as datas se necessário
-            if (telefoneColaborador.DT_Criacao < (DateTime)SqlDateTime.MinValue)
-            {
-                telefoneColaborador.DT_Criacao = (DateTime)SqlDateTime.MinValue;
-            }
-
-            if (telefoneColaborador.DT_UltimaAlteracao < (DateTime)SqlDateTime.MinValue)
-            {
-                telefoneColaborador.DT_UltimaAlteracao = (DateTime)SqlDateTime.MinValue;
-            }
-
-
             // Lógica para salvar o colaborador no banco de dados
             _context.CF_ColaboradorTelefone.Add(telefoneColaborador);
             _context.SaveChanges();
 
             return telefoneColaborador;
+
         }
 
         public ColaboradorTelefone EditarTelefoneColaborador(int id, ColaboradorTelefone colaboradorTelefoneDto)
@@ -69,10 +57,11 @@ namespace Aisentona.Biz.Services
                 throw new KeyNotFoundException("Colaborador Telefone não encontrado");
             }
 
+            colaboradorTelefone.Nm_Apelido = colaboradorTelefoneDto.Nm_Apelido;
             colaboradorTelefone.Ds_Numero = colaboradorTelefoneDto.Ds_Numero;
             colaboradorTelefone.Fl_Ativo = colaboradorTelefoneDto.Fl_Ativo;
             colaboradorTelefone.DT_UltimaAlteracao = DateTime.Now;
-            colaboradorTelefone.Id_Colaborador = colaboradorTelefoneDto.Id_Colaborador;
+            colaboradorTelefone.Id_Usuario = colaboradorTelefoneDto.Id_Usuario;
             colaboradorTelefone.Ds_UltimaAlteracao = GetWindowsUsername();
 
             // Verifica e ajusta as datas se necessário
@@ -109,7 +98,9 @@ namespace Aisentona.Biz.Services
             return colaboradorTelefone;
         }
 
-
-
+        public object CriarTelefoneColaborador(int id_Telefone, string? nm_Apelido, string? ds_Numero, bool fl_Ativo, DateTime? dT_Criacao, int id_Usuario)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -30,13 +30,15 @@ namespace Aisentona.DataBase
             public bool Fl_Ativo { get; set; }
             public DateTime DT_Criacao { get; set; } = DateTime.UtcNow;
             public DateTime DT_UltimaAlteracao { get; set; } = DateTime.UtcNow;
+            [Required]  
             public int Id_TipoUsuario { get; set; }
             public string Ds_UltimaAlteracao { get; set; }
 
             // Propriedades de navegação
-            public virtual ColaboradorEmail Emails { get; set; }
-            public virtual ColaboradorTelefone Telefones { get; set; }
-            public virtual ColaboradorTipoUsuario TipoUsuario { get; set; }
-            public virtual ColaboradorPermissao Permissoes { get; set; }
+            public virtual ColaboradorEmail? Emails { get; set; }
+            public virtual ColaboradorTelefone? Telefones { get; set; }
+            public virtual ColaboradorTipoUsuario? TipoUsuario { get; set; }
+            public virtual ColaboradorPermissao? Permissoes { get; set; }
+            
         }
     }

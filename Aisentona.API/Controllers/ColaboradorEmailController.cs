@@ -45,7 +45,7 @@ namespace Aisentona.API.Controllers
                 colaboradorObjeto.Id_Email,
                 colaboradorObjeto.Ds_Email,
                 colaboradorObjeto.Fl_Ativo,
-                colaboradorObjeto.Id_Colaborador
+                colaboradorObjeto.Id_Usuario
                 );
 
             return CreatedAtAction(nameof(CreateEmailColaborador), new { id = colaborador.Id_Email }, colaborador);
@@ -74,13 +74,8 @@ namespace Aisentona.API.Controllers
 
         // Delete api/<ColaboradorController>
         [HttpPut("ativar-desativar/{id}")]
-        public IActionResult SwapFlagColaborador(int id, [FromBody] ColaboradorEmail colaboradorEmailDto)
+        public IActionResult SwapFlagColaborador(int id)
         {
-            if (colaboradorEmailDto == null)
-            {
-                return BadRequest("Objeto preenchido incorretamente");
-            }
-
             try
             {
                 var colaboradorEmail = _colaboradorEmailService.TrocarFlagAtivaEmailColaborador(id);

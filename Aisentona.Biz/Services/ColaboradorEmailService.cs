@@ -29,17 +29,16 @@ namespace Aisentona.Biz.Services
 
         }
 
-        public ColaboradorEmail CriarEmailColaborador(int id_Email, string ds_Email, bool fl_Ativo, int id_Colaborador)
+        public ColaboradorEmail CriarEmailColaborador(int id_Email, string ds_Email, bool fl_Ativo, int id_Usuario)
         {
             ColaboradorEmail emailColaborador = new ColaboradorEmail()
             {
-
                 Id_Email = id_Email,
                 Ds_Email = ds_Email,
                 Fl_Ativo = fl_Ativo,
                 DT_Criacao = DateTime.UtcNow,
                 Ds_UltimaAlteracao = GetWindowsUsername(),
-                Id_Colaborador = id_Colaborador,
+                Id_Usuario = id_Usuario,
             };
 
             // Lógica para salvar o colaborador no banco de dados
@@ -60,7 +59,7 @@ namespace Aisentona.Biz.Services
             colaboradorEmail.Ds_Email = colaboradorEmailDto.Ds_Email;
             colaboradorEmail.Fl_Ativo = colaboradorEmailDto.Fl_Ativo;
             colaboradorEmail.DT_UltimaAlteracao = DateTime.Now;
-            colaboradorEmail.Id_Colaborador = colaboradorEmailDto.Id_Colaborador;
+            colaboradorEmail.Id_Usuario = colaboradorEmailDto.Id_Usuario;
             colaboradorEmail.Ds_UltimaAlteracao = GetWindowsUsername();
 
             // Verifica e ajusta as datas se necessário

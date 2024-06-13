@@ -9,29 +9,30 @@ namespace Aisentona.DataBase
         {
             
         }
-        public ColaboradorPermissao(int id_Telefone, string nm_Apelido, string ds_Numero, bool fl_Ativo, DateTime? dT_Criacao, DateTime dT_UltimaAlteracao, string ds_UltimaAlteracao, int id_Colaborador)
+
+        public ColaboradorPermissao(int id_ColaboradorPermissao, DateTime? dT_Criacao, DateTime dT_UltimaAlteracao, string ds_UltimaAlteracao, int id_Usuario, int id_Permissao)
         {
-            Id_Telefone = id_Telefone;
-            Nm_Apelido = nm_Apelido;
-            Ds_Numero = ds_Numero;
-            Fl_Ativo = fl_Ativo;
+            Id_ColaboradorPermissao = id_ColaboradorPermissao;
             DT_Criacao = dT_Criacao;
             DT_UltimaAlteracao = dT_UltimaAlteracao;
             Ds_UltimaAlteracao = ds_UltimaAlteracao;
-            Id_Colaborador = id_Colaborador;
+            Id_Usuario = id_Usuario;
+            Id_Permissao = id_Permissao;
         }
 
-        [Key, ForeignKey("Colaborador")]
-        public int Id_Telefone { get; set; }
-        public string Nm_Apelido { get; set; }
-        public string Ds_Numero { get; set; }
-        public bool Fl_Ativo { get; set; }
+        [Key]
+        public int Id_ColaboradorPermissao { get; set; }
         public DateTime? DT_Criacao { get; set; }
         public DateTime DT_UltimaAlteracao { get; set; }
         public string Ds_UltimaAlteracao { get; set; }
-        
+
         // Relacionamento com a tabela de Colaboradores
-        public int Id_Colaborador { get; set; }
+
+        [ForeignKey("Colaborador")]
+        public int Id_Usuario { get; set; }
         public virtual Colaborador Colaborador { get; set; }
+        public int Id_Permissao { get; set; }
+
+
     }
 }

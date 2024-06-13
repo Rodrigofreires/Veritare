@@ -40,14 +40,13 @@ namespace Aisentona.API.Controllers
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
-            var colaborador = _colaboradorService.CriarColaborador(
 
-                colaboradorObjeto.Id_Usuario,
+            var colaborador = _colaboradorService.CriarColaborador(
                 colaboradorObjeto.Nm_Nome,
                 colaboradorObjeto.Ds_CPF,
                 colaboradorObjeto.DS_Senha,
                 colaboradorObjeto.Id_TipoUsuario
-                );
+            );
 
             return CreatedAtAction(nameof(CreateColaborador), new { id = colaborador.Id_Usuario }, colaborador);
         }
@@ -74,13 +73,8 @@ namespace Aisentona.API.Controllers
 
         // Delete api/<ColaboradorController>
         [HttpPut("ativar-desativar/{id}")]
-        public IActionResult SwapFlagColaborador(int id, [FromBody] Colaborador colaboradorDto)
+        public IActionResult SwapFlagColaborador(int id)
         {
-            if (colaboradorDto == null)
-            {
-                return BadRequest("Objeto preenchido incorretamente");
-            }
-
             try
             {
                 var colaborador = _colaboradorService.TrocarFlagAtivaColaborador(id);

@@ -30,11 +30,10 @@ namespace Aisentona.Biz.Services
 
         }
 
-        public Colaborador CriarColaborador(int idUsuario, string nome, string cpf, string senha, int id_TipoUsuario)
+        public Colaborador CriarColaborador(string nome, string cpf, string senha, int id_TipoUsuario)
         {
-            Colaborador colaborador = new Colaborador
+            Colaborador colaborador = new Colaborador()
             {
-                Id_Usuario = idUsuario,
                 Nm_Nome = nome,
                 Ds_CPF = cpf,
                 DS_Senha = senha,
@@ -50,6 +49,7 @@ namespace Aisentona.Biz.Services
 
             return colaborador;
         }
+
 
         public Colaborador EditarColaborador(int id, Colaborador colaboradorDto)
         {

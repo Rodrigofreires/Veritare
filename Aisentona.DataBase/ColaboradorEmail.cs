@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.Design;
 
 namespace Aisentona.DataBase
 {
@@ -9,7 +10,7 @@ namespace Aisentona.DataBase
         {
         }
 
-        public ColaboradorEmail(int id_Email, string ds_Email, bool fl_Ativo, DateTime? dt_Criacao, DateTime dt_UltimaAlteracao, string? ds_UltimaAlteracao, int id_Colaborador)
+        public ColaboradorEmail(int id_Email, string ds_Email, bool fl_Ativo, DateTime? dt_Criacao, DateTime dt_UltimaAlteracao, string? ds_UltimaAlteracao, int id_Usuario)
         {
             Id_Email = id_Email;
             Ds_Email = ds_Email;
@@ -17,7 +18,7 @@ namespace Aisentona.DataBase
             DT_Criacao = dt_Criacao;
             DT_UltimaAlteracao = dt_UltimaAlteracao;
             Ds_UltimaAlteracao = ds_UltimaAlteracao;
-            Id_Colaborador = id_Colaborador;
+            Id_Usuario = id_Usuario;
         }
 
         [Key]
@@ -29,8 +30,8 @@ namespace Aisentona.DataBase
         public string Ds_UltimaAlteracao { get; set; }
 
         // Relacionamento com a tabela de Colaboradores
-        [ForeignKey("Id_Colaborador")]
-        public int Id_Colaborador { get; set; }
-        public virtual Colaborador Colaborador { get; set; }
+        [ForeignKey("Colaborador")]
+        public int Id_Usuario { get; set; }
+        public virtual Colaborador? Colaborador { get; set; }
     }
 }

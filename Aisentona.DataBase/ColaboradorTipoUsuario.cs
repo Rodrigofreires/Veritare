@@ -9,16 +9,16 @@ namespace Aisentona.DataBase
         {
             
         }
-        public ColaboradorTipoUsuario(int id_TipoUsuario, string nm_TipoUsuario, bool fl_Ativo, DateTime? dT_Criacao, DateTime dT_UltimaAlteracao, int id_colaborador)
+        public ColaboradorTipoUsuario(int id_TipoUsuario, string nm_TipoUsuario, bool fl_Ativo, DateTime? dT_Criacao, DateTime dT_UltimaAlteracao, int id_Usuario)
         {
             Id_TipoUsuario = id_TipoUsuario;
             Nm_TipoUsuario = nm_TipoUsuario;
             Fl_Ativo = fl_Ativo;
             DT_Criacao = dT_Criacao;
             DT_UltimaAlteracao = dT_UltimaAlteracao;
-            Id_Colaborador = id_colaborador;
+            Id_Usuario = id_Usuario;
         }
-        [Key, ForeignKey("Id_Colaborador")]
+        [Key, ForeignKey("Colaborador")]
         public int Id_TipoUsuario { get; set; }
         public string Nm_TipoUsuario { get; set; }
         public bool Fl_Ativo { get; set; }
@@ -26,8 +26,8 @@ namespace Aisentona.DataBase
         public DateTime DT_UltimaAlteracao { get; set; }
 
         // Relacionamento com a tabela de Colaboradores
+        public int Id_Usuario { get; set; }
 
-        public int Id_Colaborador { get; set; }
-        public virtual Colaborador Colaborador { get; set; }
+        public virtual Colaborador? Colaborador { get; set; }
     }
 }

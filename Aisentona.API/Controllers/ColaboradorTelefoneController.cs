@@ -34,6 +34,7 @@ namespace Aisentona.API.Controllers
 
         // POST api/<ColaboradorController>
         [HttpPost]
+        [Route("api/[controller]")]
         public IActionResult CreateTelefoneColaborador([FromBody] ColaboradorTelefone colaboradorObjeto)
         {
             if (colaboradorObjeto is null)
@@ -46,10 +47,11 @@ namespace Aisentona.API.Controllers
                 colaboradorObjeto.Nm_Apelido,
                 colaboradorObjeto.Ds_Numero,
                 colaboradorObjeto.Fl_Ativo,
-                colaboradorObjeto.Id_Colaborador
+                colaboradorObjeto.Id_Usuario
                 );
 
-            return CreatedAtAction(nameof(_colaboradorTelefoneService), new { id = colaborador.Id_Telefone }, colaborador);
+            return CreatedAtAction(nameof(CreateTelefoneColaborador), new { id_Telefone = colaborador.Id_Telefone }, colaborador);
+
         }
 
         // PUT api/<ColaboradorController>
@@ -75,13 +77,8 @@ namespace Aisentona.API.Controllers
 
         // Delete api/<ColaboradorController>
         [HttpPut("ativar-desativar/{id}")]
-        public IActionResult SwapFlagColaborador(int id, [FromBody] ColaboradorTelefone colaboradorTelefonelDto)
+        public IActionResult SwapFlagColaborador(int id)
         {
-            if (colaboradorTelefonelDto == null)
-            {
-                return BadRequest("Objeto preenchido incorretamente");
-            }
-
             try
             {
                 var colaboradorTelefone = _colaboradorTelefoneService.TrocarFlagAtivaTelefoneColaborador(id);
