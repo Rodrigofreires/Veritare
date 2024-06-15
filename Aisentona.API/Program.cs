@@ -21,6 +21,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<ColaboradorService>();
 builder.Services.AddScoped<ColaboradorEmailService>();
 builder.Services.AddScoped<ColaboradorTelefoneService>();
+builder.Services.AddScoped<ColaboradorTipoUsuarioService>();
 
 
 var app = builder.Build();

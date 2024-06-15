@@ -24,6 +24,7 @@ namespace Aisentona.Biz.Services
 
             if (colaborador != null && colaborador.Fl_Ativo == true)
             {
+
                 listaDeColaboradores.Add(colaborador);
             }
             return listaDeColaboradores;

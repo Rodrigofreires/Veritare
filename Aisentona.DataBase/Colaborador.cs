@@ -37,7 +37,6 @@ namespace Aisentona.DataBase
             // Propriedades de navegação
             public virtual ColaboradorEmail? Emails { get; set; }
             public virtual ColaboradorTelefone? Telefones { get; set; }
-            public virtual ColaboradorTipoUsuario? TipoUsuario { get; set; }
             public virtual ColaboradorPermissao? Permissoes { get; set; }
             
         }
