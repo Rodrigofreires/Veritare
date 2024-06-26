@@ -7,7 +7,6 @@ namespace Aisentona.DataBase
     {
         public Permissao()
         {
-            
         }
         public Permissao(int id_Permissao, string nm_Permissao)
         {
