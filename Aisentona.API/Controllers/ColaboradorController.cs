@@ -63,6 +63,7 @@ namespace Aisentona.API.Controllers
             try
             {
                 var colaborador = _colaboradorService.EditarColaborador(id, colaboradorDto);
+
                 return Ok(colaborador);
             }
             catch (KeyNotFoundException ex)

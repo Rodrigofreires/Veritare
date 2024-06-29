@@ -28,7 +28,7 @@ namespace Aisentona.API.Controllers.Postagens
                 return BadRequest("ID inválido.");
             }
 
-            var postagem = _postagemService.ListarPostagens(id);
+            List<Postagem> postagem = _postagemService.ListarPostagens(id);
             if (postagem == null)
             {
                 return NotFound();
@@ -59,5 +59,36 @@ namespace Aisentona.API.Controllers.Postagens
 
             return CreatedAtAction(nameof(CreatePost), new { id = postagem.Id_Usuario }, postagem);
         }
+        
+        [HttpPut("editar/{idPostagem}")]
+        public IActionResult UpdatePostagem(int idpostagem, [FromBody] Postagem postagemDto)
+        {
+            try
+            {
+                var postagem = _postagemService.EditarPostagem(idpostagem, postagemDto);
+                
+                return Ok(postagem);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+        
+        // Delete api/<ColaboradorController>
+        [HttpPut("ativar-desativar/{idPostagem}")]
+        public IActionResult SwapFlagColaborador(int idPostagem)
+        {
+            try
+            {
+                var colaborador = _postagemService.TrocarFlagAtivaPostagem(idPostagem);
+                return Ok(colaborador);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
     }
 }

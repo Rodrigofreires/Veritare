@@ -52,9 +52,9 @@ namespace Aisentona.Biz.Services
         }
 
 
-        public Colaborador EditarColaborador(int id, Colaborador colaboradorDto)
+        public Colaborador EditarColaborador(int idColaborador, Colaborador colaboradorDto)
         {
-            var colaborador = _context.CF_Colaborador.Find(id);
+            var colaborador = _context.CF_Colaborador.Find(idColaborador);
             if (colaborador is null)
             {
                 throw new KeyNotFoundException("Colaborador não encontrado");
@@ -85,9 +85,9 @@ namespace Aisentona.Biz.Services
             return colaborador;
         }
 
-        public Colaborador TrocarFlagAtivaColaborador(int id)
+        public Colaborador TrocarFlagAtivaColaborador(int idColaborador)
         {
-            var colaborador = _context.CF_Colaborador.Find(id);
+            var colaborador = _context.CF_Colaborador.Find(idColaborador);
             if (colaborador is null)
             {
                 throw new KeyNotFoundException("Colaborador não encontrado");
