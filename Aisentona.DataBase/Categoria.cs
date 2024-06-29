@@ -7,9 +7,8 @@ namespace Aisentona.DataBase
         public Categoria()
         {
         }
-        public Categoria(int id_Categoria, string nome, string? descricao)
+        public Categoria(string nome, string? descricao)
         {
-            Id_Categoria = id_Categoria;
             Nome = nome;
             Descricao = descricao;
 
@@ -17,8 +16,10 @@ namespace Aisentona.DataBase
 
         [Key]        
         public int Id_Categoria { get; set; }
-        public required string Nome { get; set; }
+        public  string Nome { get; set; }
         public string? Descricao { get; set; }
+
+        ICollection<Postagem> Postagem { get; set; }
 
     }
 }

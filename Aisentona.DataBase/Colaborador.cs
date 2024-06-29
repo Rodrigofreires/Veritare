@@ -38,6 +38,7 @@ namespace Aisentona.DataBase
             public virtual ColaboradorEmail? Emails { get; set; }
             public virtual ColaboradorTelefone? Telefones { get; set; }
             public virtual ColaboradorPermissao? Permissoes { get; set; }
-            
-        }
+            ICollection<Postagem> Postagem { get; set; }
+
+    }
     }

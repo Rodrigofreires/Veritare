@@ -21,6 +21,8 @@ namespace Aisentona.DataBase
 
         [Key]
         public int Id_Status { get; set; }
-        public required string Descricao { get; set; }
+        public  string Descricao { get; set; }
+
+        ICollection<Postagem> Postagem { get; set; }
     }
 }

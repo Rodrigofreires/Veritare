@@ -1,4 +1,5 @@
 using Aisentona.Biz.Services;
+using Aisentona.Biz.Services.Postagens;
 using Aisentona.DataBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<ColaboradorService>();
 builder.Services.AddScoped<ColaboradorEmailService>();
 builder.Services.AddScoped<ColaboradorTelefoneService>();
 builder.Services.AddScoped<ColaboradorTipoUsuarioService>();
+builder.Services.AddScoped<PostagemService>();
 
 
 var app = builder.Build();

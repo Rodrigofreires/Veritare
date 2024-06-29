@@ -10,29 +10,38 @@ namespace Aisentona.DataBase
 {
     public class Postagem
     {
-        public Postagem(int id_Postagem, string titulo, string conteudo, int id_Usuario, DateTime dT_Criacao, DateTime dT_UltimaAlteracao, int id_Status)
+        public Postagem()
         {
-            Id_Postagem = id_Postagem;
-            Titulo = titulo;
-            Conteudo = conteudo;
+        }
+        public Postagem( string titulo, string conteudo, int id_Usuario, int idStatus, int idCategoria)
+        {
+            Id_Status = idStatus;
             Id_Usuario = id_Usuario;
-            DT_Criacao = dT_Criacao;
-            DT_UltimaAlteracao = dT_UltimaAlteracao;
-            Id_Status = id_Status;
+            Id_Categoria = idCategoria;
+            Titulo = titulo;
+            Conteudo = conteudo;    
         }
 
         [Key]
-        public required int Id_Postagem { get; set; }
-        public required string Titulo { get; set; }
-        public required string Conteudo { get; set; }
+        public  int Id_Postagem { get; set; }
+        public  string Titulo { get; set; }
+        public  string Conteudo { get; set; }
+        public  bool Fl_Ativo { get; set; }
+        public string Ds_UltimaAlteracao { get; set; }
+
 
         [ForeignKey("Colaborador")]
-        public required int Id_Usuario { get; set; }
-        public required DateTime DT_Criacao {get; set;}
-        public required DateTime DT_UltimaAlteracao { get; set; }
-        public required int Id_Status { get; set; }
-        public required Colaborador Colaborador { get; set; } // Relação com a classe Usuario (CF_COLABORADOR)
-        public required Status Status { get; set; }   // Relação com a classe Status
+        public  int Id_Usuario { get; set; }
+        [ForeignKey("Status")]
+        public  int Id_Status { get; set; }
+        
+        [ForeignKey("Categoria")]
+        public  int Id_Categoria { get; set; }
+        public DateTime? DT_Criacao {get; set;} = DateTime.Now;
+        public DateTime? DT_UltimaAlteracao { get; set; }
+        public Colaborador? Colaborador { get; set; } // Relação com a classe Usuario (CF_COLABORADOR)
+        public Status? Status { get; set; }   // Relação com a classe Status
+        public Categoria? Categoria { get; set; }  // Relação com a classe Categoria
       
     }
 }
