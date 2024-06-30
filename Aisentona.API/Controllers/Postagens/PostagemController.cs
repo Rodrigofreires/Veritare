@@ -61,11 +61,11 @@ namespace Aisentona.API.Controllers.Postagens
         }
         
         [HttpPut("editar/{idPostagem}")]
-        public IActionResult UpdatePostagem(int idpostagem, [FromBody] Postagem postagemDto)
+        public IActionResult UpdatePostagem(Postagem postagem)
         {
             try
             {
-                var postagem = _postagemService.EditarPostagem(idpostagem, postagemDto);
+                postagem = _postagemService.EditarPostagem(postagem.Id_Postagem, postagem);
                 
                 return Ok(postagem);
             }
