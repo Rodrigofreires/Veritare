@@ -1,11 +1,7 @@
 ﻿using Aisentona.DataBase;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Aisentona.Entities;
+using Aisentona.Enum;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aisentona.Biz.Services.Postagens
 {
@@ -27,6 +23,25 @@ namespace Aisentona.Biz.Services.Postagens
         }
         public Postagem CriarPostagem(int id_Usuario, int idCategoria, int idStatus, string titulo, string conteudo)
         {
+            // Obtém o usuário do banco de dados pelo id_Usuario
+            var usuario = _context.CF_Colaborador.FirstOrDefault(u => u.Id_Usuario == id_Usuario);
+
+            if (usuario == null)
+            {
+                throw new ApplicationException("Usuário não encontrado.");
+            }
+
+            // Verifica o tipo de usuário e suas permissões
+            Autorizacao tipoUsuario = (Autorizacao)usuario.Id_TipoUsuario;
+            var permissions = tipoUsuario.GetPermissions();
+
+            // Verifica se o usuário tem permissão para criar postagens
+            if (!permissions.Contains("CadastrarPostsSimples") && !permissions.Contains("CadastrarPostsPremium"))
+            {
+                throw new UnauthorizedAccessException("Usuário não possui permissão para criar postagens.");
+            }
+
+
             Postagem novaPostagem = new Postagem()
             {
                 Id_Usuario = id_Usuario,

@@ -1,9 +1,15 @@
 using Aisentona.Biz.Services;
 using Aisentona.Biz.Services.Postagens;
 using Aisentona.DataBase;
+using Aisentona.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
+
+string generatedKey = KeyGenerator.GenerateKey();
+Console.WriteLine($"Generated Key: {generatedKey}");
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +30,7 @@ builder.Services.AddScoped<ColaboradorEmailService>();
 builder.Services.AddScoped<ColaboradorTelefoneService>();
 builder.Services.AddScoped<ColaboradorTipoUsuarioService>();
 builder.Services.AddScoped<PostagemService>();
+builder.Services.AddScoped<TokenService>(); // Adiciona o TokenService
 
 
 var app = builder.Build();

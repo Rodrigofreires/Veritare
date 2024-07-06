@@ -9,13 +9,13 @@ namespace Aisentona.DataBase
         {
             
         }
-        public ColaboradorTipoUsuario(int id_TipoUsuario, string nm_TipoUsuario, bool fl_Ativo, DateTime? dT_Criacao, DateTime dT_UltimaAlteracao)
+        public ColaboradorTipoUsuario(int id_TipoUsuario, string nm_TipoUsuario, bool fl_Ativo, DateTime? dt_Criacao, DateTime dt_UltimaAlteracao)
         {
             Id_TipoUsuario = id_TipoUsuario;
             Nm_TipoUsuario = nm_TipoUsuario;
             Fl_Ativo = fl_Ativo;
-            DT_Criacao = dT_Criacao;
-            DT_UltimaAlteracao = dT_UltimaAlteracao;
+            DT_Criacao = dt_Criacao;
+            DT_UltimaAlteracao = dt_UltimaAlteracao;
         }
         [Key, ForeignKey("Colaborador")]
         public int Id_TipoUsuario { get; set; }

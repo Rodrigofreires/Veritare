@@ -9,17 +9,17 @@ namespace Aisentona.DataBase
             {
             }
 
-            public Colaborador(int id_usuario, string nm_Nome, string ds_Cpf, string ds_Senha, bool fl_Ativo, DateTime dt_Criacao, DateTime dt_UltimaAlteracao, int id_TipoUsuario, string ds_UltimaAlteracao)
+            public Colaborador(int idUsuario, string nome, string cpf, string senha, bool flAtivo, DateTime dtCriacao, DateTime dtUltimaAlteracao, int idTipoUsuario, string dsUltimaAlteracao)
             {
-                Id_Usuario = id_usuario;
-                Nm_Nome = nm_Nome;
-                Ds_CPF = ds_Cpf;
-                DS_Senha = ds_Senha;
-                Fl_Ativo = fl_Ativo;
-                DT_Criacao = dt_Criacao;
-                DT_UltimaAlteracao = dt_UltimaAlteracao;
-                Id_TipoUsuario = id_TipoUsuario;
-                Ds_UltimaAlteracao = ds_UltimaAlteracao;
+                Id_Usuario = idUsuario;
+                Nm_Nome = nome;
+                Ds_CPF = cpf;
+                DS_Senha = senha;
+                Fl_Ativo = flAtivo;
+                DT_Criacao = dtCriacao;
+                DT_UltimaAlteracao = dtUltimaAlteracao;
+                Id_TipoUsuario = idTipoUsuario;
+                Ds_UltimaAlteracao = dsUltimaAlteracao;
             }
 
             [Key]

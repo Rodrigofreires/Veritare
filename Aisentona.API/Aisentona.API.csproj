@@ -18,11 +18,13 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="System.Security.Claims" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Aisentona.Biz\Aisentona.Biz.csproj" />
     <ProjectReference Include="..\Aisentona.DataBase\Aisentona.DataBase.csproj" />
+    <ProjectReference Include="..\Aisentona.Entities\Aisentona.Entities.csproj" />
   </ItemGroup>
 
 </Project>

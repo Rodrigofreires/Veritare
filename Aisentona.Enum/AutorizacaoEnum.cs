@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Aisentona.Enum
 {
-    public enum Autorizações
+    public enum Autorizacao
     {
         Administrador = 1,
         EditorChefe = 2,
