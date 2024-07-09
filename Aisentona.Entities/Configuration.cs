@@ -9,6 +9,9 @@ namespace Aisentona.Entities
     public static class Configuration
     {
         public static string PrivateKey = Environment.GetEnvironmentVariable("JWT_PRIVATE_KEY");
+
     }
+
+        
         
 }

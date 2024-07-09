@@ -4,6 +4,7 @@ using Aisentona.DataBase;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 using System.Data.SqlTypes;
+using Microsoft.AspNetCore.Identity;
 
 namespace Aisentona.Biz.Services
 {
@@ -31,24 +32,29 @@ namespace Aisentona.Biz.Services
 
         }
 
-        public Colaborador CriarColaborador(string nome, string cpf, string senha, int id_TipoUsuario)
+        public Colaborador CriarColaborador(string nome, string cpf, string senha, int idTipoUsuario)
         {
-            Colaborador colaborador = new Colaborador()
+            // Gerar o hash da senha e o salt
+            (byte[] hash, byte[] salt) = HashingUtils.GeneratePasswordHash(senha);
+
+            var novoColaborador = new Colaborador
             {
                 Nm_Nome = nome,
                 Ds_CPF = cpf,
-                DS_Senha = senha,
-                Fl_Ativo = true,
+                Fl_Ativo = true, // Supondo que um novo colaborador seja sempre ativo
                 DT_Criacao = DateTime.UtcNow,
-                Id_TipoUsuario = id_TipoUsuario,
-                Ds_UltimaAlteracao = GetWindowsUsername(),
+                DT_UltimaAlteracao = DateTime.UtcNow,
+                Id_TipoUsuario = idTipoUsuario,
+                PasswordHash = hash, // Armazena o hash da senha
+                PasswordSalt = salt,   // Armazena o salt utilizado
+                Ds_UltimaAlteracao = GetWindowsUsername()
+
             };
 
-            // Lógica para salvar o colaborador no banco de dados
-            _context.CF_Colaborador.Add(colaborador);
+            _context.CF_Colaborador.Add(novoColaborador);
             _context.SaveChanges();
 
-            return colaborador;
+            return novoColaborador;
         }
 
 
@@ -62,7 +68,6 @@ namespace Aisentona.Biz.Services
 
             colaborador.Nm_Nome = colaboradorDto.Nm_Nome;
             colaborador.Ds_CPF = colaboradorDto.Ds_CPF;
-            colaborador.DS_Senha = colaboradorDto.DS_Senha;
             colaborador.Fl_Ativo = colaboradorDto.Fl_Ativo;
             colaborador.DT_UltimaAlteracao = DateTime.Now;
             colaborador.Id_TipoUsuario = colaboradorDto.Id_TipoUsuario;

@@ -1,5 +1,6 @@
 ﻿using Aisentona.Biz.Services;
 using Aisentona.DataBase;
+using Aisentona.Entities.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aisentona.API.Controllers
@@ -34,21 +35,28 @@ namespace Aisentona.API.Controllers
 
         // POST api/<ColaboradorController>
         [HttpPost]
-        public IActionResult CreateColaborador([FromBody] Colaborador colaboradorObjeto)
+        public IActionResult CreateColaborador([FromBody] ColaboradorRequest colaboradorObjeto)
         {
             if (colaboradorObjeto is null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
 
-            var colaborador = _colaboradorService.CriarColaborador(
-                colaboradorObjeto.Nm_Nome,
-                colaboradorObjeto.Ds_CPF,
-                colaboradorObjeto.DS_Senha,
-                colaboradorObjeto.Id_TipoUsuario
+            // Criar um novo colaborador usando o serviço
+            var novoColaborador = _colaboradorService.CriarColaborador(
+                colaboradorObjeto.Nome,
+                colaboradorObjeto.CPF,
+                colaboradorObjeto.Senha,
+                colaboradorObjeto.TipoUsuario
             );
 
-            return CreatedAtAction(nameof(CreateColaborador), new { id = colaborador.Id_Usuario }, colaborador);
+            if (novoColaborador == null)
+            {
+                return BadRequest("Não foi possível criar o colaborador");
+            }
+
+            // Retornar um código 201 (Created) com o novo colaborador criado
+            return CreatedAtAction(nameof(CreateColaborador), new { id = novoColaborador.Id_Usuario }, novoColaborador);
         }
 
         // PUT api/<ColaboradorController>
