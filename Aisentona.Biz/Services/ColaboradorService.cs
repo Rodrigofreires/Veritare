@@ -34,21 +34,19 @@ namespace Aisentona.Biz.Services
 
         public Colaborador CriarColaborador(string nome, string cpf, string senha, int idTipoUsuario)
         {
-            // Gerar o hash da senha e o salt
             (byte[] hash, byte[] salt) = HashingUtils.GeneratePasswordHash(senha);
 
             var novoColaborador = new Colaborador
             {
                 Nm_Nome = nome,
                 Ds_CPF = cpf,
-                Fl_Ativo = true, // Supondo que um novo colaborador seja sempre ativo
+                Fl_Ativo = true,
                 DT_Criacao = DateTime.UtcNow,
                 DT_UltimaAlteracao = DateTime.UtcNow,
                 Id_TipoUsuario = idTipoUsuario,
-                PasswordHash = hash, // Armazena o hash da senha
-                PasswordSalt = salt,   // Armazena o salt utilizado
+                PasswordHash = hash,
+                PasswordSalt = salt,
                 Ds_UltimaAlteracao = GetWindowsUsername()
-
             };
 
             _context.CF_Colaborador.Add(novoColaborador);
@@ -56,6 +54,7 @@ namespace Aisentona.Biz.Services
 
             return novoColaborador;
         }
+
 
 
         public Colaborador EditarColaborador(int idColaborador, Colaborador colaboradorDto)

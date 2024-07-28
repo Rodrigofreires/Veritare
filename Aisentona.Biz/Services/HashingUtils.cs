@@ -17,6 +17,16 @@ namespace Aisentona.Biz.Services
                 return (hash, salt);
             }
         }
+
+        public static bool VerifyPassword(string senha, byte[] storedHash, byte[] storedSalt)
+        {
+            using (var algorithm = new Rfc2898DeriveBytes(senha, storedSalt, Iterations))
+            {
+                byte[] computedHash = algorithm.GetBytes(HashSize);
+                return computedHash.SequenceEqual(storedHash);
+            }
+        }
+
     }
 
 }

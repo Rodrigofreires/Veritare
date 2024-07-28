@@ -9,10 +9,21 @@ using System.Text;
 
 public class TokenService
 {
+    private readonly string _privateKey;
+
+    public TokenService()
+    {
+        _privateKey = "KqiSF8LwSrU36fl4GG1oLxbN5eLMuiUJpJBo2+fjR0E=";
+        if (string.IsNullOrEmpty(_privateKey))
+        {
+            throw new ArgumentNullException(nameof(_privateKey), "Chave privada não pode ser nula.");
+        }
+    }
+
     public string Create(Colaborador usuario)
     {
         var handler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(Configuration.PrivateKey);
+        var key = Convert.FromBase64String(_privateKey); // Decodifica a chave de base64
 
         var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
 
@@ -27,7 +38,6 @@ public class TokenService
         return handler.WriteToken(token);
     }
 
-    //Requisições do Token
     private static ClaimsIdentity GenerateClaims(Colaborador usuario)
     {
         var claims = new ClaimsIdentity(new[]
@@ -37,7 +47,7 @@ public class TokenService
             new Claim("IdTipoUsuario", usuario.Id_TipoUsuario.ToString())
         });
 
-    // Obtenha as permissões com base no tipo de usuário
+        // Obtenha as permissões com base no tipo de usuário
         Autorizacao role = (Autorizacao)usuario.Id_TipoUsuario;
         var permissions = role.GetPermissions();
 
