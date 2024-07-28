@@ -47,44 +47,5 @@ namespace Aisentona.Biz.Services
 
             return new LoginResponse { Token = token };
         }
-
-        //private bool VerifyPassword(string password, byte[] storedHash, byte[] storedSalt)
-        //{
-        //    using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
-        //    {
-        //        var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-
-        //        // Logging for debugging
-        //        Console.WriteLine("Stored Hash: " + BitConverter.ToString(storedHash));
-        //        Console.WriteLine("Computed Hash: " + BitConverter.ToString(computedHash));
-
-        //        return computedHash.SequenceEqual(storedHash);
-        //    }
-        //}
-
-
-        //private string GenerateJwtToken(Colaborador user)
-        //{
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var key = Encoding.UTF8.GetBytes(_configuration[]);
-        //    var tokenDescriptor = new SecurityTokenDescriptor
-        //    {
-        //        Subject = new ClaimsIdentity(new Claim[]
-        //        {
-        //        new Claim(ClaimTypes.Name, user.Ds_CPF),
-        //        new Claim("IdUsuario", user.Id_Usuario.ToString())
-        //            // Adicione outras claims conforme necessário
-        //        }),
-        //        Expires = DateTime.UtcNow.AddHours(6),
-        //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-        //        Issuer = _configuration["JwtSettings:Issuer"],
-        //        Audience = _configuration["JwtSettings:Audience"]
-        //    };
-
-        //    var token = tokenHandler.CreateToken(tokenDescriptor);
-
-        //    return tokenHandler.WriteToken(token);
-
-        //}
     }
 }

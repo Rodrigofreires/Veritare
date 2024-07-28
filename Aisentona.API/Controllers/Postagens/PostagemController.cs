@@ -65,7 +65,7 @@ namespace Aisentona.API.Controllers.Postagens
         {
             try
             {
-                postagem = _postagemService.EditarPostagem(postagem.Id_Postagem, postagem);
+                postagem = _postagemService.EditarPostagem(postagem.Id_Usuario, postagem.Id_Postagem, postagem);
                 
                 return Ok(postagem);
             }

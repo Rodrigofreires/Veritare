@@ -1,17 +1,18 @@
-using Aisentona.Biz.Services.Postagens;
 using Aisentona.Biz.Services;
+using Aisentona.Biz.Services.Postagens;
 using Aisentona.DataBase;
-using Aisentona.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection; // Adicione esta linha para o namespace correto
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Recupera a chave privada da variável de ambiente
-string privateKey = "KqiSF8LwSrU36fl4GG1oLxbN5eLMuiUJpJBo2+fjR0E="
-;
+string privateKey = "KqiSF8LwSrU36fl4GG1oLxbN5eLMuiUJpJBo2+fjR0E=";
+
 if (string.IsNullOrEmpty(privateKey))
 {
     Console.WriteLine("A variável de ambiente JWT_PRIVATE_KEY não está definida. Defina-a antes de executar o aplicativo.");
@@ -25,32 +26,54 @@ try
     Console.WriteLine("Chave privada decodificada com sucesso!");
 
     // Adiciona serviços ao contêiner
-    builder.Services.AddControllers();
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    ConfigureServices(builder.Services, decodedKey, builder.Configuration);
+
+    var app = builder.Build();
+
+    // Configura o pipeline de requisição HTTP
+    ConfigureMiddleware(app);
+
+    app.Run();
+}
+catch (FormatException ex)
+{
+    Console.WriteLine("Erro de formatação: A string fornecida não é uma Base-64 válida.");
+    throw; // Lança a exceção para interromper a execução do aplicativo
+}
+
+void ConfigureServices(IServiceCollection services, byte[] decodedKey, ConfigurationManager configuration)
+{
+    services.AddControllers()
+        .AddNewtonsoftJson(options =>
+        {
+            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            options.SerializerSettings.Formatting = Formatting.Indented;
+        });
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerGen();
 
     // Adiciona o ApplicationDbContext e configura a string de conexão
-    builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
     // Registro de serviços e repositórios
-    builder.Services.AddScoped<ColaboradorService>();
-    builder.Services.AddScoped<ColaboradorEmailService>();
-    builder.Services.AddScoped<ColaboradorTelefoneService>();
-    builder.Services.AddScoped<ColaboradorTipoUsuarioService>();
-    builder.Services.AddScoped<PostagemService>();
-    builder.Services.AddScoped<TokenService>(); // Adiciona o TokenService
-    builder.Services.AddScoped<LoginService>();
-    builder.Services.AddScoped<AuthService>();
+    services.AddScoped<ColaboradorService>();
+    services.AddScoped<ColaboradorEmailService>();
+    services.AddScoped<ColaboradorTelefoneService>();
+    services.AddScoped<ColaboradorTipoUsuarioService>();
+    services.AddScoped<PostagemService>();
+    services.AddScoped<TokenService>(); // Adiciona o TokenService
+    services.AddScoped<LoginService>();
+    services.AddScoped<AuthService>();
 
-    builder.Services.AddAuthentication(options =>
+    services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     })
     .AddJwtBearer(options =>
     {
-        var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+        var jwtSettings = configuration.GetSection("JwtSettings");
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -63,10 +86,11 @@ try
         };
     });
 
-    builder.Services.AddAuthorization();
+    services.AddAuthorization();
+}
 
-    var app = builder.Build();
-
+void ConfigureMiddleware(WebApplication app)
+{
     // Configura o pipeline de requisição HTTP
     if (app.Environment.IsDevelopment())
     {
@@ -75,16 +99,7 @@ try
     }
 
     app.UseHttpsRedirection();
-
     app.UseAuthentication(); // Certifique-se de adicionar este middleware antes do UseAuthorization
     app.UseAuthorization();
-
     app.MapControllers();
-
-    app.Run();
-}
-catch (FormatException ex)
-{
-    Console.WriteLine("Erro de formatação: A string fornecida não é uma Base-64 válida.");
-    throw; // Lança a exceção para interromper a execução do aplicativo
 }

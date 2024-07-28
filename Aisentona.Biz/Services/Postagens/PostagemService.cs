@@ -59,7 +59,7 @@ namespace Aisentona.Biz.Services.Postagens
             return novaPostagem;
         }
 
-        public Postagem EditarPostagem(int idpostagem, Postagem postagemDto)
+        public Postagem EditarPostagem(int id_Usuario, int idpostagem, Postagem postagemDto)
         {
             Postagem postagem = _context.CF_Postagem.Find(idpostagem);
             
@@ -67,6 +67,25 @@ namespace Aisentona.Biz.Services.Postagens
             {
                 throw new KeyNotFoundException("Colaborador não encontrado");
             }
+
+            // Obtém o usuário do banco de dados pelo id_Usuario
+            var usuario = _context.CF_Colaborador.FirstOrDefault(u => u.Id_Usuario == id_Usuario);
+
+            if (usuario == null)
+            {
+                throw new ApplicationException("Usuário não encontrado.");
+            }
+
+            // Verifica o tipo de usuário e suas permissões
+            Autorizacao tipoUsuario = (Autorizacao)usuario.Id_TipoUsuario;
+            var permissions = tipoUsuario.GetPermissions();
+
+            // Verifica se o usuário tem permissão para criar postagens
+            if (!permissions.Contains("EditarPostsSimples") && !permissions.Contains("EditarPostsPremium"))
+            {
+                throw new UnauthorizedAccessException("Usuário não possui permissão para editar postagens.");
+            }
+
 
             postagem.Titulo = postagemDto.Titulo;
             postagem.Conteudo = postagemDto.Conteudo;
@@ -81,6 +100,7 @@ namespace Aisentona.Biz.Services.Postagens
 
             return postagem;
         }
+
 
         public Postagem TrocarFlagAtivaPostagem(int idPostagem)
         {
