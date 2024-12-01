@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy,  Component } from '@angular/core';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
 
 @Component({
   selector: 'app-banner',
-  imports: [],
+  imports: [MatCardModule, MatButtonModule],
   templateUrl: './banner.component.html',
-  styleUrl: './banner.component.css'
+  styleUrls: ['./banner.component.css'],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BannerComponent {
 

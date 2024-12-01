@@ -1,0 +1,19 @@
+<div class="painel-noticias">
+    <mat-card *ngFor="let noticia of displayedNoticias" class="item-noticia" appearance="outlined">
+        <mat-card-header>
+            <mat-card-title-group>
+                <mat-card-title>{{ noticia.title }}</mat-card-title>
+              </mat-card-title-group>
+        </mat-card-header>
+        <div class="imagem-descricao">
+            <img mat-card-md-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Image of a Shiba Inu">
+            <mat-card-content>
+              {{ noticia.content }}
+            </mat-card-content>
+        </div>
+
+    </mat-card>
+  </div>
+  
+  <button mat-raised-button (click)="loadMore()">Ver Mais</button>
+  

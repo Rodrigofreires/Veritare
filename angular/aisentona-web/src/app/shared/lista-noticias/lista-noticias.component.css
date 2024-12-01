@@ -1,0 +1,13 @@
+
+.imagem-descricao{
+    display: flex; /* Define o container como um flexbox */
+    flex-direction: row; /* Alinha os itens em linha */
+    align-items: center; /* Centraliza os itens verticalmente */
+    gap: 10px; /* Espaçamento entre os itens */
+}
+
+.item-noticia {
+    max-width: 100%;
+    margin-bottom: 8px;
+  }
+  
