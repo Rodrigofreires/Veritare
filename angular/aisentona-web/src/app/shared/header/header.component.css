@@ -1,0 +1,28 @@
+
+.app-header{
+    button {
+      margin: 0 16px;
+  
+    }
+    .spacer {
+      flex: 1 1 auto;
+    }
+  
+    .mat-toolbar{
+      background-color: black;
+      color: white;
+      padding: 0 10%;
+      justify-content: space-between;
+    }
+  
+    .mat-mdc-outlined-button:not(:disabled) {
+      border-color: white;
+    }
+
+    .botao-header{
+        background-color: #007BFF;
+        color: #FFFFFF;
+        
+    }
+
+  }
