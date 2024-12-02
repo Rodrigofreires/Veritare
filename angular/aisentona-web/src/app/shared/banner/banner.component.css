@@ -6,13 +6,13 @@
     justify-content: center; /* Centraliza o grid horizontalmente */
     align-items: center; /* Centraliza os itens dentro do grid verticalmente */
     margin: 0 auto; /* Garante centralização horizontal do grid no layout */
-    max-width: 400px; /* Define um limite de largura para o grid */
+    max-width: 500px; /* Define um limite de largura para o grid */
     padding: 3%;
   }
 
 .card-noticia {
     width: 100%; 
-    max-width: 400px;   
+    max-width: 500px;   
   }
   
   .example-header-image {

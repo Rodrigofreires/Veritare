@@ -1,0 +1,45 @@
+.noticia-container {
+    display: flex;
+    flex-direction: column; /* Empilha os elementos verticalmente */
+    gap: 20px; /* Espaçamento entre os elementos */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 900px;
+    width: 100%;
+  }
+  
+  .noticia-card {
+    width: 100%;
+    border: none; /* Remove qualquer borda padrão */
+    box-shadow: none; /* Remove sombra do Material Design */
+  }
+  
+  .noticia-titulo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .noticia-subtitulo {
+    font-size: 18px;
+    color: #757575;
+  }
+  
+  .noticia-imagem {
+    border-radius: 8px;
+    margin: 10px 0;
+  }
+  
+  .noticia-conteudo {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+  }
+  
+  .mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  

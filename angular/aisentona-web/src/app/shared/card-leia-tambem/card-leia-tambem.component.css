@@ -1,0 +1,30 @@
+.leia-tambem-card {
+    padding: 10px;
+    width: 100%;
+    gap: 15px;
+    border: none; /* Remove qualquer borda padrão */
+    box-shadow: none; /* Remove sombra do Material Design */
+  }
+  
+  .leia-tambem-list {
+
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .leia-tambem-list li {
+    margin-bottom: 10px;
+  }
+  
+  .leia-tambem-link {
+    text-decoration: none;
+    color: #1976d2;
+    font-size: 16px;
+  }
+  
+  .leia-tambem-link:hover {
+    text-decoration: underline;
+    color: #0d47a1;
+  }
+  
