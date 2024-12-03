@@ -1,7 +1,7 @@
 
 .app-editoria{
 
-.editoria-healer{
+.editoria-header{
     background-color:#007BFF;
     color: white;
     padding: 0 10%;
@@ -16,7 +16,7 @@
     box-shadow: none; /* Sem box-shadow inicialmente */
     color: white; /* Define a cor do texto */
     transition: box-shadow 0.3s ease; /* Transição suave para box-shadow */
-    font-size: small;
+    font-size: medium;
 }
 
 .botao-editoria:hover{

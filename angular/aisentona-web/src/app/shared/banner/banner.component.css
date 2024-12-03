@@ -8,7 +8,13 @@
     margin: 0 auto; /* Garante centralização horizontal do grid no layout */
     max-width: 500px; /* Define um limite de largura para o grid */
     padding: 3%;
+    background-color: white;
   }
+
+  .mat-sys-background{
+    background-color: white;
+  }
+  
 
 .card-noticia {
     width: 100%; 

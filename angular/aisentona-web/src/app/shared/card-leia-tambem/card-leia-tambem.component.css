@@ -1,7 +1,8 @@
 .leia-tambem-card {
+    margin-bottom: 20px;
     padding: 10px;
     width: 100%;
-    gap: 15px;
+    gap: 3%px;
     border: none; /* Remove qualquer borda padrão */
     box-shadow: none; /* Remove sombra do Material Design */
   }
