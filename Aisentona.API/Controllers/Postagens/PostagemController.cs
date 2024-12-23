@@ -1,6 +1,7 @@
 ﻿using Aisentona.Biz.Services;
 using Aisentona.Biz.Services.Postagens;
 using Aisentona.DataBase;
+using Aisentona.Entities.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -37,37 +38,28 @@ namespace Aisentona.API.Controllers.Postagens
         }
 
         [HttpPost]
-        public IActionResult CreatePost([FromBody] Postagem postagemObjeto)
+        public IActionResult CreatePost([FromBody] PostagemDTO postagemDTO)
         {
-            if (postagemObjeto is null)
+            if (postagemDTO is null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
 
-            var postagem = _postagemService.CriarPostagem(
-                postagemObjeto.Id_Usuario,
-                postagemObjeto.Id_Categoria,
-                postagemObjeto.Id_Status,
-                postagemObjeto.Titulo,
-                postagemObjeto.Conteudo
-            );
+            var postagem = _postagemService.CriarPostagem(postagemDTO);
 
-            // Retrieve related entities
-            postagem.Status = _context.CF_Postagem_Status.Find(postagemObjeto.Id_Status);
-            postagem.Categoria = _context.CF_Postagem_Categoria.Find(postagemObjeto.Id_Categoria);
-            postagem.Colaborador = _context.CF_Colaborador.Find(postagemObjeto.Id_Usuario);
-
-            return CreatedAtAction(nameof(CreatePost), new { id = postagem.Id_Usuario }, postagem);
+            return Ok(postagem);
         }
         
         [HttpPut("editar/{idPostagem}")]
-        public IActionResult UpdatePostagem(Postagem postagem)
+        public IActionResult UpdatePostagem(PostagemDTO postagemDTO)
         {
             try
             {
-                postagem = _postagemService.EditarPostagem(postagem.Id_Usuario, postagem.Id_Postagem, postagem);
+                Postagem postagem = new();
+
+                postagem = _postagemService.EditarPostagem(postagemDTO);
                 
-                return Ok(postagem);
+                return Ok(postagemDTO);
             }
             catch (KeyNotFoundException ex)
             {

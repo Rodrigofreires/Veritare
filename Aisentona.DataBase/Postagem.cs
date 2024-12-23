@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,19 +14,24 @@ namespace Aisentona.DataBase
         public Postagem()
         {
         }
-        public Postagem( string titulo, string conteudo, int id_Usuario, int idStatus, int idCategoria)
+        public Postagem(string titulo, string conteudo, string descricao, int idUsuario, int idStatus, int idCategoria, DateTime dtCriacao, string dsUltimaAlteracao, bool flAtivo)
         {
-            Id_Status = idStatus;
-            Id_Usuario = id_Usuario;
-            Id_Categoria = idCategoria;
             Titulo = titulo;
-            Conteudo = conteudo;    
+            Descricao = descricao;
+            Conteudo = conteudo;
+            Id_Status = idStatus;
+            Id_Categoria = idCategoria;
+            DT_Criacao = dtCriacao;
+            Ds_UltimaAlteracao = dsUltimaAlteracao;
+            Fl_Ativo = flAtivo;
         }
+
 
         [Key]
         public  int Id_Postagem { get; set; }
         public  string Titulo { get; set; }
         public  string Conteudo { get; set; }
+        public string Descricao { get; set; }
         public  bool Fl_Ativo { get; set; }
         public string Ds_UltimaAlteracao { get; set; }
 
