@@ -1,0 +1,55 @@
+.informacoes-do-perfil {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 20px;
+}
+
+.informacoes-basicas {
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.informacoes-detalhadas {
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.sobre-mim {
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 20px;
+}
+
+.sobre-mim-textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+button[mat-raised-button] {
+    background-color: #007bff;
+    color: #fff;
+}
+
+button[mat-raised-button]:hover {
+    background-color: #0056b3;
+}
+
+button[mat-button] {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+button[mat-button]:hover {
+    background-color: #a71d2a;
+}

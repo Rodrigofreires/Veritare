@@ -10,20 +10,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatNativeDateModule } from '@angular/material/core';
 
-
-
 @Component({
-  selector: 'app-cadastro-de-noticia',
+  selector: 'app-cadastro-usuario',
   imports: [FooterComponent, ContainerComponent, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, CommonModule, MatSelectModule, MatInputModule, MatButtonModule, MatIconModule],
-  templateUrl: './cadastro-de-noticia.component.html',
-  styleUrls: ['./cadastro-de-noticia.component.css'],
+  templateUrl: './cadastro-usuario.component.html',
+  styleUrl: './cadastro-usuario.component.css',
   standalone: true
-
-
+  
 })
-export class CadastroDeNoticiaComponent {
-  editorias: string[] = ['Política', 'Cultura', 'Economia'];
-
-
+export class CadastroUsuarioComponent {
 
 }

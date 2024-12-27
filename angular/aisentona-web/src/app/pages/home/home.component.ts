@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ContainerComponent } from "../../shared/container/container.component";
 import { BannerComponent } from "../../shared/banner/banner.component";
 import { FooterComponent } from "../../shared/footer/footer.component";
@@ -12,6 +12,11 @@ import { CardLeiaTambemComponent } from "../../shared/card-leia-tambem/card-leia
   styleUrls: ['./home.component.css'],
   standalone: true
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  
+  
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
  
 }

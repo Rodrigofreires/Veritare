@@ -82,5 +82,21 @@ namespace Aisentona.API.Controllers.Postagens
             }
         }
 
+        [HttpGet("listar-editorias")]
+        public IActionResult ListarEditorias()
+        {
+            try
+            {
+                var editorias = _postagemService.ListarEditorias();
+                return Ok(editorias);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+
+
     }
 }

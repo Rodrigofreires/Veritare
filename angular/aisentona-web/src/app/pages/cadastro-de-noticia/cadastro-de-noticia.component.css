@@ -10,9 +10,14 @@
 }
 .descricao{
     width: 50%;
+    margin: 0;
+    padding: 0;
+
 } 
 .editoria{
     width: 50%;
+    margin: 0;
+    padding: 0;
 } 
 
 .corpo-da-noticia{
@@ -28,4 +33,16 @@
     height: 500px !important;
     border-end-start-radius: 10px;
     justify-content: space-between;
+}
+
+.titulo-pagina{
+    font-size: 30px;
+    padding: 10px;
+    gap: 10px;
+}
+
+.campos-iniciais{
+
+    font-size: 20px;
+    width: 100%;
 }

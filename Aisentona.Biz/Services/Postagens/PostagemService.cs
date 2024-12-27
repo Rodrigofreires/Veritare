@@ -23,9 +23,26 @@ namespace Aisentona.Biz.Services.Postagens
            
             return listaDePostagens;
         }
+
+        public List<EditoriaDTO> ListarEditorias()
+        {
+            List<Categoria> listaDeEditoriasDB = _context.CF_Postagem_Categoria
+                .Where(c => c.Id_Categoria != null)
+                .ToList();
+
+            List<EditoriaDTO> listaEditorias = listaDeEditoriasDB
+                .Select(c => new EditoriaDTO
+                {
+                    Id = c.Id_Categoria, 
+                    Nome = c.Nome 
+                })
+                .ToList();
+
+            return listaEditorias; 
+        }
+
         public Postagem CriarPostagem(PostagemDTO postagemDTO)
         {
-
             Postagem postagemConvertida = ConverterPostagem(postagemDTO);
             Postagem novaPostagem = postagemConvertida;
 
@@ -42,7 +59,7 @@ namespace Aisentona.Biz.Services.Postagens
         }
         public Postagem EditarPostagem(PostagemDTO postagemDTO)
         {
-            Postagem postagem = _context.CF_Postagem.FirstOrDefault(x => x.Id_Postagem == postagemDTO.PostagemId);
+            Postagem postagem = _context.CF_Postagem.FirstOrDefault(x => x.Id_Postagem == postagemDTO.IdPostagem);
             
             if (postagem is not null) 
             {
@@ -80,7 +97,6 @@ namespace Aisentona.Biz.Services.Postagens
 
         }
 
-
         public Postagem TrocarFlagAtivaPostagem(int idPostagem)
         {
             Postagem postagem = _context.CF_Postagem.Find(idPostagem);
@@ -113,8 +129,6 @@ namespace Aisentona.Biz.Services.Postagens
             return potagemConvertida;
 
         }
-
-
 
     }
 }
