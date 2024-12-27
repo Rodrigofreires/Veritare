@@ -1,25 +1,25 @@
-import { Injectable } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
+import { EditoriaRequest } from '../core/interfaces/Request/Editorias';
 
 @Injectable({
   providedIn: 'root', // Disponível em toda a aplicação
 })
-export class ApiService {
+
+
+export class NoticiaService {
   private apiUrl = environment.apiUrl;
+  private API = 'postagem';
 
   constructor(private http: HttpClient) {}
 
   // Exemplo de GET
-  getData(endpoint: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${endpoint}`);
-  }
+buscarListaDeEditorias(): Observable<EditoriaRequest[]> {
+  return this.http.get<EditoriaRequest[]>(`${this.apiUrl}/${this.API}/listar-editorias`);
 
-  // Exemplo de POST
-  postData(endpoint: string, data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${endpoint}`, data);
-  }
+}
 
   // Exemplo de PUT
   updateData(endpoint: string, data: any): Observable<any> {

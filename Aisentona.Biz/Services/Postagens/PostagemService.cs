@@ -46,6 +46,7 @@ namespace Aisentona.Biz.Services.Postagens
             Postagem postagemConvertida = ConverterPostagem(postagemDTO);
             Postagem novaPostagem = postagemConvertida;
 
+
             novaPostagem.Fl_Ativo = true;
             novaPostagem.DT_Criacao = DateTime.Now;
             novaPostagem.Ds_UltimaAlteracao = GetWindowsUsername();
@@ -124,6 +125,9 @@ namespace Aisentona.Biz.Services.Postagens
                 Conteudo = postagemDTO.Conteudo,
                 Descricao = postagemDTO.Descricao,
                 Id_Usuario = postagemDTO.IdUsuario,
+                Imagem_base64 = postagemDTO.Imagem,
+                Texto_alterado_por_ia = postagemDTO.TextoAlteradoPorIA,
+                Palavras_retiradas_por_ia = postagemDTO.PalavrasRetiradasPorIA
             };
 
             return potagemConvertida;

@@ -87,7 +87,7 @@ namespace Aisentona.API.Controllers.Postagens
         {
             try
             {
-                var editorias = _postagemService.ListarEditorias();
+                List<EditoriaDTO> editorias = _postagemService.ListarEditorias();
                 return Ok(editorias);
             }
             catch (KeyNotFoundException ex)

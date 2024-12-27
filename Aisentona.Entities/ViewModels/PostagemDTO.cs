@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Aisentona.Entities.ViewModels
 {
     public class PostagemDTO
     {
-        public PostagemDTO(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario)
+        public PostagemDTO(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario, string imagem, string textoAlteradoPorIA, string palavrasRetiradasPorIA)
         {
             Titulo = titulo;
             Descricao = descricao;
@@ -17,6 +18,9 @@ namespace Aisentona.Entities.ViewModels
             IdCategoria = idCategoria;
             IdStatus = idStatus;
             IdUsuario = idUsuario;
+            Imagem = imagem;
+            TextoAlteradoPorIA = textoAlteradoPorIA;
+            PalavrasRetiradasPorIA = palavrasRetiradasPorIA;
         }
 
         public string Titulo { get; set; }
@@ -26,6 +30,10 @@ namespace Aisentona.Entities.ViewModels
         public int IdCategoria { get; set; }
         public int IdStatus { get; set; }
         public int IdUsuario { get; set; }
+        public string Imagem { get; set; }
+        public string TextoAlteradoPorIA { get; set; }
+        public string PalavrasRetiradasPorIA { get; set; }
+
 
     }
 }

@@ -2,28 +2,28 @@
 
     <h2>CRIAÇÃO DE NOTÍCIAS</h2>
     <div class="cabecalho-noticia">
-        
         <mat-form-field class="titulo">
             <mat-label>TITULO DA NOTÍCIA</mat-label>
             <input matInput>
         </mat-form-field>
 
         <div>
-            <!-- Descrição --> <!-- Editoria -->
+            <!-- Descrição --> 
             <mat-form-field class="descricao">
                 <mat-label>DESCRIÇÃO DA NOTÍCIA</mat-label>
                 <input matInput>
             </mat-form-field>
 
+            <!-- Editoria -->
             <mat-form-field class="editoria">
-                <mat-label> EDITORIA</mat-label>
-                <mat-select [(value)]="editorias">
-                    <mat-option *ngFor="let editoria of editorias"
-                        [value]="editoria">
-                        {{ editoria }}
-                    </mat-option>
+                <mat-label>EDITORIA</mat-label>
+                <mat-select [(value)]="editoriaSelecionada"> <!-- Armazena o ID selecionado -->
+                  <mat-option *ngFor="let editoria of editorias" [value]="editoria.id"> <!-- Define o ID como valor -->
+                    {{ editoria.nome }} <!-- Exibe o nome da editoria -->
+                  </mat-option>
                 </mat-select>
-            </mat-form-field>
+              </mat-form-field>
+              
         </div>
     </div>
 
