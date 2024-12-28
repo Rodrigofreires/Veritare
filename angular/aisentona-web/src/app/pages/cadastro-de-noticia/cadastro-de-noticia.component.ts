@@ -11,6 +11,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatNativeDateModule } from '@angular/material/core';
 import { EditoriaRequest } from '../../core/interfaces/Request/Editorias';
 import { NoticiaService } from '../../services/noticia-service';
+import { PostagemResponse } from '../../core/interfaces/Response/Postagem';
+import { FormsModule } from '@angular/forms';
+import { StatusRequest } from '../../core/interfaces/Request/Status';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-cadastro-de-noticia',
@@ -25,6 +29,8 @@ import { NoticiaService } from '../../services/noticia-service';
      MatInputModule, 
      MatButtonModule, 
      MatIconModule,
+     FormsModule, 
+
     ],
 
   templateUrl: './cadastro-de-noticia.component.html',
@@ -34,31 +40,78 @@ import { NoticiaService } from '../../services/noticia-service';
 })
 export class CadastroDeNoticiaComponent {
 
-  editorias: EditoriaRequest[] = []; // Variável para armazenar as editorias
-    
-  editoriaSelecionada: any;  
 
-  constructor(private noticiaService: NoticiaService) {  }
+
+  listaDeEditorias: EditoriaRequest[] = []; // Variável para armazenar as editorias
+  ListaDeStatus: StatusRequest[] = []; // Variável para armazenar os status
+  
+  editoriaSelecionada: number = 0;  
+  statusSelecionado: number = 0;  
+
+  infosPostagem: PostagemResponse = {} as PostagemResponse;
+
+
+  constructor(
+    private _noticiaService: NoticiaService,
+    private _snackBarService: SnackbarService,
+  
+  ) {
+    
+    }
 
 
     ngOnInit(): void {
       this.carregarEditorias(); // Carrega as editorias ao inicializar o componente
+      this.carregarStatus();
     }
 
-
     carregarEditorias(): void {
-      this.noticiaService.buscarListaDeEditorias().subscribe(
+      this._noticiaService.buscarListaDeEditorias().subscribe(
         (data) => {
-          this.editorias = data; // Atribui os dados retornados pela API
-
-          console.log("Retorno = " + this.editorias)
-          console.log("Retorno 2" + this.editoriaSelecionada )
+          this.listaDeEditorias = data; // Atribui os dados retornados pela API
 
         },
         (error) => {
           console.error('Erro ao carregar editorias:', error);
         }
-      );
-    }
+      );     
   }
+
+  carregarStatus(): void {
+    this._noticiaService.buscarListaDeStatus().subscribe(
+      (data) => {
+        this.ListaDeStatus = data; // Atribui os dados retornados pela API
+
+      },
+      (error) => {
+        console.error('Erro ao carregar editorias:', error);
+      }
+    );
+}
+
+publicarNoticia(): void {
+  
+  this.infosPostagem.idCategoria = this.editoriaSelecionada;
+  this.infosPostagem.idStatus = this.statusSelecionado;
+  this.infosPostagem.imagem = ""
+  this.infosPostagem.idUsuario = 1010;
+
+  console.log('Dados enviados:', this.infosPostagem);
+
+  this._noticiaService.criarPostagem(this.infosPostagem).subscribe(
+    (response) => {
+      this._snackBarService.MostrarSucesso('Notícia salva com sucesso!');
+    },
+    (error) => {
+      console.error('Erro ao publicar notícia:', error);
+      this._snackBarService.MostrarErro('Não foi possível publicar a notícia. Preencha os campos corretamente.');
+    }
+  );
+}
+
+
+
+
+
+}
   

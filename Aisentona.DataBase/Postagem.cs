@@ -14,7 +14,7 @@ namespace Aisentona.DataBase
         public Postagem()
         {
         }
-        public Postagem(string titulo, string conteudo, string descricao, int idUsuario, int idStatus, int idCategoria, DateTime dtCriacao, string dsUltimaAlteracao, bool flAtivo)
+        public Postagem(string titulo, string conteudo, string descricao, int idStatus, int idCategoria, DateTime dtCriacao, DateTime? dtUltimaAlteracao, string dsUltimaAlteracao, bool flAtivo)
         {
             Titulo = titulo;
             Descricao = descricao;
@@ -22,6 +22,7 @@ namespace Aisentona.DataBase
             Id_Status = idStatus;
             Id_Categoria = idCategoria;
             DT_Criacao = dtCriacao;
+            DT_UltimaAlteracao = dtUltimaAlteracao;
             Ds_UltimaAlteracao = dsUltimaAlteracao;
             Fl_Ativo = flAtivo;
         }

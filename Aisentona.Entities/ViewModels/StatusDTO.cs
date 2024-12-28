@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Aisentona.Entities.ViewModels
 {
-    public class EditoriaDTO
+    public class StatusDTO
     {
-
-        public EditoriaDTO()
+        public StatusDTO()
         {
                 
         }
 
-        public EditoriaDTO(int id, string nome)
+
+        public StatusDTO(int id, string descricao)
         {
             Id = id;
-            Nome = nome;
+            Descricao = descricao;
         }
 
         public int Id { get; set; }
-        public string Nome { get; set; }
+        public string Descricao { get; set; }
     }
 }

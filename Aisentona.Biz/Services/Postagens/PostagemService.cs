@@ -2,6 +2,7 @@
 using Aisentona.Entities;
 using Aisentona.Entities.ViewModels;
 using Aisentona.Enum;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System.Net.NetworkInformation;
 using System.Security.Principal;
 
@@ -17,12 +18,22 @@ namespace Aisentona.Biz.Services.Postagens
         }
         private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
 
-        public List<Postagem> ListarPostagens(int id)
+        public List<Postagem> ListarPostagens()
         {
-            List<Postagem> listaDePostagens = _context.CF_Postagem.Where(c => c.Id_Usuario == id && c.Fl_Ativo).ToList();
+            List<Postagem> listaDePostagens = new();
+
+            listaDePostagens = _context.CF_Postagem.Where(c => c.Fl_Ativo == true).ToList();
            
             return listaDePostagens;
         }
+
+        public Postagem CarregarPostagem(int id)
+        {
+            Postagem? postagem = _context.CF_Postagem.FirstOrDefault(c => c.Id_Postagem == id && c.Fl_Ativo);
+
+            return postagem;
+        }
+
 
         public List<EditoriaDTO> ListarEditorias()
         {
@@ -39,6 +50,24 @@ namespace Aisentona.Biz.Services.Postagens
                 .ToList();
 
             return listaEditorias; 
+        }
+
+        public List<StatusDTO> ListarStatus()
+        {
+            List<Status> listaStatusDB = _context.CF_Postagem_Status
+                .Where(c => c.Id_Status != null)
+                .ToList();
+
+            List<StatusDTO> listaStatus = listaStatusDB
+                .Select(c => new StatusDTO
+                {
+                    Id = c.Id_Status,
+                    Descricao = c.Descricao
+                })
+                .ToList();
+
+            return listaStatus;
+
         }
 
         public Postagem CriarPostagem(PostagemDTO postagemDTO)

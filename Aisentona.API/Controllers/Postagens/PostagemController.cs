@@ -22,19 +22,31 @@ namespace Aisentona.API.Controllers.Postagens
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public IActionResult CarregarNotícia(int id)
         {
             if (id <= 0)
             {
                 return BadRequest("ID inválido.");
             }
 
-            List<Postagem> postagem = _postagemService.ListarPostagens(id);
+            Postagem postagem = _postagemService.CarregarPostagem(id);
             if (postagem == null)
             {
                 return NotFound();
             }
             return Ok(postagem);
+        }
+
+        [HttpGet]
+        public IActionResult CarregarListaDePostagens()
+        {
+
+            List<Postagem> listaDePostagens = _postagemService.ListarPostagens();
+            if (listaDePostagens == null)
+            {
+                return NotFound();
+            }
+            return Ok(listaDePostagens);
         }
 
         [HttpPost]
@@ -89,6 +101,20 @@ namespace Aisentona.API.Controllers.Postagens
             {
                 List<EditoriaDTO> editorias = _postagemService.ListarEditorias();
                 return Ok(editorias);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpGet("listar-status")]
+        public IActionResult ListarStatus()
+        {
+            try
+            {
+                List<StatusDTO> status = _postagemService.ListarStatus();
+                return Ok(status);
             }
             catch (KeyNotFoundException ex)
             {

@@ -9,6 +9,10 @@ namespace Aisentona.Entities.ViewModels
 {
     public class PostagemDTO
     {
+        public PostagemDTO()
+        {
+                
+        }
         public PostagemDTO(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario, string imagem, string textoAlteradoPorIA, string palavrasRetiradasPorIA)
         {
             Titulo = titulo;
