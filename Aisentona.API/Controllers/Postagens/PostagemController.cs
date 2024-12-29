@@ -29,19 +29,18 @@ namespace Aisentona.API.Controllers.Postagens
                 return BadRequest("ID inválido.");
             }
 
-            Postagem postagem = _postagemService.CarregarPostagem(id);
-            if (postagem == null)
+            PostagemDTO postagemDto = _postagemService.CarregarPostagem(id);
+            if (postagemDto == null)
             {
                 return NotFound();
             }
-            return Ok(postagem);
+            return Ok(postagemDto);
         }
 
         [HttpGet]
         public IActionResult CarregarListaDePostagens()
         {
-
-            List<Postagem> listaDePostagens = _postagemService.ListarPostagens();
+            List<PostagemDTO> listaDePostagens = _postagemService.ListarPostagens();
             if (listaDePostagens == null)
             {
                 return NotFound();

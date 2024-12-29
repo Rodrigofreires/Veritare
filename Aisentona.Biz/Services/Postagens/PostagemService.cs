@@ -18,21 +18,26 @@ namespace Aisentona.Biz.Services.Postagens
         }
         private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
 
-        public List<Postagem> ListarPostagens()
+        public List<PostagemDTO> ListarPostagens()
         {
             List<Postagem> listaDePostagens = new();
 
             listaDePostagens = _context.CF_Postagem.Where(c => c.Fl_Ativo == true).ToList();
-           
-            return listaDePostagens;
+
+            List<PostagemDTO> listaDePostagensDTO = ConverterPostagemDTO(listaDePostagens);
+
+            return listaDePostagensDTO;
         }
 
-        public Postagem CarregarPostagem(int id)
+        public PostagemDTO CarregarPostagem(int id)
         {
             Postagem? postagem = _context.CF_Postagem.FirstOrDefault(c => c.Id_Postagem == id && c.Fl_Ativo);
 
-            return postagem;
+            PostagemDTO postagemDTO = ConverterPostagemDTO(postagem);
+
+            return postagemDTO;
         }
+
 
 
         public List<EditoriaDTO> ListarEditorias()
@@ -162,6 +167,27 @@ namespace Aisentona.Biz.Services.Postagens
             return potagemConvertida;
 
         }
+
+        private PostagemDTO ConverterPostagemDTO(Postagem? postagem)
+        {
+            PostagemDTO postagemDTO = new PostagemDTO()
+            {
+                IdCategoria = postagem.Id_Categoria,
+                IdStatus = postagem.Id_Status,
+                IdUsuario = postagem.Id_Usuario, 
+                Titulo = postagem.Titulo,
+                Conteudo = postagem.Conteudo,
+                Descricao = postagem.Descricao,
+                Imagem = postagem.Imagem_base64,
+                TextoAlteradoPorIA = postagem.Texto_alterado_por_ia,
+                PalavrasRetiradasPorIA = postagem.Palavras_retiradas_por_ia,
+                DataCriacao = postagem.DT_Criacao
+            };
+
+            return postagemDTO;
+        }
+
+
 
     }
 }

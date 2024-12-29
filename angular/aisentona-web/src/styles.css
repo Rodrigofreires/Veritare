@@ -18,3 +18,30 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     font-weight: bold;
     text-align: center;
   }
+
+
+  .botoes-de-envio {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Alinha verticalmente se necessário */
+    margin-bottom: 20px; /* Adiciona margem inferior */
+  }
+  
+  .botao {
+    padding: 10px 20px; /* Aumenta o espaço interno do botão */
+    font-size: 16px; /* Aumenta o tamanho da fonte */
+    font-weight: bold; /* Deixa o texto em negrito */
+    border-radius: 8px; /* Arredonda as bordas */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona sombra ao botão */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
+  }
+  
+  .botao:hover {
+    background-color: #71e77f; /* Altera a cor do fundo ao passar o mouse */
+    transform: translateY(-2px); /* Eleva o botão ao passar o mouse */
+  }
+  
+  .botao-finalizar:active {
+    transform: translateY(0); /* Reseta a elevação ao clicar */
+  }
+  

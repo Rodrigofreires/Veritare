@@ -13,7 +13,7 @@ namespace Aisentona.Entities.ViewModels
         {
                 
         }
-        public PostagemDTO(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario, string imagem, string textoAlteradoPorIA, string palavrasRetiradasPorIA)
+        public PostagemDTO(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario, string imagem, string textoAlteradoPorIA, string palavrasRetiradasPorIA, DateTime? dtCriacao)
         {
             Titulo = titulo;
             Descricao = descricao;
@@ -25,6 +25,7 @@ namespace Aisentona.Entities.ViewModels
             Imagem = imagem;
             TextoAlteradoPorIA = textoAlteradoPorIA;
             PalavrasRetiradasPorIA = palavrasRetiradasPorIA;
+            DataCriacao = dtCriacao;
         }
 
         public string Titulo { get; set; }
@@ -37,6 +38,7 @@ namespace Aisentona.Entities.ViewModels
         public string Imagem { get; set; }
         public string TextoAlteradoPorIA { get; set; }
         public string PalavrasRetiradasPorIA { get; set; }
+        public DateTime? DataCriacao { get; set; }
 
 
     }
