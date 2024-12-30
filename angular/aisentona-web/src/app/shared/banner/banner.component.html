@@ -1,43 +1,59 @@
 <div class="painel-noticias">
-    <mat-card class="card-noticia" appearance="outlined">
-      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+  <!-- Postagem mais recente (Destaque) -->
+  <mat-card class="card-noticia destaque" appearance="outlined">
+    <div class="conteudo-destaque">
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Imagem da notícia destacada">
+      <div class="texto-destaque">
+        <h1>{{ infosPostagem[0].titulo }}</h1>
+        <p>{{ infosPostagem[0].descricao }}</p>
+        <p><strong>Categoria:</strong> {{ infosPostagem[0].nomeCategoria }}</p>
+        <p><strong>Data de Criação:</strong> {{ infosPostagem[0].dataCriacao | date: 'short' }}</p>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="compartilharPostagem(infosPostagem[0])">COMPARTILHE</button>
+        </mat-card-actions>
+      </div>
+    </div>
+  </mat-card>
+
+  <!-- Outras postagens (Listagem) -->
+  <div class="lista-noticias">
+    <mat-card class="card-noticia" *ngIf="infosPostagem[1]" appearance="outlined">
+      <h2>{{ infosPostagem[1].titulo }}</h2>
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Imagem da notícia">
       <mat-card-content>
-        <p>(AQUI PRECISA VIR A MANCHETE DA NOTÍCIA)</p>
+        <p>{{ infosPostagem[1].descricao }}</p>
+        <p><strong>Categoria:</strong> {{ infosPostagem[1].nomeCategoria }}</p>
+        <p><strong>Data de Criação:</strong> {{ infosPostagem[1].dataCriacao | date: 'short' }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button>COMPARTILHE</button>
-        <p>(AQUI A INFORMAÇÃO DE QUE FOI GERADO POR IA)</p>
+        <button mat-button (click)="compartilharPostagem(infosPostagem[1])">COMPARTILHE</button>
       </mat-card-actions>
     </mat-card>
-    <mat-card class="card-noticia" appearance="outlined">
-      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+
+    <mat-card class="card-noticia" *ngIf="infosPostagem[2]" appearance="outlined">
+      <h2>{{ infosPostagem[2].titulo }}</h2>
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Imagem da notícia">
       <mat-card-content>
-        <p>(AQUI PRECISA VIR A MANCHETE DA NOTÍCIA)</p>
+        <p>{{ infosPostagem[2].descricao }}</p>
+        <p><strong>Categoria:</strong> {{ infosPostagem[2].nomeCategoria }}</p>
+        <p><strong>Data de Criação:</strong> {{ infosPostagem[2].dataCriacao | date: 'short' }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button>COMPARTILHE</button>
-        <p>(AQUI A INFORMAÇÃO DE QUE FOI GERADO POR IA)</p>
+        <button mat-button (click)="compartilharPostagem(infosPostagem[2])">COMPARTILHE</button>
       </mat-card-actions>
     </mat-card>
-    <mat-card class="card-noticia" appearance="outlined">
-      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+
+    <mat-card class="card-noticia" *ngIf="infosPostagem[3]" appearance="outlined">
+      <h2>{{ infosPostagem[3].titulo }}</h2>
+      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Imagem da notícia">
       <mat-card-content>
-        <p>(AQUI PRECISA VIR A MANCHETE DA NOTÍCIA)</p>
+        <p>{{ infosPostagem[3].descricao }}</p>
+        <p><strong>Categoria:</strong> {{ infosPostagem[3].nomeCategoria }}</p>
+        <p><strong>Data de Criação:</strong> {{ infosPostagem[3].dataCriacao | date: 'short' }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button>COMPARTILHE</button>
-        <p>(AQUI A INFORMAÇÃO DE QUE FOI GERADO POR IA)</p>
-      </mat-card-actions>
-    </mat-card>
-    <mat-card class="card-noticia" appearance="outlined">
-      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-      <mat-card-content>
-        <p>(AQUI PRECISA VIR A MANCHETE DA NOTÍCIA)</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button>COMPARTILHE</button>
-        <p>(AQUI A INFORMAÇÃO DE QUE FOI GERADO POR IA)</p>
+        <button mat-button (click)="compartilharPostagem(infosPostagem[3])">COMPARTILHE</button>
       </mat-card-actions>
     </mat-card>
   </div>
-  
+</div>

@@ -48,6 +48,18 @@ namespace Aisentona.API.Controllers.Postagens
             return Ok(listaDePostagens);
         }
 
+        [HttpGet("listar-ultimas-postagens")]
+        public IActionResult ListarUltimasPostagens()
+        {
+            List<PostagemDTO> listaDePostagens = _postagemService.ListarUltimasPostagens();
+            if (listaDePostagens == null)
+            {
+                return NotFound();
+            }
+            return Ok(listaDePostagens);
+        }
+
+
         [HttpPost]
         public IActionResult CreatePost([FromBody] PostagemDTO postagemDTO)
         {

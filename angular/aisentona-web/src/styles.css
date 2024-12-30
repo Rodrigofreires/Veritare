@@ -1,47 +1,65 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .snackbar-sucesso {
-    background-color: #4caf50; /* Verde para sucesso */
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-  }
-  
-  .snackbar-error {
-    background-color: #f44336; /* Vermelho para erro */
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-  }
+  background-color: #4caf50; /* Verde para sucesso */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
 
+.snackbar-error {
+  background-color: #f44336; /* Vermelho para erro */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
 
-  .botoes-de-envio {
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Alinha verticalmente se necessário */
-    margin-bottom: 20px; /* Adiciona margem inferior */
-  }
-  
-  .botao {
-    padding: 10px 20px; /* Aumenta o espaço interno do botão */
-    font-size: 16px; /* Aumenta o tamanho da fonte */
-    font-weight: bold; /* Deixa o texto em negrito */
-    border-radius: 8px; /* Arredonda as bordas */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona sombra ao botão */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
-  }
-  
-  .botao:hover {
-    background-color: #71e77f; /* Altera a cor do fundo ao passar o mouse */
-    transform: translateY(-2px); /* Eleva o botão ao passar o mouse */
-  }
-  
-  .botao-finalizar:active {
-    transform: translateY(0); /* Reseta a elevação ao clicar */
-  }
-  
+.botoes-de-envio {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Alinha verticalmente se necessário */
+  margin-bottom: 20px; /* Adiciona margem inferior */
+}
+
+.botao {
+  padding: 10px 20px; /* Aumenta o espaço interno do botão */
+  font-size: 16px; /* Aumenta o tamanho da fonte */
+  font-weight: bold; /* Deixa o texto em negrito */
+  border-radius: 8px; /* Arredonda as bordas */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona sombra ao botão */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
+}
+
+.botao:hover {
+  background-color: #71e77f; /* Altera a cor do fundo ao passar o mouse */
+  transform: translateY(-2px); /* Eleva o botão ao passar o mouse */
+}
+
+.botao-finalizar:active {
+  transform: translateY(0); /* Reseta a elevação ao clicar */
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent !important; /* Remove a cor de fundo */
+  border: 1px solid var(--mdc-text-field-border-color, #ccc); /* Adiciona uma borda */
+  border-radius: 4px; /* Define cantos arredondados, opcional */
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled):focus-within {
+  border-color: var(
+    --mdc-text-field-border-focus-color,
+    #6200ee
+  ); /* Cor da borda no foco */
+  outline: none;
+}

@@ -1,29 +1,58 @@
-
 .painel-noticias {
-    display: grid; /* Define o container como um grid */
-    grid-template-columns: repeat(2, 1fr); /* Cria 2 colunas com largura igual */
-    gap: 10px; /* Espaçamento entre os cards */
-    justify-content: center; /* Centraliza o grid horizontalmente */
-    align-items: center; /* Centraliza os itens dentro do grid verticalmente */
-    margin: 0 auto; /* Garante centralização horizontal do grid no layout */
-    max-width: 500px; /* Define um limite de largura para o grid */
-    padding: 3%;
-    background-color: white;
-  }
-
-  .mat-sys-background{
-    background-color: white;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
 .card-noticia {
-    width: 100%; 
-    max-width: 500px;   
-  }
-  
-  .example-header-image {
-    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
-    background-size: cover;
-  }
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
 
-  
+.card-noticia.destaque {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.card-noticia.destaque .conteudo-destaque {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.card-noticia.destaque img {
+  max-width: 50%;
+  border-radius: 8px;
+}
+
+.card-noticia.destaque .texto-destaque {
+  flex: 1;
+}
+
+.card-noticia.destaque h1 {
+  font-size: 2rem;
+  margin: 0;
+  color: #333;
+}
+
+.lista-noticias {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.lista-noticias mat-card img {
+  height: 150px;
+  object-fit: cover;
+}
+
+.mat-card-content {
+  font-size: 0.9rem;
+}
+
+.mat-card-actions {
+  margin-top: 10px;
+}

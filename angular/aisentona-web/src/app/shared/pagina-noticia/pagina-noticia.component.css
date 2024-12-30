@@ -85,3 +85,7 @@
     align-items: start;
     justify-content: start !important;
   }
+
+  .mdc-text-field--filled{
+    background-color: none !important;
+  }

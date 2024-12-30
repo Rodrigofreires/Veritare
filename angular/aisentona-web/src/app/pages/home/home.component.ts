@@ -14,7 +14,6 @@ import { CardLeiaTambemComponent } from "../../shared/card-leia-tambem/card-leia
 })
 export class HomeComponent implements OnInit {
   
-  
   ngOnInit(): void {
     
   }

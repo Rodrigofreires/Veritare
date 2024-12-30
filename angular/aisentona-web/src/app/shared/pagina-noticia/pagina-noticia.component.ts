@@ -8,6 +8,7 @@ import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { NoticiaService } from '../../services/noticia-service';
 
 @Component({
+  standalone: true,
   selector: 'app-pagina-noticia',
   imports: [MatCardModule, MatButtonModule, RouterModule, CommonModule, CardLeiaTambemComponent],
   templateUrl: './pagina-noticia.component.html',

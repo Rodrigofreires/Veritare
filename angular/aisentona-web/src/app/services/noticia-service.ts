@@ -13,6 +13,8 @@ import { PostagemRequest } from '../core/interfaces/Request/Postagem';
 
 
 export class NoticiaService {
+
+
   private apiUrl = environment.apiUrl;
   private API = 'postagem';
 
@@ -35,9 +37,20 @@ criarPostagem(postagem: PostagemResponse): Observable<any> {
   return this.http.post(`${this.apiUrl}/postagem`, postagem);
 }
 
+// EDITAR NOTÍCIA JÁ EXISTENTE
+
+editarPostagem(id: number, postagem: PostagemResponse): Observable<any> {
+  return this.http.put(`${this.apiUrl}/postagens/${id}`, postagem);
+}
+
 // Buscar postagem por ID
 buscarPostagemPorId(id: number): Observable<PostagemRequest> {
   return this.http.get<PostagemRequest>(`${this.apiUrl}/${this.API}/${id}`);
+}
+
+// Carregar últimas notícias para o Banner
+carregarUltimasPostagens(): Observable<PostagemRequest[]> {
+  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-ultimas-postagens`);
 }
 
 
