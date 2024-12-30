@@ -3,6 +3,7 @@ using Aisentona.Entities;
 using Aisentona.Entities.ViewModels;
 using Aisentona.Enum;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using System.Net.NetworkInformation;
 using System.Security.Principal;
 
@@ -20,11 +21,27 @@ namespace Aisentona.Biz.Services.Postagens
 
         public List<PostagemDTO> ListarPostagens()
         {
-            List<Postagem> listaDePostagens = new();
+            // Busca todas as postagens ativas, incluindo as categorias relacionadas
+            List<Postagem> listaDePostagens = _context.CF_Postagem
+                .Include(p => p.Categoria) // Inclui a relação com a Categoria
+                .Where(p => p.Fl_Ativo == true)
+                .ToList();
 
-            listaDePostagens = _context.CF_Postagem.Where(c => c.Fl_Ativo == true).ToList();
-
-            List<PostagemDTO> listaDePostagensDTO = ConverterPostagemDTO(listaDePostagens);
+            List<PostagemDTO> listaDePostagensDTO = listaDePostagens.Select(postagem => new PostagemDTO
+            {
+                IdPostagem = postagem.Id_Postagem,
+                IdCategoria = postagem.Id_Categoria,
+                IdStatus = postagem.Id_Status,
+                IdUsuario = postagem.Id_Usuario,
+                Titulo = postagem.Titulo,
+                Conteudo = postagem.Conteudo,
+                Descricao = postagem.Descricao,
+                Imagem = postagem.Imagem_base64,
+                TextoAlteradoPorIA = postagem.Texto_alterado_por_ia,
+                PalavrasRetiradasPorIA = postagem.Palavras_retiradas_por_ia,
+                DataCriacao = postagem.DT_Criacao,
+                NomeCategoria = postagem.Categoria?.Nome ?? "Categoria não encontrada" // Usa o Nome da Categoria ou mensagem padrão
+            }).ToList();
 
             return listaDePostagensDTO;
         }
@@ -33,7 +50,13 @@ namespace Aisentona.Biz.Services.Postagens
         {
             Postagem? postagem = _context.CF_Postagem.FirstOrDefault(c => c.Id_Postagem == id && c.Fl_Ativo);
 
+             List<EditoriaDTO> editoriaDTO = ListarEditorias();
+
             PostagemDTO postagemDTO = ConverterPostagemDTO(postagem);
+
+            EditoriaDTO categoria = editoriaDTO.Where(c => c.Id == postagemDTO.IdCategoria).FirstOrDefault();
+
+            postagemDTO.NomeCategoria = categoria?.Nome ?? "Categoria não encontrada";
 
             return postagemDTO;
         }
@@ -187,6 +210,29 @@ namespace Aisentona.Biz.Services.Postagens
             return postagemDTO;
         }
 
+        private List<PostagemDTO> ConverterPostagemDTO(List<Postagem>? listaDePostagem)
+        {
+            if (listaDePostagem == null || !listaDePostagem.Any())
+            {
+                return new List<PostagemDTO>(); // Retorna uma lista vazia se a entrada for nula ou vazia
+            }
+            // Converte cada postagem em PostagemDTO
+            return listaDePostagem.Select(postagem => new PostagemDTO
+            {
+                IdPostagem = postagem.Id_Postagem,
+                IdCategoria = postagem.Id_Categoria,
+                IdStatus = postagem.Id_Status,
+                IdUsuario = postagem.Id_Usuario,
+                Titulo = postagem.Titulo,
+                Conteudo = postagem.Conteudo,
+                Descricao = postagem.Descricao,
+                Imagem = postagem.Imagem_base64,
+                TextoAlteradoPorIA = postagem.Texto_alterado_por_ia,
+                PalavrasRetiradasPorIA = postagem.Palavras_retiradas_por_ia,
+                DataCriacao = postagem.DT_Criacao
+
+            }).ToList();
+        }
 
 
     }

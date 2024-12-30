@@ -12,6 +12,8 @@
   
   .cabecalho-noticia{
     display: flex !important;
+    flex-direction: column;
+    align-items: flex-start;
     margin-bottom: 40px;
   }
 
@@ -27,6 +29,12 @@
   }
   
   .noticia-subtitulo {
+    font-size: 18px;
+    color: #757575;
+  }
+
+  .data-criacao {
+    margin-top: 8px; /* Espaço entre subtítulo e data */
     font-size: 18px;
     color: #757575;
   }

@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment.development';
 import { EditoriaRequest } from '../core/interfaces/Request/Editorias';
 import { StatusRequest } from '../core/interfaces/Request/Status';
 import { PostagemResponse } from '../core/interfaces/Response/Postagem';
+import { PostagemRequest } from '../core/interfaces/Request/Postagem';
 
 @Injectable({
   providedIn: 'root', // Disponível em toda a aplicação
@@ -34,14 +35,11 @@ criarPostagem(postagem: PostagemResponse): Observable<any> {
   return this.http.post(`${this.apiUrl}/postagem`, postagem);
 }
 
+// Buscar postagem por ID
+buscarPostagemPorId(id: number): Observable<PostagemRequest> {
+  return this.http.get<PostagemRequest>(`${this.apiUrl}/${this.API}/${id}`);
+}
 
-  // Exemplo de PUT
-  updateData(endpoint: string, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${endpoint}`, data);
-  }
 
-  // Exemplo de DELETE
-  deleteData(endpoint: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${endpoint}`);
-  }
+
 }

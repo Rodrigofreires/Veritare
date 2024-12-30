@@ -1,31 +1,36 @@
 <div class="noticia-container mat-elevation-z4">
   <mat-card class="noticia-card">
+
     <h2>{{ infosPostagem.nomeCategoria }}</h2>
 
     <mat-card-header class="cabecalho-noticia">
-      <mat-card-title class="noticia-titulo"> {{ infosPostagem.titulo }}</mat-card-title>
-      <mat-card-subtitle class="noticia-subtitulo"> {{ infosPostagem.descricao }}</mat-card-subtitle>
-
-      <p><Data>{{ infosPostagem.dataCriacao }}</Data></p>
-
+      <mat-card-title class="noticia-titulo">
+        {{ infosPostagem.titulo }}
+      </mat-card-title>
+      <mat-card-subtitle class="noticia-subtitulo">
+        {{ infosPostagem.descricao }}
+      </mat-card-subtitle>
+      <div class="data-criacao">
+        <p><data>{{ infosPostagem.dataCriacao }}</data></p>
+      </div>
     </mat-card-header>
 
     <div class="imagem-da-noticia">
-      <img mat-card-image src="https://via.placeholder.com/800x400" alt="Imagem da Notícia" class="noticia-imagem" />
+      <img mat-card-image src="https://via.placeholder.com/800x400"
+        alt="Imagem da Notícia" class="noticia-imagem" />
     </div>
-
 
     <!-- Botões de Controle -->
     <div class="botoes-controle">
-      <button 
-        mat-raised-button 
-        [ngClass]="{ 'botao-selecionado': textoSelecionado === 'ia' }" 
+      <button
+        mat-raised-button
+        [ngClass]="{ 'botao-selecionado': textoSelecionado === 'ia' }"
         (click)="mostrarTexto('ia')">
         Escrito pela IASentona
       </button>
-      <button 
-        mat-raised-button 
-        [ngClass]="{ 'botao-selecionado': textoSelecionado === 'humano' }" 
+      <button
+        mat-raised-button
+        [ngClass]="{ 'botao-selecionado': textoSelecionado === 'humano' }"
         color="accent"
         (click)="mostrarTexto('humano')">
         Escrito por Humanos
