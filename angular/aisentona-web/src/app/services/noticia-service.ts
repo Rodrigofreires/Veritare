@@ -48,9 +48,9 @@ buscarPostagemPorId(id: number): Observable<PostagemRequest> {
   return this.http.get<PostagemRequest>(`${this.apiUrl}/${this.API}/${id}`);
 }
 
-// Carregar últimas notícias para o Banner
 carregarUltimasPostagens(): Observable<PostagemRequest[]> {
-  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-ultimas-postagens`);
+  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-ultimas-postagens`)
+
 }
 
 

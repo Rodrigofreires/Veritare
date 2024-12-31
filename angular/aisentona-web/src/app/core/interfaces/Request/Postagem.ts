@@ -10,6 +10,6 @@ export interface PostagemRequest {
     imagem: string;
     textoAlteradoPorIA: string;
     palavrasRetiradasPorIA: string;
-    dataCriacao: Date;
+    dataCriacao: string;
 
   }

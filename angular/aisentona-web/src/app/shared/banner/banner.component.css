@@ -56,3 +56,7 @@
 .mat-card-actions {
   margin-top: 10px;
 }
+
+mat-card img {
+  cursor: pointer; /* Define o cursor como 'pointer' ao passar sobre a imagem */
+}

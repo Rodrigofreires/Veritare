@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CardLeiaTambemComponent } from "../card-leia-tambem/card-leia-tambem.component";
 import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { NoticiaService } from '../../services/noticia-service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   standalone: true,
@@ -16,7 +17,13 @@ import { NoticiaService } from '../../services/noticia-service';
 })
 export class PaginaNoticiaComponent {
 
-  constructor(private noticiaService: NoticiaService) {}
+  constructor(
+    private noticiaService: NoticiaService,
+    private route: ActivatedRoute,
+    private _snackBar : SnackbarService
+
+  
+  ) {}
 
   ngOnInit(): void {
     this.carregaNoticia();
@@ -31,15 +38,20 @@ infosPostagem: PostagemRequest = {} as PostagemRequest;
   }
 
   carregaNoticia(): void {
-    //Falta criar a lógica para carregar notícia baseadas no Id de forma dinâmica
-    this.noticiaService.buscarPostagemPorId(2007).subscribe(
-      (dados) => {
-        this.infosPostagem = dados;
-      },
-      (erro) => {
-        console.error('Erro ao carregar a notícia:', erro);
-      }
-    );
+    const id = this.route.snapshot.paramMap.get('id'); // Obtém o ID como string | null
+  
+    if (id) {
+      this.noticiaService.buscarPostagemPorId(+id).subscribe( // Converte para number usando '+'
+        (dados) => {
+          this.infosPostagem = dados;
+        },
+        (erro) => {
+          this._snackBar.MostrarErro('Erro ao carregar a notícia:', erro);
+        }
+      );
+    } else {
+      this._snackBar.MostrarErro('ID inválido ou ausente na URL');
+    }
   }
 
 

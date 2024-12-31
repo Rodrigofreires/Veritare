@@ -5,6 +5,7 @@ import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
 import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-banner',
@@ -15,11 +16,10 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BannerComponent {
-
-
   constructor(
     private _noticiaService: NoticiaService,
     private _snackBarService: SnackbarService,
+    private router: Router,
   
   ){}
 
@@ -45,5 +45,10 @@ export class BannerComponent {
     console.log('Compartilhando postagem:', postagem);
     // Implementar lógica de compartilhamento
   }
+
+  navegarParaNoticia(idPostagem: number): void {
+    this.router.navigate(['/noticia', idPostagem]);
+  }
+
 
 }
