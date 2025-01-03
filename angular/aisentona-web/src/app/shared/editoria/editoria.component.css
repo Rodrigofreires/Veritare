@@ -20,7 +20,7 @@
 }
 
 .botao-editoria:hover{
-    box-shadow: 5px 5px white;
+    box-shadow: 5px 5px rgba(255, 255, 255, 0.5);
     
         background-color: transparent;
 }

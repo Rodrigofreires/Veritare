@@ -1,0 +1,125 @@
+<app-container class="container-editar-noticia">
+
+    <h2>EDIÇÃO DE NOTÍCIA</h2>
+    <mat-form-field class="titulo">
+      <mat-label>TÍTULO DA NOTÍCIA</mat-label>
+      <textarea
+        placeholder="Máximo de 65 caracteres"
+        maxlength="65"
+        matInput
+        [(ngModel)]="infosPostagem.titulo"
+        name="titulo"
+        required>
+      </textarea>
+    </mat-form-field>
+    
+    <mat-form-field class="descricao">
+      <mat-label>DESCRIÇÃO DA NOTÍCIA</mat-label>
+      <textarea
+        maxlength="160"
+        placeholder="Máximo de 160 caracteres"
+        matInput
+        [(ngModel)]="infosPostagem.descricao"
+        name="descricao"
+        required>
+      </textarea>
+    </mat-form-field>
+
+    <div class="imagem-pre-visualizar" *ngIf="imagemBase64">
+      <h3>Pré-visualização da Imagem:</h3>
+      <img [src]="imagemBase64" alt="Pré-visualização da Imagem">
+    </div>
+    
+    <div class="botoes-de-envio">
+      <input
+        type="file"
+        id="fileInput"
+        style="display: none;"
+        (change)="selecionarImagem($event)"
+        accept="image/*" />
+      <button class="botao" mat-button (click)="abrirSeletorDeArquivo()">
+        SELECIONE UMA IMAGEM
+      </button>
+    </div>
+
+  <div>
+  
+      <div class="textos-principais-editados">
+
+        <!-- Texto Gerado Por Humano -->
+        <h3>GERADO POR HUMANO</h3>
+        <mat-form-field class="texto-da-noticia-editada">
+          <mat-label>TEXTO ORIGINAL</mat-label>
+          <textarea
+          matInput
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="10"
+          cdkAutosizeMaxRows="5000"
+          [(ngModel)]="infosPostagem.conteudo"
+          ></textarea>
+        </mat-form-field>
+  
+        <!-- Texto Gerado Pela IASentona -->
+        <h3>GERADO PELA IASENTONA</h3>
+        <mat-form-field class="texto-da-noticia-editada" appearance="fill">
+          <mat-label>ALTERAÇÕES REALIZADAS PELA IA</mat-label>
+          <textarea
+          matInput
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="10"
+          cdkAutosizeMaxRows="5000"
+            [(ngModel)]="infosPostagem.textoAlteradoPorIA"
+            rows="5"
+          ></textarea>
+        </mat-form-field>
+  
+        <!-- Palavras Cortadas -->
+        <h3>PALAVRAS CORTADAS</h3>
+        <mat-form-field class="texto-da-noticia-editada">
+          <mat-label>LISTA DE PALAVRAS REMOVIDAS</mat-label>
+          <textarea
+            matInput
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="10"
+            cdkAutosizeMaxRows="5000"
+            [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"
+          ></textarea>
+        </mat-form-field>
+      </div>
+  
+        <!-- Status -->
+        <div>
+          <mat-form-field class="status">
+            <mat-label>STATUS DA NOTÍCIA</mat-label>
+            <mat-select [(ngModel)]="statusSelecionado" name="status" required>
+              <mat-option *ngFor="let status of ListaDeStatus" [value]="status.id">
+                {{ status.descricao }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          
+          <mat-form-field class="editoria">
+            <mat-label>EDITORIA</mat-label>
+            <mat-select [(ngModel)]="editoriaSelecionada" name="editoria" required>
+              <mat-option *ngFor="let editoria of listaDeEditorias" [value]="editoria.id">
+                {{ editoria.nome }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+    </div>
+  
+    <!-- Botão para Confirmar Edição -->
+    <<div class="botoes-de-envio">
+      <button
+        class="botao"
+        mat-raised-button
+        color="primary"
+        (click)="salvarEdicao()">
+        FINALIZAR EDIÇÃO
+      </button>
+    </div>
+    
+</app-container>
+  <app-footer></app-footer>
+  

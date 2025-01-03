@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
+
 html,
 body {
   height: 100%;
@@ -63,3 +64,12 @@ body {
   ); /* Cor da borda no foco */
   outline: none;
 }
+
+.mat-mdc-card{
+  background-color: white !important;
+}
+.noticia-card_ngcontent-ng-c1579001365{
+ background-color: white !important;
+}
+
+/* CSS PARA IMAGENS DO SITE */

@@ -1,7 +1,14 @@
 <div class="noticia-container mat-elevation-z4">
   <mat-card class="noticia-card">
 
-    <h2>{{ infosPostagem.nomeCategoria }}</h2>
+      <h2>{{ infosPostagem.nomeCategoria }}</h2>
+
+      <div class="botoes-de-envio">
+        <button class="botao" color="primary"
+            (click)="editarNoticia()">
+            EDITAR
+        </button>
+    </div>
 
     <mat-card-header class="cabecalho-noticia">
       <mat-card-title class="noticia-titulo">
@@ -16,7 +23,7 @@
     </mat-card-header>
 
     <div class="imagem-da-noticia">
-      <img mat-card-image src="https://via.placeholder.com/800x400"
+      <img mat-card-image src="{{ infosPostagem.imagem }}"
         alt="Imagem da Notícia" class="noticia-imagem" />
     </div>
 

@@ -7,13 +7,10 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Aisentona.Entities.ViewModels
 {
-    public class PostagemDTO
+    public class PostagemResponse
     {
-        public PostagemDTO()
-        {
-                
-        }
-        public PostagemDTO(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario, string imagem, string textoAlteradoPorIA, string palavrasRetiradasPorIA, DateTime? dtCriacao, string nomeCategoria)
+
+        public PostagemResponse(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario, string imagem, string textoAlteradoPorIA, string palavrasRetiradasPorIA, DateTime dtCriacao)
         {
             Titulo = titulo;
             Descricao = descricao;
@@ -26,7 +23,6 @@ namespace Aisentona.Entities.ViewModels
             TextoAlteradoPorIA = textoAlteradoPorIA;
             PalavrasRetiradasPorIA = palavrasRetiradasPorIA;
             DataCriacao = dtCriacao;
-            NomeCategoria = nomeCategoria;
         }
 
         public string Titulo { get; set; }
@@ -34,13 +30,12 @@ namespace Aisentona.Entities.ViewModels
         public string Conteudo { get; set; }
         public int IdPostagem { get; set; }
         public int IdCategoria { get; set; }
-        public string NomeCategoria { get; set; }
         public int IdStatus { get; set; }
         public int IdUsuario { get; set; }
         public string Imagem { get; set; }
         public string TextoAlteradoPorIA { get; set; }
         public string PalavrasRetiradasPorIA { get; set; }
-        public DateTime? DataCriacao { get; set; }
+        public DateTime DataCriacao { get; set; }
 
 
     }

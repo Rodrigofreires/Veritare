@@ -5,46 +5,79 @@
         <!-- Título -->
         <mat-form-field class="titulo">
             <mat-label>TITULO DA NOTÍCIA</mat-label>
-            <input matInput [(ngModel)]="infosPostagem.titulo" />
+            <textarea
+            placeholder="Máximo de 65 caracteres"
+            maxlength="65"  
+            matInput [(ngModel)]="infosPostagem.titulo"></textarea>
         </mat-form-field>
 
         <div>
-        <!-- Descrição -->
+            <!-- Descrição -->
             <mat-form-field class="descricao">
                 <mat-label>DESCRIÇÃO DA NOTÍCIA</mat-label>
-                <input matInput [(ngModel)]="infosPostagem.descricao" />
+                <textarea 
+                maxlength="160"
+                placeholder="Máximo de 160 caracteres"
+                matInput [(ngModel)]="infosPostagem.descricao"></textarea>
             </mat-form-field>
-
         </div>
     </div>
 
     <div class="corpo-da-noticia">
 
+        <div class="imagem-pre-visualizar" *ngIf="imagemBase64">
+            <h3>Pré-visualização da Imagem:</h3>
+            <img [src]="infosPostagem.imagem" alt="Pré-visualização da Imagem">
+        </div>        
+
         <div class="botoes-de-envio">
-            <button class="botao" mat-button> SELECIONE UMA IMAGEM</button>
+            <input
+                type="file"
+                id="fileInput"
+                style="display: none;"
+                (change)="selecionarImagem($event)"
+                accept="image/*" />
+            <button class="botao" mat-button (click)="abrirSeletorDeArquivo()">
+                SELECIONE UMA IMAGEM
+            </button>
         </div>
 
         <div class="textos-principais">
-        <!-- Gerado Por Humano -->
+            <!-- Gerado Por Humano -->
             <h3>GERADO POR HUMANO</h3>
             <mat-form-field class="texto-da-noticia">
                 <mat-label>ESCREVA O TEXTO AQUI</mat-label>
-                <input matInput [(ngModel)]="infosPostagem.conteudo" />
+                <textarea 
+                matInput
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="10"
+                cdkAutosizeMaxRows="5000"
+                [(ngModel)]="infosPostagem.conteudo"></textarea>
             </mat-form-field>
 
-        <!-- Gerado Por AISENTONA -->
+            <!-- Gerado Por AISENTONA -->
             <h3>GERADO PELA AISENTONA</h3>
-            <mat-form-field class="texto-da-noticia">
+            <mat-form-field class="texto-da-noticia" appearance="fill">
                 <mat-label>ESCREVA AQUI</mat-label>
-                <input matInput
-                    [(ngModel)]="infosPostagem.textoAlteradoPorIA" />
+                <textarea
+                matInput
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="10"
+                cdkAutosizeMaxRows="5000"
+                    [(ngModel)]="infosPostagem.textoAlteradoPorIA"
+                    rows="5"></textarea>
             </mat-form-field>
-        <!-- PALAVRAS CORTADA-->
+
+            <!-- PALAVRAS CORTADAS-->
             <h3>PALAVRAS CORTADAS</h3>
             <mat-form-field class="texto-da-noticia">
                 <mat-label>ESCREVA AQUI</mat-label>
-                <input matInput
-                    [(ngModel)]="infosPostagem.palavrasRetiradasPorIA" />
+                <textarea  
+                matInput
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="10"
+                cdkAutosizeMaxRows="5000"
+                    [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"></textarea>
             </mat-form-field>
         </div>
         <!-- Status -->
@@ -52,18 +85,18 @@
             <mat-form-field class="status">
                 <mat-label>STATUS DA NOTÍCIA</mat-label>
                 <mat-select [(value)]="statusSelecionado">
-                  
+
                     <mat-option *ngFor="let status of ListaDeStatus"
                         [value]="status.id"> <!-- Define o ID como valor -->
                         {{ status.descricao }} <!-- Exibe o nome da editoria -->
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-        <!-- Editoria -->
+            <!-- Editoria -->
             <mat-form-field class="editoria">
                 <mat-label>EDITORIA</mat-label>
                 <mat-select [(value)]="editoriaSelecionada">
-                    
+
                     <mat-option *ngFor="let editoria of listaDeEditorias"
                         [value]="editoria.id"> <!-- Define o ID como valor -->
                         {{ editoria.nome }} <!-- Exibe o nome da editoria -->

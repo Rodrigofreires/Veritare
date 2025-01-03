@@ -1,5 +1,5 @@
 export interface PostagemResponse {
-    titulo: string;
+    titulo: string ;
     descricao: string;
     conteudo: string;
     idPostagem: number;

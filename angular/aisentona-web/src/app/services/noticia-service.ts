@@ -34,14 +34,15 @@ buscarListaDeStatus(): Observable<StatusRequest[]> {
 
 // POSTAR NOVA NOTÍCIA 
 criarPostagem(postagem: PostagemResponse): Observable<any> {
-  return this.http.post(`${this.apiUrl}/postagem`, postagem);
+  return this.http.post(`${this.apiUrl}/${this.API}/criar-noticia`, postagem);
 }
 
 // EDITAR NOTÍCIA JÁ EXISTENTE
-
-editarPostagem(id: number, postagem: PostagemResponse): Observable<any> {
-  return this.http.put(`${this.apiUrl}/postagens/${id}`, postagem);
+editarNoticia(id: number, postagem: PostagemResponse): Observable<PostagemResponse> {
+  const url = `${this.apiUrl}/${this.API}/editar/${id}`;
+  return this.http.put<PostagemResponse>(url, postagem);
 }
+
 
 // Buscar postagem por ID
 buscarPostagemPorId(id: number): Observable<PostagemRequest> {
@@ -50,6 +51,11 @@ buscarPostagemPorId(id: number): Observable<PostagemRequest> {
 
 carregarUltimasPostagens(): Observable<PostagemRequest[]> {
   return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-ultimas-postagens`)
+
+}
+
+carregarPostagensPorEditoria(idEditoria: number): Observable<PostagemRequest[]> {
+  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-ultimas-postagens/${idEditoria}`)
 
 }
 

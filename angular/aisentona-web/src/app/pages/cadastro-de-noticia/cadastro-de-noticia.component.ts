@@ -15,6 +15,9 @@ import { PostagemResponse } from '../../core/interfaces/Response/Postagem';
 import { FormsModule } from '@angular/forms';
 import { StatusRequest } from '../../core/interfaces/Request/Status';
 import { SnackbarService } from '../../services/snackbar.service';
+import { ImagemService } from '../../services/imagem-service';
+import { TextoService } from '../../services/texto-service';
+import { TextFieldModule } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'app-cadastro-de-noticia',
@@ -31,28 +34,39 @@ import { SnackbarService } from '../../services/snackbar.service';
     MatButtonModule,
     MatIconModule,
     FormsModule,
+    TextFieldModule,
   ],
 
   templateUrl: './cadastro-de-noticia.component.html',
   styleUrls: ['./cadastro-de-noticia.component.css'],
 })
 export class CadastroDeNoticiaComponent {
+
+  
   listaDeEditorias: EditoriaRequest[] = []; // Variável para armazenar as editorias
   ListaDeStatus: StatusRequest[] = []; // Variável para armazenar os status
 
   editoriaSelecionada: number = 0;
   statusSelecionado: number = 0;
+  imagemBase64: string = '';
+  
 
   infosPostagem: PostagemResponse = {} as PostagemResponse;
 
+
   constructor(
     private _noticiaService: NoticiaService,
-    private _snackBarService: SnackbarService
+    private _snackBarService: SnackbarService,
+    private _imagemService: ImagemService,
+    private _textoService: TextoService,
   ) {}
 
   ngOnInit(): void {
     this.carregarEditorias(); // Carrega as editorias ao inicializar o componente
     this.carregarStatus();
+
+    console.log('Editoria Selecionada = ' + this.editoriaSelecionada)
+
   }
 
   carregarEditorias(): void {
@@ -78,13 +92,26 @@ export class CadastroDeNoticiaComponent {
   }
 
   publicarNoticia(): void {
-    this.infosPostagem.idCategoria = this.editoriaSelecionada;
+    if (!this.infosPostagem.titulo || !this.infosPostagem.descricao || !this.editoriaSelecionada || !this.statusSelecionado) {
+      this._snackBarService.MostrarErro(
+        'Preencha todos os campos obrigatórios antes de publicar.'
+      );
+      return;
+    }
+  
+    this.infosPostagem.idCategoria = this.editoriaSelecionada
     this.infosPostagem.idStatus = this.statusSelecionado;
-    this.infosPostagem.imagem = '';
+
+    // Verifica se a imagem foi selecionada e convertida
+    if (!this.infosPostagem.imagem) {
+      this._snackBarService.MostrarErro('Por favor, selecione uma imagem para a notícia.');
+      return;
+    }
+
     this.infosPostagem.idUsuario = 1010;
-
+  
     console.log('Dados enviados:', this.infosPostagem);
-
+  
     this._noticiaService.criarPostagem(this.infosPostagem).subscribe(
       (response) => {
         this._snackBarService.MostrarSucesso('Notícia salva com sucesso!');
@@ -92,38 +119,49 @@ export class CadastroDeNoticiaComponent {
       (error) => {
         console.error('Erro ao publicar notícia:', error);
         this._snackBarService.MostrarErro(
-          'Não foi possível publicar a notícia. Preencha os campos corretamente.'
+          'Não foi possível publicar a notícia. Verifique os campos preenchidos.'
         );
       }
     );
   }
+  
 
-  editarNoticia(): void {
-    if (!this.infosPostagem.idPostagem) {
-      this._snackBarService.MostrarErro(
-        'ID da postagem não encontrado. Selecione uma notícia válida para editar.'
-      );
-      return;
+  //LÓGICA PARA INSERIR IMAGENS
+
+  abrirSeletorDeArquivo(): void {
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
     }
-
-    this.infosPostagem.idCategoria = this.editoriaSelecionada;
-    this.infosPostagem.idStatus = this.statusSelecionado;
-    this.infosPostagem.imagem = ''; // Atualize com a lógica da imagem, se necessário
-
-    console.log('Dados enviados para edição:', this.infosPostagem);
-
-    this._noticiaService
-      .editarPostagem(this.infosPostagem.idPostagem, this.infosPostagem)
-      .subscribe(
-        (response) => {
-          this._snackBarService.MostrarSucesso('Notícia editada com sucesso!');
-        },
-        (error) => {
-          console.error('Erro ao editar notícia:', error);
-          this._snackBarService.MostrarErro(
-            'Não foi possível editar a notícia. Preencha os campos corretamente.'
-          );
-        }
-      );
   }
+
+  selecionarImagem(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+  
+      // Validação do arquivo
+      this._imagemService.validarArquivo(file);
+ 
+      // Conversão para Base64
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagemBase64 = reader.result as string;
+        this.infosPostagem.imagem = this.imagemBase64;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+
+  //LÓGICA PARA CAIXA DE TEXTO AUMENTAR
+
+  AumentarCaixaDeTexto(event: Event): void {
+    const textarea = event.target as HTMLTextAreaElement;
+    this._textoService.ajustarAlturaTextarea(textarea);
+  }
+
+
+
+
 }

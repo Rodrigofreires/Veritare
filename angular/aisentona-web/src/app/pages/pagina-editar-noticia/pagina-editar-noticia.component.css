@@ -34,7 +34,7 @@
     flex-direction: column;
 }
 
-.texto-da-noticia{
+.texto-da-noticia-editada{
     width: 100%;
     min-height: 300px;
     justify-content: space-between;

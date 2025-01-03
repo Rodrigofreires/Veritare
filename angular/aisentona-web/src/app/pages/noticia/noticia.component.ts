@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ContainerComponent } from "../../shared/container/container.component";
 import { FooterComponent } from '../../shared/footer/footer.component';
-import { PaginaNoticiaComponent } from "../../shared/pagina-noticia/pagina-noticia.component";
+import { PaginaNoticiaComponent } from "../pagina-noticia/pagina-noticia.component";
 
 @Component({
   selector: 'app-noticia',

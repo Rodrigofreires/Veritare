@@ -19,7 +19,7 @@ namespace Aisentona.Biz.Services.Postagens
         }
         private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
 
-        public List<PostagemDTO> ListarPostagens()
+        public List<PostagemRequest> ListarPostagens()
         {
             // Busca todas as postagens ativas, incluindo as categorias relacionadas
             List<Postagem> listaDePostagens = _context.CF_Postagem
@@ -30,7 +30,7 @@ namespace Aisentona.Biz.Services.Postagens
             return MapearParaDTO(listaDePostagens);
         }
 
-        public List<PostagemDTO> ListarUltimasPostagens()
+        public List<PostagemRequest> ListarUltimasPostagens()
         {
             // Busca as últimas 4 postagens ativas, ordenadas pela data de criação
             List<Postagem> ultimasPostagens = _context.CF_Postagem
@@ -45,19 +45,19 @@ namespace Aisentona.Biz.Services.Postagens
         }
 
 
-        public PostagemDTO CarregarPostagem(int id)
+        public PostagemRequest CarregarPostagem(int id)
         {
             Postagem? postagem = _context.CF_Postagem.FirstOrDefault(c => c.Id_Postagem == id && c.Fl_Ativo);
 
              List<EditoriaDTO> editoriaDTO = ListarEditorias();
 
-            PostagemDTO postagemDTO = ConverterPostagemDTO(postagem);
+            PostagemRequest postagemRequest = ConverterPostagemDTO(postagem);
 
-            EditoriaDTO categoria = editoriaDTO.Where(c => c.Id == postagemDTO.IdCategoria).FirstOrDefault();
+            EditoriaDTO categoria = editoriaDTO.Where(c => c.Id == postagemRequest.IdCategoria).FirstOrDefault();
 
-            postagemDTO.NomeCategoria = categoria?.Nome ?? "Categoria não encontrada";
+            postagemRequest.NomeCategoria = categoria?.Nome ?? "Categoria não encontrada";
 
-            return postagemDTO;
+            return postagemRequest;
         }
 
         public List<EditoriaDTO> ListarEditorias()
@@ -95,9 +95,9 @@ namespace Aisentona.Biz.Services.Postagens
 
         }
 
-        public Postagem CriarPostagem(PostagemDTO postagemDTO)
+        public Postagem CriarPostagem(PostagemResponse postagemResponse)
         {
-            Postagem postagemConvertida = ConverterPostagem(postagemDTO);
+            Postagem postagemConvertida = ConverterPostagem(postagemResponse);
             Postagem novaPostagem = postagemConvertida;
 
 
@@ -112,14 +112,14 @@ namespace Aisentona.Biz.Services.Postagens
 
             return novaPostagem;
         }
-        public Postagem EditarPostagem(PostagemDTO postagemDTO)
+        public Postagem EditarPostagem(PostagemResponse postagemResponse)
         {
-            Postagem postagem = _context.CF_Postagem.FirstOrDefault(x => x.Id_Postagem == postagemDTO.IdPostagem);
+            Postagem postagem = _context.CF_Postagem.FirstOrDefault(x => x.Id_Postagem == postagemResponse.IdPostagem);
             
             if (postagem is not null) 
             {
                 // Obtém o usuário do banco de dados pelo id_Usuario
-                var usuario = _context.CF_Colaborador.FirstOrDefault(u => u.Id_Usuario == postagemDTO.IdUsuario);
+                var usuario = _context.CF_Colaborador.FirstOrDefault(u => u.Id_Usuario == postagemResponse.IdUsuario);
 
                 if (usuario == null)
                 {
@@ -136,12 +136,17 @@ namespace Aisentona.Biz.Services.Postagens
                     throw new UnauthorizedAccessException("Usuário não possui permissão para editar postagens.");
                 }
 
-                postagem.Titulo = postagemDTO.Titulo;
-                postagem.Conteudo = postagemDTO.Conteudo;
-                postagem.Id_Categoria = postagemDTO.IdCategoria;
-                postagem.Id_Status = postagemDTO.IdStatus;
+                postagem.Titulo = postagemResponse.Titulo;
+                postagem.Descricao = postagemResponse.Descricao;
+                postagem.Conteudo = postagemResponse.Conteudo;
+                postagem.Texto_alterado_por_ia = postagemResponse.TextoAlteradoPorIA;
+                postagem.Palavras_retiradas_por_ia = postagemResponse.PalavrasRetiradasPorIA;
+                postagem.Imagem_base64 = postagemResponse.Imagem;
+                postagem.Id_Categoria = postagemResponse.IdCategoria;
+                postagem.Id_Status = postagemResponse.IdStatus;
                 postagem.DT_UltimaAlteracao = DateTime.Now;
                 postagem.Ds_UltimaAlteracao = GetWindowsUsername();
+
 
                 _context.CF_Postagem.Update(postagem);
                 _context.SaveChanges();
@@ -168,29 +173,46 @@ namespace Aisentona.Biz.Services.Postagens
             return postagem;
         }
 
-        private Postagem ConverterPostagem(PostagemDTO postagemDTO)
+
+        public List<PostagemRequest> FiltrarPostagensPorEditoria(int IdCategoria)
+        {
+            List<Postagem> listaDePostagensFiltradas = _context.CF_Postagem
+                .Include(p => p.Categoria) // Inclui a relação com a Categoria
+                .Where(p => p.Fl_Ativo == true && p.Id_Categoria == IdCategoria) // Filtra apenas as postagens ativas
+                .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
+                .ToList();
+
+            // Mapeia as postagens para PostagemDTO
+            return MapearParaDTO(listaDePostagensFiltradas);
+
+        }
+
+
+
+        #region /*Métodos de conversão*/
+        private Postagem ConverterPostagem(PostagemResponse postagemResponse)
         {
 
             Postagem potagemConvertida = new Postagem()
             {
-                Id_Categoria = postagemDTO.IdCategoria,
-                Id_Status = postagemDTO.IdStatus,
-                Titulo = postagemDTO.Titulo,
-                Conteudo = postagemDTO.Conteudo,
-                Descricao = postagemDTO.Descricao,
-                Id_Usuario = postagemDTO.IdUsuario,
-                Imagem_base64 = postagemDTO.Imagem,
-                Texto_alterado_por_ia = postagemDTO.TextoAlteradoPorIA,
-                Palavras_retiradas_por_ia = postagemDTO.PalavrasRetiradasPorIA
+                Id_Categoria = postagemResponse.IdCategoria,
+                Id_Status = postagemResponse.IdStatus,
+                Titulo = postagemResponse.Titulo,
+                Conteudo = postagemResponse.Conteudo,
+                Descricao = postagemResponse.Descricao,
+                Id_Usuario = postagemResponse.IdUsuario,
+                Imagem_base64 = postagemResponse.Imagem,
+                Texto_alterado_por_ia = postagemResponse.TextoAlteradoPorIA,
+                Palavras_retiradas_por_ia = postagemResponse.PalavrasRetiradasPorIA
             };
 
             return potagemConvertida;
 
         }
 
-        private PostagemDTO ConverterPostagemDTO(Postagem? postagem)
+        private PostagemRequest ConverterPostagemDTO(Postagem? postagem)
         {
-            PostagemDTO postagemDTO = new PostagemDTO()
+            PostagemRequest postagemDTO = new PostagemRequest()
             {
                 IdCategoria = postagem.Id_Categoria,
                 IdStatus = postagem.Id_Status,
@@ -207,9 +229,9 @@ namespace Aisentona.Biz.Services.Postagens
             return postagemDTO;
         }
 
-        private List<PostagemDTO> MapearParaDTO(List<Postagem> postagens)
+        private List<PostagemRequest> MapearParaDTO(List<Postagem> postagens)
         {
-            return postagens.Select(postagem => new PostagemDTO
+            return postagens.Select(postagem => new PostagemRequest
             {
                 IdPostagem = postagem.Id_Postagem,
                 IdCategoria = postagem.Id_Categoria,
@@ -226,7 +248,7 @@ namespace Aisentona.Biz.Services.Postagens
             }).ToList();
         }
 
-
+        #endregion
 
     }
 }

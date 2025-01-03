@@ -29,18 +29,18 @@ namespace Aisentona.API.Controllers.Postagens
                 return BadRequest("ID inválido.");
             }
 
-            PostagemDTO postagemDto = _postagemService.CarregarPostagem(id);
-            if (postagemDto == null)
+            PostagemRequest postagemRequest = _postagemService.CarregarPostagem(id);
+            if (postagemRequest == null)
             {
                 return NotFound();
             }
-            return Ok(postagemDto);
+            return Ok(postagemRequest);
         }
 
-        [HttpGet]
+        [HttpGet("listar-Postagens")]
         public IActionResult CarregarListaDePostagens()
         {
-            List<PostagemDTO> listaDePostagens = _postagemService.ListarPostagens();
+            List<PostagemRequest> listaDePostagens = _postagemService.ListarPostagens();
             if (listaDePostagens == null)
             {
                 return NotFound();
@@ -51,7 +51,7 @@ namespace Aisentona.API.Controllers.Postagens
         [HttpGet("listar-ultimas-postagens")]
         public IActionResult ListarUltimasPostagens()
         {
-            List<PostagemDTO> listaDePostagens = _postagemService.ListarUltimasPostagens();
+            List<PostagemRequest> listaDePostagens = _postagemService.ListarUltimasPostagens();
             if (listaDePostagens == null)
             {
                 return NotFound();
@@ -59,37 +59,60 @@ namespace Aisentona.API.Controllers.Postagens
             return Ok(listaDePostagens);
         }
 
-
-        [HttpPost]
-        public IActionResult CreatePost([FromBody] PostagemDTO postagemDTO)
+        [HttpGet("listar-por-editoria/{idEditoria}")]
+        public IActionResult FiltrarPostagensPorEditoria(int idEditoria)
         {
-            if (postagemDTO is null)
+            List<PostagemRequest> listaDePostagensFiltradas = _postagemService.FiltrarPostagensPorEditoria(idEditoria);
+            if (listaDePostagensFiltradas == null)
+            {
+                return NotFound();
+            }
+            return Ok(listaDePostagensFiltradas);
+        }
+
+
+        [HttpPost("criar-noticia")]
+        public IActionResult CreatePost([FromBody] PostagemResponse postagemResponse)
+        {
+            if (postagemResponse is null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
 
-            var postagem = _postagemService.CriarPostagem(postagemDTO);
+            var postagem = _postagemService.CriarPostagem(postagemResponse);
 
             return Ok(postagem);
         }
-        
+
         [HttpPut("editar/{idPostagem}")]
-        public IActionResult UpdatePostagem(PostagemDTO postagemDTO)
+        public IActionResult UpdatePostagem(int idPostagem, [FromBody] PostagemResponse postagemResponse)
         {
             try
             {
-                Postagem postagem = new();
+                // Valida se o ID na rota corresponde ao ID no corpo da requisição
+                if (idPostagem != postagemResponse.IdPostagem)
+                {
+                    return BadRequest("Inconsistência entre o ID da URL e o corpo da requisição.");
+                }
 
-                postagem = _postagemService.EditarPostagem(postagemDTO);
-                
-                return Ok(postagemDTO);
+                // Chama o serviço para atualizar a postagem
+                var postagemAtualizada = _postagemService.EditarPostagem(postagemResponse);
+
+                if (postagemAtualizada == null)
+                {
+                    return NotFound($"Postagem com ID {idPostagem} não encontrada.");
+                }
+
+                return Ok(postagemAtualizada);
             }
-            catch (KeyNotFoundException ex)
+            catch (Exception ex)
             {
-                return NotFound(ex.Message);
+                // Log da exceção (não exibido aqui)
+                return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
             }
         }
-        
+
+
         // Delete api/<ColaboradorController>
         [HttpPut("ativar-desativar/{idPostagem}")]
         public IActionResult SwapFlagColaborador(int idPostagem)
