@@ -42,7 +42,7 @@
     outline: none; /* Remove a borda ao focar no elemento */
     box-shadow: none; /* Remove qualquer sombra aplicada */
     resize: none; /* Impede o redimensionamento manual */
-   /* overflow: hidden;  Oculta a barra de rolagem */
+   
 }
 
 

@@ -18,6 +18,7 @@ import { SnackbarService } from '../../services/snackbar.service';
 import { ImagemService } from '../../services/imagem-service';
 import { TextoService } from '../../services/texto-service';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { ContentChange, QuillModule } from 'ngx-quill'
 
 @Component({
   selector: 'app-cadastro-de-noticia',
@@ -35,12 +36,15 @@ import { TextFieldModule } from '@angular/cdk/text-field';
     MatIconModule,
     FormsModule,
     TextFieldModule,
+    QuillModule,
+    
   ],
 
   templateUrl: './cadastro-de-noticia.component.html',
   styleUrls: ['./cadastro-de-noticia.component.css'],
 })
 export class CadastroDeNoticiaComponent {
+
 
   
   listaDeEditorias: EditoriaRequest[] = []; // Variável para armazenar as editorias
@@ -153,15 +157,5 @@ export class CadastroDeNoticiaComponent {
     }
   }
   
-
-  //LÓGICA PARA CAIXA DE TEXTO AUMENTAR
-
-  AumentarCaixaDeTexto(event: Event): void {
-    const textarea = event.target as HTMLTextAreaElement;
-    this._textoService.ajustarAlturaTextarea(textarea);
-  }
-
-
-
 
 }

@@ -18,6 +18,7 @@
   <!-- Lista -->
   <div class="lista-noticias" *ngIf="infosPostagem.length > 1">
     <mat-card *ngFor="let postagem of infosPostagem.slice(1)" appearance="outlined">
+      <h2>{{ postagem?.nomeCategoria }}</h2>
       <img class="imagem-banner-maior" mat-card-image src="{{ postagem.imagem }}"
       (click)="navegarParaNoticia(postagem.idPostagem)" 
            alt="Imagem da notícia destacada">

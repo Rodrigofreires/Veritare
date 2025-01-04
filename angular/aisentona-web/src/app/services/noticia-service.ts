@@ -14,7 +14,6 @@ import { PostagemRequest } from '../core/interfaces/Request/Postagem';
 
 export class NoticiaService {
 
-
   private apiUrl = environment.apiUrl;
   private API = 'postagem';
 
@@ -44,18 +43,20 @@ editarNoticia(id: number, postagem: PostagemResponse): Observable<PostagemRespon
 }
 
 
-// Buscar postagem por ID
+// BUSCAR POSTAGEM POR ID
 buscarPostagemPorId(id: number): Observable<PostagemRequest> {
   return this.http.get<PostagemRequest>(`${this.apiUrl}/${this.API}/${id}`);
 }
 
+// LISTAR ÚLTIMAS POSTAGENS
 carregarUltimasPostagens(): Observable<PostagemRequest[]> {
   return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-ultimas-postagens`)
 
 }
 
+//CARREGAR POSTAGENS POR EDITORIA
 carregarPostagensPorEditoria(idEditoria: number): Observable<PostagemRequest[]> {
-  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-ultimas-postagens/${idEditoria}`)
+  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-por-editoria/${idEditoria}`)
 
 }
 

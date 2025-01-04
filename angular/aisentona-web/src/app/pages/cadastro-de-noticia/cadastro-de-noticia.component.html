@@ -45,16 +45,13 @@
         <div class="textos-principais">
             <!-- Gerado Por Humano -->
             <h3>GERADO POR HUMANO</h3>
-            <mat-form-field class="texto-da-noticia">
-                <mat-label>ESCREVA O TEXTO AQUI</mat-label>
-                <textarea 
-                matInput
-                cdkTextareaAutosize
-                cdkAutosizeMinRows="10"
-                cdkAutosizeMaxRows="5000"
-                [(ngModel)]="infosPostagem.conteudo"></textarea>
-            </mat-form-field>
-
+            <div class="texto-da-noticia">
+                <quill-editor class="texto-da-noticia"
+                  [(ngModel)]="infosPostagem.conteudo"
+                  [style.height]="'300px'">
+                </quill-editor>
+            </div>
+        
             <!-- Gerado Por AISENTONA -->
             <h3>GERADO PELA AISENTONA</h3>
             <mat-form-field class="texto-da-noticia" appearance="fill">

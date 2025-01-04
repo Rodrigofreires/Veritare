@@ -18,6 +18,7 @@ import { StatusRequest } from '../../core/interfaces/Request/Status';
 import { ImagemService } from '../../services/imagem-service';
 import { TextoService } from '../../services/texto-service';
 import { TextFieldModule } from '@angular/cdk/text-field';
+import { QuillEditorBase, QuillModule } from 'ngx-quill';
 
 
 @Component({
@@ -33,6 +34,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
     FooterComponent,
     ContainerComponent,
     TextFieldModule,
+    QuillModule,
 
 ],
   selector: 'app-pagina-editar-noticia',
@@ -47,6 +49,9 @@ export class PaginaEditarNoticiaComponent implements OnInit {
   editoriaSelecionada: number = 0;
   statusSelecionado: number = 0;
   imagemBase64: string = '';
+  isCodeView: boolean = false;
+  modules: any
+
 
   constructor(
     private fb: FormBuilder,
@@ -57,7 +62,6 @@ export class PaginaEditarNoticiaComponent implements OnInit {
     private _snackBarService: SnackbarService,
     private _router: Router
 
-
   ) {}
 
   ngOnInit(): void {
@@ -67,7 +71,58 @@ export class PaginaEditarNoticiaComponent implements OnInit {
     }
     this.carregarEditorias();
     this.carregarStatus();
+
+    this.modules = {
+      toolbar: {
+        container: [
+          // Grupo de botões de estilo de texto
+          ['bold', 'italic', 'underline', 'strike'], // Negrito, Itálico, Sublinhado, Tachado
+    
+          // Grupo de cabeçalhos
+          [{ header: 1 }, { header: 2 }, { header: [3, 4, 5, 6] }], // Vários níveis de cabeçalho
+    
+          // Listas e indentação
+          [{ list: 'ordered' }, { list: 'bullet' }], // Listas ordenadas e não ordenadas
+          [{ indent: '-1' }, { indent: '+1' }], // Indentação
+    
+          // Alinhamento
+          [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
+    
+          // Cores de texto e fundo
+          [{ color: [] }, { background: [] }], // Seletor de cores e fundo
+    
+          // Diagramação e links
+          ['link', 'image', 'video'], // Adicionar links, imagens e vídeos
+    
+          // Código e outros
+          ['blockquote', 'code-block'], // Bloco de citação e código
+    
+          // Botão personalizado
+          ['clean', 'code-view'] // Limpar formatação e alternar para visualização de código
+        ],
+        handlers: {
+          'code-view': this.toggleCodeView.bind(this) // Vincula a função de alternância
+        }
+      }
+    };
+    
+
   }
+
+  toggleCodeView(): void {
+    this.isCodeView = !this.isCodeView;
+    const editor = document.querySelector('.ql-editor') as HTMLElement;
+    if (editor) {
+      if (this.isCodeView) {
+        const html = editor.innerHTML;
+        editor.innerText = html; 
+      } else {
+        const text = editor.innerText;
+        editor.innerHTML = text; 
+      }
+    }
+  }
+
 
   carregarEditorias(): void {
     this._noticiaService.buscarListaDeEditorias().subscribe(
@@ -152,4 +207,7 @@ export class PaginaEditarNoticiaComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
+
+
+
 }

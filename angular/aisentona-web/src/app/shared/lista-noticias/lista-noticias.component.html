@@ -1,18 +1,22 @@
-<div class="painel-noticias">
-    <mat-card *ngFor="let noticia of displayedNoticias" class="item-noticia" appearance="outlined">
-        <mat-card-header>
-            <mat-card-title-group>
-                <mat-card-title>{{ noticia.title }}</mat-card-title>
-              </mat-card-title-group>
-        </mat-card-header>
-        <div class="imagem-descricao">
-            <img mat-card-md-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Image of a Shiba Inu">
-            <mat-card-content>
-              {{ noticia.content }}
-            </mat-card-content>
-        </div>
-
-    </mat-card>
-    <button class="botao-ver-mais" mat-raised-button (click)="loadMore()">Ver Mais</button>
-  </div>
+  <div class="painel-noticias">
+    <mat-card *ngFor="let postagem of infosPostagem | slice:0:quantidadeNoticias" class="item-noticia" appearance="outlined">
   
+      <!-- Imagem -->
+      <img class="imagem-noticia" mat-card-image src="{{ postagem.imagem }}" alt="Imagem da notícia" (click)="navegarParaNoticia(postagem.idPostagem)">
+      <div class="imagem-descricao">
+        <!-- Nome da Editoria -->
+        <div class="detalhes-texto">
+          <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
+          <!-- Título -->
+          <h3 class="titulo-noticia" (click)="navegarParaNoticia(postagem.idPostagem)">
+            {{ postagem.titulo }}
+          </h3>
+          <!-- Descrição -->
+          <p class="descricao-noticia">{{ postagem.descricao }}</p>
+        </div>
+  
+      </div>
+    </mat-card>
+
+  </div>
+

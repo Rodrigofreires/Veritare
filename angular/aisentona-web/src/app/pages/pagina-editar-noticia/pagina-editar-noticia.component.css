@@ -45,6 +45,9 @@
    /* overflow: hidden;  Oculta a barra de rolagem */
 }
 
+.ql-code-view::after {
+  content: '</>';
+}
 
 .titulo-pagina{
     font-size: 30px;

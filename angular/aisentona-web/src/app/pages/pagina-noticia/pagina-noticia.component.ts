@@ -3,15 +3,24 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { CardLeiaTambemComponent } from "../../shared/card-leia-tambem/card-leia-tambem.component";
 import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
+import {MatListModule} from '@angular/material/list';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   standalone: true,
   selector: 'app-pagina-noticia',
-  imports: [MatCardModule, MatButtonModule, RouterModule, CommonModule, CardLeiaTambemComponent],
+  imports: [
+    MatCardModule,
+    MatButtonModule,
+    RouterModule,
+    CommonModule,
+    MatListModule,
+    QuillModule,
+      
+    ],
   templateUrl: './pagina-noticia.component.html',
   styleUrl: './pagina-noticia.component.css'
 })
@@ -28,11 +37,12 @@ export class PaginaNoticiaComponent {
 
   ngOnInit(): void {
     this.carregaNoticia();
-  }
 
+  }
 
 textoSelecionado: string = 'ia'; // Exibe o texto da IA por padrão
 infosPostagem: PostagemRequest = {} as PostagemRequest;
+noticiasRelacionadas: PostagemRequest[] = [];
 
   mostrarTexto(opcao: string): void {
     this.textoSelecionado = opcao;
@@ -45,6 +55,7 @@ infosPostagem: PostagemRequest = {} as PostagemRequest;
       this. _noticiaService.buscarPostagemPorId(+id).subscribe( // Converte para number usando '+'
         (dados) => {
           this.infosPostagem = dados;
+          this.carregaNoticiasRelacionadas();
         },
         (erro) => {
           this._snackBarService.MostrarErro('Erro ao carregar a notícia:', erro);
@@ -68,6 +79,20 @@ infosPostagem: PostagemRequest = {} as PostagemRequest;
     // Redirecionar para a página de edição com o ID da postagem
     this._router.navigate(['/editar-noticia', id]);
   }
+
+  carregaNoticiasRelacionadas(): void {
+    this._noticiaService.carregarPostagensPorEditoria(this.infosPostagem.idCategoria).subscribe(
+      (dados: PostagemRequest[]) => {
+        console.log('Dados recebidos:', dados);
+        this.noticiasRelacionadas = dados; // Armazena as notícias relacionadas
+      },
+      (erro) => {
+        this._snackBarService.MostrarErro('Erro ao carregar as notícias:', erro);
+        console.error('Erro ao carregar as notícias:', erro);
+      }
+    );
+  }
+
 
 }
   

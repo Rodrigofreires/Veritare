@@ -10,33 +10,53 @@
     width: 100%;
   }
   
-  .cabecalho-noticia{
-    display: flex !important;
-    flex-direction: column;
-    margin-bottom: 40px;
+  .cabecalho-pagina {
+    display: flex;
+    align-items: center; /* Alinha verticalmente os itens */
+    justify-content: space-between; /* Coloca o botão e o texto nas extremidades */
+    margin-bottom: 20px; /* Adiciona espaço abaixo do cabeçalho */
   }
+
+  .nome-categoria {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .botao-editar {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
 
   .noticia-card {
     width: 100%;
     border: none; /* Remove qualquer borda padrão */
     box-shadow: none; /* Remove sombra do Material Design */
   }
+
+  .titulo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinha os textos à esquerda */
+    gap: 4px; /* Espaço entre título, subtítulo e data */
+  }
   
   .noticia-titulo {
-    font-size: 24px;
+    font-size: 40px;
     font-weight: bold;
+    line-height: 1.2;
   }
   
   .noticia-subtitulo {
-    margin-top: 20px;
     font-size: 18px;
     color: #757575;
   }
-
+  
   .data-criacao {
-    margin-top: 8px; /* Espaço entre subtítulo e data */
-    font-size: 18px;
+    font-size: 14px;
     color: #757575;
+    margin-top: 0; /* Remove margem superior extra */
   }
   
   .imagem-da-noticia {
@@ -91,13 +111,54 @@
     background-color: #115293; /* Cor mais escura ao passar o mouse */
   }
 
-  .card-leia-tambem{
+  .lista-noticias-relacionadas{
     width: 100%;
     display: flex;
     align-items: start;
     justify-content: start !important;
+    border: none; /* Remove qualquer borda padrão */
+    box-shadow: none; /* Remove sombra do Material Design */
   }
 
-  .mdc-text-field--filled{
-    background-color: none !important;
+  .lista-noticias-relacionadas {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
   }
+  
+  .noticias-relacionadas-card {
+    background: none; /* Remove o fundo do mat-card */
+    box-shadow: none; /* Remove sombras */
+    border: none; /* Remove bordas */
+    padding: 0; /* Remove padding interno */
+    margin: 0;
+  }
+  
+  .noticias-relacionadas-list {
+    padding: 0;
+    margin: 0;
+    list-style: none; /* Remove marcadores de lista */
+  }
+  
+  mat-list-item {
+    border: none;
+    box-shadow: none;
+    padding: 5px 0; /* Espaçamento entre os itens */
+  }
+  
+  .noticia-link {
+    text-decoration: underline;
+    color: blue;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer; /* Garante o ponteiro de link */
+    pointer-events: auto; /* Certifica que o link está clicável */
+  }
+  
+  .noticia-link:hover {
+    color: darkblue; /* Escurece a cor do link ao passar o mouse */
+  }
+  

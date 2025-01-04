@@ -45,20 +45,17 @@
   <div>
   
       <div class="textos-principais-editados">
-
         <!-- Texto Gerado Por Humano -->
-        <h3>GERADO POR HUMANO</h3>
-        <mat-form-field class="texto-da-noticia-editada">
-          <mat-label>TEXTO ORIGINAL</mat-label>
-          <textarea
-          matInput
-          cdkTextareaAutosize
-          cdkAutosizeMinRows="10"
-          cdkAutosizeMaxRows="5000"
-          [(ngModel)]="infosPostagem.conteudo"
-          ></textarea>
-        </mat-form-field>
-  
+        <h3>GERADO POR HUMANO</h3>        
+        
+        <quill-editor
+        class="texto-da-noticia-editada"
+        [(ngModel)]="infosPostagem.conteudo"
+        [modules]="modules"
+        [style.height]="'800px'"
+        >
+      </quill-editor>
+
         <!-- Texto Gerado Pela IASentona -->
         <h3>GERADO PELA IASENTONA</h3>
         <mat-form-field class="texto-da-noticia-editada" appearance="fill">

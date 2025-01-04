@@ -25,4 +25,17 @@
         
     }
 
+    .home-link {
+      text-decoration: none;
+      color: inherit;
+      font-size: 24px; /* Ajuste o tamanho da fonte conforme necessário */
+      font-weight: bold; /* Se desejar um texto mais destacado */
+      cursor: pointer;
+    }
+    
+    .home-link:hover {
+      color: #1976d2; /* Cor ao passar o mouse, ajuste conforme o tema */
+    }
+
+
   }

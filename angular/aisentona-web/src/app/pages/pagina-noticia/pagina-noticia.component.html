@@ -1,31 +1,31 @@
 <div class="noticia-container mat-elevation-z4">
   <mat-card class="noticia-card">
 
-      <h2>{{ infosPostagem.nomeCategoria }}</h2>
-
-      <div class="botoes-de-envio">
-        <button class="botao" color="primary"
-            (click)="editarNoticia()">
-            EDITAR
-        </button>
+    <div class="cabecalho-pagina">
+      <h2 class="nome-categoria">{{ infosPostagem.nomeCategoria }}</h2>
+      <button class="botao-editar" mat-raised-button color="primary" (click)="editarNoticia()">
+        EDITAR
+      </button>
     </div>
+    
 
     <mat-card-header class="cabecalho-noticia">
-      <mat-card-title class="noticia-titulo">
-        {{ infosPostagem.titulo }}
-      </mat-card-title>
-      <mat-card-subtitle class="noticia-subtitulo">
-        {{ infosPostagem.descricao }}
-      </mat-card-subtitle>
-      <div class="data-criacao">
-        <p><data>{{ infosPostagem.dataCriacao }}</data></p>
+      <div class="titulo-container">
+        <mat-card-title class="noticia-titulo">
+          {{ infosPostagem.titulo }}
+        </mat-card-title>
+        <mat-card-subtitle class="noticia-subtitulo">
+          {{ infosPostagem.descricao }}
+        </mat-card-subtitle>
+        <div class="data-criacao">
+          <p><strong>Publicado em:</strong> {{ infosPostagem.dataCriacao | date: 'dd/MM/yyyy - HH:mm' }}</p>
+        </div>
       </div>
     </mat-card-header>
-
     <div class="imagem-da-noticia">
-      <img mat-card-image src="{{ infosPostagem.imagem }}"
-        alt="Imagem da Notícia" class="noticia-imagem" />
+      <img mat-card-image src="{{ infosPostagem.imagem }}" alt="Imagem da Notícia" class="noticia-imagem" />
     </div>
+    
 
     <!-- Botões de Controle -->
     <div class="botoes-controle">
@@ -46,14 +46,14 @@
 
     <!-- Conteúdo Controlado -->
     <div *ngIf="textoSelecionado === 'ia'">
-      <h3>Gerado pela IASentona</h3>
+      <h2>Gerado pela IASentona</h2>
       <mat-card-content>
         <p class="noticia-conteudo">
           {{ infosPostagem.textoAlteradoPorIA }}
         </p>
       </mat-card-content>
 
-      <h3>Palavras e opiniões retiradas</h3>
+      <h2>Palavras e opiniões retiradas</h2>
       <mat-card-content>
         <p class="noticia-conteudo">
           {{ infosPostagem.palavrasRetiradasPorIA}}
@@ -62,11 +62,14 @@
     </div>
 
     <div *ngIf="textoSelecionado === 'humano'">
-      <h3>Matéria escrita por humanos</h3>
+      
+      <h2>Matéria escrita por humanos</h2>
       <mat-card-content>
-        <p class="noticia-conteudo">
-          {{ infosPostagem.conteudo }}
-        </p>
+        <quill-view
+          class="noticia-conteudo"
+          [content]="infosPostagem.conteudo">
+        </quill-view>
+
       </mat-card-content>
     </div>
 
@@ -74,8 +77,21 @@
       <button class="botao" color="primary">Compartilhar</button>
     </mat-card-actions>
   </mat-card>
-  <div class="card-leia-tambem">
-    <app-card-leia-tambem></app-card-leia-tambem>
+
+  <div class="lista-noticias-relacionadas">
+    <mat-card class="noticias-relacionadas-card">
+      <h2>Notícias Relacionadas</h2>
+      <mat-list class="noticias-relacionadas-list">
+        <mat-list-item *ngFor="let noticia of noticiasRelacionadas | slice:0:5">
+          <a href="/noticia/{{noticia.idPostagem}}" class="noticia-link">
+            {{ noticia.titulo }}
+          </a>
+        </mat-list-item>
+      </mat-list>
+    </mat-card>
   </div>
+  
+  
+
 
 </div>
