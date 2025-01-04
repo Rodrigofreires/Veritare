@@ -44,8 +44,6 @@ import { ContentChange, QuillModule } from 'ngx-quill'
   styleUrls: ['./cadastro-de-noticia.component.css'],
 })
 export class CadastroDeNoticiaComponent {
-
-
   
   listaDeEditorias: EditoriaRequest[] = []; // Variável para armazenar as editorias
   ListaDeStatus: StatusRequest[] = []; // Variável para armazenar os status

@@ -3,15 +3,18 @@
     padding: 10px;
     display: flex;
     flex-direction: column;
+    resize: none !important; 
 }
 
 .titulo {
     width: 100%;
+    resize: none !important; 
 }
 .descricao{
     width: 100%;
     margin: 0;
     padding: 0;
+    resize: none !important; 
 
 } 
 .editoria{
@@ -35,6 +38,7 @@
 }
 
 .texto-da-noticia-editada{
+  font-size: 12px;
     width: 100%;
     min-height: 300px;
     justify-content: space-between;
@@ -44,6 +48,12 @@
     resize: none; /* Impede o redimensionamento manual */
    /* overflow: hidden;  Oculta a barra de rolagem */
 }
+
+.texto-da-noticia-editada .ql-editor {
+  font-size: 18px; /* Aumenta o tamanho da fonte */
+  line-height: 1.6; /* Ajusta o espaçamento entre as linhas */
+}
+
 
 .ql-code-view::after {
   content: '</>';

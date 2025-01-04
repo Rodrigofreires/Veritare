@@ -1,0 +1,40 @@
+<app-container>
+    <h2 class="nome-categoria"> {{ nomeCategoria }} </h2>
+  
+    <div class="painel-noticias">
+      <mat-card
+        *ngFor="let postagem of noticiasRelacionadas | slice: 0:quantidadeNoticias"
+        class="item-noticia"
+        appearance="outlined"
+      >
+        <!-- Imagem -->
+        <div class="imagem-descricao">
+          <img
+            class="imagem-noticia"
+            mat-card-image
+            [src]="postagem.imagem"
+            alt="Imagem da notícia"
+            (click)="navegarParaNoticia(postagem.idPostagem)"
+          />
+          <!-- Detalhes da Notícia -->
+          <div class="detalhes-texto">
+            <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
+            <h3
+              class="titulo-noticia"
+              (click)="navegarParaNoticia(postagem.idPostagem)"
+            >
+              {{ postagem.titulo }}
+            </h3>
+            <p class="descricao-noticia">{{ postagem.descricao }}</p>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  
+    <!-- Botão para carregar mais notícias -->
+    <button class="botao-ver-mais" (click)="carregarMaisNoticias()">
+      Ver Mais
+    </button>
+  </app-container>
+  <app-footer></app-footer>
+  

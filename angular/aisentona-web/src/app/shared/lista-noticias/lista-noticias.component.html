@@ -1,22 +1,42 @@
-  <div class="painel-noticias">
-    <mat-card *ngFor="let postagem of infosPostagem | slice:0:quantidadeNoticias" class="item-noticia" appearance="outlined">
-  
-      <!-- Imagem -->
-      <img class="imagem-noticia" mat-card-image src="{{ postagem.imagem }}" alt="Imagem da notícia" (click)="navegarParaNoticia(postagem.idPostagem)">
-      <div class="imagem-descricao">
-        <!-- Nome da Editoria -->
-        <div class="detalhes-texto">
-          <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
-          <!-- Título -->
-          <h3 class="titulo-noticia" (click)="navegarParaNoticia(postagem.idPostagem)">
-            {{ postagem.titulo }}
-          </h3>
-          <!-- Descrição -->
-          <p class="descricao-noticia">{{ postagem.descricao }}</p>
-        </div>
-  
+<div class="painel-noticias">
+  <!-- Exibição das postagens -->
+  <mat-card
+    *ngFor="let postagem of postagensExibidas"
+    class="item-noticia"
+    appearance="outlined"
+  >
+    <!-- Imagem -->
+    <img
+      class="imagem-noticia"
+      mat-card-image
+      [src]="postagem.imagem"
+      alt="Imagem da notícia"
+      (click)="navegarParaNoticia(postagem.idPostagem)"
+    />
+    <div class="imagem-descricao">
+      <!-- Nome da Editoria -->
+      <div class="detalhes-texto">
+        <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
+        <!-- Título -->
+        <h3
+          class="titulo-noticia"
+          (click)="navegarParaNoticia(postagem.idPostagem)"
+        >
+          {{ postagem.titulo }}
+        </h3>
+        <!-- Descrição -->
+        <p class="descricao-noticia">{{ postagem.descricao }}</p>
       </div>
-    </mat-card>
+    </div>
+  </mat-card>
 
-  </div>
+<!-- Botão para carregar mais notícias -->
+<div class="botoes-de-envio " *ngIf="quantidadeExibida < infosTodasAsPostagem.length">
+  <button class="botao"  (click)="carregarMaisNoticias()">
+    Carregar Mais
+  </button>
+</div>
+
+
+</div>
 

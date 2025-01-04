@@ -48,6 +48,16 @@ buscarPostagemPorId(id: number): Observable<PostagemRequest> {
   return this.http.get<PostagemRequest>(`${this.apiUrl}/${this.API}/${id}`);
 }
 
+// LISTAR TODAS AS POSTAGENS
+carregarTodasAsPostagens(): Observable<PostagemRequest[]> {
+  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-postagens`, {
+    headers: {
+      'Content-Type': 'application/json', // Certifique-se de que o cabeçalho está correto
+    }
+  });
+}
+
+
 // LISTAR ÚLTIMAS POSTAGENS
 carregarUltimasPostagens(): Observable<PostagemRequest[]> {
   return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-ultimas-postagens`)

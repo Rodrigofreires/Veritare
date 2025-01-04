@@ -37,7 +37,7 @@ namespace Aisentona.API.Controllers.Postagens
             return Ok(postagemRequest);
         }
 
-        [HttpGet("listar-Postagens")]
+        [HttpGet("listar-postagens")]
         public IActionResult CarregarListaDePostagens()
         {
             List<PostagemRequest> listaDePostagens = _postagemService.ListarPostagens();
@@ -58,6 +58,7 @@ namespace Aisentona.API.Controllers.Postagens
             }
             return Ok(listaDePostagens);
         }
+
 
         [HttpGet("listar-por-editoria/{idEditoria}")]
         public IActionResult FiltrarPostagensPorEditoria(int idEditoria)

@@ -18,7 +18,7 @@ import { StatusRequest } from '../../core/interfaces/Request/Status';
 import { ImagemService } from '../../services/imagem-service';
 import { TextoService } from '../../services/texto-service';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { QuillEditorBase, QuillModule } from 'ngx-quill';
+import { QuillModule,  } from 'ngx-quill';
 
 
 @Component({
@@ -75,37 +75,18 @@ export class PaginaEditarNoticiaComponent implements OnInit {
     this.modules = {
       toolbar: {
         container: [
-          // Grupo de botões de estilo de texto
-          ['bold', 'italic', 'underline', 'strike'], // Negrito, Itálico, Sublinhado, Tachado
-    
-          // Grupo de cabeçalhos
-          [{ header: 1 }, { header: 2 }, { header: [3, 4, 5, 6] }], // Vários níveis de cabeçalho
-    
-          // Listas e indentação
-          [{ list: 'ordered' }, { list: 'bullet' }], // Listas ordenadas e não ordenadas
-          [{ indent: '-1' }, { indent: '+1' }], // Indentação
-    
-          // Alinhamento
-          [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
-    
-          // Cores de texto e fundo
-          [{ color: [] }, { background: [] }], // Seletor de cores e fundo
-    
-          // Diagramação e links
-          ['link', 'image', 'video'], // Adicionar links, imagens e vídeos
-    
-          // Código e outros
-          ['blockquote', 'code-block'], // Bloco de citação e código
-    
-          // Botão personalizado
-          ['clean', 'code-view'] // Limpar formatação e alternar para visualização de código
-        ],
-        handlers: {
-          'code-view': this.toggleCodeView.bind(this) // Vincula a função de alternância
-        }
-      }
+          // Configuração da toolbar
+          ['bold', 'italic', 'underline', 'strike'], // Estilos
+          [{ header: [1, 2, 3, false] }], // Cabeçalhos
+          [{ list: 'ordered' }, { list: 'bullet' }], // Listas
+          [{ align: [] }], // Alinhamento
+          ['link', 'image', 'video'], // Mídia
+          [{ size: ['small', false, 'large', 'huge'] }], // Tamanho de fonte
+          [{ color: [] }, { background: [] }], // Cores
+          ['clean'] // Limpar formatação
+        ]
+      },
     };
-    
 
   }
 

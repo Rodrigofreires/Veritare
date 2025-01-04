@@ -19,20 +19,10 @@ namespace Aisentona.Biz.Services.Postagens
         }
         private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
 
-        public List<PostagemRequest> ListarPostagens()
-        {
-            // Busca todas as postagens ativas, incluindo as categorias relacionadas
-            List<Postagem> listaDePostagens = _context.CF_Postagem
-                .Include(p => p.Categoria) // Inclui a relação com a Categoria
-                .Where(p => p.Fl_Ativo == true)
-                .ToList();
-
-            return MapearParaDTO(listaDePostagens);
-        }
-
         public List<PostagemRequest> ListarUltimasPostagens()
         {
             // Busca as últimas 4 postagens ativas, ordenadas pela data de criação
+
             List<Postagem> ultimasPostagens = _context.CF_Postagem
                 .Include(p => p.Categoria) // Inclui a relação com a Categoria
                 .Where(p => p.Fl_Ativo == true) // Filtra apenas as postagens ativas
@@ -43,6 +33,20 @@ namespace Aisentona.Biz.Services.Postagens
             // Mapeia as postagens para PostagemDTO
             return MapearParaDTO(ultimasPostagens);
         }
+
+        public List<PostagemRequest> ListarPostagens()
+        {
+     
+            List<Postagem> ultimasPostagens = _context.CF_Postagem
+                .Include(p => p.Categoria) // Inclui a relação com a Categoria
+                .Where(p => p.Fl_Ativo == true) // Filtra apenas as postagens ativas
+                .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
+                .ToList();
+
+            // Mapeia as postagens para PostagemDTO
+            return MapearParaDTO(ultimasPostagens);
+        }
+
 
 
         public PostagemRequest CarregarPostagem(int id)
