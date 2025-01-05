@@ -55,8 +55,6 @@ namespace Aisentona.Biz.Services
             return novoColaborador;
         }
 
-
-
         public Colaborador EditarColaborador(int idColaborador, Colaborador colaboradorDto)
         {
             var colaborador = _context.CF_Colaborador.Find(idColaborador);

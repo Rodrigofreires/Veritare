@@ -47,12 +47,9 @@ export class CadastroDeNoticiaComponent {
   
   listaDeEditorias: EditoriaRequest[] = []; // Variável para armazenar as editorias
   ListaDeStatus: StatusRequest[] = []; // Variável para armazenar os status
-
   editoriaSelecionada: number = 0;
   statusSelecionado: number = 0;
   imagemBase64: string = '';
-  
-
   infosPostagem: PostagemResponse = {} as PostagemResponse;
 
 

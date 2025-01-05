@@ -1,6 +1,8 @@
 ﻿using Aisentona.Biz.Services;
 using Aisentona.Biz.Services.Postagens;
 using Aisentona.DataBase;
+using Aisentona.Entities.Request;
+using Aisentona.Entities.Response;
 using Aisentona.Entities.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -19,7 +19,5 @@ namespace Aisentona.DataBase
         public  string Nome { get; set; }
         public string? Descricao { get; set; }
 
-        ICollection<Postagem> Postagem { get; set; }
-
     }
 }

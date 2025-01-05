@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Aisentona.Entities.ViewModels
-{
+namespace Aisentona.Entities.Request { 
     public class PostagemRequest
     {
         public PostagemRequest()

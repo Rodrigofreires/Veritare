@@ -1,5 +1,7 @@
 ﻿using Aisentona.DataBase;
 using Aisentona.Entities;
+using Aisentona.Entities.Request;
+using Aisentona.Entities.Response;
 using Aisentona.Entities.ViewModels;
 using Aisentona.Enum;
 using Microsoft.AspNetCore.Http.HttpResults;

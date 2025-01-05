@@ -46,7 +46,6 @@ namespace Aisentona.Biz.Services
             _context.SaveChanges();
 
             return telefoneColaborador;
-
         }
 
         public ColaboradorTelefone EditarTelefoneColaborador(int id, ColaboradorTelefone colaboradorTelefoneDto)

@@ -7,6 +7,8 @@ import { PaginaEditarNoticiaComponent } from './pages/pagina-editar-noticia/pagi
 import { PaginaNoticiaComponent } from './pages/pagina-noticia/pagina-noticia.component';
 import { ListagemPorEditoriaComponent } from './pages/listagem-por-editoria/listagem-por-editoria.component';
 import { EditoriaComponent } from './shared/editoria/editoria.component';
+import { LoginComponent } from './authentication/login/login.component';
+
 
 export const routes: Routes = [
   {
@@ -18,6 +20,10 @@ export const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
   {
     path: 'noticia/:id',

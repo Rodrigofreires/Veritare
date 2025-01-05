@@ -29,7 +29,8 @@ namespace Aisentona.Entities
                     "VisualizarPostsComuns",
                     "VisualizarPostsPremium",
                     "Comentar",
-                    "Compartilhar"
+                    "Compartilhar",
+                    "EditarUsuario"
                 },
                 Autorizacao.EditorChefe => new List<string>
                 {

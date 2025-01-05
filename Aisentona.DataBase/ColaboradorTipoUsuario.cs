@@ -17,12 +17,14 @@ namespace Aisentona.DataBase
             DT_Criacao = dt_Criacao;
             DT_UltimaAlteracao = dt_UltimaAlteracao;
         }
+
         [Key, ForeignKey("Colaborador")]
         public int Id_TipoUsuario { get; set; }
         public string Nm_TipoUsuario { get; set; }
         public bool Fl_Ativo { get; set; }
         public DateTime? DT_Criacao { get; set; } = DateTime.UtcNow;
         public DateTime DT_UltimaAlteracao { get; set; } = DateTime.UtcNow;
+
 
 
     }
