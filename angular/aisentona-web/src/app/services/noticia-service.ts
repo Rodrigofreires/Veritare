@@ -8,7 +8,7 @@ import { PostagemResponse } from '../core/interfaces/Response/Postagem';
 import { PostagemRequest } from '../core/interfaces/Request/Postagem';
 
 @Injectable({
-  providedIn: 'root', // Disponível em toda a aplicação
+  providedIn: 'root',
 })
 
 

@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ContainerComponent } from '../../shared/container/container.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { MatIcon } from '@angular/material/icon';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -28,17 +29,24 @@ import { MatIcon } from '@angular/material/icon';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
+
+
 loginWithGoogle() {
 throw new Error('Method not implemented.');
 }
-  user: string = '';
+  cpf: string = '';
   password: string = '';
   loginValid: boolean = true;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private _loginService: LoginService, 
+    private router: Router
+  
+  
+  ) {}
 
   login(): void {
-    this.authService.login(this.user, this.password).subscribe({
+    this._loginService.login(this.cpf, this.password).subscribe({
       next: () => {
         this.loginValid = true;
         this.router.navigate(['index']);

@@ -17,7 +17,7 @@ namespace Aisentona.API.Controllers
             _loginService = loginService;
             _authService = authService;
         }
-        [HttpPost("login")]
+        [HttpPost]
         public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
             if (loginRequest == null)
