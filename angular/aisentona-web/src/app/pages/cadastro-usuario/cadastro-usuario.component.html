@@ -1,8 +1,48 @@
-<app-container class="container-criar-notícia">
 
-    <h2>CADASTRO DE USUARIO</h2>
-    <div class="cabecalho-noticia">
-        
-    </div>
+<app-container>
+        <div class="left-panel">
+            <h1>Manage your Money Anywhere</h1>
+            <p>View all the analytics and grow your business from anywhere!</p>
+            <div class="testimonial">
+                <img src="https://via.placeholder.com/40" alt="User">
+                <p>"This analytics platform is a game-changer! It's easy to use, provides valuable insights, and has helped me make smarter business decisions. I highly recommend it."</p>
+                <span>- Casey Bachmeyer, Founder, Sisyphus Ventures</span>
+            </div>
+        </div>
+        <div class="right-panel">
+            <h2>Create an account</h2>
+            <form class="form">
+                <label>
+                    <input type="radio" name="account-type" value="Merchant" checked> Merchant
+                </label>
+                <label>
+                    <input type="radio" name="account-type" value="Agent"> Agent
+                </label>
+                <input type="text" placeholder="First Name" required>
+                <select required>
+                    <option value="" disabled selected>Where is your company based?</option>
+                    <option value="USA">USA</option>
+                    <option value="Canada">Canada</option>
+                    <option value="UK">UK</option>
+                </select>
+                <input type="email" placeholder="Business E-mail" required>
+                <select required>
+                    <option value="" disabled selected>Please select an Industry</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Retail">Retail</option>
+                </select>
+                <input type="tel" placeholder="Phone number" required>
+                <input type="password" placeholder="Password" required>
+                <label>
+                    <input type="checkbox" required> I accept the <a href="#">Privacy Policy</a>
+                </label>
+                <button type="submit">Create an Account</button>
+                <div class="login-link">
+                    Already have an account? <a href="#">Log in</a>
+                </div>
+            </form>
+        </div>
 </app-container>
 <app-footer></app-footer>
+

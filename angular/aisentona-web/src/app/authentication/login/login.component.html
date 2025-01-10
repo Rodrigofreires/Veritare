@@ -1,59 +1,27 @@
-<div class="meu-componente">
-
-    <app-container class="login-container">
-        <!-- Informações -->
+<div class="container">
+    <div class="signup-wrapper">
+        <!-- Side Info Section -->
         <div class="info-section">
-            <div>
-                <h1>Bem-vindo ao Jornal Isento de Jornalistas</h1>
-                <p>Informação com imparcialidade e qualidade</p>
-                <p>
-                    <strong>Jornal Isento de Jornalistas:</strong><br>
-                    Utilizamos inteligência artificial para oferecer informações precisas e imparciais.
-                </p>
-                <h3>Nosso diferencial:</h3>
-                <ul>
-                    <li>Diferencie <strong>OPINIÃO</strong> de <strong>INFORMAÇÃO</strong>.</li>
-                    <li><strong>Conteúdo Exclusivo:</strong> Receba análises aprofundadas e reportagens especiais.</li>
-                </ul>
-                <p>
-                    <strong>Assine o Plano Premium</strong> e faça parte da revolução do jornalismo imparcial impulsionado por IA.
-                </p>
-            </div>
+            <video autoplay muted loop width="600" height="750" onloadedmetadata="this.currentTime=1;">
+                <source src="assets/videos/veritaIa.mp4" type='video/mp4;'> 
+                Seu navegador não suporta vídeos HTML5.
+            </video>
         </div>
 
-        <!-- Login -->
-        <div class="login-section">
-            <div>
-                <h2>Acesso</h2>
-                <form #loginForm="ngForm" (ngSubmit)="login()">
-                    <div>
-                        <mat-error *ngIf="!loginValid">
-                            Usuário ou senha incorretos!
-                        </mat-error>
-                    </div>
-                    <mat-form-field appearance="fill" class="full-width">
-                        <mat-label>Usuário</mat-label>
-                        <input matInput placeholder="Usuário" [(ngModel)]="cpf" name="username" required>
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" class="full-width">
-                        <mat-label>Senha</mat-label>
-                        <input matInput type="password" placeholder="Senha" [(ngModel)]="password" name="password" required>
-                    </mat-form-field>
-                    <button mat-raised-button color="primary" class="full-width" [disabled]="!loginForm.form.valid">Login</button>
-                </form>
-                <div class="additional-options">
-                    <button mat-stroked-button color="accent" class="full-width" (click)="loginWithGoogle()">
-                        <mat-icon>login</mat-icon>
-                        Entrar com Google
-                    </button>
-                    <div>
-                        <a mat-button routerLink="/forgot-password">Esqueci minha senha</a>
-                        |
-                        <a mat-button routerLink="/register">Cadastre-se</a>
-                    </div>
+        <!-- Sign-Up Section -->
+        <div class="form-section">
+            <h2>Bem-Vindo!</h2>
+            <p>Não possui uma conta? <a routerLink="/cadastro-de-usuario">Registre-se</a></p>
+            <form #loginForm="ngForm" (ngSubmit)="login()" class="signup-form">
+                <div class="form-group">
+                    <input matInput type="text" placeholder="Nome" [(ngModel)]="cpf" name="firstName" required style="margin-bottom: 10px;" />
+                    <input matInput type="text" placeholder="Sobrenome" [(ngModel)]="password" name="lastName" required />
                 </div>
+                <button mat-raised-button color="primary" class="create-account" [disabled]="!loginForm.form.valid">Criar conta</button>
+            </form>
+            <div class="alternative-login">
+                <button mat-stroked-button color="accent" (click)="loginWithGoogle()">Conecte-se peloGoogle</button>
             </div>
         </div>
-    </app-container>
+    </div>
 </div>
-<app-footer></app-footer>

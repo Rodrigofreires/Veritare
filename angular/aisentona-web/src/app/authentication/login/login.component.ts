@@ -21,14 +21,17 @@ import { LoginService } from '../../services/login.service';
     MatInputModule,
     MatButtonModule,
     MatFormFieldModule,
-    ContainerComponent,
-    FooterComponent,
-    MatIcon,
+    MatInputModule,
+    
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
+firstName: any;
+lastName: any;
+email: any;
+termsAccepted: any;
 
 
 loginWithGoogle() {

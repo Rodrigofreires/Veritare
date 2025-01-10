@@ -25,6 +25,7 @@
     "@angular/ssr": "^19.0.2",
     "express": "^4.18.2",
     "moment": "^2.30.1",
+    "ngx-mask": "^19.0.6",
     "ngx-quill": "^27.0.0",
     "quill-image-resize-module": "^3.0.0",
     "rxjs": "~7.8.0",

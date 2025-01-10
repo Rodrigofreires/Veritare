@@ -1,0 +1,129 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    background: linear-gradient(to right, #000, #f5f8f9);
+}
+
+.left-panel {
+    flex: 1;
+    background: #000;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.left-panel h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.left-panel p {
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.testimonial {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+}
+
+.testimonial img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.testimonial p {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.testimonial span {
+    font-size: 0.8rem;
+    color: #ccc;
+}
+
+.right-panel {
+    flex: 1;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.right-panel h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.form label {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form input, .form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.form button {
+    width: 100%;
+    padding: 10px;
+    background: orange;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.form button:hover {
+    background: darkorange;
+}
+
+.form .login-link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.form .login-link a {
+    color: orange;
+    text-decoration: none;
+}
+
+.form .login-link a:hover {
+    text-decoration: underline;
+}
