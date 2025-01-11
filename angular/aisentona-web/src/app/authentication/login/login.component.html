@@ -11,17 +11,34 @@
         <!-- Sign-Up Section -->
         <div class="form-section">
             <h2>Bem-Vindo!</h2>
-            <p>Não possui uma conta? <a routerLink="/cadastro-de-usuario">Registre-se</a></p>
-            <form #loginForm="ngForm" (ngSubmit)="login()" class="signup-form">
-                <div class="form-group">
-                    <input matInput type="text" placeholder="Nome" [(ngModel)]="cpf" name="firstName" required style="margin-bottom: 10px;" />
-                    <input matInput type="text" placeholder="Sobrenome" [(ngModel)]="password" name="lastName" required />
+            <p class="botao-cadastro">Não possui uma conta?  <a routerLink="/cadastro-de-usuario"> Registre-se</a></p>
+            <div class="signup-form">
+                <input matInput type="text" placeholder="Digite seu e-mail" [(ngModel)]="email" name="usuario" required (blur)="onBlurEmail()" />
+                <span *ngIf="!email && emailTouched" class="error">O e-mail é obrigatório.</span>
+                
+                <input matInput type="password" placeholder="Digite sua senha" [(ngModel)]="senha" name="senha" required (blur)="onBlurSenha()" />
+                <span *ngIf="!senha && senhaTouched" class="error">A senha é obrigatória.</span>
+                
+
+                <div class="alternative-login">
+                    <button class="botão-entrar" [disabled]="!email || !senha" (click)="login()">
+                        Entrar
+                    </button>
+                    <button class="google-login" (click)="loginWithGoogle()"> 
+                        <img src="assets/icones/google-icon.png" alt="Google Icon">
+                        Conecte-se pelo Google
+                    </button>
                 </div>
-                <button mat-raised-button color="primary" class="create-account" [disabled]="!loginForm.form.valid">Criar conta</button>
-            </form>
-            <div class="alternative-login">
-                <button mat-stroked-button color="accent" (click)="loginWithGoogle()">Conecte-se peloGoogle</button>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    display: block;
+}
+</style>

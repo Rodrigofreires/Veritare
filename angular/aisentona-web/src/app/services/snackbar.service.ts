@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Injectable({
@@ -6,12 +6,14 @@ import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition
 })
 export class SnackbarService {
 
-  constructor() { }
+  constructor(private _snackBar: MatSnackBar) {}
 
-  private readonly _snackBar = inject(MatSnackBar)
-
-  MostrarErro(msg : string, verticalPosition : MatSnackBarVerticalPosition = 'top', horizontalPosition: MatSnackBarHorizontalPosition = 'right' ): void {
-    this._snackBar.open(msg,"", {
+  MostrarErro(
+    msg: string,
+    verticalPosition: MatSnackBarVerticalPosition = 'top',
+    horizontalPosition: MatSnackBarHorizontalPosition = 'right'
+  ): void {
+    this._snackBar.open(msg, "", {
       duration: 4000,
       horizontalPosition: horizontalPosition,
       verticalPosition: verticalPosition,
@@ -19,8 +21,12 @@ export class SnackbarService {
     });
   }
 
-  MostrarSucesso(msg : string, verticalPosition : MatSnackBarVerticalPosition = 'top', horizontalPosition: MatSnackBarHorizontalPosition = 'right' ): void {
-    this._snackBar.open(msg,"", {
+  MostrarSucesso(
+    msg: string,
+    verticalPosition: MatSnackBarVerticalPosition = 'top',
+    horizontalPosition: MatSnackBarHorizontalPosition = 'right'
+  ): void {
+    this._snackBar.open(msg, "", {
       duration: 4000,
       horizontalPosition: horizontalPosition,
       verticalPosition: verticalPosition,
