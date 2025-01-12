@@ -3,6 +3,7 @@ using Aisentona.DataBase;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 using System.Data.SqlTypes;
+using Aisentona.Entities.Request;
 
 namespace Aisentona.Biz.Services
 {
@@ -29,50 +30,45 @@ namespace Aisentona.Biz.Services
 
         }
 
-        public ColaboradorTelefone CriarTelefoneColaborador(int id_Telefone, string nm_Apelido, string ds_Numero, bool fl_Ativo, int id_Usuario)
+        public ColaboradorTelefone CriarTelefoneColaborador(TelefoneRequest telefoneRequest)
         {
             ColaboradorTelefone telefoneColaborador = new ColaboradorTelefone()
             {
-                Id_Telefone = id_Telefone,
-                Nm_Apelido = nm_Apelido,
-                Ds_Numero = ds_Numero,
-                Fl_Ativo = fl_Ativo,
+                Nm_Apelido = telefoneRequest.Apelido,
+                Ds_Numero = telefoneRequest.NumeroContato,
                 DT_Criacao = DateTime.UtcNow,
                 Ds_UltimaAlteracao = GetWindowsUsername(),
-                Id_Usuario = id_Usuario,
+                Id_Usuario = telefoneRequest.UsuarioId,
             };
+
             // Lógica para salvar o colaborador no banco de dados
+
             _context.CF_ColaboradorTelefone.Add(telefoneColaborador);
             _context.SaveChanges();
 
             return telefoneColaborador;
         }
 
-        public ColaboradorTelefone EditarTelefoneColaborador(int id, ColaboradorTelefone colaboradorTelefoneDto)
+        public ColaboradorTelefone EditarTelefoneColaborador(TelefoneRequest telefoneRequest)
         {
-            var colaboradorTelefone = _context.CF_ColaboradorTelefone.Find(id);
+            var colaboradorTelefone = _context.CF_ColaboradorTelefone.Find(telefoneRequest.UsuarioId);
             if (colaboradorTelefone is null)
             {
                 throw new KeyNotFoundException("Colaborador Telefone não encontrado");
             }
 
-            colaboradorTelefone.Nm_Apelido = colaboradorTelefoneDto.Nm_Apelido;
-            colaboradorTelefone.Ds_Numero = colaboradorTelefoneDto.Ds_Numero;
-            colaboradorTelefone.Fl_Ativo = colaboradorTelefoneDto.Fl_Ativo;
+            colaboradorTelefone.Nm_Apelido = telefoneRequest.Apelido;
+            colaboradorTelefone.Ds_Numero = telefoneRequest.NumeroContato;
             colaboradorTelefone.DT_UltimaAlteracao = DateTime.Now;
-            colaboradorTelefone.Id_Usuario = colaboradorTelefoneDto.Id_Usuario;
             colaboradorTelefone.Ds_UltimaAlteracao = GetWindowsUsername();
-
-            // Verifica e ajusta as datas se necessário
-            if (colaboradorTelefone.DT_Criacao < (DateTime)SqlDateTime.MinValue)
-            {
-                colaboradorTelefone.DT_Criacao = (DateTime)SqlDateTime.MinValue;
-            }
+            colaboradorTelefone.DT_UltimaAlteracao = DateTime.UtcNow;
 
             if (colaboradorTelefone.DT_UltimaAlteracao < (DateTime)SqlDateTime.MinValue)
             {
                 colaboradorTelefone.DT_UltimaAlteracao = (DateTime)SqlDateTime.MinValue;
             }
+
+
 
             _context.CF_ColaboradorTelefone.Update(colaboradorTelefone);
             _context.SaveChanges();

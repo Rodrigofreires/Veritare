@@ -8,7 +8,7 @@ namespace Aisentona.DataBase
         public Colaborador()
         {
         }
-        public Colaborador(int idUsuario, string nome, string cpf, byte[] passwordHash, byte[] passwordSalt, bool flAtivo, DateTime dtCriacao, DateTime dtUltimaAlteracao, int idTipoUsuario, string dsUltimaAlteracao)
+        public Colaborador(int idUsuario, string nome, string cpf, byte[] passwordHash, byte[] passwordSalt, bool flAtivo, DateTime dtCriacao, DateTime dtUltimaAlteracao, int idTipoUsuario, string dsUltimaAlteracao, DateTime dtNascimento)
         {
             Id_Usuario = idUsuario;
             Nm_Nome = nome;
@@ -20,7 +20,7 @@ namespace Aisentona.DataBase
             DT_UltimaAlteracao = dtUltimaAlteracao;
             Id_TipoUsuario = idTipoUsuario;
             Ds_UltimaAlteracao = dsUltimaAlteracao;
-
+            DT_Nascimento = dtNascimento;
         }
 
         [Key]
@@ -30,6 +30,7 @@ namespace Aisentona.DataBase
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public bool Fl_Ativo { get; set; }
+        public DateTime DT_Nascimento { get; set; }
         public DateTime DT_Criacao { get; set; } = DateTime.UtcNow;
         public DateTime DT_UltimaAlteracao { get; set; } = DateTime.UtcNow;
         [Required]

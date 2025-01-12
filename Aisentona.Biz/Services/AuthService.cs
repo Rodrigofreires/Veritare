@@ -1,6 +1,7 @@
 ﻿using Aisentona.DataBase;
 using Aisentona.Entities.Request;
 using Aisentona.Entities.Response;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -27,7 +28,7 @@ namespace Aisentona.Biz.Services
 
         public LoginResponse Authenticate(LoginRequest loginRequest)
         {
-            Colaborador user = _context.CF_Colaborador.FirstOrDefault(u => u.Ds_CPF == loginRequest.CPF);
+            Colaborador user = _context.CF_Colaborador.Include(x => x.Emails).FirstOrDefault(u => u.Emails.Ds_Email == loginRequest.Email);
 
             if (user == null)
             {

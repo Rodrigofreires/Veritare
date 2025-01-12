@@ -1,19 +1,22 @@
-﻿
-using Microsoft.IdentityModel.Tokens;
-using Aisentona.DataBase;
-using Microsoft.EntityFrameworkCore;
+﻿using Aisentona.DataBase;
 using System.Security.Principal;
 using System.Data.SqlTypes;
-using Microsoft.AspNetCore.Identity;
+using Aisentona.Entities.Request;
+using Aisentona.Enum;
+using Aisentona.Biz.Validators;
+using FluentValidation.Results;
 
 namespace Aisentona.Biz.Services
 {
     public class ColaboradorService
     {
-        private readonly ApplicationDbContext _context;  
-        public ColaboradorService(ApplicationDbContext context)
+        private readonly ApplicationDbContext _context;
+        private readonly ColaboradorValidator _validator;
+
+        public ColaboradorService(ApplicationDbContext context, ColaboradorValidator validator)
         {
              _context = context;
+            _validator = validator;
         }
 
         private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
@@ -25,68 +28,99 @@ namespace Aisentona.Biz.Services
 
             if (colaborador != null && colaborador.Fl_Ativo == true)
             {
-
                 listaDeColaboradores.Add(colaborador);
             }
             return listaDeColaboradores;
 
         }
 
-        public Colaborador CriarColaborador(string nome, string cpf, string senha, int idTipoUsuario)
+        public Colaborador CriarColaborador(ColaboradorRequest colaboradorRequest)
         {
-            (byte[] hash, byte[] salt) = HashingUtils.GeneratePasswordHash(senha);
+            //Chamando as Validações do Colaborador
+            ValidationResult validadores = _validator.Validate(colaboradorRequest);
 
-            var novoColaborador = new Colaborador
+            Colaborador novoColaborador = new();
+
+            if (validadores.IsValid)
             {
-                Nm_Nome = nome,
-                Ds_CPF = cpf,
-                Fl_Ativo = true,
-                DT_Criacao = DateTime.UtcNow,
-                DT_UltimaAlteracao = DateTime.UtcNow,
-                Id_TipoUsuario = idTipoUsuario,
-                PasswordHash = hash,
-                PasswordSalt = salt,
-                Ds_UltimaAlteracao = GetWindowsUsername()
-            };
+                (byte[] hash, byte[] salt) = HashingUtils.GeneratePasswordHash(colaboradorRequest.Senha);
 
-            _context.CF_Colaborador.Add(novoColaborador);
-            _context.SaveChanges();
+                novoColaborador.Nm_Nome = colaboradorRequest.Nome;
+                novoColaborador.Ds_CPF = colaboradorRequest.CPF;
+                novoColaborador.Fl_Ativo = true;
+                novoColaborador.DT_Criacao = DateTime.UtcNow;
+                novoColaborador.DT_Nascimento = colaboradorRequest.DataNascimento;
+                novoColaborador.DT_UltimaAlteracao = DateTime.UtcNow;
+                novoColaborador.Id_TipoUsuario = (int)Autorizacao.LeitorSimples;
+                novoColaborador.PasswordHash = hash;
+                novoColaborador.PasswordSalt = salt;
+                novoColaborador.Ds_UltimaAlteracao = GetWindowsUsername();        
+
+                //Verificando se já existe um e-mail desses cadastrado no banco 
+                var emailExiste = _context.CF_Colaborador.Any(e => e.Ds_CPF == colaboradorRequest.CPF);
+                if (emailExiste) throw new Exception("E-mail já está em uso.");
+
+                _context.CF_Colaborador.Add(novoColaborador);
+                _context.SaveChanges();
+
+            }
 
             return novoColaborador;
         }
-
-        public Colaborador EditarColaborador(int idColaborador, Colaborador colaboradorDto)
+        public Colaborador EditarColaborador(int idColaborador, ColaboradorRequest colaboradorRequest)
         {
-            var colaborador = _context.CF_Colaborador.Find(idColaborador);
-            if (colaborador is null)
+            Colaborador colaborador = _context.CF_Colaborador.FirstOrDefault(x => x.Id_Usuario == idColaborador);
+            if (colaborador == null)
             {
                 throw new KeyNotFoundException("Colaborador não encontrado");
             }
 
-            colaborador.Nm_Nome = colaboradorDto.Nm_Nome;
-            colaborador.Ds_CPF = colaboradorDto.Ds_CPF;
-            colaborador.Fl_Ativo = colaboradorDto.Fl_Ativo;
-            colaborador.DT_UltimaAlteracao = DateTime.Now;
-            colaborador.Id_TipoUsuario = colaboradorDto.Id_TipoUsuario;
-            colaborador.Ds_UltimaAlteracao = GetWindowsUsername();
+            int tipoDeUsuario = colaborador.Id_TipoUsuario;
 
-            // Verifica e ajusta as datas se necessário
-            if (colaborador.DT_Criacao < (DateTime)SqlDateTime.MinValue)
+            // Verifica permissões com base no papel
+            switch (tipoDeUsuario)
             {
-                colaborador.DT_Criacao = (DateTime)SqlDateTime.MinValue;
+                case (int)Autorizacao.LeitorSimples:
+
+                    // Usuário pode apenas editar informações básicas
+                    colaborador.Nm_Nome = colaboradorRequest.Nome;
+                    colaborador.DT_Nascimento = colaboradorRequest.DataNascimento;
+                    break;
+                case (int)Autorizacao.LeitorPremium:
+
+                    // Usuário pode apenas editar informações básicas
+                    colaborador.Nm_Nome = colaboradorRequest.Nome;
+                    colaborador.DT_Nascimento = colaboradorRequest.DataNascimento;
+                    break;
+                case (int)Autorizacao.EditorBase:
+
+                    // Usuário pode apenas editar informações básicas
+                    colaborador.Nm_Nome = colaboradorRequest.Nome;
+                    colaborador.DT_Nascimento = colaboradorRequest.DataNascimento;
+                    break;
+                case (int)Autorizacao.EditorChefe:
+
+                    // Usuário pode apenas editar informações básicas
+                    colaborador.Nm_Nome = colaboradorRequest.Nome;
+                    colaborador.DT_Nascimento = colaboradorRequest.DataNascimento;
+                    break;
+                default:
+                    throw new UnauthorizedAccessException("Permissão insuficiente para esta ação");
             }
 
-            if (colaborador.DT_UltimaAlteracao < (DateTime)SqlDateTime.MinValue)
-            {
-                colaborador.DT_UltimaAlteracao = (DateTime)SqlDateTime.MinValue;
-            }
+                colaborador.DT_UltimaAlteracao = DateTime.Now;
+                colaborador.Ds_UltimaAlteracao = GetWindowsUsername();
+
+                if (colaborador.DT_UltimaAlteracao < (DateTime)SqlDateTime.MinValue)
+                {
+                    colaborador.DT_UltimaAlteracao = (DateTime)SqlDateTime.MinValue;
+                }
 
             _context.CF_Colaborador.Update(colaborador);
             _context.SaveChanges();
 
             return colaborador;
         }
-
         public Colaborador TrocarFlagAtivaColaborador(int idColaborador)
         {
             var colaborador = _context.CF_Colaborador.Find(idColaborador);
@@ -102,8 +136,6 @@ namespace Aisentona.Biz.Services
 
             return colaborador;
         }
-
-
 
     }
 }

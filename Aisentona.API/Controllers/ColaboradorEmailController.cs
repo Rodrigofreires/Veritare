@@ -1,5 +1,6 @@
 ﻿using Aisentona.Biz.Services;
 using Aisentona.DataBase;
+using Aisentona.Entities.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aisentona.API.Controllers
@@ -17,52 +18,46 @@ namespace Aisentona.API.Controllers
 
         // GET api/<ColaboradorEmailController>
         [HttpGet("{id}")]
-        public IActionResult GetEmailColaboradorById(int id)
+        public IActionResult GetEmailListById(int id)
         {
             if (id <= 0)
             {
                 return BadRequest("ID inválido.");
             }
 
-            var colaborador = _colaboradorEmailService.ListarEmailColaboradorPorId(id);
-            if (colaborador == null)
+            List<ColaboradorEmail> listaDeEmails = _colaboradorEmailService.ListarEmailColaboradorPorId(id);
+            if (listaDeEmails == null)
             {
                 return NotFound();
             }
-            return Ok(colaborador);
+            return Ok(listaDeEmails);
         }
 
         // POST api/<ColaboradorController>
         [HttpPost]
-        public IActionResult CreateEmailColaborador([FromBody] ColaboradorEmail colaboradorObjeto)
+        public IActionResult CreateEmailColaborador([FromBody] EmailRequest emailRequest)
         {
-            if (colaboradorObjeto is null)
+            if (emailRequest is null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
-            var colaborador = _colaboradorEmailService.CriarEmailColaborador(
-
-                colaboradorObjeto.Id_Email,
-                colaboradorObjeto.Ds_Email,
-                colaboradorObjeto.Fl_Ativo,
-                colaboradorObjeto.Id_Usuario
-                );
+            var colaborador = _colaboradorEmailService.CriarEmailColaborador(emailRequest);
 
             return CreatedAtAction(nameof(CreateEmailColaborador), new { id = colaborador.Id_Email }, colaborador);
         }
 
         // PUT api/<ColaboradorController>
         [HttpPut("editar/{id}")]
-        public IActionResult UpdateEmailColaborador(int id, [FromBody] ColaboradorEmail colaboradorEmailDto)
+        public IActionResult UpdateEmailColaborador(int id, [FromBody] EmailRequest emailRequest)
         {
-            if (colaboradorEmailDto == null)
+            if (emailRequest == null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
 
             try
             {
-                var colaboradorEmail = _colaboradorEmailService.EditarEmailColaborador(id, colaboradorEmailDto);
+                var colaboradorEmail = _colaboradorEmailService.EditarEmailColaborador(emailRequest);
 
                 return Ok(colaboradorEmail);
             }

@@ -1,5 +1,6 @@
 ﻿using Aisentona.Biz.Services;
 using Aisentona.DataBase;
+using Aisentona.Entities.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aisentona.API.Controllers
@@ -35,20 +36,13 @@ namespace Aisentona.API.Controllers
         // POST api/<ColaboradorController>
         [HttpPost]
         [Route("api/[controller]")]
-        public IActionResult CreateTelefoneColaborador([FromBody] ColaboradorTelefone colaboradorObjeto)
+        public IActionResult CreateTelefoneColaborador([FromBody] TelefoneRequest telefoneRequest)
         {
-            if (colaboradorObjeto is null)
+            if (telefoneRequest is null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
-            var colaborador = _colaboradorTelefoneService.CriarTelefoneColaborador(
-
-                colaboradorObjeto.Id_Telefone,
-                colaboradorObjeto.Nm_Apelido,
-                colaboradorObjeto.Ds_Numero,
-                colaboradorObjeto.Fl_Ativo,
-                colaboradorObjeto.Id_Usuario
-                );
+            var colaborador = _colaboradorTelefoneService.CriarTelefoneColaborador(telefoneRequest);
 
             return CreatedAtAction(nameof(CreateTelefoneColaborador), new { id_Telefone = colaborador.Id_Telefone }, colaborador);
 
@@ -56,16 +50,16 @@ namespace Aisentona.API.Controllers
 
         // PUT api/<ColaboradorController>
         [HttpPut("editar/{id}")]
-        public IActionResult UpdateEmailColaborador(int id, [FromBody] ColaboradorTelefone colaboradorTelefonelDto)
+        public IActionResult UpdateEmailColaborador(int id, [FromBody] TelefoneRequest telefoneRequest)
         {
-            if (colaboradorTelefonelDto == null)
+            if (telefoneRequest == null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
 
             try
             {
-                var colaboradorTelefone = _colaboradorTelefoneService.EditarTelefoneColaborador(id, colaboradorTelefonelDto);
+                ColaboradorTelefone colaboradorTelefone = _colaboradorTelefoneService.EditarTelefoneColaborador(telefoneRequest);
 
                 return Ok(colaboradorTelefone);
             }

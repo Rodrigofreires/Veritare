@@ -43,12 +43,7 @@ namespace Aisentona.API.Controllers
             }
 
             // Criar um novo colaborador usando o serviço
-            var novoColaborador = _colaboradorService.CriarColaborador(
-                colaboradorObjeto.Nome,
-                colaboradorObjeto.CPF,
-                colaboradorObjeto.Senha,
-                colaboradorObjeto.TipoUsuario
-            );
+            var novoColaborador = _colaboradorService.CriarColaborador(colaboradorObjeto);
 
             if (novoColaborador == null)
             {
@@ -56,21 +51,22 @@ namespace Aisentona.API.Controllers
             }
 
             // Retornar um código 201 (Created) com o novo colaborador criado
-            return CreatedAtAction(nameof(CreateColaborador), new { id = novoColaborador.Id_Usuario }, novoColaborador);
+            return CreatedAtAction(nameof(CreateColaborador), new { id = novoColaborador.Id_Usuario }, new { novoColaborador.Id_Usuario });
+
         }
 
         // PUT api/<ColaboradorController>
         [HttpPut("editar/{id}")]
-        public IActionResult UpdateColaborador(int id, [FromBody] Colaborador colaboradorDto)
+        public IActionResult UpdateColaborador(int id, [FromBody] ColaboradorRequest colaboradorRequest)
         {
-            if (colaboradorDto == null)
+            if (colaboradorRequest == null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
 
             try
             {
-                var colaborador = _colaboradorService.EditarColaborador(id, colaboradorDto);
+                var colaborador = _colaboradorService.EditarColaborador(id, colaboradorRequest);
 
                 return Ok(colaborador);
             }

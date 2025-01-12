@@ -7,6 +7,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection; // Adicione esta linha para o namespace correto
 using Newtonsoft.Json;
+using Aisentona.Biz.Validators;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +71,11 @@ void ConfigureServices(IServiceCollection services, byte[] decodedKey, Configura
     services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+    // Adicione os serviços do FluentValidation
+    builder.Services.AddScoped<ColaboradorValidator>();
+    builder.Services.AddScoped<EmailValidator>();
+
+
     // Registro de serviços e repositórios
     services.AddScoped<ColaboradorService>();
     services.AddScoped<ColaboradorEmailService>();
@@ -78,6 +85,7 @@ void ConfigureServices(IServiceCollection services, byte[] decodedKey, Configura
     services.AddScoped<TokenService>(); // Adiciona o TokenService
     services.AddScoped<LoginService>();
     services.AddScoped<AuthService>();
+
 
     services.AddAuthentication(options =>
     {

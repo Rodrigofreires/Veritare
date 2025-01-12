@@ -3,15 +3,21 @@ using Aisentona.DataBase;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 using System.Data.SqlTypes;
+using Aisentona.Entities.Request;
+using FluentValidation.Results;
+using Aisentona.Biz.Validators;
+using FluentValidation;
 
 namespace Aisentona.Biz.Services
 {
     public class ColaboradorEmailService
     {
-        private readonly ApplicationDbContext _context;  
-        public ColaboradorEmailService(ApplicationDbContext context)
+        private readonly ApplicationDbContext _context;
+        private readonly EmailValidator _validator;
+        public ColaboradorEmailService(ApplicationDbContext context, EmailValidator validator)
         {
              _context = context;
+            _validator = validator;
         }
 
         private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
@@ -29,49 +35,51 @@ namespace Aisentona.Biz.Services
 
         }
 
-        public ColaboradorEmail CriarEmailColaborador(int id_Email, string ds_Email, bool fl_Ativo, int id_Usuario)
+        public ColaboradorEmail CriarEmailColaborador(EmailRequest emailRequest)
         {
-            ColaboradorEmail emailColaborador = new ColaboradorEmail()
+            //Chamando as Validações do Colaborador
+            ValidationResult validadores = _validator.Validate(emailRequest);
+
+            ColaboradorEmail emailColaborador = new();
+
+            if (validadores.IsValid)
             {
-                Id_Email = id_Email,
-                Ds_Email = ds_Email,
-                Fl_Ativo = fl_Ativo,
-                DT_Criacao = DateTime.UtcNow,
-                Ds_UltimaAlteracao = GetWindowsUsername(),
-                Id_Usuario = id_Usuario,
-            };
+                emailColaborador.Ds_Email = emailRequest.Descricao;
+                emailColaborador.Ds_Descricao = emailRequest.Descricao;
+                emailColaborador.Fl_Ativo = true;
+                emailColaborador.DT_Criacao = DateTime.UtcNow;
+                emailColaborador.Ds_UltimaAlteracao = GetWindowsUsername();
+                emailColaborador.Id_Usuario = emailRequest.UsuarioId;
 
-            // Lógica para salvar o colaborador no banco de dados
-            _context.CF_ColaboradorEmail.Add(emailColaborador);
-            _context.SaveChanges();
+                //Verificando se já existe um e-mail desses cadastrado no banco 
+                var emailExiste = _context.CF_ColaboradorEmail.Any(e => e.Ds_Email == emailRequest.Email);
+                if (emailExiste) throw new Exception("E-mail já está em uso.");
 
+                _context.CF_ColaboradorEmail.Add(emailColaborador);
+                _context.SaveChanges();
+               
+            }
             return emailColaborador;
         }
 
-        public ColaboradorEmail EditarEmailColaborador(int id, ColaboradorEmail colaboradorEmailDto)
+        public ColaboradorEmail EditarEmailColaborador(EmailRequest emailRequest)
         {
-            var colaboradorEmail = _context.CF_ColaboradorEmail.Find(id);
+            var colaboradorEmail = _context.CF_ColaboradorEmail.Find(emailRequest.UsuarioId);
             if (colaboradorEmail is null)
             {
                 throw new KeyNotFoundException("Colaborador Email não encontrado");
             }
 
-            colaboradorEmail.Ds_Email = colaboradorEmailDto.Ds_Email;
-            colaboradorEmail.Fl_Ativo = colaboradorEmailDto.Fl_Ativo;
-            colaboradorEmail.DT_UltimaAlteracao = DateTime.Now;
-            colaboradorEmail.Id_Usuario = colaboradorEmailDto.Id_Usuario;
-            colaboradorEmail.Ds_UltimaAlteracao = GetWindowsUsername();
-
-            // Verifica e ajusta as datas se necessário
-            if (colaboradorEmail.DT_Criacao < (DateTime)SqlDateTime.MinValue)
-            {
-                colaboradorEmail.DT_Criacao = (DateTime)SqlDateTime.MinValue;
-            }
+            colaboradorEmail.Ds_Email = emailRequest.Email;
+            colaboradorEmail.Ds_Email = emailRequest.Descricao;
+            
 
             if (colaboradorEmail.DT_UltimaAlteracao < (DateTime)SqlDateTime.MinValue)
             {
                 colaboradorEmail.DT_UltimaAlteracao = (DateTime)SqlDateTime.MinValue;
             }
+
+            colaboradorEmail.DT_UltimaAlteracao = DateTime.UtcNow;
 
             _context.CF_ColaboradorEmail.Update(colaboradorEmail);
             _context.SaveChanges();

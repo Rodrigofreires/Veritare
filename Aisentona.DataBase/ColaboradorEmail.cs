@@ -10,24 +10,27 @@ namespace Aisentona.DataBase
         {
         }
 
-        public ColaboradorEmail(int id_Email, string ds_Email, bool fl_Ativo, DateTime? dt_Criacao, DateTime dt_UltimaAlteracao, string? ds_UltimaAlteracao, int id_Usuario)
+        public ColaboradorEmail(int idEmail, string dsEmail, string dsDescricao, bool flAtivo, DateTime? dt_Criacao, DateTime dtUltimaAlteracao, string? ds_UltimaAlteracao, int idUsuario)
         {
-            Id_Email = id_Email;
-            Ds_Email = ds_Email;
-            Fl_Ativo = fl_Ativo;
+            Id_Email = idEmail;
+            Ds_Email = dsEmail;
+            Fl_Ativo = flAtivo;
             DT_Criacao = dt_Criacao;
-            DT_UltimaAlteracao = dt_UltimaAlteracao;
+            DT_UltimaAlteracao = dtUltimaAlteracao;
             Ds_UltimaAlteracao = ds_UltimaAlteracao;
-            Id_Usuario = id_Usuario;
+            Id_Usuario = idUsuario;
+            Ds_Descricao = dsDescricao;
         }
 
         [Key]
         public int Id_Email { get; set; }
         public string Ds_Email { get; set; }
+        public string Ds_Descricao { get; set; }
+
         public bool Fl_Ativo { get; set; }
         public DateTime? DT_Criacao { get; set; } = DateTime.UtcNow;
         public DateTime DT_UltimaAlteracao { get; set; } = DateTime.UtcNow;
-        public string Ds_UltimaAlteracao { get; set; }
+        public string? Ds_UltimaAlteracao { get; set; }
 
         // Relacionamento com a tabela de Colaboradores
         [ForeignKey("Colaborador")]
