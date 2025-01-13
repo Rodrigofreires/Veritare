@@ -4,12 +4,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { map, catchError } from 'rxjs';
 import { SnackbarService } from './snackbar.service';
+import { ColaboradorResponse } from '../core/interfaces/Response/Colaborador';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-
   private apiUrl = environment.apiUrl;
 
 
@@ -19,8 +19,8 @@ export class LoginService {
   ) { }
 
 // Login do usuário
-login(cpf: string, password: string): Observable<any> {
-  const body = { cpf, password };
+login(Email: string, Senha: string): Observable<any> {
+  const body = { Email, Senha };
 
   return this.http.post(`${this.apiUrl}/login`, body).pipe(
     map((response: any) => {
@@ -37,6 +37,12 @@ login(cpf: string, password: string): Observable<any> {
     })
   );
 }
+
+// POSTAR NOVA NOTÍCIA 
+cadastroDeColaborador(infosColaborador: ColaboradorResponse): Observable<any> {
+  return this.http.post(`${this.apiUrl}/colaborador`, infosColaborador);
+}
+
 
 
 

@@ -73,12 +73,11 @@ void ConfigureServices(IServiceCollection services, byte[] decodedKey, Configura
 
     // Adicione os serviços do FluentValidation
     builder.Services.AddScoped<ColaboradorValidator>();
-    builder.Services.AddScoped<EmailValidator>();
+
 
 
     // Registro de serviços e repositórios
     services.AddScoped<ColaboradorService>();
-    services.AddScoped<ColaboradorEmailService>();
     services.AddScoped<ColaboradorTelefoneService>();
     services.AddScoped<ColaboradorTipoUsuarioService>();
     services.AddScoped<PostagemService>();

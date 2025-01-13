@@ -5,6 +5,8 @@ using Aisentona.Entities.Request;
 using Aisentona.Enum;
 using Aisentona.Biz.Validators;
 using FluentValidation.Results;
+using Aisentona.Entities.Response;
+using FluentValidation;
 
 namespace Aisentona.Biz.Services
 {
@@ -34,22 +36,24 @@ namespace Aisentona.Biz.Services
 
         }
 
-        public Colaborador CriarColaborador(ColaboradorRequest colaboradorRequest)
+        public Colaborador CriarColaborador(ColaboradorResponse colaboradorResponse)
         {
             //Chamando as Validações do Colaborador
-            ValidationResult validadores = _validator.Validate(colaboradorRequest);
+            ValidationResult validadores = _validator.Validate(colaboradorResponse);
 
             Colaborador novoColaborador = new();
 
             if (validadores.IsValid)
             {
-                (byte[] hash, byte[] salt) = HashingUtils.GeneratePasswordHash(colaboradorRequest.Senha);
+                (byte[] hash, byte[] salt) = HashingUtils.GeneratePasswordHash(colaboradorResponse.Senha);
 
-                novoColaborador.Nm_Nome = colaboradorRequest.Nome;
-                novoColaborador.Ds_CPF = colaboradorRequest.CPF;
+                novoColaborador.Nm_Nome = colaboradorResponse.Nome;
+                novoColaborador.Ds_CPF = colaboradorResponse.CPF;
+                novoColaborador.Ds_Email = colaboradorResponse.Email;
+                novoColaborador.Ds_ContatoCadastro = colaboradorResponse.Celular;
                 novoColaborador.Fl_Ativo = true;
                 novoColaborador.DT_Criacao = DateTime.UtcNow;
-                novoColaborador.DT_Nascimento = colaboradorRequest.DataNascimento;
+                novoColaborador.DT_Nascimento = colaboradorResponse.DataNascimento;
                 novoColaborador.DT_UltimaAlteracao = DateTime.UtcNow;
                 novoColaborador.Id_TipoUsuario = (int)Autorizacao.LeitorSimples;
                 novoColaborador.PasswordHash = hash;
@@ -57,8 +61,13 @@ namespace Aisentona.Biz.Services
                 novoColaborador.Ds_UltimaAlteracao = GetWindowsUsername();        
 
                 //Verificando se já existe um e-mail desses cadastrado no banco 
-                var emailExiste = _context.CF_Colaborador.Any(e => e.Ds_CPF == colaboradorRequest.CPF);
-                if (emailExiste) throw new Exception("E-mail já está em uso.");
+                var cpflExiste = _context.CF_Colaborador.Any(e => e.Ds_CPF == colaboradorResponse.CPF);
+                if (cpflExiste) throw new Exception("Esser CPF já está em uso.");
+
+                var emailExiste = _context.CF_Colaborador.Any(e => e.Ds_Email == colaboradorResponse.Email);
+                if (emailExiste) throw new Exception("Esse E-mail já está em uso.");
+
+
 
                 _context.CF_Colaborador.Add(novoColaborador);
                 _context.SaveChanges();

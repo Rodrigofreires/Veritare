@@ -1,48 +1,137 @@
+<div class="container">
+    <div class="signup-wrapper">
+        <div class="form-section">
+          <h2>Cadastro de Usuário!</h2>
+          <p class="botao-cadastro">Preencha os campos para fazer parte dessa reforma!</p>
+          <div class="signup-form">
+            <input 
+            matInput 
+            type="text" 
+            placeholder="Digite seu nome Completo" 
+            [(ngModel)]="infosColaborador.Nome" 
+            name="nome" 
+            #info="ngModel"
+            (blur)="nomeTouched = true" 
+            required 
+          />
+          <span *ngIf="(nomeTouched || info.touched) && !infosColaborador.Nome" class="error">
+            O Nome é obrigatório.
+          </span>
+      
+            <input 
+            matInput 
+            type="text" 
+            placeholder="Digite seu CPF" 
+            [(ngModel)]="infosColaborador.CPF" 
+            name="cpf" 
+            maxlength="14" 
+            (input)="formatarCPF()" 
+            (keypress)="permitirSomenteNumeros($event)" 
+            (blur)="validarCPF()" 
+            required 
+          />
+          <span *ngIf="cpfInvalido" class="error">Por favor, insira um CPF válido.</span>
+      
+            <input 
+              matInput 
+              type="email" 
+              placeholder="Digite seu e-mail" 
+              [(ngModel)]="infosColaborador.Email" 
+              name="usuario" 
+              #email="ngModel" 
+              (blur)="emailTouched = true" 
+              required 
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+            />
+            <!-- Mensagem de erro para e-mail vazio -->
+            <span *ngIf="(emailTouched || email.touched) && !infosColaborador.Email" class="error">
+              O campo E-mail é obrigatório.
+            </span>
+            <!-- Mensagem de erro para formato inválido -->
+            <span *ngIf="(emailTouched || email.touched) && !email.valid && infosColaborador.Email" class="error">
+              Digite um E-mail válido.
+            </span>
+                
+            <input 
+                  matInput 
+                  type="text" 
+                  placeholder="Digite seu número de celular" 
+                  [(ngModel)]="infosColaborador.Celular" 
+                  name="telefone" 
+                  #telefone="ngModel" 
+                  (input)="formatarCelular()" 
+                  (blur)="celularTouched = true" 
+                  required 
+                  pattern="^\(\d{2}\) \d{5}-\d{4}$" 
+                  maxlength="15"
+                />
+                <!-- Mensagem de erro para número inválido -->
+                <span *ngIf="(celularTouched || telefone.touched) && !infosColaborador.Celular" class="error">
+                  O número de celular é obrigatório.
+                </span>
+                <span *ngIf="(celularTouched || telefone.touched) && telefone.invalid && infosColaborador.Celular" class="error">
+                  Digite um número de celular válido no formato (XX) XXXXX-XXXX.
+                </span>
+ 
+                    
+            <input 
+            matInput 
+            type="password" 
+            placeholder="Digite sua senha" 
+            [(ngModel)]="infosColaborador.Senha" 
+            name="senha" 
+            #senha="ngModel" 
+            required 
+            minlength="8"
+          />
+          <!-- Mensagens de Erro -->
+            <!-- Mensagem de erro para e-mail vazio -->
+            <span *ngIf="(senhaTouched || senha.touched) && !infosColaborador.Senha" class="error">
+                O campo Senha é obrigatório.
+              </span>
+              <!-- Mensagem de erro para formato inválido -->
+              <span *ngIf="(senhaTouched || senha.touched) && !senha.valid && infosColaborador.Senha" class="error">
+                A senha deve conter pelo menos 8 caracteres.
+              </span>
+      
+          <div class="datepicker-container">
+            <input
+              matInput
+              [matDatepicker]="picker"
+              placeholder="Data de Nascimento"
+              [(ngModel)]="infosColaborador.DataNascimento"
+              name="dataNascimento"
+              required
+              #dataNascimento="ngModel"
+              readonly
+            />
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </div>
+          <span class="error" *ngIf="dataNascimento.invalid && (dataNascimento.dirty || dataNascimento.touched)">
+            A data de nascimento é obrigatória.
+          </span>
 
-<app-container>
-        <div class="left-panel">
-            <h1>Manage your Money Anywhere</h1>
-            <p>View all the analytics and grow your business from anywhere!</p>
-            <div class="testimonial">
-                <img src="https://via.placeholder.com/40" alt="User">
-                <p>"This analytics platform is a game-changer! It's easy to use, provides valuable insights, and has helped me make smarter business decisions. I highly recommend it."</p>
-                <span>- Casey Bachmeyer, Founder, Sisyphus Ventures</span>
+  
+          
+      
+            <div class="alternative-login">
+              <button 
+                class="botão-entrar" 
+                [disabled]="!infosColaborador.Email || !infosColaborador.Senha" 
+                (click)="validarFormulario() && Cadastro()">
+                Entrar
+              </button>
             </div>
+          </div>
         </div>
-        <div class="right-panel">
-            <h2>Create an account</h2>
-            <form class="form">
-                <label>
-                    <input type="radio" name="account-type" value="Merchant" checked> Merchant
-                </label>
-                <label>
-                    <input type="radio" name="account-type" value="Agent"> Agent
-                </label>
-                <input type="text" placeholder="First Name" required>
-                <select required>
-                    <option value="" disabled selected>Where is your company based?</option>
-                    <option value="USA">USA</option>
-                    <option value="Canada">Canada</option>
-                    <option value="UK">UK</option>
-                </select>
-                <input type="email" placeholder="Business E-mail" required>
-                <select required>
-                    <option value="" disabled selected>Please select an Industry</option>
-                    <option value="Technology">Technology</option>
-                    <option value="Finance">Finance</option>
-                    <option value="Retail">Retail</option>
-                </select>
-                <input type="tel" placeholder="Phone number" required>
-                <input type="password" placeholder="Password" required>
-                <label>
-                    <input type="checkbox" required> I accept the <a href="#">Privacy Policy</a>
-                </label>
-                <button type="submit">Create an Account</button>
-                <div class="login-link">
-                    Already have an account? <a href="#">Log in</a>
-                </div>
-            </form>
+      </div>
+      
+        <div class="info-section">
+            <video autoplay muted loop width="600" height="750" onloadedmetadata="this.currentTime=1;">
+                <source src="assets/videos/veritaIa.mp4" type="video/mp4;" />
+                Seu navegador não suporta vídeos HTML5.
+            </video>
         </div>
-</app-container>
-<app-footer></app-footer>
+    </div>
 

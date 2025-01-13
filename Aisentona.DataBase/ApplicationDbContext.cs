@@ -9,7 +9,6 @@ namespace Aisentona.DataBase
         }
 
         public DbSet<Colaborador> CF_Colaborador { get; set; }
-        public DbSet<ColaboradorEmail> CF_ColaboradorEmail { get; set; }
         public DbSet<ColaboradorTelefone> CF_ColaboradorTelefone { get; set; }
         public DbSet<ColaboradorPermissao> CF_ColaboradorPermissao { get; set; }
         public DbSet<ColaboradorTipoUsuario> CF_ColaboradorTipoUsuario { get; set; }

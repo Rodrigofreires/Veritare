@@ -1,6 +1,7 @@
 ﻿using Aisentona.Biz.Services;
 using Aisentona.DataBase;
 using Aisentona.Entities.Request;
+using Aisentona.Entities.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aisentona.API.Controllers
@@ -35,15 +36,15 @@ namespace Aisentona.API.Controllers
 
         // POST api/<ColaboradorController>
         [HttpPost]
-        public IActionResult CreateColaborador([FromBody] ColaboradorRequest colaboradorObjeto)
+        public IActionResult CreateColaborador([FromBody] ColaboradorResponse colaboradorResponse)
         {
-            if (colaboradorObjeto is null)
+            if (colaboradorResponse is null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
 
             // Criar um novo colaborador usando o serviço
-            var novoColaborador = _colaboradorService.CriarColaborador(colaboradorObjeto);
+            var novoColaborador = _colaboradorService.CriarColaborador(colaboradorResponse);
 
             if (novoColaborador == null)
             {

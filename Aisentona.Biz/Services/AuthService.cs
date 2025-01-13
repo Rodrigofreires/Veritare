@@ -28,7 +28,7 @@ namespace Aisentona.Biz.Services
 
         public LoginResponse Authenticate(LoginRequest loginRequest)
         {
-            Colaborador user = _context.CF_Colaborador.Include(x => x.Emails).FirstOrDefault(u => u.Emails.Ds_Email == loginRequest.Email);
+            Colaborador user = _context.CF_Colaborador.FirstOrDefault(u => u.Ds_Email == loginRequest.Email);
 
             if (user == null)
             {
@@ -36,7 +36,7 @@ namespace Aisentona.Biz.Services
                 return null; // Ou lançar uma exceção
             }
 
-            bool isPasswordValid = HashingUtils.VerifyPassword(loginRequest.Password, user.PasswordHash, user.PasswordSalt);
+            bool isPasswordValid = HashingUtils.VerifyPassword(loginRequest.Senha, user.PasswordHash, user.PasswordSalt);
 
             if (!isPasswordValid)
             {

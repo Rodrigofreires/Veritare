@@ -13,15 +13,15 @@
             <h2>Bem-Vindo!</h2>
             <p class="botao-cadastro">Não possui uma conta?  <a routerLink="/cadastro-de-usuario"> Registre-se</a></p>
             <div class="signup-form">
-                <input matInput type="text" placeholder="Digite seu e-mail" [(ngModel)]="email" name="usuario" required (blur)="onBlurEmail()" />
-                <span *ngIf="!email && emailTouched" class="error">O e-mail é obrigatório.</span>
+                <input matInput type="text" placeholder="Digite seu e-mail" [(ngModel)]="loginRequest.Email" name="usuario" required (blur)="onBlurEmail()" />
+                <span *ngIf="!loginRequest.Email && emailTouched" class="error">O e-mail é obrigatório.</span>
                 
-                <input matInput type="password" placeholder="Digite sua senha" [(ngModel)]="senha" name="senha" required (blur)="onBlurSenha()" />
-                <span *ngIf="!senha && senhaTouched" class="error">A senha é obrigatória.</span>
+                <input matInput type="password" placeholder="Digite sua senha" [(ngModel)]="loginRequest.Senha" name="senha" required (blur)="onBlurSenha()" />
+                <span *ngIf="!loginRequest.Senha && senhaTouched" class="error">A senha é obrigatória.</span>
                 
 
                 <div class="alternative-login">
-                    <button class="botão-entrar" [disabled]="!email || !senha" (click)="login()">
+                    <button class="botão-entrar" [disabled]="!loginRequest.Email || !loginRequest.Senha" (click)="login()">
                         Entrar
                     </button>
                     <button class="google-login" (click)="loginWithGoogle()"> 
