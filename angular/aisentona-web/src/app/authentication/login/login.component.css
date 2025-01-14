@@ -131,6 +131,13 @@
     }
 }
 
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    display: block;
+}
+
 @media (max-width: 768px) {
     .signup-wrapper {
         width: 100%;
@@ -152,4 +159,7 @@
     .form-section h2 {
         font-size: 24px;
     }
+
+    
+
 }

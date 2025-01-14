@@ -12,8 +12,6 @@ namespace Aisentona.Entities.ViewModels
         {
                 
         }
-
-
         public StatusDTO(int id, string descricao)
         {
             Id = id;

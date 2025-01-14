@@ -14,11 +14,13 @@ namespace Aisentona.Biz.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly ColaboradorValidator _validator;
+        private readonly AuthService _authService;
 
-        public ColaboradorService(ApplicationDbContext context, ColaboradorValidator validator)
+        public ColaboradorService(ApplicationDbContext context, ColaboradorValidator validator, AuthService authService)
         {
              _context = context;
             _validator = validator;
+            _authService = authService;
         }
 
         private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
@@ -67,13 +69,16 @@ namespace Aisentona.Biz.Services
                 var emailExiste = _context.CF_Colaborador.Any(e => e.Ds_Email == colaboradorResponse.Email);
                 if (emailExiste) throw new Exception("Esse E-mail já está em uso.");
 
-
-
                 _context.CF_Colaborador.Add(novoColaborador);
                 _context.SaveChanges();
 
-            }
+                LoginRequest loginRequest = new LoginRequest();
 
+                loginRequest.Email = colaboradorResponse.Email;
+                loginRequest.Senha = colaboradorResponse.Senha;
+
+                _authService.Authenticate(loginRequest); 
+            }
             return novoColaborador;
         }
         public Colaborador EditarColaborador(int idColaborador, ColaboradorRequest colaboradorRequest)

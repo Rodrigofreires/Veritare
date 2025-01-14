@@ -10,6 +10,7 @@ import { ColaboradorResponse } from '../core/interfaces/Response/Colaborador';
   providedIn: 'root'
 })
 export class LoginService {
+
   private apiUrl = environment.apiUrl;
 
 
@@ -18,7 +19,7 @@ export class LoginService {
 
   ) { }
 
-// Login do usuário
+// LOGIN DO USUÁRIO
 login(Email: string, Senha: string): Observable<any> {
   const body = { Email, Senha };
 
@@ -38,13 +39,30 @@ login(Email: string, Senha: string): Observable<any> {
   );
 }
 
-// POSTAR NOVA NOTÍCIA 
+//LOGOUT USUÁRIO
+logout(): void {
+  const token = localStorage.getItem('token'); // Obtém o token do localStorage
+
+  if (token) {
+    // Envia o token para a API de logout
+    this.http.post(`${this.apiUrl}/Login/logout`, { token }).subscribe({
+      next: () => {
+        // Se o logout no backend for bem-sucedido, remova o token
+        console.log('Logout realizado com sucesso.');
+        localStorage.removeItem('token'); // Remove o token armazenado
+        localStorage.removeItem('userPermissions'); // Remova permissões, se armazenadas
+        localStorage.removeItem('userName'); // Remova dados adicionais relacionados
+      },
+    });
+  } else {
+    console.warn('Nenhum token encontrado para logout.');
+  }
+}
+
+// CADASTRAR NO USUÁRIO
 cadastroDeColaborador(infosColaborador: ColaboradorResponse): Observable<any> {
   return this.http.post(`${this.apiUrl}/colaborador`, infosColaborador);
 }
-
-
-
 
 
 }

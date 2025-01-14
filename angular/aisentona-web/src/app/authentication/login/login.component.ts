@@ -79,6 +79,10 @@ export class LoginComponent {
   }
 
   login(): void {
+    // Atualiza os estados de "tocado" para exibir mensagens de erro
+    this.emailTouched = true;
+    this.senhaTouched = true;
+  
     if (this.isValid()) {
       this._loginService.login(this.loginRequest.Email, this.loginRequest.Senha).subscribe({
         next: () => {
@@ -87,13 +91,14 @@ export class LoginComponent {
         },
         error: () => {
           this._snackBarService.MostrarErro('E-mail ou Senha incorretos');
-          this.loginValid = false;
+          this.loginValid = false; // Define o estado de login inválido
         },
       });
     } else {
-      this.loginValid = false;
+      this.loginValid = false; // Atualiza o estado para refletir validação falha
     }
   }
+  
 
   loginWithGoogle() {
     console.warn('Método loginWithGoogle ainda não implementado');

@@ -17,6 +17,8 @@ namespace Aisentona.API.Controllers
             _loginService = loginService;
             _authService = authService;
         }
+        
+        
         [HttpPost]
         public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
@@ -34,5 +36,26 @@ namespace Aisentona.API.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("logout")]
+        public IActionResult LogOut([FromBody] LogoutRequest logoutRequest)
+        {
+            if (logoutRequest == null || string.IsNullOrEmpty(logoutRequest.Token))
+            {
+                return BadRequest("Invalid client request");
+            }
+
+            var success = _authService.LogOut(logoutRequest.Token);
+
+            if (!success)
+            {
+                return StatusCode(500, new { message = "Logout failed" });
+            }
+
+            return Ok(new { message = "Logout successful" });
+        }
+
+
+
     }
 }

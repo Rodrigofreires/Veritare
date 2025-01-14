@@ -84,6 +84,8 @@ void ConfigureServices(IServiceCollection services, byte[] decodedKey, Configura
     services.AddScoped<TokenService>(); // Adiciona o TokenService
     services.AddScoped<LoginService>();
     services.AddScoped<AuthService>();
+    services.AddScoped<TokenBlacklistService>();
+    //services.AddScoped<TokenValidationMiddleware>();
 
 
     services.AddAuthentication(options =>

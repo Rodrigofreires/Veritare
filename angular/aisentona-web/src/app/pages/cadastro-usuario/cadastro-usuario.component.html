@@ -111,22 +111,18 @@
           <span class="error" *ngIf="dataNascimento.invalid && (dataNascimento.dirty || dataNascimento.touched)">
             A data de nascimento é obrigatória.
           </span>
-
-  
-          
       
             <div class="alternative-login">
               <button 
                 class="botão-entrar" 
                 [disabled]="!infosColaborador.Email || !infosColaborador.Senha" 
                 (click)="validarFormulario() && Cadastro()">
-                Entrar
+                Cadastre-se
               </button>
             </div>
           </div>
         </div>
-      </div>
-      
+      </div>     
         <div class="info-section">
             <video autoplay muted loop width="600" height="750" onloadedmetadata="this.currentTime=1;">
                 <source src="assets/videos/veritaIa.mp4" type="video/mp4;" />

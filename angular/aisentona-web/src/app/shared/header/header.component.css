@@ -37,5 +37,8 @@
       color: #1976d2; /* Cor ao passar o mouse, ajuste conforme o tema */
     }
 
+    .user-name{
+      font-size: medium;
+    }
 
   }
