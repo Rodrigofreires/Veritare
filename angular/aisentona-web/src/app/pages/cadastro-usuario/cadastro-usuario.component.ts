@@ -47,8 +47,9 @@ export class CadastroUsuarioComponent {
   cpfTouched: boolean = false;
   celularTouched: boolean = false;
   dataNascimentoTouched: boolean = false;
-  
+  senhaConfirmacao: string = '';
   cpfInvalido : boolean = false;
+
 
   constructor(
     private _loginService: LoginService,

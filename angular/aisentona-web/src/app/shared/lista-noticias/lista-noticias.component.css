@@ -26,10 +26,12 @@
 }
 
 .imagem-noticia {
-  width: 350px; /* Largura ligeiramente aumentada */
-  height: 100%; /* A altura preenche o card */
-  object-fit: cover; /* Cobre o espaço do card mantendo a proporção */
-  border-radius: 8px;
+  min-width: 150px !important; 
+  max-width: 150px !important;
+  min-width: 150px !important; 
+  max-height: 150px !important; 
+  border-radius: 8px !important;
+  gap: 20px;
   cursor: pointer;
 }
 
@@ -43,7 +45,7 @@
 .nome-editoria {
   font-size: 1.3rem;
   font-weight: bold;
-  color: #007BFF;
+  color: #7070AC;
   margin: 0;
 }
 

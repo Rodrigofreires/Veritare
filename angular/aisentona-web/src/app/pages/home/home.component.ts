@@ -6,7 +6,7 @@ import { ListaNoticiasComponent } from '../../shared/lista-noticias/lista-notici
 
 @Component({
   selector: 'app-home',
-  imports: [ContainerComponent, FooterComponent, BannerComponent, ListaNoticiasComponent],
+  imports: [ContainerComponent, BannerComponent, ListaNoticiasComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true

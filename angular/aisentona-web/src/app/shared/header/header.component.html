@@ -1,5 +1,5 @@
 <header class="app-header">
-  <mat-toolbar>
+  <mat-toolbar class="tool-bar">
     <a routerLink="/home" class="home-link">AI Sentona</a>
     <div class="login">
       <!-- Exibe o nome do usuário, se ele estiver logado -->
@@ -10,8 +10,8 @@
       <button *ngIf="!isLoggedIn" mat-flat-button class="botao-header" routerLink="/login">Login</button>
 
       <!-- Botões para usuários logados -->
-      <button *ngIf="isLoggedIn" mat-flat-button class="botao-header" routerLink="/perfil">Perfil</button>
-      <button *ngIf="isLoggedIn" mat-flat-button class="botao-header" (click)="logout()">Logout</button>
+      <button *ngIf="isLoggedIn"  class="botao-header" routerLink="/perfil">Perfil</button>
+      <button *ngIf="isLoggedIn"  class="botao-header" (click)="logout()">Logout</button>
 
     </div>
   </mat-toolbar>

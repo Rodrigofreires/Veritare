@@ -8,6 +8,7 @@ import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
 import {MatListModule} from '@angular/material/list';
 import { QuillModule } from 'ngx-quill';
+import { FooterComponent } from "../../shared/footer/footer.component";
 
 @Component({
   standalone: true,
@@ -19,8 +20,7 @@ import { QuillModule } from 'ngx-quill';
     CommonModule,
     MatListModule,
     QuillModule,
-      
-    ],
+],
   templateUrl: './pagina-noticia.component.html',
   styleUrl: './pagina-noticia.component.css'
 })

@@ -15,8 +15,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 
 @Component({
   selector: 'app-perfil-de-usuario',
-  imports: [
-    FooterComponent, 
+  imports: [ 
     ContainerComponent, 
     MatFormFieldModule, 
     ReactiveFormsModule, 
@@ -48,6 +47,10 @@ export class PerfilDeUsuarioComponent implements OnInit {
       acessoPremium: [false]
     });
   }
+
+
+
+  
 
   onSubmit() {
     if (this.userProfileForm.valid) {

@@ -101,6 +101,12 @@
     height: 18px;
 }
 
+.botao-cadastro{
+    cursor: pointer;;
+    z-index: 9999;
+}
+
+
 .google-login:hover, .botão-entrar:hover {
     background-color: #f5f5f5;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);

@@ -101,14 +101,14 @@
   }
   
   .botao-selecionado {
-    background-color: #1976d2; /* Cor de destaque */
+    background-color: #7070AC; /* Cor de destaque */
     color: white;
-    border: 2px solid #115293; /* Borda para realçar o botão */
+    border: 2px solid #000000; /* Borda para realçar o botão */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
   }
   
   .botao-selecionado:hover {
-    background-color: #115293; /* Cor mais escura ao passar o mouse */
+    background-color: #7070AC; /* Cor mais escura ao passar o mouse */
   }
 
   .lista-noticias-relacionadas{

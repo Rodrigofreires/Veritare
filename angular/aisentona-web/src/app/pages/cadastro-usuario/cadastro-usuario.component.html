@@ -72,8 +72,7 @@
                 <span *ngIf="(celularTouched || telefone.touched) && telefone.invalid && infosColaborador.Celular" class="error">
                   Digite um número de celular válido no formato (XX) XXXXX-XXXX.
                 </span>
- 
-                    
+                
             <input 
             matInput 
             type="password" 
@@ -93,6 +92,30 @@
               <span *ngIf="(senhaTouched || senha.touched) && !senha.valid && infosColaborador.Senha" class="error">
                 A senha deve conter pelo menos 8 caracteres.
               </span>
+
+               <!-- Campo de Confirmação de Senha -->
+              <input 
+              matInput 
+              type="password" 
+              placeholder="Confirme sua senha" 
+              [(ngModel)]="senhaConfirmacao" 
+              name="senhaConfirmacao" 
+              #senhaConfirmacaoField="ngModel" 
+              required
+            />
+            <!-- Mensagens de Erro da Confirmação -->
+            <span 
+              *ngIf="(senhaConfirmacao || senhaConfirmacaoField.touched) && !senhaConfirmacao" 
+              class="error">
+              O campo Confirmação de Senha é obrigatório.
+            </span>
+            <span 
+              *ngIf="senhaConfirmacao && senhaConfirmacao !== infosColaborador.Senha" 
+              class="error">
+              As senhas não coincidem.
+            </span>
+
+              
       
           <div class="datepicker-container">
             <input
@@ -122,12 +145,13 @@
             </div>
           </div>
         </div>
-      </div>     
         <div class="info-section">
-            <video autoplay muted loop width="600" height="750" onloadedmetadata="this.currentTime=1;">
-                <source src="assets/videos/veritaIa.mp4" type="video/mp4;" />
-                Seu navegador não suporta vídeos HTML5.
-            </video>
-        </div>
+          <video autoplay muted loop width="600" height="750" onloadedmetadata="this.currentTime=1;">
+              <source src="assets/videos/veritaIa.mp4" type="video/mp4;" />
+              Seu navegador não suporta vídeos HTML5.
+          </video>
+      </div>
+      </div>     
+       
     </div>
 
