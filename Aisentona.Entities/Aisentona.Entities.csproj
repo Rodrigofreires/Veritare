@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Aisentona.DataBase\Aisentona.DataBase.csproj" />
     <ProjectReference Include="..\Aisentona.Enum\Aisentona.Enum.csproj" />
   </ItemGroup>
 

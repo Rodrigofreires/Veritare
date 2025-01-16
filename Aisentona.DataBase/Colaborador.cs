@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Aisentona.DataBase.Aisentona.DataBase;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Aisentona.DataBase
@@ -43,9 +44,12 @@ namespace Aisentona.DataBase
         public int Id_TipoUsuario { get; set; }
         public string Ds_UltimaAlteracao { get; set; }
 
+
+
         // Propriedades de navegação
         public virtual ColaboradorTelefone? Telefones { get; set; }
         public virtual ColaboradorPermissao? Permissoes { get; set; }
+        public virtual AcessoUsuario? AcessoUsuario { get; set; }
         public virtual ICollection<Postagem> Postagem { get; set; }
     }
 

@@ -54,8 +54,5 @@ namespace Aisentona.API.Controllers
 
             return Ok(new { message = "Logout successful" });
         }
-
-
-
     }
 }

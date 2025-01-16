@@ -34,6 +34,24 @@ namespace Aisentona.API.Controllers
             return Ok(colaborador);
         }
 
+        // GET api/<ColaboradorController>
+        [HttpGet("perfil-usuario/{id}")]
+        public IActionResult GetPerfilUsuario(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest("ID inválido.");
+            }
+
+            var perfilDeUsuarioRequest = _colaboradorService.ListarPerfilDeUsuarioPorId(id);
+            if (perfilDeUsuarioRequest == null)
+            {
+                return NotFound();
+            }
+            return Ok(perfilDeUsuarioRequest);
+        }
+
+
         // POST api/<ColaboradorController>
         [HttpPost]
         public IActionResult CreateColaborador([FromBody] ColaboradorResponse colaboradorResponse)

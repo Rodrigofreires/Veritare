@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Aisentona.DataBase.Aisentona.DataBase;
+using Microsoft.EntityFrameworkCore;
 
 namespace Aisentona.DataBase
 {
@@ -14,8 +15,21 @@ namespace Aisentona.DataBase
         public DbSet<ColaboradorTipoUsuario> CF_ColaboradorTipoUsuario { get; set; }
         public DbSet<Postagem> CF_Postagem { get; set; }
         public DbSet<Categoria> CF_Postagem_Categoria { get; set; }
+        public DbSet<AcessoUsuario> CF_AcessoUsuario { get; set; }
         public DbSet<Status> CF_Postagem_Status { get; set; }
         public DbSet<Tags> CF_Postagem_Tags { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Relacionamento de 1 para 1 entre Colaborador e AcessoUsuario
+            modelBuilder.Entity<Colaborador>()
+                .HasOne(c => c.AcessoUsuario)  // Um Colaborador tem um AcessoUsuario
+                .WithOne()  // Relacionamento de 1 para 1
+                .HasForeignKey<AcessoUsuario>(a => a.Id_Usuario);  // Chave estrangeira na tabela AcessoUsuario
+        }
+
 
     }
 }

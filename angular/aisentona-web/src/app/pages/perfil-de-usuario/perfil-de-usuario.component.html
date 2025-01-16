@@ -5,16 +5,17 @@
         <div class="informacoes-do-perfil">
             <div class="informacoes-basicas">
                 <div class="informacoes-perfil">
-                    <h3 class="nome-perfil">Rodrigo Freires Soares</h3>
-                    <p class="email-usuario" ><strong>E-mail:</strong> {{'rodrigofreires05@gmail.com'}}</p>
-                    <p  class="telefone-usuario"><strong> Contato:</strong> (11) 9.7070-5050</p>
-                    <p class="tipo-usuario">Usuário Administrador</p>
-                    <p><strong>Tempo de Acesso:</strong> 12 meses</p>
-                    <p><strong>Data de Nascimento:</strong> 01/01/1970</p>
-                    <p><strong>Endereço:</strong> Rua Exemplo, 123, Cidade, Estado</p>
-                    <p><strong>CPF:</strong> 123.456.789-00</p>
-                    <p><strong>Acesso Premium:</strong> Sim</p>
-                    <p><strong>Premium expira em: </strong>30/12/2025</p><p></p>
+                    <h3 class="nome-perfil"> {{infosPerfilUsuario.Nome }} </h3>
+                    <p class="email-usuario" ><strong>E-mail:</strong> {{infosPerfilUsuario.Email }}</p>
+                    <p  class="telefone-usuario"><strong> Contato:</strong> {{infosPerfilUsuario.Contato}}</p>
+                    <p class="tipo-usuario"><strong> Tipo de Usuario: </strong> {{infosPerfilUsuario.TipoDeUsuario}}</p>
+                    <p><strong>Tempo de Acesso:</strong> {{ formatDate(infosPerfilUsuario.TempoDeAcesso) }}</p>
+                    <p><strong>Data de Nascimento:</strong> {{ formatDate(infosPerfilUsuario.DataDeNascimento) }}</p>
+                    
+                    <p><strong>Endereço:</strong> {{infosPerfilUsuario.Endereco}}</p>
+                    <p><strong>CPF:</strong> {{infosPerfilUsuario.CPF}}</p>
+                    <p><strong>Acesso Premium:</strong> {{infosPerfilUsuario.AcessoPremium }}</p>
+                    <p><strong>Premium expira em: </strong>{{infosPerfilUsuario.PremiumExpiraEm}}</p><p></p>
                 </div>
             </div>
         </div>

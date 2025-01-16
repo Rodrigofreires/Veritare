@@ -7,6 +7,7 @@ using Aisentona.Biz.Validators;
 using FluentValidation.Results;
 using Aisentona.Entities.Response;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace Aisentona.Biz.Services
 {
@@ -28,6 +29,7 @@ namespace Aisentona.Biz.Services
         public List<Colaborador>? ListarColaboradorPorId(int id)
         {
             var colaborador = _context.CF_Colaborador.FirstOrDefault(c => c.Id_Usuario == id);
+            
             List<Colaborador> listaDeColaboradores = new List<Colaborador>();
 
             if (colaborador != null && colaborador.Fl_Ativo == true)
@@ -38,6 +40,30 @@ namespace Aisentona.Biz.Services
 
         }
 
+        public PerfilDeUsuarioRequest ListarPerfilDeUsuarioPorId(int idColaborador)
+        {
+
+
+            var colaborador = _context.CF_Colaborador.Include(c => c.AcessoUsuario).FirstOrDefault(c => c.Id_Usuario == idColaborador);
+
+            if(colaborador is null) return null;
+
+            PerfilDeUsuarioRequest perfilDeUsuarioRequest = new();
+
+            perfilDeUsuarioRequest.IdUsuario = colaborador.Id_Usuario;
+            perfilDeUsuarioRequest.Nome = colaborador.Nm_Nome;
+            perfilDeUsuarioRequest.CPF = colaborador.Ds_CPF;
+            perfilDeUsuarioRequest.Email = colaborador.Ds_Email;
+            perfilDeUsuarioRequest.Contato = colaborador.Ds_ContatoCadastro;
+            perfilDeUsuarioRequest.TipoDeUsuario = colaborador.Id_TipoUsuario;
+            perfilDeUsuarioRequest.DataDeNascimento = colaborador.DT_Nascimento;
+            perfilDeUsuarioRequest.TempoDeAcesso = colaborador.DT_Criacao;
+            perfilDeUsuarioRequest.AcessoPremium = colaborador.AcessoUsuario.AcessoPremium;
+            perfilDeUsuarioRequest.PremiumExpiraEm = colaborador.AcessoUsuario?.Dt_ExpiracaoPremium;
+
+            return perfilDeUsuarioRequest;
+
+        }
         public Colaborador CriarColaborador(ColaboradorResponse colaboradorResponse)
         {
             //Chamando as Validações do Colaborador
@@ -64,7 +90,7 @@ namespace Aisentona.Biz.Services
 
                 //Verificando se já existe um e-mail desses cadastrado no banco 
                 var cpflExiste = _context.CF_Colaborador.Any(e => e.Ds_CPF == colaboradorResponse.CPF);
-                if (cpflExiste) throw new Exception("Esser CPF já está em uso.");
+                if (cpflExiste) throw new Exception("Esse CPF já está em uso.");
 
                 var emailExiste = _context.CF_Colaborador.Any(e => e.Ds_Email == colaboradorResponse.Email);
                 if (emailExiste) throw new Exception("Esse E-mail já está em uso.");
