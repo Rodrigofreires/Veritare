@@ -21,7 +21,7 @@ export const routes: Routes = [
       { path: 'lista-noticia/:nomeCategoria/:idCategoria', component: ListagemPorEditoriaComponent },
       { path: 'cadastro-de-noticia', component: CadastroDeNoticiaComponent },
       { path: 'editar-noticia/:id', component: PaginaEditarNoticiaComponent },
-      { path: 'perfil-de-usuario', component: PerfilDeUsuarioComponent },
+      { path: 'perfil-de-usuario/:id', component: PerfilDeUsuarioComponent },
     ],
   },
   {

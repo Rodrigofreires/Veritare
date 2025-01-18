@@ -14,7 +14,7 @@ namespace Aisentona.Entities.Request
         {
             
         }
-        public PerfilDeUsuarioRequest(string nome, string email, string contato, int tipoDeUsuario, DateTime tempoDeAcesso, DateTime dataDeNascimento, string endereco, string cpf, bool acessoPremium, DateTime? premiumExpiraEm, int idUsuario)
+        public PerfilDeUsuarioRequest(string nome, string email, string contato, string tipoDeUsuario, DateTime tempoDeAcesso, DateTime dataDeNascimento, string endereco, string cpf, bool acessoPremium, DateTime? premiumExpiraEm, int idUsuario)
         {
 
             IdUsuario = idUsuario;
@@ -35,7 +35,7 @@ namespace Aisentona.Entities.Request
         public string CPF { get; set; }
         public string Email { get; set; }
         public string Contato { get; set; }
-        public int TipoDeUsuario { get; set; }
+        public string TipoDeUsuario { get; set; }
         public string Endereco { get; set; }
         public bool AcessoPremium { get; set; }
         public DateTime TempoDeAcesso { get; set; }

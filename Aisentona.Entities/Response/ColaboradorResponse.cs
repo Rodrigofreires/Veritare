@@ -27,5 +27,8 @@ namespace Aisentona.Entities.Response
         public string Senha { get; set; }
         public DateTime DataNascimento { get; set; }
 
+
+
+
     }
 }

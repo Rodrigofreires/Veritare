@@ -13,6 +13,6 @@ namespace Aisentona.Enum
         EditorBase = 3,
         LeitorPremium = 4,
         LeitorSimples = 5,
-        Escritor = 6
+        Escritor = 8
     }
 }

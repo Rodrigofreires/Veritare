@@ -53,4 +53,5 @@ export class AuthService {
     const permissions = JSON.parse(localStorage.getItem(this.PERMISSIONS_KEY) || '[]');
     return permissions.includes(permission);
   }
+  
 }

@@ -8,6 +8,8 @@ using FluentValidation.Results;
 using Aisentona.Entities.Response;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Aisentona.DataBase.Aisentona.DataBase;
+using Aisentona.Biz.Mappers;
 
 namespace Aisentona.Biz.Services
 {
@@ -16,12 +18,14 @@ namespace Aisentona.Biz.Services
         private readonly ApplicationDbContext _context;
         private readonly ColaboradorValidator _validator;
         private readonly AuthService _authService;
+        private readonly DateMapper _dateMapper;
 
-        public ColaboradorService(ApplicationDbContext context, ColaboradorValidator validator, AuthService authService)
+        public ColaboradorService(ApplicationDbContext context, ColaboradorValidator validator, AuthService authService, DateMapper dateMapper)
         {
              _context = context;
             _validator = validator;
             _authService = authService;
+            _dateMapper = dateMapper;
         }
 
         private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
@@ -43,10 +47,12 @@ namespace Aisentona.Biz.Services
         public PerfilDeUsuarioRequest ListarPerfilDeUsuarioPorId(int idColaborador)
         {
 
-
-            var colaborador = _context.CF_Colaborador.Include(c => c.AcessoUsuario).FirstOrDefault(c => c.Id_Usuario == idColaborador);
+            var colaborador = _context.CF_Colaborador
+                .Include(c => c.AcessoUsuario).FirstOrDefault(c => c.Id_Usuario == idColaborador);
 
             if(colaborador is null) return null;
+
+            ColaboradorTipoUsuario tipoDoUsuario = _context.CF_ColaboradorTipoUsuario.FirstOrDefault(x => x.Id_TipoUsuario == colaborador.Id_TipoUsuario);
 
             PerfilDeUsuarioRequest perfilDeUsuarioRequest = new();
 
@@ -55,7 +61,7 @@ namespace Aisentona.Biz.Services
             perfilDeUsuarioRequest.CPF = colaborador.Ds_CPF;
             perfilDeUsuarioRequest.Email = colaborador.Ds_Email;
             perfilDeUsuarioRequest.Contato = colaborador.Ds_ContatoCadastro;
-            perfilDeUsuarioRequest.TipoDeUsuario = colaborador.Id_TipoUsuario;
+            perfilDeUsuarioRequest.TipoDeUsuario = tipoDoUsuario.Nm_TipoUsuario;
             perfilDeUsuarioRequest.DataDeNascimento = colaborador.DT_Nascimento;
             perfilDeUsuarioRequest.TempoDeAcesso = colaborador.DT_Criacao;
             perfilDeUsuarioRequest.AcessoPremium = colaborador.AcessoUsuario.AcessoPremium;
@@ -66,47 +72,68 @@ namespace Aisentona.Biz.Services
         }
         public Colaborador CriarColaborador(ColaboradorResponse colaboradorResponse)
         {
-            //Chamando as Validações do Colaborador
             ValidationResult validadores = _validator.Validate(colaboradorResponse);
 
-            Colaborador novoColaborador = new();
-
-            if (validadores.IsValid)
+            if (!validadores.IsValid)
             {
-                (byte[] hash, byte[] salt) = HashingUtils.GeneratePasswordHash(colaboradorResponse.Senha);
+                throw new ValidationException("Dados inválidos.");
+            }
 
-                novoColaborador.Nm_Nome = colaboradorResponse.Nome;
-                novoColaborador.Ds_CPF = colaboradorResponse.CPF;
-                novoColaborador.Ds_Email = colaboradorResponse.Email;
-                novoColaborador.Ds_ContatoCadastro = colaboradorResponse.Celular;
-                novoColaborador.Fl_Ativo = true;
-                novoColaborador.DT_Criacao = DateTime.UtcNow;
-                novoColaborador.DT_Nascimento = colaboradorResponse.DataNascimento;
-                novoColaborador.DT_UltimaAlteracao = DateTime.UtcNow;
-                novoColaborador.Id_TipoUsuario = (int)Autorizacao.LeitorSimples;
-                novoColaborador.PasswordHash = hash;
-                novoColaborador.PasswordSalt = salt;
-                novoColaborador.Ds_UltimaAlteracao = GetWindowsUsername();        
+            Colaborador novoColaborador = new Colaborador();
+            novoColaborador.AcessoUsuario = new AcessoUsuario();
 
-                //Verificando se já existe um e-mail desses cadastrado no banco 
-                var cpflExiste = _context.CF_Colaborador.Any(e => e.Ds_CPF == colaboradorResponse.CPF);
-                if (cpflExiste) throw new Exception("Esse CPF já está em uso.");
+            (byte[] hash, byte[] salt) = HashingUtils.GeneratePasswordHash(colaboradorResponse.Senha);
 
-                var emailExiste = _context.CF_Colaborador.Any(e => e.Ds_Email == colaboradorResponse.Email);
-                if (emailExiste) throw new Exception("Esse E-mail já está em uso.");
+            novoColaborador.Nm_Nome = colaboradorResponse.Nome;
+            novoColaborador.Ds_CPF = colaboradorResponse.CPF;
+            novoColaborador.Ds_Email = colaboradorResponse.Email;
+            novoColaborador.Ds_ContatoCadastro = colaboradorResponse.Celular;
+            novoColaborador.Fl_Ativo = true;
+            novoColaborador.Id_TipoUsuario = (int)Autorizacao.LeitorSimples;
+            novoColaborador.PasswordHash = hash;
+            novoColaborador.PasswordSalt = salt;
+            novoColaborador.Ds_UltimaAlteracao = GetWindowsUsername();
 
+            novoColaborador.DT_Criacao = DateTime.UtcNow;
+            novoColaborador.DT_Nascimento = colaboradorResponse.DataNascimento;
+            novoColaborador.DT_UltimaAlteracao =  DateTime.UtcNow;
+
+            novoColaborador.AcessoUsuario.Dt_InicioAcesso = DateTime.UtcNow;
+            novoColaborador.AcessoUsuario.Dt_FimAcesso = DateTime.UtcNow;
+            novoColaborador.AcessoUsuario.AcessoPremium = false;
+
+            try
+            {
                 _context.CF_Colaborador.Add(novoColaborador);
                 _context.SaveChanges();
 
-                LoginRequest loginRequest = new LoginRequest();
+                LoginRequest loginRequest = new LoginRequest
+                {
+                    Email = colaboradorResponse.Email,
+                    Senha = colaboradorResponse.Senha
+                };
 
-                loginRequest.Email = colaboradorResponse.Email;
-                loginRequest.Senha = colaboradorResponse.Senha;
-
-                _authService.Authenticate(loginRequest); 
+                _authService.Authenticate(loginRequest);
             }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("IX_Colaborador_Ds_CPF"))
+                {
+                    throw new Exception("Esse CPF já está em uso.");
+                }
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("IX_Colaborador_Ds_Email"))
+                {
+                    throw new Exception("Esse E-mail já está em uso.");
+                }
+                throw;
+            }
+
             return novoColaborador;
         }
+
+
+
+
         public Colaborador EditarColaborador(int idColaborador, ColaboradorRequest colaboradorRequest)
         {
             Colaborador colaborador = _context.CF_Colaborador.FirstOrDefault(x => x.Id_Usuario == idColaborador);

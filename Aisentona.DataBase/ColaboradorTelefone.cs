@@ -31,13 +31,9 @@ namespace Aisentona.DataBase
         [Required]
         public string Ds_Numero { get; set; }
         public bool Fl_Ativo { get; set; }
-        public DateTime? DT_Criacao { get; set; } = DateTime.UtcNow;
-        public DateTime? DT_UltimaAlteracao { get; set; } = DateTime.UtcNow;
+        public DateTime? DT_Criacao { get; set; } 
+        public DateTime? DT_UltimaAlteracao { get; set; }
         public string? Ds_UltimaAlteracao { get; set; }
-
-        // Relacionamento com a tabela de Colaboradores
-
-        [ForeignKey("Colaborador")]
         public int Id_Usuario { get; set; }
         public virtual Colaborador? Colaborador { get; set; }
     }

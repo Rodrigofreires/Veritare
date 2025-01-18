@@ -1,3 +1,4 @@
+
 .informacoes-do-perfil {
     display: flex;
     justify-content: space-between;
@@ -28,29 +29,42 @@
     justify-content: center;
 }
 
-
 .editar-sair {
     display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-    justify-content: center;
-    margin-bottom: 200px;
+    justify-content: center; /* Centraliza os botões */
+    gap: 20px; /* Espaçamento entre os botões */
+    margin-bottom: 200px; /* Espaçamento inferior */
 }
 
-button[mat-raised-button] {
-    background-color: #7070AC;
-    color: #fff;
+.custom-button {
+    padding: 15px 30px; /* Aumenta o tamanho dos botões */
+    font-size: 18px; /* Texto maior */
+    font-weight: bold; /* Deixa o texto em negrito */
+    border-radius: 10px; /* Bordas arredondadas */
+    cursor: pointer; /* Mostra o ponteiro ao passar */
+    border: none; /* Remove as bordas padrão */
+    transition: all 0.3s ease; /* Transição suave para hover */
 }
 
-button[mat-raised-button]:hover {
-    background-color: #0056b3;
+.custom-button.primary {
+    background-color:#7070AC; /* Azul para o botão de edição */
+    color: white; /* Texto branco */
 }
 
-button[mat-button] {
-    background-color: #dc3545;
-    color: #fff;
+.custom-button.primary:hover {
+    background-color: #1E1E2E; /* Azul mais escuro no hover */
+    transform: scale(1.05); /* Aumenta levemente no hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra */
 }
 
-button[mat-button]:hover {
-    background-color: #a71d2a;
+.custom-button.warn {
+    background-color: #FF4C4C; /* Vermelho para o botão de exclusão */
+    color: white; /* Texto branco */
 }
+
+.custom-button.warn:hover {
+    background-color: #cc0000; /* Vermelho mais escuro no hover */
+    transform: scale(1.05); /* Aumenta levemente no hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+

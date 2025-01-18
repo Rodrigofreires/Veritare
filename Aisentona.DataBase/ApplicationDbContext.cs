@@ -23,13 +23,35 @@ namespace Aisentona.DataBase
         {
             base.OnModelCreating(modelBuilder);
 
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var properties = entityType.ClrType.GetProperties()
+                    .Where(p => p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?));
+                foreach (var property in properties)
+                {
+                    modelBuilder.Entity(entityType.Name)
+                        .Property(property.Name)
+                        .HasColumnType("datetime2");
+                }
+            }
+
+
             // Relacionamento de 1 para 1 entre Colaborador e AcessoUsuario
             modelBuilder.Entity<Colaborador>()
-                .HasOne(c => c.AcessoUsuario)  // Um Colaborador tem um AcessoUsuario
+                .HasOne(c => c.AcessoUsuario)  
+                .WithOne() 
+                .HasForeignKey<AcessoUsuario>(a => a.Id_Usuario);  
+
+            // Relacionamento de 1 para 1 entre Colaborador e ColaboradorTelefone
+            modelBuilder.Entity<Colaborador>()
+                .HasOne(c => c.Telefones)  
                 .WithOne()  // Relacionamento de 1 para 1
-                .HasForeignKey<AcessoUsuario>(a => a.Id_Usuario);  // Chave estrangeira na tabela AcessoUsuario
+                .HasForeignKey<ColaboradorTelefone>(a => a.Id_Usuario);
+
+            modelBuilder.Entity<Colaborador>()
+                .HasOne(c => c.TipoUsuario)
+                .WithOne()  // Relacionamento de 1 para 1
+                .HasForeignKey<ColaboradorTipoUsuario>(a => a.Id_TipoUsuario);
         }
-
-
     }
 }

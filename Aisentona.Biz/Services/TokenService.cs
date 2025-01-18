@@ -19,7 +19,6 @@ public class TokenService
             throw new ArgumentNullException(nameof(_privateKey), "Chave privada não pode ser nula.");
         }
     }
-
     public string Create(Colaborador usuario)
     {
         var handler = new JwtSecurityTokenHandler();

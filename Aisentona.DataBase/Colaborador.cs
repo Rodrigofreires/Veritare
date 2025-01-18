@@ -18,11 +18,11 @@ namespace Aisentona.DataBase
             PasswordHash = passwordHash;
             PasswordSalt = passwordSalt;
             Fl_Ativo = flAtivo;
-            DT_Criacao = dtCriacao;
-            DT_UltimaAlteracao = dtUltimaAlteracao;
+            DT_Criacao = AjustarData(dtCriacao);
+            DT_UltimaAlteracao = AjustarData(dtUltimaAlteracao);
+            DT_Nascimento = AjustarData(dtNascimento);
             Id_TipoUsuario = idTipoUsuario;
             Ds_UltimaAlteracao = dsUltimaAlteracao;
-            DT_Nascimento = dtNascimento;
             Ds_ContatoCadastro = ds_ContatoCadastro;
         }
 
@@ -30,16 +30,14 @@ namespace Aisentona.DataBase
         public int Id_Usuario { get; set; }
         public string Nm_Nome { get; set; }
         public string Ds_CPF { get; set; }
-
         public string Ds_ContatoCadastro {  get; set; }
-
         public string Ds_Email {  get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public bool Fl_Ativo { get; set; }
-        public DateTime DT_Nascimento { get; set; }
-        public DateTime DT_Criacao { get; set; } = DateTime.UtcNow;
-        public DateTime DT_UltimaAlteracao { get; set; } = DateTime.UtcNow;
+        public DateTime DT_Nascimento { get; set; } 
+        public DateTime DT_Criacao { get; set; } 
+        public DateTime DT_UltimaAlteracao { get; set; }
         [Required]
         public int Id_TipoUsuario { get; set; }
         public string Ds_UltimaAlteracao { get; set; }
@@ -48,9 +46,20 @@ namespace Aisentona.DataBase
 
         // Propriedades de navegação
         public virtual ColaboradorTelefone? Telefones { get; set; }
-        public virtual ColaboradorPermissao? Permissoes { get; set; }
+        //public virtual ColaboradorPermissao? Permissoes { get; set; }
         public virtual AcessoUsuario? AcessoUsuario { get; set; }
+
+        public virtual ColaboradorTipoUsuario? TipoUsuario { get; set; }
+
         public virtual ICollection<Postagem> Postagem { get; set; }
+
+        // Função auxiliar para ajustar datas
+        private DateTime AjustarData(DateTime data)
+        {
+            return data < new DateTime(1753, 1, 1) ? new DateTime(1753, 1, 1) : data;
+        }
+
+
     }
 
 }

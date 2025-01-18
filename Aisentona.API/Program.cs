@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection; // Adicione esta linha para o na
 using Newtonsoft.Json;
 using Aisentona.Biz.Validators;
 using FluentValidation;
+using Aisentona.Biz.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -85,6 +86,7 @@ void ConfigureServices(IServiceCollection services, byte[] decodedKey, Configura
     services.AddScoped<LoginService>();
     services.AddScoped<AuthService>();
     services.AddScoped<TokenBlacklistService>();
+    services.AddScoped<DateMapper>();
     //services.AddScoped<TokenValidationMiddleware>();
 
 

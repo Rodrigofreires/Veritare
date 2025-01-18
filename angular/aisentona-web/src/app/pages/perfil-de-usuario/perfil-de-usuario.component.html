@@ -5,17 +5,16 @@
         <div class="informacoes-do-perfil">
             <div class="informacoes-basicas">
                 <div class="informacoes-perfil">
-                    <h3 class="nome-perfil"> {{infosPerfilUsuario.Nome }} </h3>
-                    <p class="email-usuario" ><strong>E-mail:</strong> {{infosPerfilUsuario.Email }}</p>
-                    <p  class="telefone-usuario"><strong> Contato:</strong> {{infosPerfilUsuario.Contato}}</p>
-                    <p class="tipo-usuario"><strong> Tipo de Usuario: </strong> {{infosPerfilUsuario.TipoDeUsuario}}</p>
-                    <p><strong>Tempo de Acesso:</strong> {{ formatDate(infosPerfilUsuario.TempoDeAcesso) }}</p>
-                    <p><strong>Data de Nascimento:</strong> {{ formatDate(infosPerfilUsuario.DataDeNascimento) }}</p>
-                    
-                    <p><strong>Endereço:</strong> {{infosPerfilUsuario.Endereco}}</p>
-                    <p><strong>CPF:</strong> {{infosPerfilUsuario.CPF}}</p>
-                    <p><strong>Acesso Premium:</strong> {{infosPerfilUsuario.AcessoPremium }}</p>
-                    <p><strong>Premium expira em: </strong>{{infosPerfilUsuario.PremiumExpiraEm}}</p><p></p>
+                        <h3 class="nome-perfil"> {{ infosPerfilUsuario?.nome }} </h3>
+                        <p><strong>E-mail:</strong> {{ infosPerfilUsuario?.email || 'Não informado' }}</p>
+                        <p><strong>Contato:</strong> {{ infosPerfilUsuario?.contato || 'Não informado' }}</p>
+                        <p><strong>Tipo de Usuário:</strong> {{ infosPerfilUsuario?.tipoDeUsuario }}</p>
+                        <p><strong>Tempo de Acesso:</strong> {{ infosPerfilUsuario?.tempoDeAcesso ? (infosPerfilUsuario?.tempoDeAcesso) : 'Não disponível' }}</p>
+                        <p><strong>Data de Nascimento:</strong> {{ infosPerfilUsuario?.dataDeNascimento ? (infosPerfilUsuario?.dataDeNascimento) : 'Não informado' }}</p>
+                        <p><strong>Endereço:</strong> {{ infosPerfilUsuario?.endereco || 'Não informado' }}</p>
+                        <p><strong>CPF:</strong> {{ infosPerfilUsuario?.cpf }}</p>
+                        <p><strong>Acesso Premium:</strong> {{ infosPerfilUsuario?.acessoPremium ? 'Sim' : 'Não' }}</p>
+                        <p><strong>Premium expira em:</strong> {{ infosPerfilUsuario?.premiumExpiraEm ? infosPerfilUsuario?.premiumExpiraEm : 'VIRE PREMIUM' }}</p>               
                 </div>
             </div>
         </div>
@@ -25,9 +24,9 @@
         </div>
     </div>
 
-
     <div class="editar-sair">
-        <button mat-raised-button color="primary">Editar dados do pessoais</button>
-        <button mat-button color="warn">Excluir conta</button>
+        <button class="custom-button primary">Editar dados pessoais</button>
+        <button class="custom-button warn">Excluir conta</button>
     </div>
+    
 </app-container>
