@@ -35,7 +35,6 @@ namespace Aisentona.DataBase
                 }
             }
 
-
             // Relacionamento de 1 para 1 entre Colaborador e AcessoUsuario
             modelBuilder.Entity<Colaborador>()
                 .HasOne(c => c.AcessoUsuario)  

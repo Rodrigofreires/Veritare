@@ -26,6 +26,7 @@ namespace Aisentona.DataBase
             Ds_ContatoCadastro = ds_ContatoCadastro;
         }
 
+
         [Key]
         public int Id_Usuario { get; set; }
         public string Nm_Nome { get; set; }

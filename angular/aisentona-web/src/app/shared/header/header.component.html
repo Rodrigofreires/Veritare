@@ -10,7 +10,7 @@
       <button *ngIf="!isLoggedIn" mat-flat-button class="botao-header" routerLink="/login">Login</button>
 
       <!-- Botões para usuários logados -->
-      <button *ngIf="isLoggedIn" mat-flat-button class="botao-header" routerLink="perfil-de-usuario/">Perfil</button>
+      <button *ngIf="isLoggedIn" mat-flat-button class="botao-header" [routerLink]="['/perfil-de-usuario', idUsuario]">Perfil</button>
       <button *ngIf="isLoggedIn" mat-flat-button class="botao-header" (click)="logout()">Logout</button>
 
     </div>

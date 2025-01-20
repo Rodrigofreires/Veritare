@@ -8,7 +8,6 @@ import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-header',
-  standalone: true, // Caso seja um componente autônomo
   imports: [
     MatToolbarModule,
     MatButtonModule,
@@ -20,18 +19,21 @@ import { LoginService } from '../../services/login.service';
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn: boolean = false;
+  
   userName: string | null = null;
+  idUsuario: number | null = null;
 
   constructor(
     private _authService: AuthService,
     private _loginService: LoginService,
-    private router: Router // Corrigido: Injeção do Router do Angular
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.isLoggedIn = this._authService.isLoggedIn();
     if (this.isLoggedIn) {
       this.userName = this._authService.getUserName(); // Obtém o nome do usuário
+      this.idUsuario = this._authService.getUserId(); // Obtém o Id do usuário
     }
   }
 

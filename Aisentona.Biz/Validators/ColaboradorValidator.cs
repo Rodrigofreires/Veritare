@@ -19,10 +19,10 @@ namespace Aisentona.Biz.Validators
                .MinimumLength(3).WithMessage("Nome inválido, por favor, confira novamente.")
                .MaximumLength(50).WithMessage("Nome muito grande.");
 
-            RuleFor(x => x.CPF) //Regras de Validação para o CPF
+            RuleFor(x => x.CPF)
                 .NotEmpty().WithMessage("O campo CPF é obrigatório")
-                .Must(x => ValidarCPF(x)).WithMessage("CPF inválido")
-                .NotEmpty().WithMessage("O nome do usuário é obrigatório");
+                .Must(x => ValidarCPF(x)).WithMessage("CPF inválido");
+
 
             RuleFor(x => x.Email) //Regras de Validação para Email
                 .NotNull().WithMessage("O E-mail é obrigatório")
@@ -37,33 +37,32 @@ namespace Aisentona.Biz.Validators
         public bool ValidarCPF(string cpf)
         {
             if (string.IsNullOrEmpty(cpf))
-                return true; // Validação de CPF em branco é tratada pela regra NotEmpty acima
+                return true; // Validação de CPF em branco é tratada pela regra NotEmpty
 
             // Remove caracteres não numéricos
             cpf = new string(cpf.Where(char.IsDigit).ToArray());
 
-            if (cpf.Length != 11)
+            // Verifica se o tamanho é inválido ou se todos os números são iguais (caso inválido)
+            if (cpf.Length != 11 || cpf.All(c => c == cpf[0]))
                 return false;
 
-            // Faz a validação do CPF
-            int[] numeros = cpf.Select(c => int.Parse(c.ToString())).ToArray();
-            int soma1 = 0, soma2 = 0;
+            // Calcula os dígitos verificadores
+            int[] pesos1 = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] pesos2 = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
 
-            for (int i = 0; i < 9; i++)
+            bool ValidarDigito(int[] numeros, int[] pesos, int digitoPosicao)
             {
-                soma1 += numeros[i] * (10 - i);
-                soma2 += numeros[i] * (11 - i);
+                int soma = numeros.Take(digitoPosicao).Zip(pesos, (n, p) => n * p).Sum();
+                int resto = soma % 11;
+                int digito = resto < 2 ? 0 : 11 - resto;
+                return numeros[digitoPosicao] == digito;
             }
 
-            int resto1 = soma1 % 11;
-            int digito1 = resto1 < 2 ? 0 : 11 - resto1;
+            int[] numeros = cpf.Select(c => int.Parse(c.ToString())).ToArray();
 
-            soma2 += digito1 * 2;
-            int resto2 = soma2 % 11;
-            int digito2 = resto2 < 2 ? 0 : 11 - resto2;
-
-            return numeros[9] == digito1 && numeros[10] == digito2;
+            return ValidarDigito(numeros, pesos1, 9) && ValidarDigito(numeros, pesos2, 10);
         }
+
 
 
     }

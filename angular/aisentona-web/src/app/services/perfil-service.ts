@@ -22,4 +22,11 @@ export class PerfilService {
       }
     });
   }
+
+  // EXCLUIR PERFIL DO USUÁRIO
+  excluirPerfilDoUsuario(idUsuario: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/colaborador/ativar-desativar/${idUsuario}`, {
+    });
+  }
+
 }

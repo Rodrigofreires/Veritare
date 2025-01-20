@@ -76,7 +76,6 @@ void ConfigureServices(IServiceCollection services, byte[] decodedKey, Configura
     builder.Services.AddScoped<ColaboradorValidator>();
 
 
-
     // Registro de serviços e repositórios
     services.AddScoped<ColaboradorService>();
     services.AddScoped<ColaboradorTelefoneService>();

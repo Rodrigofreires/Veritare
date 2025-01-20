@@ -1,12 +1,16 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PerfilDeUsuarioRequest } from '../../core/interfaces/Request/PerfilDeUsuario';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { PerfilService } from '../../services/perfil-service';
 import { SnackbarService } from '../../services/snackbar.service';
 import { jwtDecode } from 'jwt-decode';
 import { AuthService } from '../../services/auth.service';
 import { ContainerComponent } from "../../shared/container/container.component";
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmacaoDialogComponent } from '../../shared/dialogs/confirmacao-dialog.component';
+import { Router, RouterModule } from '@angular/router';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-perfil-de-usuario',
@@ -14,26 +18,15 @@ import { ContainerComponent } from "../../shared/container/container.component";
   styleUrls: ['./perfil-de-usuario.component.css'],
   providers: [DatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ContainerComponent], // Incluindo DatePipe nos providers
-  
+  imports: [
+    ContainerComponent,
+    CommonModule,
+  ],
+
 })
 export class PerfilDeUsuarioComponent implements OnInit {
   userProfileForm!: FormGroup;
   infosPerfilUsuario: PerfilDeUsuarioRequest | null = null;
-
-
-  //   IdUsuario: 0,
-  //   Nome: 'Carregando...',
-  //   CPF: '000.000.000-00',
-  //   Email: 'Carregando...',
-  //   Contato: '12345-6789',
-  //   TipoDeUsuario: 1,
-  //   Endereco: 'Carregando...',
-  //   AcessoPremium: false,
-  //   TempoDeAcesso: '00/00/0000', // Data inicial
-  //   DataDeNascimento: '00/00/0000',
-  //   PremiumExpiraEm: null,
-  // };
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +34,12 @@ export class PerfilDeUsuarioComponent implements OnInit {
     private readonly _perfilService: PerfilService,
     private readonly _snackBarService: SnackbarService,
     private readonly _authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private readonly _loginService: LoginService,
+    private cdr: ChangeDetectorRef,
+    private dialog: MatDialog,
+    private router: Router,
+
+    
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +60,7 @@ export class PerfilDeUsuarioComponent implements OnInit {
       this._snackBarService.MostrarErro('Não foi possível identificar o usuário.');
     }
   }
-  
+
 
   carregarPerfilDoUsuario(idUsuario: number): void {
     this._perfilService.carregarPerfilDoUsuario(idUsuario).subscribe(
@@ -71,16 +69,12 @@ export class PerfilDeUsuarioComponent implements OnInit {
         this.infosPerfilUsuario = { ...dados }; // Garante uma nova referência no objeto
         console.log('Objeto atualizado:', this.infosPerfilUsuario);
         this.cdr.detectChanges(); // Garante que o Angular renderize a mudança
-        this.cdr.markForCheck();
       },
       (erro) => {
         this._snackBarService.MostrarErro('Erro ao carregar perfil do usuário.', erro);
       }
     );
   }
-  
-  
-
 
   // Função para obter o ID do usuário a partir do token
   private obterIdUsuarioDoToken(): number | null {
@@ -100,13 +94,46 @@ export class PerfilDeUsuarioComponent implements OnInit {
     }
   }
 
-  // Função para formatar a data no formato 'dia de mês de ano'
-  formatDate(date: string): string {
-    return (
-      this.datePipe
-        .transform(new Date(date), 'd MMMM yyyy', 'UTC', 'pt-BR')
-        ?.replace(' ', ' de ') ?? ''
-    );
+  excluirPerfil(): void {
+    const dialogRef = this.dialog.open(ConfirmacaoDialogComponent);
+  
+    dialogRef.afterClosed().subscribe((confirmado) => {
+      if (confirmado) {
+        const idUsuario = this.obterIdUsuarioDoToken();
+        if (!idUsuario) {
+          this._snackBarService.MostrarErro('Usuário não identificado para exclusão.');
+          return;
+        }
+  
+        this._perfilService.excluirPerfilDoUsuario(idUsuario).subscribe(
+          () => {
+            this._snackBarService.MostrarSucesso('Perfil excluído com sucesso.');
+            this.infosPerfilUsuario = null;
+            this.cdr.markForCheck();
+            this._loginService.logout();
+  
+            // 🔥 Limpa cache antes de redirecionar
+            localStorage.clear();
+            sessionStorage.clear();
+            caches.keys().then((names) => {
+              names.forEach((name) => caches.delete(name));
+            });
+  
+            // 🔥 Redireciona sem cache
+            this.router.navigate(['home']).then(() => {
+              window.location.href = window.location.origin + '/home';
+            });
+          },
+          (erro) => {
+            this._snackBarService.MostrarErro('Erro ao excluir perfil do usuário.', erro);
+            this.router.navigate(['home']).then(() => {
+              window.location.href = window.location.origin + '/home';
+            });
+          }
+        );
+      }
+    });
   }
+  
 
 }

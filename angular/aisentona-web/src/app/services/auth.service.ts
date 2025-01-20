@@ -42,6 +42,14 @@ export class AuthService {
     return decodedToken?.unique_name || null; // Extrai o campo `unique_name`
   }
 
+    // Retorna o nome do usuário (campo `unique_name`) do token
+    getUserId(): number | null {
+      const decodedToken = this.getDecodedToken();
+      return decodedToken?.IdUsuario || null; // Extrai o campo `unique_name`
+    }
+
+
+
   // Verifica se o usuário possui uma permissão específica
   hasPermission(permission: string): boolean {
     const decodedToken = this.getDecodedToken();

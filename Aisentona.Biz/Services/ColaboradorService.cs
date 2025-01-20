@@ -18,14 +18,13 @@ namespace Aisentona.Biz.Services
         private readonly ApplicationDbContext _context;
         private readonly ColaboradorValidator _validator;
         private readonly AuthService _authService;
-        private readonly DateMapper _dateMapper;
 
-        public ColaboradorService(ApplicationDbContext context, ColaboradorValidator validator, AuthService authService, DateMapper dateMapper)
+        public ColaboradorService(ApplicationDbContext context, ColaboradorValidator validator, AuthService authService)
         {
              _context = context;
             _validator = validator;
             _authService = authService;
-            _dateMapper = dateMapper;
+
         }
 
         private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
@@ -72,12 +71,32 @@ namespace Aisentona.Biz.Services
         }
         public Colaborador CriarColaborador(ColaboradorResponse colaboradorResponse)
         {
+
             ValidationResult validadores = _validator.Validate(colaboradorResponse);
+
+
+            var a = validadores; 
 
             if (!validadores.IsValid)
             {
                 throw new ValidationException("Dados inválidos.");
             }
+
+
+            // Verificar duplicidade de e-mail
+            bool emailExiste = _context.CF_Colaborador.Any(c => c.Ds_Email == colaboradorResponse.Email && c.Fl_Ativo == true);
+            if (emailExiste)
+            {
+                throw new ValidationException("O e-mail já está em uso.");
+            }
+
+            // Verificar duplicidade de CPF
+            bool cpfExiste = _context.CF_Colaborador.Any(c => c.Ds_CPF == colaboradorResponse.CPF && c.Fl_Ativo == true);
+            if (cpfExiste)
+            {
+                throw new ValidationException("O CPF já está em uso.");
+            }
+
 
             Colaborador novoColaborador = new Colaborador();
             novoColaborador.AcessoUsuario = new AcessoUsuario();
@@ -102,8 +121,6 @@ namespace Aisentona.Biz.Services
             novoColaborador.AcessoUsuario.Dt_FimAcesso = DateTime.UtcNow;
             novoColaborador.AcessoUsuario.AcessoPremium = false;
 
-            try
-            {
                 _context.CF_Colaborador.Add(novoColaborador);
                 _context.SaveChanges();
 
@@ -114,24 +131,9 @@ namespace Aisentona.Biz.Services
                 };
 
                 _authService.Authenticate(loginRequest);
-            }
-            catch (DbUpdateException ex)
-            {
-                if (ex.InnerException != null && ex.InnerException.Message.Contains("IX_Colaborador_Ds_CPF"))
-                {
-                    throw new Exception("Esse CPF já está em uso.");
-                }
-                if (ex.InnerException != null && ex.InnerException.Message.Contains("IX_Colaborador_Ds_Email"))
-                {
-                    throw new Exception("Esse E-mail já está em uso.");
-                }
-                throw;
-            }
 
             return novoColaborador;
         }
-
-
 
 
         public Colaborador EditarColaborador(int idColaborador, ColaboradorRequest colaboradorRequest)

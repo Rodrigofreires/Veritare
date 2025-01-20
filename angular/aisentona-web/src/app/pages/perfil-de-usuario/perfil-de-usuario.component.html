@@ -7,26 +7,29 @@
                 <div class="informacoes-perfil">
                         <h3 class="nome-perfil"> {{ infosPerfilUsuario?.nome }} </h3>
                         <p><strong>E-mail:</strong> {{ infosPerfilUsuario?.email || 'Não informado' }}</p>
-                        <p><strong>Contato:</strong> {{ infosPerfilUsuario?.contato || 'Não informado' }}</p>
+                        <p><strong>Contato:</strong> {{ infosPerfilUsuario?.contato  || 'Não informado' }}</p>
                         <p><strong>Tipo de Usuário:</strong> {{ infosPerfilUsuario?.tipoDeUsuario }}</p>
-                        <p><strong>Tempo de Acesso:</strong> {{ infosPerfilUsuario?.tempoDeAcesso ? (infosPerfilUsuario?.tempoDeAcesso) : 'Não disponível' }}</p>
-                        <p><strong>Data de Nascimento:</strong> {{ infosPerfilUsuario?.dataDeNascimento ? (infosPerfilUsuario?.dataDeNascimento) : 'Não informado' }}</p>
+                        <p><strong>Tempo de Acesso:</strong> 
+                          {{ infosPerfilUsuario?.tempoDeAcesso ? (infosPerfilUsuario?.tempoDeAcesso | date:'dd/MM/yyyy') : 'Não disponível' }}
+                        </p>
+                        <p><strong>Data de Nascimento:</strong> 
+                          {{ infosPerfilUsuario?.dataDeNascimento ? (infosPerfilUsuario?.dataDeNascimento | date:'dd/MM/yyyy') : 'Não informado' }}
+                        </p>
                         <p><strong>Endereço:</strong> {{ infosPerfilUsuario?.endereco || 'Não informado' }}</p>
                         <p><strong>CPF:</strong> {{ infosPerfilUsuario?.cpf }}</p>
                         <p><strong>Acesso Premium:</strong> {{ infosPerfilUsuario?.acessoPremium ? 'Sim' : 'Não' }}</p>
-                        <p><strong>Premium expira em:</strong> {{ infosPerfilUsuario?.premiumExpiraEm ? infosPerfilUsuario?.premiumExpiraEm : 'VIRE PREMIUM' }}</p>               
+                        <p><strong>Premium expira em:</strong> 
+                          {{ infosPerfilUsuario?.premiumExpiraEm ? (infosPerfilUsuario?.premiumExpiraEm | date:'dd/MM/yyyy') : 'VIRE PREMIUM' }}
+                        </p>
+                                      
                 </div>
             </div>
-        </div>
-        
-        <div class="selo-premium">
-            <h2>USUÁRIO PREMIUM Nº 1000</h2>
         </div>
     </div>
 
     <div class="editar-sair">
-        <button class="custom-button primary">Editar dados pessoais</button>
-        <button class="custom-button warn">Excluir conta</button>
+        <!-- <button class="custom-button primary" >Editar dados pessoais</button> -->
+        <button class="custom-button warn" (click)="excluirPerfil()">Excluir conta</button>
     </div>
     
 </app-container>
