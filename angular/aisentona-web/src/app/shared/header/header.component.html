@@ -2,7 +2,7 @@
   <mat-toolbar class="tool-bar">
     <a routerLink="/home" class="home-link">AI Sentona</a>
 
-    <button *ngIf="isLoggedIn && acessarPainelDeControle()" mat-flat-button class="botao-header" [routerLink]="['/perfil-de-usuario', idUsuario]">PAINEL DE CONTROLE</button>
+    <button *ngIf="isLoggedIn && acessarPainelDeControle()" mat-flat-button class="botao-header" routerLink="/painel-de-controle">PAINEL DE CONTROLE</button>
     <div class="login">
       <!-- Exibe o nome do usuário, se ele estiver logado -->
       <span *ngIf="isLoggedIn" class="user-name">Bem-vindo, {{ userName }}!</span>
