@@ -36,6 +36,19 @@ export class AuthService {
     return null;
   }
 
+
+    // Método para verificar se o IdTipoUsuario é válido
+    podeAccessarPainelDeControle(): boolean {
+      if (!this.TOKEN_KEY) {
+        return false;
+      }
+        const decodedToken = this.getDecodedToken();
+        const idTipoUsuario = decodedToken.IdTipoUsuario;
+        // Verifica se o IdTipoUsuario é diferente de 5 e 4
+        return idTipoUsuario !== '5' && idTipoUsuario !== '4';
+    } 
+    
+
   // Retorna o nome do usuário (campo `unique_name`) do token
   getUserName(): string | null {
     const decodedToken = this.getDecodedToken();

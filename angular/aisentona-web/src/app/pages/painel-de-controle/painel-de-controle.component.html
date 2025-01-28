@@ -1,0 +1,131 @@
+<mat-sidenav-container class="dashboard-container">
+    
+    <mat-sidenav mode="side" opened class="sidenav">
+      <div class="Painel de Controle">
+        <img src="assets/profile-pic.png" alt="Profile" class="profile-pic" />
+        <h3>Painel de Controle</h3>
+        <p>veritasia.net</p>
+      </div>
+      <mat-nav-list>
+        <a mat-list-item  routerLink="/dashboard">
+          <mat-icon>dashboard</mat-icon>
+          <span>Dashboard</span>
+        </a>
+        <a mat-list-item routerLink="/news">
+          <mat-icon>article</mat-icon>
+          <span>News</span>
+        </a>
+        <a mat-list-item routerLink="/analytics">
+          <mat-icon>bar_chart</mat-icon>
+          <span>Analytics</span>
+        </a>
+        <a mat-list-item routerLink="/settings">
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content>
+      <mat-toolbar color="primary">
+        <span>News Dashboard</span>
+      </mat-toolbar>
+      <div class="content">
+        <mat-card>
+          <div class="filters">
+            <mat-form-field appearance="outline">
+              <mat-label>Filtrar por Título</mat-label>
+              <input matInput placeholder="Search" [(ngModel)]="searchName" />
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Filtrar por Status da Publicação</mat-label>
+              <mat-select [(ngModel)]="selectedStatus">
+                <mat-option *ngFor="let status of statuses" [value]="status">
+                  {{ status }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Filtrar por Colaborador</mat-label>
+              <mat-select [(ngModel)]="selectedEditor">
+                <mat-option *ngFor="let editor of editors" [value]="editor">
+                  {{ editor }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Filtrar por Data de publicação </mat-label>
+                <mat-select [(ngModel)]="selectedEditor">
+                  <mat-option *ngFor="let editor of editors" [value]="editor">
+                    {{ editor }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+          </div>
+  
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let news"> {{ news.name }} </td>
+            </ng-container>
+          
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef> Description </th>
+              <td mat-cell *matCellDef="let news"> {{ news.description }} </td>
+            </ng-container>
+          
+            <!-- Editor Column -->
+            <ng-container matColumnDef="editor">
+              <th mat-header-cell *matHeaderCellDef> Editor </th>
+              <td mat-cell *matCellDef="let news"> {{ news.editor }} </td>
+            </ng-container>
+          
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let news"> {{ news.status }} </td>
+            </ng-container>
+          
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef> Date </th>
+              <td mat-cell *matCellDef="let news"> {{ news.date | date }} </td>
+            </ng-container>
+          
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> Actions </th>
+              <td mat-cell *matCellDef="let news">
+                <button mat-icon-button (click)="editNews(news)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteNews(news)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <button mat-icon-button (click)="shareNews(news)">
+                  <mat-icon>share</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          
+          <mat-paginator
+          [pageSize]="5"
+          [pageSizeOptions]="[5, 10, 20]"
+          showFirstLastButtons>
+        </mat-paginator>
+          
+        </mat-card>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  

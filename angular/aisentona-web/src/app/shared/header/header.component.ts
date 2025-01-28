@@ -47,5 +47,12 @@ export class HeaderComponent implements OnInit {
     this.isLoggedIn = false;
     this.router.navigate(['/login']); // Redireciona para a página de login
   }
+
+  acessarPainelDeControle(): boolean {
+    return this._authService.podeAccessarPainelDeControle(); // Somente usuários com permissões 3;4 e 5
+  }
+
+
+
   
 }

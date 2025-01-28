@@ -73,15 +73,12 @@ namespace Aisentona.Biz.Services
         {
 
             ValidationResult validadores = _validator.Validate(colaboradorResponse);
-
-
             var a = validadores; 
 
             if (!validadores.IsValid)
             {
                 throw new ValidationException("Dados inválidos.");
             }
-
 
             // Verificar duplicidade de e-mail
             bool emailExiste = _context.CF_Colaborador.Any(c => c.Ds_Email == colaboradorResponse.Email && c.Fl_Ativo == true);

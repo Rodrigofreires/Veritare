@@ -9,6 +9,7 @@ import { ListagemPorEditoriaComponent } from './pages/listagem-por-editoria/list
 import { LoginComponent } from './authentication/login/login.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
+import { PainelDeControleComponent } from './pages/painel-de-controle/painel-de-controle.component';
 
 export const routes: Routes = [
   {
@@ -22,6 +23,9 @@ export const routes: Routes = [
       { path: 'cadastro-de-noticia', component: CadastroDeNoticiaComponent },
       { path: 'editar-noticia/:id', component: PaginaEditarNoticiaComponent },
       { path: 'perfil-de-usuario/:id', component: PerfilDeUsuarioComponent },
+      { path: 'painel-de-controle', component: PainelDeControleComponent },
+      
+      
     ],
   },
   {
@@ -30,6 +34,7 @@ export const routes: Routes = [
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'cadastro-de-usuario', component: CadastroUsuarioComponent },
+      
     ],
   },
 ];
