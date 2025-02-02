@@ -73,6 +73,7 @@ export class PaginaEditarNoticiaComponent implements OnInit {
     this.carregarStatus();
 
     this.modules = {
+      //Framework de edição de texto - comandos para utilização
       toolbar: {
         container: [
           // Configuração da toolbar

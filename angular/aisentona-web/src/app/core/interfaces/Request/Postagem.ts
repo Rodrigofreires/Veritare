@@ -6,6 +6,7 @@ export interface PostagemRequest {
     idCategoria: number;
     nomeCategoria: string;
     idStatus: number;
+    nomeStatus?: string;
     idUsuario: number;
     imagem: string;
     textoAlteradoPorIA: string;

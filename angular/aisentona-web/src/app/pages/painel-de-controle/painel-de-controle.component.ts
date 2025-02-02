@@ -14,6 +14,10 @@ import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
+import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
+import { NoticiaService } from '../../services/noticia-service';
+import { SnackbarService } from '../../services/snackbar.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-painel-de-controle',
@@ -41,7 +45,21 @@ import { MatPaginator } from '@angular/material/paginator';
   templateUrl: './painel-de-controle.component.html',
   styleUrls: ['./painel-de-controle.component.css'],
 })
+
 export class PainelDeControleComponent implements AfterViewInit {
+
+  constructor(
+    private _noticiaService: NoticiaService,
+    private _snackBarService: SnackbarService,
+        private _route: ActivatedRoute,
+        private _router: Router,
+  ) {}
+
+  ngOnInit(): void {
+    this.carregarTodasAsNoticias();
+  }
+
+
   searchName: string = '';
   selectedStatus: string | null = null;
   selectedEditor: string | null = null;
@@ -53,196 +71,67 @@ export class PainelDeControleComponent implements AfterViewInit {
   editors: string[] = ['Editor 1', 'Editor 2', 'Editor 3'];
 
   // Dados fictícios para a tabela
-  newsData = [
+  infosPostagem: PostagemRequest[] = [
     {
-      name: 'Breaking News',
-      description: 'This is a breaking news article.',
-      editor: 'Editor 1',
-      status: 'Published',
-      date: new Date(),
+      titulo: 'Carregando...',
+      descricao: 'Descrição indisponível no momento.',
+      conteudo: '',
+      idPostagem: 0,
+      idCategoria: 0,
+      nomeCategoria: 'Categoria Indisponível',
+      idStatus: 0,
+      idUsuario: 0,
+      imagem: '',
+      textoAlteradoPorIA: '',
+      palavrasRetiradasPorIA: '',
+      dataCriacao: '',
+      nomeStatus: '',
     },
-    {
-      name: 'Local News',
-      description: 'This is a local news article.',
-      editor: 'Editor 2',
-      status: 'Draft',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    {
-      name: 'Sports Update',
-      description: 'Latest updates on sports.',
-      editor: 'Editor 3',
-      status: 'Archived',
-      date: new Date(),
-    },
-    // Adicione mais dados fictícios para testar a paginação
   ];
 
-  displayedColumns: string[] = [
-    'name',
-    'description',
-    'editor',
-    'status',
-    'date',
-    'actions',
-  ];
+  displayedColumns: string[] = ['titulo', 'descricao', 'nomeCategoria', 'nomeStatus', 'dataCriacao', 'actions'];
 
-  dataSource = new MatTableDataSource(this.newsData);
+
+
+editarNoticia(id: number): void {
+  if (!id) {
+    this._snackBarService.MostrarErro(
+      'ID da postagem não encontrado. Não é possível editar.'
+    );
+    return;
+  }
+  this._router.navigate(['/editar-noticia/', id]);
+}
+
+
+
+carregarTodasAsNoticias(): void {
+  this._noticiaService.carregarTodasAsPostagens().subscribe(
+    (dados) => {
+      console.log(dados);  // Verifique a estrutura do objeto aqui
+      this.infosPostagem = dados;
+      this.dataSource.data = this.infosPostagem;  // Atualize a fonte de dados da tabela
+    },
+    (erro) => {
+      console.error('Erro ao carregar todas as notícias:', erro);
+      this._snackBarService.MostrarErro('Erro ao carregar notícias.', erro);
+    }
+  );
+}
+
+
+sharePostagem() {
+  throw new Error('Method not implemented.');
+  }
+  deletePostagem() {
+  throw new Error('Method not implemented.');
+  }
+
+applyFilters() {
+throw new Error('Method not implemented.');
+}
+
+  dataSource = new MatTableDataSource(this.infosPostagem);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -250,16 +139,6 @@ export class PainelDeControleComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  // Métodos de ação
-  editNews(news: any): void {
-    console.log('Editing news:', news);
-  }
 
-  deleteNews(news: any): void {
-    console.log('Deleting news:', news);
-  }
 
-  shareNews(news: any): void {
-    console.log('Sharing news:', news);
-  }
 }

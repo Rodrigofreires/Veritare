@@ -11,7 +11,12 @@ import { ContainerComponent } from "../container/container.component";
 @Component({
   selector: 'app-lista-noticias',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, CommonModule],
+  imports: [
+    MatCardModule,
+     MatButtonModule,
+      CommonModule
+    ],
+
   templateUrl: './lista-noticias.component.html',
   styleUrls: ['./lista-noticias.component.css']
 })
@@ -31,6 +36,7 @@ export class ListaNoticiasComponent implements OnInit {
         textoAlteradoPorIA: '',
         palavrasRetiradasPorIA: '',
         dataCriacao: '',
+        nomeStatus:'',
       },
     ];
 
@@ -48,6 +54,8 @@ export class ListaNoticiasComponent implements OnInit {
         textoAlteradoPorIA: '',
         palavrasRetiradasPorIA: '',
         dataCriacao: '',
+        nomeStatus:'',
+
       },
     ];
 
@@ -65,6 +73,7 @@ export class ListaNoticiasComponent implements OnInit {
         textoAlteradoPorIA: '',
         palavrasRetiradasPorIA: '',
         dataCriacao: '',
+        nomeStatus:'',
       },
     ];
 

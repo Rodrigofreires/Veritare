@@ -27,6 +27,7 @@ namespace Aisentona.Biz.Services.Postagens
 
             List<Postagem> ultimasPostagens = _context.CF_Postagem
                 .Include(p => p.Categoria) // Inclui a relação com a Categoria
+                .Include(p => p.Status)
                 .Where(p => p.Fl_Ativo == true) // Filtra apenas as postagens ativas
                 .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
                 .Take(4) // Limita a 4 postagens
@@ -39,14 +40,15 @@ namespace Aisentona.Biz.Services.Postagens
         public List<PostagemRequest> ListarPostagens()
         {
      
-            List<Postagem> ultimasPostagens = _context.CF_Postagem
+            List<Postagem> postagens = _context.CF_Postagem
                 .Include(p => p.Categoria) // Inclui a relação com a Categoria
+                .Include(p => p.Status.Descricao)
                 .Where(p => p.Fl_Ativo == true) // Filtra apenas as postagens ativas
                 .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
                 .ToList();
 
             // Mapeia as postagens para PostagemDTO
-            return MapearParaDTO(ultimasPostagens);
+            return MapearParaDTO(postagens);
         }
 
 
@@ -184,6 +186,7 @@ namespace Aisentona.Biz.Services.Postagens
         {
             List<Postagem> listaDePostagensFiltradas = _context.CF_Postagem
                 .Include(p => p.Categoria) // Inclui a relação com a Categoria
+                .Include(p => p.Status)
                 .Where(p => p.Fl_Ativo == true && p.Id_Categoria == IdCategoria) // Filtra apenas as postagens ativas
                 .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
                 .ToList();
@@ -250,7 +253,8 @@ namespace Aisentona.Biz.Services.Postagens
                 TextoAlteradoPorIA = postagem.Texto_alterado_por_ia,
                 PalavrasRetiradasPorIA = postagem.Palavras_retiradas_por_ia,
                 DataCriacao = postagem.DT_Criacao,
-                NomeCategoria = postagem.Categoria?.Nome ?? "Categoria não encontrada" // Usa o Nome da Categoria ou mensagem padrão
+                NomeCategoria = postagem.Categoria?.Nome ?? "Categoria não encontrada",
+                NomeStatus = postagem.Status?.Descricao ?? "Status não encontrado"
             }).ToList();
         }
 

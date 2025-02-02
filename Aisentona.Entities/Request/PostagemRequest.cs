@@ -12,7 +12,7 @@ namespace Aisentona.Entities.Request {
         {
                 
         }
-        public PostagemRequest(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario, string imagem, string textoAlteradoPorIA, string palavrasRetiradasPorIA, DateTime? dtCriacao, string nomeCategoria)
+        public PostagemRequest(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario, string imagem, string textoAlteradoPorIA, string palavrasRetiradasPorIA, DateTime? dtCriacao, string nomeCategoria, string nomeStatus)
         {
             Titulo = titulo;
             Descricao = descricao;
@@ -26,6 +26,7 @@ namespace Aisentona.Entities.Request {
             PalavrasRetiradasPorIA = palavrasRetiradasPorIA;
             DataCriacao = dtCriacao;
             NomeCategoria = nomeCategoria;
+            NomeStatus = nomeStatus;
         }
 
         public string? Titulo { get; set; }
@@ -35,6 +36,7 @@ namespace Aisentona.Entities.Request {
         public int IdCategoria { get; set; }
         public string? NomeCategoria { get; set; }
         public int IdStatus { get; set; }
+        public string? NomeStatus { get; set; }
         public int IdUsuario { get; set; }
         public string? Imagem { get; set; }
         public string? TextoAlteradoPorIA { get; set; }
