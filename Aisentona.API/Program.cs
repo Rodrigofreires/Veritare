@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Aisentona.Biz.Validators;
 using FluentValidation;
 using Aisentona.Biz.Mappers;
+using Aisentona.Biz.Services.Compartilhar;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,6 +75,10 @@ void ConfigureServices(IServiceCollection services, byte[] decodedKey, Configura
 
     // Adicione os serviços do FluentValidation
     builder.Services.AddScoped<ColaboradorValidator>();
+
+    // Integrando API do Twitter/X
+    builder.Services.AddScoped<TwitterService>();
+
 
 
     // Registro de serviços e repositórios

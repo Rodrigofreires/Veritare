@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
@@ -18,6 +18,10 @@ import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmacaoDialogComponent } from '../../shared/dialogs/confirmacao-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { timeout } from 'rxjs';
+import { TwitterService } from '../../services/twitter.service';
 
 @Component({
   selector: 'app-painel-de-controle',
@@ -51,8 +55,11 @@ export class PainelDeControleComponent implements AfterViewInit {
   constructor(
     private _noticiaService: NoticiaService,
     private _snackBarService: SnackbarService,
-        private _route: ActivatedRoute,
-        private _router: Router,
+    private _twitterService: TwitterService,
+    private _route: ActivatedRoute,
+    private _router: Router,
+    private cdr: ChangeDetectorRef,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -103,6 +110,38 @@ editarNoticia(id: number): void {
   this._router.navigate(['/editar-noticia/', id]);
 }
 
+  excluirNoticia(idPostagem: number): void {
+      const dialogRef = this.dialog.open(ConfirmacaoDialogComponent);
+    
+      dialogRef.afterClosed().subscribe((confirmado) => {
+        if (confirmado) {
+          if (!idPostagem) {
+            this._snackBarService.MostrarErro('Publicação não identificada para exclusão.');
+            return;
+          }
+    
+          this._noticiaService.excluirNoticia(idPostagem).subscribe(
+            () => {
+              this._snackBarService.MostrarSucesso('Publicação excluída com sucesso.');
+              this.infosPostagem = [];
+              this.cdr.markForCheck();
+    
+              caches.keys().then((names) => {
+                names.forEach((name) => caches.delete(name));
+              });
+    
+              this._router.navigate(['/painel-de-controle']).then(() => {
+                window.location.href = window.location.origin + '/painel-de-controle';
+              });
+            },
+            (erro) => {
+              this._snackBarService.MostrarErro('Erro ao excluir perfil do usuário.', erro);
+
+            }
+          );
+        }
+      });
+    }
 
 
 carregarTodasAsNoticias(): void {
@@ -120,16 +159,20 @@ carregarTodasAsNoticias(): void {
 }
 
 
-sharePostagem() {
-  throw new Error('Method not implemented.');
-  }
-  deletePostagem() {
-  throw new Error('Method not implemented.');
-  }
-
-applyFilters() {
-throw new Error('Method not implemented.');
+compartilharNoticia() {
+  const mensagem = "Confira esta notícia incrível! 📰 #BreakingNews";
+  this._twitterService.postTweet(mensagem).subscribe({
+    next: () => alert("Notícia compartilhada no X!"),
+    error: (err) => console.error("Erro ao compartilhar:", err)
+  });
 }
+    deletePostagem() {
+    throw new Error('Method not implemented.');
+    }
+
+  applyFilters() {
+  throw new Error('Method not implemented.');
+  }
 
   dataSource = new MatTableDataSource(this.infosPostagem);
 

@@ -43,6 +43,13 @@ editarNoticia(id: number, postagem: PostagemResponse): Observable<PostagemRespon
 }
 
 
+  // EXCLUIR (DESATIVAR) NOTÍCIA
+  excluirNoticia(idPostagem: number): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/postagem/ativar-desativar/${idPostagem}`, {
+    });
+  }
+
+
 // BUSCAR POSTAGEM POR ID
 buscarPostagemPorId(id: number): Observable<PostagemRequest> {
   return this.http.get<PostagemRequest>(`${this.apiUrl}/${this.API}/${id}`);

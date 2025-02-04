@@ -39,10 +39,10 @@ namespace Aisentona.Biz.Services.Postagens
 
         public List<PostagemRequest> ListarPostagens()
         {
-     
+
             List<Postagem> postagens = _context.CF_Postagem
                 .Include(p => p.Categoria) // Inclui a relação com a Categoria
-                .Include(p => p.Status.Descricao)
+                .Include(p => p.Status)
                 .Where(p => p.Fl_Ativo == true) // Filtra apenas as postagens ativas
                 .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
                 .ToList();
@@ -50,8 +50,6 @@ namespace Aisentona.Biz.Services.Postagens
             // Mapeia as postagens para PostagemDTO
             return MapearParaDTO(postagens);
         }
-
-
 
         public PostagemRequest CarregarPostagem(int id)
         {
