@@ -17,17 +17,21 @@ import { MatPaginator } from '@angular/material/paginator';
 import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, RouterModule , Router } from '@angular/router';
 import { ConfirmacaoDialogComponent } from '../../shared/dialogs/confirmacao-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { timeout } from 'rxjs';
 import { TwitterService } from '../../services/twitter.service';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { EditoriaRequest } from '../../core/interfaces/Request/Editorias';
+import { StatusRequest } from '../../core/interfaces/Request/Status';
 
 @Component({
   selector: 'app-painel-de-controle',
   standalone: true,
 
-  providers: [DatePipe],
+  providers: [DatePipe, ],
   
   imports: [
     MatSidenavModule,
@@ -45,6 +49,10 @@ import { TwitterService } from '../../services/twitter.service';
     FormsModule,
     CommonModule,
     MatPaginator, 
+    RouterModule,
+    MatDatepickerModule,
+    MatNativeDateModule
+    
   ],
   templateUrl: './painel-de-controle.component.html',
   styleUrls: ['./painel-de-controle.component.css'],
@@ -64,19 +72,27 @@ export class PainelDeControleComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.carregarTodasAsNoticias();
+    this.carregarEditorias(); 
+    this.carregarStatus();
   }
 
+  listaDeEditorias: EditoriaRequest[] = []; // Variável para armazenar as editorias
+  ListaDeStatus: StatusRequest[] = []; // Variável para armazenar os status
+  tituloProcurado: string = '';
+  statusDaPublicacao: string = '';
+  editoriaProcurada: string = '';
+  selectedDate: Date | null = null;  // Propriedade para armazenar a data
+  selectedType: string = '';
 
-  searchName: string = '';
-  selectedStatus: string | null = null;
-  selectedEditor: string | null = null;
+  statuses: string[] = ['Publicado', 'Rascunho', 'Arquivado'];
+  editors: string[] = ['Política', 'Esportes', 'Economia'];
+  types: string[] = ['Notícia', 'Artigo', 'Opinião'];
 
-  // Lista de opções para o filtro de status
-  statuses: string[] = ['Draft', 'Published', 'Archived'];
+  applyFilters() {
+    console.log({
 
-  // Lista de editores para o filtro de editor
-  editors: string[] = ['Editor 1', 'Editor 2', 'Editor 3'];
-
+    });
+  }
   // Dados fictícios para a tabela
   infosPostagem: PostagemRequest[] = [
     {
@@ -93,10 +109,21 @@ export class PainelDeControleComponent implements AfterViewInit {
       palavrasRetiradasPorIA: '',
       dataCriacao: '',
       nomeStatus: '',
+      premiumOuComum: true
     },
   ];
 
-  displayedColumns: string[] = ['titulo', 'descricao', 'nomeCategoria', 'nomeStatus', 'dataCriacao', 'actions'];
+  displayedColumns: string[] = ['titulo', 'descricao', 'nomeCategoria', 'nomeStatus', 'premiumOuComum',  'dataCriacao', 'actions'];
+
+  visualizarNoticia(id: number) {
+    if (!id) {
+      this._snackBarService.MostrarErro(
+        'ID da postagem não encontrado. Não é possível editar.'
+      );
+      return;
+    }
+    this._router.navigate(['/noticia/', id]);
+    }
 
 
 
@@ -143,7 +170,6 @@ editarNoticia(id: number): void {
       });
     }
 
-
 carregarTodasAsNoticias(): void {
   this._noticiaService.carregarTodasAsPostagens().subscribe(
     (dados) => {
@@ -159,20 +185,31 @@ carregarTodasAsNoticias(): void {
 }
 
 
-compartilharNoticia() {
-  const mensagem = "Confira esta notícia incrível! 📰 #BreakingNews";
-  this._twitterService.postTweet(mensagem).subscribe({
-    next: () => alert("Notícia compartilhada no X!"),
-    error: (err) => console.error("Erro ao compartilhar:", err)
-  });
-}
-    deletePostagem() {
-    throw new Error('Method not implemented.');
-    }
-
-  applyFilters() {
-  throw new Error('Method not implemented.');
+  carregarEditorias(): void {
+    this._noticiaService.buscarListaDeEditorias().subscribe(
+      (data) => {
+        this.listaDeEditorias = data; // Atribui os dados retornados pela API
+      },
+      (error) => {
+        console.error('Erro ao carregar editorias:', error);
+      }
+    );
   }
+
+  carregarStatus(): void {
+    this._noticiaService.buscarListaDeStatus().subscribe(
+      (data) => {
+        this.ListaDeStatus = data; // Atribui os dados retornados pela API
+      },
+      (error) => {
+        console.error('Erro ao carregar editorias:', error);
+      }
+    );
+  }
+
+
+
+
 
   dataSource = new MatTableDataSource(this.infosPostagem);
 

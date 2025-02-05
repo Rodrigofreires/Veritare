@@ -9,4 +9,5 @@ export interface PostagemResponse {
     imagem: string;
     textoAlteradoPorIA: string;
     palavrasRetiradasPorIA: string;
+    premiumOuComum: boolean;
   }

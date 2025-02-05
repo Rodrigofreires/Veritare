@@ -37,6 +37,7 @@ export class ListaNoticiasComponent implements OnInit {
         palavrasRetiradasPorIA: '',
         dataCriacao: '',
         nomeStatus:'',
+        premiumOuComum: true
       },
     ];
 
@@ -55,6 +56,7 @@ export class ListaNoticiasComponent implements OnInit {
         palavrasRetiradasPorIA: '',
         dataCriacao: '',
         nomeStatus:'',
+        premiumOuComum: true
 
       },
     ];
@@ -74,6 +76,7 @@ export class ListaNoticiasComponent implements OnInit {
         palavrasRetiradasPorIA: '',
         dataCriacao: '',
         nomeStatus:'',
+        premiumOuComum: true
       },
     ];
 

@@ -77,29 +77,41 @@
                     [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"></textarea>
             </mat-form-field>
         </div>
-        <!-- Status -->
+
         <div>
             <mat-form-field class="status">
                 <mat-label>STATUS DA NOTÍCIA</mat-label>
                 <mat-select [(value)]="statusSelecionado">
 
                     <mat-option *ngFor="let status of ListaDeStatus"
-                        [value]="status.id"> <!-- Define o ID como valor -->
-                        {{ status.descricao }} <!-- Exibe o nome da editoria -->
+                        [value]="status.id">
+                        {{ status.descricao }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+
             <!-- Editoria -->
+
             <mat-form-field class="editoria">
                 <mat-label>EDITORIA</mat-label>
                 <mat-select [(value)]="editoriaSelecionada">
 
                     <mat-option *ngFor="let editoria of listaDeEditorias"
-                        [value]="editoria.id"> <!-- Define o ID como valor -->
-                        {{ editoria.nome }} <!-- Exibe o nome da editoria -->
+                        [value]="editoria.id"> 
+                        {{ editoria.nome }} 
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+
+            <mat-form-field class="premiumOuComum">
+                <mat-label>TIPO DE PUBLICAÇÃO</mat-label>
+                <mat-select [(ngModel)]="tipoSelecionado"> 
+                    <mat-option *ngFor="let tipo of tipoDePublicacao" [value]="tipo">
+                        {{ tipo }} 
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            
         </div>
 
     </div>
@@ -112,4 +124,3 @@
         </button>
     </div>
 </app-container>
-<app-footer></app-footer>

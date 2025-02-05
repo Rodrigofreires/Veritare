@@ -14,7 +14,7 @@ namespace Aisentona.DataBase
         public Postagem()
         {
         }
-        public Postagem(string titulo, string conteudo, string descricao, int idStatus, int idCategoria, DateTime dtCriacao, DateTime? dtUltimaAlteracao, string dsUltimaAlteracao, bool flAtivo)
+        public Postagem(string titulo, string conteudo, string descricao, int idStatus, int idCategoria, DateTime dtCriacao, DateTime? dtUltimaAlteracao, string dsUltimaAlteracao, bool flAtivo, bool flPremium)
         {
             Titulo = titulo;
             Descricao = descricao;
@@ -25,6 +25,7 @@ namespace Aisentona.DataBase
             DT_UltimaAlteracao = dtUltimaAlteracao;
             Ds_UltimaAlteracao = dsUltimaAlteracao;
             Fl_Ativo = flAtivo;
+            Fl_Premium = flPremium;
         }
 
 
@@ -38,8 +39,7 @@ namespace Aisentona.DataBase
         public string Palavras_retiradas_por_ia { get; set; }
         public  bool Fl_Ativo { get; set; }
         public string Ds_UltimaAlteracao { get; set; }
-
-
+        public bool Fl_Premium { get; set; }
 
         [ForeignKey("Colaborador")]
         public  int Id_Usuario { get; set; }

@@ -12,5 +12,6 @@ export interface PostagemRequest {
     textoAlteradoPorIA: string;
     palavrasRetiradasPorIA: string;
     dataCriacao: string;
+    premiumOuComum: boolean;
 
   }

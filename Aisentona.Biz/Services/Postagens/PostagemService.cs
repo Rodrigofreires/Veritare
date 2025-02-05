@@ -112,6 +112,7 @@ namespace Aisentona.Biz.Services.Postagens
             novaPostagem.Ds_UltimaAlteracao = GetWindowsUsername();
             novaPostagem.DT_UltimaAlteracao = null;
             novaPostagem.Id_Usuario = novaPostagem.Id_Usuario;
+            novaPostagem.Fl_Premium = postagemResponse.PremiumOuComum;
 
             _context.CF_Postagem.Add(novaPostagem);
             _context.SaveChanges();
@@ -252,7 +253,9 @@ namespace Aisentona.Biz.Services.Postagens
                 PalavrasRetiradasPorIA = postagem.Palavras_retiradas_por_ia,
                 DataCriacao = postagem.DT_Criacao,
                 NomeCategoria = postagem.Categoria?.Nome ?? "Categoria não encontrada",
-                NomeStatus = postagem.Status?.Descricao ?? "Status não encontrado"
+                NomeStatus = postagem.Status?.Descricao ?? "Status não encontrado",
+                PremiumOuComum = postagem.Fl_Premium
+                
             }).ToList();
         }
 

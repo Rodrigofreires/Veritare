@@ -1,8 +1,7 @@
 <mat-sidenav-container class="dashboard-container">
     
     <mat-sidenav mode="side" opened class="sidenav">
-      <div class="Painel de Controle">
-        
+      <div class="painel-de-controle">
         <h3>Painel de Controle</h3>
         <p>veritare.com.br</p>
       </div>
@@ -11,10 +10,11 @@
           <mat-icon>dashboard</mat-icon>
           <span>Dashboard</span>
         </a>
-        <a mat-list-item routerLink="/news">
+        <a mat-list-item [routerLink]="'/cadastro-de-noticia'">
           <mat-icon>article</mat-icon>
-          <span>News</span>
-        </a>
+          <span>Criar nova publicação</span>
+        </a> 
+        
         <a mat-list-item routerLink="/analytics">
           <mat-icon>bar_chart</mat-icon>
           <span>Analytics</span>
@@ -27,62 +27,59 @@
     </mat-sidenav>
   
     <mat-sidenav-content>
-      <mat-toolbar color="primary">
-        <span>Painel de Publicações</span>
-      </mat-toolbar>
       <div class="content">
+        <mat-toolbar >
+          <span>Painel de Publicações</span>
+        </mat-toolbar>
         <mat-card>
           <p>Filtros</p>
           <div class="filters">
             <mat-form-field appearance="outline">
               <mat-label>Título</mat-label>
-              <input matInput placeholder="Search" [(ngModel)]="searchName" />
+              <input matInput placeholder="Search" [(ngModel)]="tituloProcurado" />
             </mat-form-field>
-  
+          
             <mat-form-field appearance="outline">
               <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="selectedStatus">
-                <mat-option *ngFor="let status of statuses" [value]="status">
-                  {{ status }}
+              <mat-select [(ngModel)]="statusDaPublicacao">
+                <mat-option *ngFor="let status of ListaDeStatus" [value]="status.id">
+                  {{ status.descricao }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-  
+          
             <mat-form-field appearance="outline">
               <mat-label>Editoria</mat-label>
-              <mat-select [(ngModel)]="selectedEditor">
-                <mat-option *ngFor="let editor of editors" [value]="editor">
-                  {{ editor }}
+              <mat-select [(ngModel)]="editoriaProcurada">
+                <mat-option *ngFor="let editoria of listaDeEditorias" [value]="editoria.id">
+                  {{ editoria.nome }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-                <mat-label>Data de publicação </mat-label>
-                <mat-select [(ngModel)]="selectedEditor">
-                  <mat-option *ngFor="let editor of editors" [value]="editor">
-                    {{ editor }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <mat-form-field appearance="outline">
-                <mat-label>Tipo de Publicação </mat-label>
-                <mat-select [(ngModel)]="selectedEditor">
-                  <mat-option *ngFor="let editor of editors" [value]="editor">
-                    {{ editor }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <div class="actions">
-                <!-- Botão para aplicar os filtros -->
-                <button mat-raised-button color="primary" (click)="applyFilters()">
-                  Aplicar Filtros
-                </button>
-              </div>
-
+              <mat-label>Tipo de Publicação</mat-label>
+              <mat-select [(ngModel)]="selectedType">
+                <mat-option *ngFor="let type of types" [value]="type">
+                  {{ type }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          
+            <mat-form-field appearance="outline">
+              <mat-label>Data de publicação</mat-label>
+              <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" />
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          
+            <div class="actions">
+              <button mat-raised-button color="primary" (click)="applyFilters()">
+                Aplicar Filtros
+              </button>
+            </div>
           </div>
+          
   
           <table mat-table [dataSource]="infosPostagem" class="mat-elevation-z8">
   
@@ -111,7 +108,11 @@
 
             </ng-container>
 
-          
+            <ng-container matColumnDef="premiumOuComum">
+              <th mat-header-cell *matHeaderCellDef> Premium/Comum </th>
+              <td mat-cell *matCellDef="let postagem"> {{ postagem.premiumOuComum === true ? 'Premium' : 'Comum' }} </td>
+
+            </ng-container>
             <!-- Data de Criação Column -->
             <ng-container matColumnDef="dataCriacao">
               <th mat-header-cell *matHeaderCellDef> Data de Criação </th>
@@ -129,8 +130,8 @@
                 <button mat-icon-button (click)="excluirNoticia(postagem.idPostagem)">
                   <mat-icon>delete</mat-icon>
                 </button>
-                <button mat-icon-button (click)="compartilharNoticia()">
-                  <mat-icon>share</mat-icon>
+                <button mat-icon-button (click)="visualizarNoticia(postagem.idPostagem)">
+                  <mat-icon>visibility</mat-icon>
                 </button>
               </td>
             </ng-container>

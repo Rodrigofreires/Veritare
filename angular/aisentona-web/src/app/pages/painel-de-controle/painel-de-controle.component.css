@@ -58,19 +58,27 @@
     color: #7070AC !important;
   }
   
-  ::ng-deep .mdc-list-item__primary-text {
+  .sidenav ::ng-deep .mdc-list-item__primary-text {
     color: white !important;
     display: flex;
     align-items: center;
     gap: 10px;
   }
+  .sidenav ::ng-deep .mdc-list-item__primary-text:hover {
+    color: #7070AC !important;
+  }
   
+  
+  .filters ::ng-deep .mdc-list-item__primary-text {
+    color: black !important; 
+  }
+
   ::ng-deep .mdc-list-item__primary-text:hover {
     color: #7070AC !important;
   }
   
   /* Conteúdo principal */
-mat-sidenav-content {
+  .mat-sidenav-content {
     display: flex;
     flex-direction: column;
     flex-grow: 1; /* O conteúdo principal ocupa o restante do espaço */
@@ -94,6 +102,7 @@ mat-sidenav-content {
     flex-wrap: wrap;
     margin-bottom: 16px;
   }
+  
   
   .filters mat-form-field {
     flex: 1; /* Faz os filtros ocuparem o espaço disponível */
@@ -139,5 +148,7 @@ mat-sidenav-content {
       flex: unset;
       width: 100%; /* Campo ocupa toda a largura no modo responsivo */
     }
+
+
   }
   
