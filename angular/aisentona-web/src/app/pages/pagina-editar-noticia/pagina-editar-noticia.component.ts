@@ -129,6 +129,7 @@ export class PaginaEditarNoticiaComponent implements OnInit {
   }
 
   carregarPostagem(id: number): void {
+
     this._noticiaService.buscarPostagemPorId(id).subscribe(
       (postagem) => {
         this.infosPostagem = postagem;

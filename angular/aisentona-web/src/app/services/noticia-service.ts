@@ -64,6 +64,18 @@ carregarTodasAsPostagens(): Observable<PostagemRequest[]> {
   });
 }
 
+// LISTAR TODAS AS POSTAGENS
+carregarTodasAsPostagensPorFiltro(filtros: PostagemResponse): Observable<PostagemRequest[]> {
+  return this.http.post<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-postagens/filtros`, filtros, {
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+}
+
+
+
+
 
 // LISTAR ÚLTIMAS POSTAGENS
 carregarUltimasPostagens(): Observable<PostagemRequest[]> {

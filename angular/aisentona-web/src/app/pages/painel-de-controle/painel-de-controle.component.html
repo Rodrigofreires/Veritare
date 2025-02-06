@@ -31,6 +31,7 @@
         <mat-toolbar >
           <span>Painel de Publicações</span>
         </mat-toolbar>
+
         <mat-card>
           <p>Filtros</p>
           <div class="filters">
@@ -59,28 +60,34 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Tipo de Publicação</mat-label>
-              <mat-select [(ngModel)]="selectedType">
-                <mat-option *ngFor="let type of types" [value]="type">
-                  {{ type }}
+              <mat-select [(ngModel)]="tipoSelecionado" name="tipoSelecionado">
+                <mat-option *ngFor="let tipo of tipoDePublicacao" [value]="tipo">
+                  {{ tipo }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
+            
+            
           
             <mat-form-field appearance="outline">
               <mat-label>Data de publicação</mat-label>
-              <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" />
+              <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" [value]="selectedDate" />
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
           
             <div class="actions">
-              <button mat-raised-button color="primary" (click)="applyFilters()">
+              <button mat-raised-button color="primary" (click)="aplicarFiltros()">
                 Aplicar Filtros
               </button>
             </div>
+            <button mat-raised-button color="warn" (click)="resetarFiltros()">
+              Resetar Filtros
+            </button>
           </div>
+
+
           
-  
           <table mat-table [dataSource]="infosPostagem" class="mat-elevation-z8">
   
             <!-- Título Column -->
@@ -105,7 +112,6 @@
             <ng-container matColumnDef="nomeStatus">
               <th mat-header-cell *matHeaderCellDef> Status </th>
               <td mat-cell *matCellDef="let postagem"> {{ postagem.nomeStatus || 'Status não disponível' }} </td>
-
             </ng-container>
 
             <ng-container matColumnDef="premiumOuComum">
@@ -116,7 +122,8 @@
             <!-- Data de Criação Column -->
             <ng-container matColumnDef="dataCriacao">
               <th mat-header-cell *matHeaderCellDef> Data de Criação </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.dataCriacao | date }} </td>
+              <td mat-cell *matCellDef="let postagem"> {{ postagem.dataCriacao | date:'dd/MM/yyyy HH:mm' }} </td>
+
             </ng-container>
           
             <!-- Ações Column -->
@@ -137,9 +144,7 @@
             </ng-container>
           
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            
-          
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>         
           </table>
           
           <mat-paginator

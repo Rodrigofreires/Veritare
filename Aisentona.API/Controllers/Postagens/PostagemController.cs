@@ -50,6 +50,26 @@ namespace Aisentona.API.Controllers.Postagens
             return Ok(listaDePostagens);
         }
 
+        [HttpPost("listar-postagens/filtros")]
+        public IActionResult CarregarTodasAsPostagensPorFiltro([FromBody] PostagemResponse filtro)
+        {
+            if (filtro == null)
+            {
+                return BadRequest("Filtros não fornecidos.");
+            }
+
+            var listaDePostagens = _postagemService.ListarPostagensComFiltro(filtro);
+            if (listaDePostagens == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(listaDePostagens);
+        }
+
+
+
+
         [HttpGet("listar-ultimas-postagens")]
         public IActionResult ListarUltimasPostagens()
         {

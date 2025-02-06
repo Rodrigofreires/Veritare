@@ -6,8 +6,10 @@ using Aisentona.Entities.ViewModels;
 using Aisentona.Enum;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Net.NetworkInformation;
 using System.Security.Principal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Aisentona.Biz.Services.Postagens
 {
@@ -50,6 +52,65 @@ namespace Aisentona.Biz.Services.Postagens
             // Mapeia as postagens para PostagemDTO
             return MapearParaDTO(postagens);
         }
+
+        public List<PostagemRequest> ListarPostagensComFiltro(PostagemResponse postagemResponse)
+        {
+            // Usando AsNoTracking para consultas de leitura
+            var query = _context.CF_Postagem
+                .AsNoTracking()  // Não rastrear as entidades para melhorar a performance
+                .Include(p => p.Categoria)
+                .Include(p => p.Status)
+                .Where(p => p.Fl_Ativo == true);
+
+            // Filtro por Título
+            if (!string.IsNullOrEmpty(postagemResponse.Titulo))
+            {
+                query = query.Where(p => p.Titulo.Contains(postagemResponse.Titulo));
+            }
+
+            // Filtro por Status
+            if (postagemResponse.IdStatus != 0)
+            {
+                query = query.Where(p => p.Status.Id_Status == postagemResponse.IdStatus);
+            }
+
+            // Filtro por Editoria
+            if (postagemResponse.IdCategoria != 0)
+            {
+                query = query.Where(p => p.Id_Categoria == postagemResponse.IdCategoria);
+            }
+
+            // Filtro por Tipo de Publicação (Premium/Comum)
+            if (postagemResponse.PremiumOuComum.Contains("Publicação Comum"))
+            {
+                query = query.Where(p => p.Fl_Premium == false);
+            }
+
+            if (postagemResponse.PremiumOuComum.Contains("Publicação Premium"))
+            {
+                query = query.Where(p => p.Fl_Premium == true);
+            }
+
+
+            // Filtro por Data de Publicação (Período)
+            if (postagemResponse?.DataCriacao != null)
+            {
+                query = query.Where(p => p.DT_Criacao >= postagemResponse.DataCriacao);
+            }
+
+            // Ordena as postagens pela data de criação (mais recentes primeiro)
+            query = query.OrderByDescending(p => p.DT_Criacao);
+
+            // Mapeia as postagens para PostagemDTO
+            var postagens = query.ToList();
+            return MapearParaDTO(postagens);
+        }
+
+
+
+
+
+
 
         public PostagemRequest CarregarPostagem(int id)
         {
@@ -106,13 +167,19 @@ namespace Aisentona.Biz.Services.Postagens
             Postagem postagemConvertida = ConverterPostagem(postagemResponse);
             Postagem novaPostagem = postagemConvertida;
 
-
             novaPostagem.Fl_Ativo = true;
             novaPostagem.DT_Criacao = DateTime.Now;
             novaPostagem.Ds_UltimaAlteracao = GetWindowsUsername();
             novaPostagem.DT_UltimaAlteracao = null;
             novaPostagem.Id_Usuario = novaPostagem.Id_Usuario;
-            novaPostagem.Fl_Premium = postagemResponse.PremiumOuComum;
+
+            if (postagemResponse.PremiumOuComum.Contains("Publicação Comum"))
+            {
+                novaPostagem.Fl_Premium = false;
+            }
+            novaPostagem.Fl_Premium = true;
+
+
 
             _context.CF_Postagem.Add(novaPostagem);
             _context.SaveChanges();
@@ -194,8 +261,6 @@ namespace Aisentona.Biz.Services.Postagens
             return MapearParaDTO(listaDePostagensFiltradas);
 
         }
-
-
 
         #region /*Métodos de conversão*/
         private Postagem ConverterPostagem(PostagemResponse postagemResponse)

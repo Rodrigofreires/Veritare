@@ -43,7 +43,6 @@ namespace Aisentona.Entities.Request {
         public string? TextoAlteradoPorIA { get; set; }
         public string? PalavrasRetiradasPorIA { get; set; }
         public DateTime? DataCriacao { get; set; }
-
         public bool PremiumOuComum { get; set; }
 
 
