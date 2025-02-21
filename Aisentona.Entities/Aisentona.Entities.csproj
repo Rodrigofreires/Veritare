@@ -17,7 +17,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Aisentona.DataBase\Aisentona.DataBase.csproj" />
-    <ProjectReference Include="..\Aisentona.Enum\Aisentona.Enum.csproj" />
+    <ProjectReference Include="..\Aisentona.Enum\Aisentona.Enumeradores.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 
 </Project>

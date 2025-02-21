@@ -1,5 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
+import { environment } from '../../environments/environment';
+import { tap, throwError } from 'rxjs';
+import { PlatformService } from './platform.service';
+
+
 
 
 @Injectable({
@@ -8,19 +14,33 @@ import { jwtDecode } from 'jwt-decode';
 export class AuthService {
   private readonly TOKEN_KEY = 'token'; 
   private readonly PERMISSIONS_KEY = 'userPermissions'; // Nome da chave para permissões
+  private readonly API = environment
 
-  constructor() {}
 
-  // Verifica se o token existe (usuário está logado)
-  isLoggedIn(): boolean {
+  constructor(
+    private http: HttpClient,
+    private platformService: PlatformService,
+
+
+  ) {}
+
+// Verifica se o token existe (usuário está logado)
+isLoggedIn(): boolean {
+  // Só tenta acessar o localStorage no navegador
+  if (this.platformService.isBrowser()) {
     const token = localStorage.getItem('token');
     return !!token; // Retorna true se o token existir
   }
+  return false; // Retorna false se não estiver no navegador
+}
 
-  // Retorna o token armazenado
-  getToken(): string | null {
-    return localStorage.getItem(this.TOKEN_KEY);
+
+getToken(): string | null {
+  if (!this.platformService.isBrowser()) {
+    return null; // Não tenta acessar localStorage no SSR
   }
+  return localStorage.getItem('token');
+}
 
   // Decodifica o token e retorna as informações
   getDecodedToken(): any {
@@ -36,19 +56,24 @@ export class AuthService {
     return null;
   }
 
-
     // Método para verificar se o IdTipoUsuario é válido
     podeAccessarPainelDeControle(): boolean {
-      if (!this.TOKEN_KEY) {
+      const decodedToken = this.getDecodedToken();
+      if (!decodedToken) {
         return false;
-      }
-        const decodedToken = this.getDecodedToken();
-        const idTipoUsuario = decodedToken.IdTipoUsuario;
-        // Verifica se o IdTipoUsuario é diferente de 5 e 4
-        return idTipoUsuario !== '5' && idTipoUsuario !== '4';
-    } 
-    
+      }   
+      const idTipoUsuario = decodedToken.IdTipoUsuario;
+      return idTipoUsuario !== '5' && idTipoUsuario !== '4';
+    }
 
+    // Retorna o Tipo usuario
+  
+    getTipoUsuario(): string[] {
+    const decodedToken = this.getDecodedToken();
+    return decodedToken?.IdTipoUsuario;
+  }
+
+    
   // Retorna o nome do usuário (campo `unique_name`) do token
   getUserName(): string | null {
     const decodedToken = this.getDecodedToken();
@@ -56,23 +81,29 @@ export class AuthService {
   }
 
     // Retorna o nome do usuário (campo `unique_name`) do token
-    getUserId(): number | null {
+    getUserId(): number {
       const decodedToken = this.getDecodedToken();
       return decodedToken?.IdUsuario || null; // Extrai o campo `unique_name`
     }
 
-
-
-  // Verifica se o usuário possui uma permissão específica
-  hasPermission(permission: string): boolean {
+  // Retorna as permissões do usuário a partir do token
+  getUserPermissions(): string[] {
     const decodedToken = this.getDecodedToken();
-    if (decodedToken && decodedToken.permissions) {
-      return decodedToken.permissions.includes(permission); // Verifica a permissão no token
-    }
-
-    // Alternativamente, verifica em outra chave, como o localStorage (não recomendado)
-    const permissions = JSON.parse(localStorage.getItem(this.PERMISSIONS_KEY) || '[]');
-    return permissions.includes(permission);
+    return decodedToken?.Permission || [];
   }
+
+
+
+  // // Verifica se o usuário possui uma permissão específica
+  // hasPermission(permission: string): boolean {
+  //   const decodedToken = this.getDecodedToken();
+  //   if (decodedToken && decodedToken.permissions) {
+  //     return decodedToken.permissions.includes(permission); // Verifica a permissão no token
+  //   }
+
+  //   // Alternativamente, verifica em outra chave, como o localStorage (não recomendado)
+  //   const permissions = JSON.parse(localStorage.getItem(this.PERMISSIONS_KEY) || '[]');
+  //   return permissions.includes(permission);
+  // }
   
 }

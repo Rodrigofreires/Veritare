@@ -3,7 +3,7 @@ using Aisentona.Entities;
 using Aisentona.Entities.Request;
 using Aisentona.Entities.Response;
 using Aisentona.Entities.ViewModels;
-using Aisentona.Enum;
+using Aisentona.Enumeradores;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -202,7 +202,7 @@ namespace Aisentona.Biz.Services.Postagens
 
                 // Verifica o tipo de usuário e suas permissões
                 Autorizacao tipoUsuario = (Autorizacao)usuario.Id_TipoUsuario;
-                var permissions = tipoUsuario.GetPermissions();
+                List<string> permissions = tipoUsuario.GetPermissions();
 
                 // Verifica se o usuário tem permissão para criar postagens
                 if (!permissions.Contains("EditarPostsSimples") && !permissions.Contains("EditarPostsPremium"))

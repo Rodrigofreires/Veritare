@@ -2,6 +2,7 @@
 using Aisentona.DataBase;
 using Aisentona.Entities.Request;
 using Aisentona.Entities.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aisentona.API.Controllers

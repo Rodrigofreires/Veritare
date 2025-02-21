@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aisentona.DataBase", "Aisen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aisentona.Entities", "Aisentona.Entities\Aisentona.Entities.csproj", "{F572593E-85D6-44C4-9B76-08FECE692DF7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aisentona.Enum", "Aisentona.Enum\Aisentona.Enum.csproj", "{BC8D5D53-E563-47F2-8809-25C73701D1C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aisentona.Enumeradores", "Aisentona.Enum\Aisentona.Enumeradores.csproj", "{BC8D5D53-E563-47F2-8809-25C73701D1C4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aisentona.Web", "Aisentona.Web\Aisentona.Web.csproj", "{3B1D4363-27C5-462C-ABFE-D5F1C0655ACC}"
 EndProject

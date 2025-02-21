@@ -1,17 +1,6 @@
 ﻿using Aisentona.DataBase;
-using Aisentona.Entities.Interfaces;
 using Aisentona.Entities.Request;
 using Aisentona.Entities.Response;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aisentona.Biz.Services
 {
@@ -21,14 +10,14 @@ namespace Aisentona.Biz.Services
 
         public readonly TokenService _tokenService;
 
-        public readonly TokenBlacklistService _tokenBlacklistService;
 
 
-        public AuthService(ApplicationDbContext context, TokenService tokenService, TokenBlacklistService tokenBlacklistService)
+
+        public AuthService(ApplicationDbContext context, TokenService tokenService)
         {
             _context = context;
             _tokenService = tokenService;
-            _tokenBlacklistService = tokenBlacklistService;
+
         }
 
         public LoginResponse Authenticate(LoginRequest loginRequest)
@@ -52,16 +41,6 @@ namespace Aisentona.Biz.Services
             var token = _tokenService.Create(user);
 
             return new LoginResponse { Token = token };
-        }
-
-        public bool LogOut(string token)
-        {
-            if (!string.IsNullOrEmpty(token))
-            {
-                _tokenBlacklistService.AddToBlacklist(token);
-                return true;
-            }
-            return false;
         }
 
     }

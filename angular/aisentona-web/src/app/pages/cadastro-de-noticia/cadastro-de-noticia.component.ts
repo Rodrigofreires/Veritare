@@ -20,6 +20,9 @@ import { TextoService } from '../../services/texto-service';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { ContentChange, QuillModule } from 'ngx-quill'
 import { Console } from 'console';
+import { AuthService } from '../../services/auth.service';
+import { jwtDecode } from 'jwt-decode';
+
 
 @Component({
   selector: 'app-cadastro-de-noticia',
@@ -52,14 +55,16 @@ export class CadastroDeNoticiaComponent {
   imagemBase64: string = '';
   tipoDePublicacao: string[] = ["Publicação Comum", "Publicação Premium"];
   tipoSelecionado: string = ""; // Para armazenar a opção escolhida
-  
   infosPostagem: PostagemResponse = {} as PostagemResponse;
+
+
 
 
   constructor(
     private _noticiaService: NoticiaService,
     private _snackBarService: SnackbarService,
     private _imagemService: ImagemService,
+    private _authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -92,26 +97,27 @@ export class CadastroDeNoticiaComponent {
     );
   }
 
-  publicarNoticia(): void {
+  public publicarNoticia(): void {
     if (!this.infosPostagem.titulo || !this.infosPostagem.descricao || !this.editoriaSelecionada || !this.statusSelecionado) {
       this._snackBarService.MostrarErro(
         'Preencha todos os campos obrigatórios antes de publicar.'
       );
       return;
-    }
+    } 
+    const idUsuario =  this._authService.getUserId()
+    const idTipoUsuario = this._authService.getTipoUsuario();
   
-    this.infosPostagem.idCategoria = this.editoriaSelecionada
+    this.infosPostagem.idCategoria = this.editoriaSelecionada;
     this.infosPostagem.idStatus = this.statusSelecionado;
     this.infosPostagem.premiumOuComum = this.tipoSelecionado.includes('Publicação Premium');
+    this.infosPostagem.idUsuario = idUsuario;
 
     // Verifica se a imagem foi selecionada e convertida
     if (!this.infosPostagem.imagem) {
       this._snackBarService.MostrarErro('Por favor, selecione uma imagem para a notícia.');
       return;
     }
-
-    this.infosPostagem.idUsuario = 1010;
-  
+    // Envia a requisição para criar a postagem
     this._noticiaService.criarPostagem(this.infosPostagem).subscribe(
       (response) => {
         this._snackBarService.MostrarSucesso('Notícia salva com sucesso!');
@@ -120,12 +126,11 @@ export class CadastroDeNoticiaComponent {
         console.error('Erro ao publicar notícia:', error);
         this._snackBarService.MostrarErro(
           'Não foi possível publicar a notícia. Verifique os campos preenchidos.'
-          
         );
-        console.log(this.infosPostagem)
+        console.log(this.infosPostagem);
       }
     );
-  }
+}
   
 
   //LÓGICA PARA INSERIR IMAGENS

@@ -45,12 +45,6 @@ namespace Aisentona.API.Controllers
                 return BadRequest("Invalid client request");
             }
 
-            var success = _authService.LogOut(logoutRequest.Token);
-
-            if (!success)
-            {
-                return StatusCode(500, new { message = "Logout failed" });
-            }
 
             return Ok(new { message = "Logout successful" });
         }

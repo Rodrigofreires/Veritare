@@ -26,18 +26,22 @@ login(Email: string, Senha: string): Observable<any> {
   return this.http.post(`${this.apiUrl}/login`, body).pipe(
     map((response: any) => {
       if (response.token) {
-        // Salva o token no localStorage
-        localStorage.setItem('token', response.token);
+
+        window.localStorage.setItem('token', response.token)
+        console.log('Tokens salvos com sucesso:', response.token, response.refreshToken);
+      } else {
+        console.warn(' Nenhum refreshToken retornado pelo backend.');
       }
       return response;
     }),
     
     catchError((error) => { 
-      console.error('Erro ao fazer login:', error);
+      console.error(' Erro ao fazer login:', error);
       throw error;
     })
   );
 }
+
 
 //LOGOUT USUÁRIO
 logout(): void {

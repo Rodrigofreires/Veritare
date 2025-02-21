@@ -1,12 +1,18 @@
 ﻿using Aisentona.Biz.Services;
 using Aisentona.Biz.Services.Postagens;
 using Aisentona.DataBase;
+using Aisentona.Entities;
 using Aisentona.Entities.Request;
 using Aisentona.Entities.Response;
 using Aisentona.Entities.ViewModels;
+using Aisentona.Enumeradores;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Security.Claims;
+
 
 namespace Aisentona.API.Controllers.Postagens
 {
@@ -16,11 +22,14 @@ namespace Aisentona.API.Controllers.Postagens
     {
         private readonly PostagemService _postagemService;
         private readonly ApplicationDbContext _context;
+        private readonly AuthService _authService;
 
-        public PostagemController(PostagemService postagemService, ApplicationDbContext context)
+
+        public PostagemController(PostagemService postagemService, ApplicationDbContext context, AuthService authService)
         {
             _postagemService = postagemService;
             _context = context;
+            _authService = authService;
         }
 
         [HttpGet("{id}")]
@@ -68,8 +77,6 @@ namespace Aisentona.API.Controllers.Postagens
         }
 
 
-
-
         [HttpGet("listar-ultimas-postagens")]
         public IActionResult ListarUltimasPostagens()
         {
@@ -95,19 +102,48 @@ namespace Aisentona.API.Controllers.Postagens
 
 
         [HttpPost("criar-noticia")]
+        [Authorize]
         public IActionResult CreatePost([FromBody] PostagemResponse postagemResponse)
         {
+            // Validação do corpo da requisição
             if (postagemResponse is null)
             {
-                return BadRequest("Objeto preenchido incorretamente");
+                return BadRequest("Objeto preenchido incorretamente.");
             }
 
-            var postagem = _postagemService.CriarPostagem(postagemResponse);
+            // Pegar ID e Permissões do Usuário Autenticado
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var regras = User.FindFirst(ClaimTypes.Role)?.Value;
 
-            return Ok(postagem);
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(regras))
+            {
+                return Unauthorized("Usuário não autenticado.");
+            }
+
+            // Verificar se o role é válido
+            if (!Enum.TryParse(regras, out Autorizacao autorizacao))
+            {
+                return Unauthorized("Role inválido.");
+            }
+
+            // Pegar as permissões associadas ao role
+            var permissoes = autorizacao.GetPermissions(); // Método de extensão
+
+            // Verificar se o usuário tem permissão para criar postagens
+            if (!permissoes.Contains("CadastrarPostsSimples") && !permissoes.Contains("CadastrarPostsPremium"))
+            {
+                return Forbid("Você não tem permissão para criar postagens."); // Retorna 403 se não tiver permissão
+            }
+
+            // Criar a postagem
+            var postagem = _postagemService.CriarPostagem(postagemResponse);
+            return Ok(postagem); // Retorna a postagem criada com status 200
         }
 
+
+
         [HttpPut("editar/{idPostagem}")]
+
         public IActionResult UpdatePostagem(int idPostagem, [FromBody] PostagemResponse postagemResponse)
         {
             try
@@ -135,8 +171,6 @@ namespace Aisentona.API.Controllers.Postagens
             }
         }
 
-
-        // Delete api/<ColaboradorController>
         [HttpPut("ativar-desativar/{idPostagem}")]
         public IActionResult SwapFlagColaborador(int idPostagem)
         {

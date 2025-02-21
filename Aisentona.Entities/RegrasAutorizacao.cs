@@ -1,4 +1,4 @@
-﻿using Aisentona.Enum;
+﻿using Aisentona.Enumeradores;
 using System;
 using System.Collections.Generic;
 using System.Linq;

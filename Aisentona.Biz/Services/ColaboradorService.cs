@@ -2,7 +2,7 @@
 using System.Security.Principal;
 using System.Data.SqlTypes;
 using Aisentona.Entities.Request;
-using Aisentona.Enum;
+using Aisentona.Enumeradores;
 using Aisentona.Biz.Validators;
 using FluentValidation.Results;
 using Aisentona.Entities.Response;

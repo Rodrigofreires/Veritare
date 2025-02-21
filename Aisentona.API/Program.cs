@@ -66,6 +66,7 @@ void ConfigureServices(IServiceCollection services, byte[] decodedKey, Configura
             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             options.SerializerSettings.Formatting = Formatting.Indented;
         });
+
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
 
@@ -79,6 +80,13 @@ void ConfigureServices(IServiceCollection services, byte[] decodedKey, Configura
     // Integrando API do Twitter/X
     builder.Services.AddScoped<TwitterService>();
 
+    services.AddCors(options =>
+    {
+        options.AddPolicy("AllowSpecificOrigin",
+            builder => builder.WithOrigins("http://localhost:4200")
+                              .AllowAnyMethod()
+                              .AllowAnyHeader());
+    });
 
 
     // Registro de serviços e repositórios
@@ -89,8 +97,8 @@ void ConfigureServices(IServiceCollection services, byte[] decodedKey, Configura
     services.AddScoped<TokenService>(); // Adiciona o TokenService
     services.AddScoped<LoginService>();
     services.AddScoped<AuthService>();
-    services.AddScoped<TokenBlacklistService>();
     services.AddScoped<DateMapper>();
+
     //services.AddScoped<TokenValidationMiddleware>();
 
 
@@ -125,7 +133,6 @@ void ConfigureMiddleware(WebApplication app)
         app.UseSwagger();
         app.UseSwaggerUI();
     }
-
     app.UseHttpsRedirection();
     app.UseAuthentication(); // Certifique-se de adicionar este middleware antes do UseAuthorization
     app.UseAuthorization();

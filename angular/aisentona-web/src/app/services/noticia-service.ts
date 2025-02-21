@@ -6,6 +6,7 @@ import { EditoriaRequest } from '../core/interfaces/Request/Editorias';
 import { StatusRequest } from '../core/interfaces/Request/Status';
 import { PostagemResponse } from '../core/interfaces/Response/Postagem';
 import { PostagemRequest } from '../core/interfaces/Request/Postagem';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,12 @@ export class NoticiaService {
   private apiUrl = environment.apiUrl;
   private API = 'postagem';
 
-  constructor(private http: HttpClient) {}
+
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  
+  ) {}
 
   // BUSCAR LISTA DE EDITORIAS 
 buscarListaDeEditorias(): Observable<EditoriaRequest[]> {
@@ -32,9 +38,14 @@ buscarListaDeStatus(): Observable<StatusRequest[]> {
 }
 
 // POSTAR NOVA NOTÍCIA 
+
 criarPostagem(postagem: PostagemResponse): Observable<any> {
-  return this.http.post(`${this.apiUrl}/${this.API}/criar-noticia`, postagem);
+  const token = this.authService.getDecodedToken(); // Obtenha o token do AuthService
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); // Adiciona o token ao header
+
+  return this.http.post(`${this.apiUrl}/${this.API}/criar-noticia`, postagem, { headers });
 }
+
 
 // EDITAR NOTÍCIA JÁ EXISTENTE
 editarNoticia(id: number, postagem: PostagemResponse): Observable<PostagemResponse> {
