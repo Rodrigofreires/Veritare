@@ -1,0 +1,110 @@
+.cabecalho-noticia{
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.titulo {
+    width: 100%;
+}
+.descricao{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+} 
+.editoria{
+    width: 33%;
+    margin: 0;
+    padding: 0;
+} 
+.status{
+    width: 33%;
+    margin: 0;
+    padding: 0;
+}
+
+.premiumOuComum{
+  width: 33%;
+  margin: 0;
+  padding: 0;
+}
+
+.corpo-da-noticia{
+    margin: 10px;
+    padding: 10px;
+    gap: 2%;
+    display: flex;
+    flex-direction: column;
+}
+
+.texto-da-noticia{
+    width: 100%;
+    min-height: 300px;
+    justify-content: space-between;
+    border: none; /* Remove a borda padrão */
+    outline: none; /* Remove a borda ao focar no elemento */
+    box-shadow: none; /* Remove qualquer sombra aplicada */
+    resize: none; /* Impede o redimensionamento manual */
+   
+}
+
+
+.titulo-pagina{
+    font-size: 30px;
+    padding: 10px;
+    gap: 10px;
+}
+
+.campos-iniciais{
+
+    font-size: 20px;
+    width: 100%;
+}
+
+.botoes-de-envio {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Alinha verticalmente se necessário */
+    margin-bottom: 20px; /* Adiciona margem inferior */
+  }
+  
+  .botao {
+    padding: 10px 20px; /* Aumenta o espaço interno do botão */
+    font-size: 16px; /* Aumenta o tamanho da fonte */
+    font-weight: bold; /* Deixa o texto em negrito */
+    border-radius: 8px; /* Arredonda as bordas */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona sombra ao botão */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
+  }
+  
+  .botao:hover {
+    background-color: #71e77f; /* Altera a cor do fundo ao passar o mouse */
+    transform: translateY(-2px); /* Eleva o botão ao passar o mouse */
+  }
+  
+  .botao-finalizar:active {
+    transform: translateY(0); /* Reseta a elevação ao clicar */
+  }
+  
+
+  /* CSS DAS IMAGENS DA TELA */
+
+  .imagem-pre-visualizar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    max-width: 100%;
+  }
+  
+  .imagem-pre-visualizar img {
+    max-width: 100%;
+    max-height: 500px;
+    width: auto;
+    height: auto;
+    border: 5px solid black;
+    border-radius: 4px;
+    padding: 5px;
+  }

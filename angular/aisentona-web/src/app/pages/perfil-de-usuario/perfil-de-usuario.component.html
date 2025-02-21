@@ -1,0 +1,35 @@
+<app-container class="container-perfil-usuario">
+    <h2>PERFIL DE USUÁRIO</h2>
+
+    <div class="perfil-usuario">
+        <div class="informacoes-do-perfil">
+            <div class="informacoes-basicas">
+                <div class="informacoes-perfil">
+                        <h3 class="nome-perfil"> {{ infosPerfilUsuario?.nome }} </h3>
+                        <p><strong>E-mail:</strong> {{ infosPerfilUsuario?.email || 'Não informado' }}</p>
+                        <p><strong>Contato:</strong> {{ infosPerfilUsuario?.contato  || 'Não informado' }}</p>
+                        <p><strong>Tipo de Usuário:</strong> {{ infosPerfilUsuario?.tipoDeUsuario }}</p>
+                        <p><strong>Tempo de Acesso:</strong> 
+                          {{ infosPerfilUsuario?.tempoDeAcesso ? (infosPerfilUsuario?.tempoDeAcesso | date:'dd/MM/yyyy') : 'Não disponível' }}
+                        </p>
+                        <p><strong>Data de Nascimento:</strong> 
+                          {{ infosPerfilUsuario?.dataDeNascimento ? (infosPerfilUsuario?.dataDeNascimento | date:'dd/MM/yyyy') : 'Não informado' }}
+                        </p>
+                        <p><strong>Endereço:</strong> {{ infosPerfilUsuario?.endereco || 'Não informado' }}</p>
+                        <p><strong>CPF:</strong> {{ infosPerfilUsuario?.cpf }}</p>
+                        <p><strong>Acesso Premium:</strong> {{ infosPerfilUsuario?.acessoPremium ? 'Sim' : 'Não' }}</p>
+                        <p><strong>Premium expira em:</strong> 
+                          {{ infosPerfilUsuario?.premiumExpiraEm ? (infosPerfilUsuario?.premiumExpiraEm | date:'dd/MM/yyyy') : 'VIRE PREMIUM' }}
+                        </p>
+                                      
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="editar-sair">
+        <!-- <button class="custom-button primary" >Editar dados pessoais</button> -->
+        <button class="custom-button warn" (click)="excluirPerfil()">Excluir conta</button>
+    </div>
+    
+</app-container>

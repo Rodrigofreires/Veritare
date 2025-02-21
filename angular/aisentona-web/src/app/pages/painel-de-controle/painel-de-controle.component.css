@@ -1,0 +1,154 @@
+/* Container principal que ocupa toda a altura da tela */
+.dashboard-container {
+    height: 100vh;
+    display: flex; /* Define flex para layout */
+    flex-direction: row; /* Itens organizados horizontalmente */
+    gap: 0; /* Remove qualquer espaço entre os itens */
+  }
+  
+  /* Barra lateral */
+  .sidenav {
+    width: 250px; /* Largura fixa para a barra lateral */
+    background: #1E1E2E; /* Cor customizada */
+    color: #fff !important; /* Texto branco */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza o conteúdo horizontalmente */
+    padding: 16px 0; /* Espaçamento interno */
+    box-sizing: border-box;
+    border-radius: 0;
+    flex-shrink: 0; /* Barra lateral não encolhe */
+  }
+  
+  /* Perfil e título da barra lateral */
+  .sidenav .profile-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 16px;
+  }
+  
+  .sidenav h3 {
+    font-size: 1.2rem;
+    margin: 0;
+    margin-bottom: 8px;
+    text-align: center; /* Centraliza o texto */
+  }
+  
+  .sidenav p {
+    font-size: 0.9rem;
+    margin: 0;
+    margin-bottom: 24px;
+    text-align: center; /* Centraliza o texto */
+    color: #aaa; /* Cor de texto mais clara */
+  }
+  
+  /* Ícones e textos da barra lateral */
+  .icones-barra-lateral {
+    width: 100%; /* Ocupa toda a largura disponível */
+    display: flex; /* Usa flexbox */
+    align-items: center; /* Alinha ícones e texto verticalmente */
+    padding: 8px 16px; /* Adiciona espaçamento interno */
+    box-sizing: border-box; /* Garante que padding seja considerado no tamanho */
+    color: #fff !important;
+    gap: 12px; /* Espaço entre ícones e texto */
+  }
+  
+  .icones-barra-lateral:hover {
+    color: #7070AC !important;
+  }
+  
+  .sidenav ::ng-deep .mdc-list-item__primary-text {
+    color: white !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sidenav ::ng-deep .mdc-list-item__primary-text:hover {
+    color: #7070AC !important;
+  }
+  
+  
+  .filters ::ng-deep .mdc-list-item__primary-text {
+    color: black !important; 
+  }
+
+  ::ng-deep .mdc-list-item__primary-text:hover {
+    color: #7070AC !important;
+  }
+  
+  /* Conteúdo principal */
+  .mat-sidenav-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* O conteúdo principal ocupa o restante do espaço */
+    overflow: hidden; /* Evita overflow da página */
+  }
+
+
+  /* Conteúdo principal */
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* O conteúdo principal ocupa o restante do espaço */
+    padding: 16px;
+    overflow: auto; /* Adiciona rolagem, se necessário */
+  }
+  
+  /* Filtros */
+  .filters {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  
+  
+  .filters mat-form-field {
+    flex: 1; /* Faz os filtros ocuparem o espaço disponível */
+    min-width: 200px; /* Tamanho mínimo para os filtros */
+  }
+  
+  /* Tabela */
+  table {
+    width: 100%;
+  }
+  
+  .mat-header-cell,
+  .mat-cell {
+    text-align: left;
+  }
+  
+  .mat-elevation-z8 {
+    flex-grow: 1;
+  }
+  
+  /* Botões de ação */
+  button {
+    margin: 0 4px;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .dashboard-container {
+      flex-direction: column; /* Reorganiza os itens verticalmente */
+    }
+  
+    .sidenav {
+      width: 100%; /* Barra lateral ocupa toda a largura no modo responsivo */
+    }
+  
+    .filters {
+      flex-direction: column;
+      gap: 8px;
+    }
+  
+    .filters mat-form-field {
+      min-width: unset;
+      flex: unset;
+      width: 100%; /* Campo ocupa toda a largura no modo responsivo */
+    }
+
+
+  }
+  

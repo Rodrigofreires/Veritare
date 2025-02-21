@@ -1,0 +1,29 @@
+<div class="painel-noticias">
+  <!-- Destaque -->
+  <mat-card class="card-noticia-destaque" appearance="outlined">
+    <div class="conteudo-destaque">
+      <img class="imagem-banner-maior" mat-card-image src="{{ infosPostagem[0].imagem }}" 
+           (click)="navegarParaNoticia(infosPostagem[0].idPostagem)" 
+           alt="Imagem da notícia destacada">
+      <div class="texto-destaque">
+        <h1>{{ infosPostagem[0].titulo }}</h1>
+        <p>{{ infosPostagem[0].descricao }}</p>
+        <p><strong>Editoria:</strong> {{ infosPostagem[0].nomeCategoria }}</p>
+        <p><strong>Data de Criação:</strong> {{ infosPostagem[0].dataCriacao | date: 'dd/MM/yyyy - HH:mm' }}</p>
+
+      </div>
+    </div>
+  </mat-card>
+
+  <!-- Lista -->
+  <div class="lista-noticias" *ngIf="infosPostagem.length > 1">
+    <mat-card *ngFor="let postagem of infosPostagem.slice(1)" appearance="outlined">
+      <h2>{{ postagem?.nomeCategoria }}</h2>
+      <img class="imagem-banner-maior" mat-card-image src="{{ postagem.imagem }}"
+      (click)="navegarParaNoticia(postagem.idPostagem)" 
+           alt="Imagem da notícia destacada">
+      <h2>{{ postagem?.titulo }}</h2>
+      <p>{{ postagem?.descricao }}</p>
+    </mat-card>
+  </div>
+</div>

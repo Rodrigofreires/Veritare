@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aisentona.Enum
+namespace Aisentona.Enumeradores
 {
-    public enum Autorizações
+    public enum Autorizacao
     {
         Administrador = 1,
         EditorChefe = 2,
         EditorBase = 3,
-        LeitorPremium = 4,
+        LeitorPremium = 11,
         LeitorSimples = 5,
-        Escritor = 6
+        Escritor = 8
+
     }
 }

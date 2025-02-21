@@ -1,0 +1,97 @@
+.painel-noticias {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espaçamento entre os cards */
+}
+
+.card-noticia {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 20px; /* Espaçamento inferior entre os cards */
+}
+
+.card-noticia-destaque {
+  display: flex;
+  flex-direction: row;
+  margin-top: 50px;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.card-noticia-destaque .conteudo-destaque {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.card-noticia-destaque img {
+  width: 100%;
+  max-width: 500px;
+  height: 500px;
+  border-radius: 8px;
+  object-fit: cover; /* Ajusta a imagem para cobrir o contêiner mantendo a proporção */
+}
+
+.card-noticia-destaque .texto-destaque {
+  font-size: 1.5rem;
+  flex: 1;
+}
+
+.card-noticia-destaque h1 {
+  font-size: 2rem;
+  margin: 0;
+  color: #333;
+}
+
+.lista-noticias {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.lista-noticias mat-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #fff;
+  margin-bottom: 20px; /* Espaçamento inferior entre os cards */
+}
+
+.lista-noticias mat-card h2 {
+  font-size: 1.5rem;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.lista-noticias mat-card p {
+  font-size: 0.9rem;
+  margin: 0;
+  color: #666;
+}
+
+.lista-noticias mat-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover; /* Ajusta a imagem para cobrir o contêiner mantendo a proporção */
+  border-radius: 8px;
+  margin-bottom: 10px; /* Espaçamento inferior entre a imagem e o conteúdo */
+}
+
+.mat-card-content {
+  font-size: 0.9rem;
+  margin: 10px 0;
+}
+
+.mat-card-actions {
+  margin-top: 10px;
+}
+
+mat-card img {
+  cursor: pointer;
+  transition: transform 0.3s ease; /* Efeito visual para hover */
+}
+
+mat-card img:hover {
+  transform: scale(1.05); /* Ampliação suave ao passar o mouse */
+}

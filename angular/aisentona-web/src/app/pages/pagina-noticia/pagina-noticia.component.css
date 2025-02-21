@@ -1,0 +1,164 @@
+.noticia-container {
+    display: flex;
+    flex-direction: column; /* Empilha os elementos verticalmente */
+    gap: 20px; /* Espaçamento entre os elementos */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 900px;
+    width: 100%;
+  }
+  
+  .cabecalho-pagina {
+    display: flex;
+    align-items: center; /* Alinha verticalmente os itens */
+    justify-content: space-between; /* Coloca o botão e o texto nas extremidades */
+    margin-bottom: 20px; /* Adiciona espaço abaixo do cabeçalho */
+  }
+
+  .nome-categoria {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .botao-editar {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+
+  .noticia-card {
+    width: 100%;
+    border: none; /* Remove qualquer borda padrão */
+    box-shadow: none; /* Remove sombra do Material Design */
+  }
+
+  .titulo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinha os textos à esquerda */
+    gap: 4px; /* Espaço entre título, subtítulo e data */
+  }
+  
+  .noticia-titulo {
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  
+  .noticia-subtitulo {
+    font-size: 18px;
+    color: #757575;
+  }
+  
+  .data-criacao {
+    font-size: 14px;
+    color: #757575;
+    margin-top: 0; /* Remove margem superior extra */
+  }
+  
+  .imagem-da-noticia {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
+    max-width: 100%;
+  }
+  
+  .imagem-da-noticia img {
+    max-width: 100%;
+    max-height: 500px;
+    width: auto;
+    height: auto;
+    border: 5px solid black;
+    border-radius: 4px;
+    padding: 5px;
+  }
+
+  .noticia-conteudo {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+  }
+  
+  .mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .botoes-controle {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .botoes-controle button {
+    font-weight: bold;
+  }
+  
+  .botao-selecionado {
+    background-color: #7070AC; /* Cor de destaque */
+    color: white;
+    border: 2px solid #000000; /* Borda para realçar o botão */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
+  }
+  
+  .botao-selecionado:hover {
+    background-color: #7070AC; /* Cor mais escura ao passar o mouse */
+  }
+
+  .lista-noticias-relacionadas{
+    width: 100%;
+    display: flex;
+    align-items: start;
+    justify-content: start !important;
+    border: none; /* Remove qualquer borda padrão */
+    box-shadow: none; /* Remove sombra do Material Design */
+  }
+
+  .lista-noticias-relacionadas {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .noticias-relacionadas-card {
+    background: none; /* Remove o fundo do mat-card */
+    box-shadow: none; /* Remove sombras */
+    border: none; /* Remove bordas */
+    padding: 0; /* Remove padding interno */
+    margin: 0;
+  }
+  
+  .noticias-relacionadas-list {
+    padding: 0;
+    margin: 0;
+    list-style: none; /* Remove marcadores de lista */
+  }
+  
+  mat-list-item {
+    border: none;
+    box-shadow: none;
+    padding: 5px 0; /* Espaçamento entre os itens */
+  }
+  
+  .noticia-link {
+    text-decoration: underline;
+    color: blue;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer; /* Garante o ponteiro de link */
+    pointer-events: auto; /* Certifica que o link está clicável */
+  }
+  
+  .noticia-link:hover {
+    color: darkblue; /* Escurece a cor do link ao passar o mouse */
+  }
+  

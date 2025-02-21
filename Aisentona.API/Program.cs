@@ -1,52 +1,140 @@
+using Aisentona.Biz.Services;
+using Aisentona.Biz.Services.Postagens;
 using Aisentona.DataBase;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.DependencyInjection; // Adicione esta linha para o namespace correto
+using Newtonsoft.Json;
+using Aisentona.Biz.Validators;
+using FluentValidation;
+using Aisentona.Biz.Mappers;
+using Aisentona.Biz.Services.Compartilhar;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Recupera a chave privada da variável de ambiente
+string privateKey = "KqiSF8LwSrU36fl4GG1oLxbN5eLMuiUJpJBo2+fjR0E=";
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-
-
-var app = builder.Build();
-
-// Adiciona o ApplicationDbContext e configura a string de conexão
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-
-builder.Services.AddScoped<Colaborador>();
-builder.Services.AddScoped<ColaboradorEmail>();
-builder.Services.AddScoped<ColaboradorPermissao>();
-builder.Services.AddScoped<ColaboradorTelefone>();
-builder.Services.AddScoped<ColaboradorTipoUsuario>();
-builder.Services.AddScoped<Permissao>();
-
-
-
-
-
-
-
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (string.IsNullOrEmpty(privateKey))
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    Console.WriteLine("A variável de ambiente JWT_PRIVATE_KEY não está definida. Defina-a antes de executar o aplicativo.");
+    throw new ArgumentNullException("JWT_PRIVATE_KEY", "A chave privada não pode ser nula.");
 }
 
-app.UseHttpsRedirection();
+try
+{
+    // Tenta decodificar a chave Base-64 para verificar sua validade
+    byte[] decodedKey = Convert.FromBase64String(privateKey);
+    Console.WriteLine("Chave privada decodificada com sucesso!");
 
-app.UseAuthorization();
+    // Adiciona serviços ao contêiner
+    ConfigureServices(builder.Services, decodedKey, builder.Configuration);
 
-app.MapControllers();
+    var app = builder.Build();
 
-app.Run();
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseCors(x => x.AllowAnyHeader()
+          .AllowAnyMethod()
+          .AllowAnyOrigin()
+    );
+
+
+    // Configura o pipeline de requisição HTTP
+    ConfigureMiddleware(app);
+
+    app.Run();
+}
+catch (FormatException ex)
+{
+    Console.WriteLine("Erro de formatação: A string fornecida não é uma Base-64 válida.");
+    throw; // Lança a exceção para interromper a execução do aplicativo
+}
+
+void ConfigureServices(IServiceCollection services, byte[] decodedKey, ConfigurationManager configuration)
+{
+    services.AddControllers()
+        .AddNewtonsoftJson(options =>
+        {
+            options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            options.SerializerSettings.Formatting = Formatting.Indented;
+        });
+
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerGen();
+
+    // Adiciona o ApplicationDbContext e configura a string de conexão
+    services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+    // Adicione os serviços do FluentValidation
+    builder.Services.AddScoped<ColaboradorValidator>();
+
+    // Integrando API do Twitter/X
+    builder.Services.AddScoped<TwitterService>();
+
+    services.AddCors(options =>
+    {
+        options.AddPolicy("AllowSpecificOrigin",
+            builder => builder.WithOrigins("http://localhost:4200")
+                              .AllowAnyMethod()
+                              .AllowAnyHeader());
+    });
+
+
+    // Registro de serviços e repositórios
+    services.AddScoped<ColaboradorService>();
+    services.AddScoped<ColaboradorTelefoneService>();
+    services.AddScoped<ColaboradorTipoUsuarioService>();
+    services.AddScoped<PostagemService>();
+    services.AddScoped<TokenService>(); // Adiciona o TokenService
+    services.AddScoped<LoginService>();
+    services.AddScoped<AuthService>();
+    services.AddScoped<DateMapper>();
+
+    //services.AddScoped<TokenValidationMiddleware>();
+
+
+    services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        var jwtSettings = configuration.GetSection("JwtSettings");
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(decodedKey)
+        };
+    });
+
+    services.AddAuthorization();
+}
+
+void ConfigureMiddleware(WebApplication app)
+{
+    // Configura o pipeline de requisição HTTP
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+    app.UseHttpsRedirection();
+    app.UseAuthentication(); // Certifique-se de adicionar este middleware antes do UseAuthorization
+    app.UseAuthorization();
+    app.MapControllers();
+}

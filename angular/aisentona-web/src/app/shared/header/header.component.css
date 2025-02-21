@@ -1,0 +1,54 @@
+
+.app-header{
+    
+    .mat-toolbar{
+      background-color: #1E1E2E !important;
+    }
+  
+    button {
+      margin: 0 16px;
+  
+    }
+    .spacer {
+      flex: 1 1 auto;
+    }
+  
+    .mat-toolbar{
+      background-color: black;
+      color: white;
+      padding: 0 10%;
+      justify-content: space-between;
+    }
+  
+    .mat-mdc-outlined-button:not(:disabled) {
+      border-color: white;
+    }
+
+
+  .botao-header{
+      background-color: transparent;
+      color: #FFFFFF;     
+  }
+
+  ::ng-deep .botao-header:hover {
+    color: #A29BFE !important;
+  }
+  
+
+    .home-link {
+      text-decoration: none;
+      color: inherit;
+      font-size: 24px; /* Ajuste o tamanho da fonte conforme necessário */
+      font-weight: bold; /* Se desejar um texto mais destacado */
+      cursor: pointer;
+    }
+    
+    .home-link:hover {
+      color: #A29BFE; /* Cor ao passar o mouse, ajuste conforme o tema */
+    }
+
+    .user-name{
+      font-size: medium;
+    }
+
+  }

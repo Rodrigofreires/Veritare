@@ -1,0 +1,33 @@
+
+.app-editoria{
+
+.editoria-header{
+    background-color:#7070AC ;
+    color: white;
+    padding: 0 10%;
+    display: flex;
+    
+    justify-content: space-around;
+}
+
+.botao-editoria{
+    background-color: transparent; /* Remove qualquer fundo */
+    border: none; /* Remove a borda padrão */
+    box-shadow: none; /* Sem box-shadow inicialmente */
+    color: #fff ; /* Define a cor do texto */
+    transition: box-shadow 0.3s ease; /* Transição suave para box-shadow */
+    font-size: medium;
+}
+
+
+.botao-editoria:hover{
+    color: #A29BFE !important;
+    background-color: transparent;
+}
+
+.mat-mdc-outlined-button:not(:disabled) {
+    border-color: white;
+}
+
+
+}
