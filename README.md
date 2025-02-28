@@ -1,4 +1,4 @@
-# Projeto de Jornal Digital com CRUD Completo
+# Jornal Digital com IA
 
 ## Descrição
 Este projeto consiste em um jornal digital desenvolvido com C# e Angular, utilizando Angular Material para uma interface amigável. A aplicação é construída sobre o .NET 8.0 e conta com um banco de dados SQL Server, permitindo um gerenciamento eficiente das informações.
