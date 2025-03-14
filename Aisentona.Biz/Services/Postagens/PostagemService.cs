@@ -4,12 +4,8 @@ using Aisentona.Entities.Request;
 using Aisentona.Entities.Response;
 using Aisentona.Entities.ViewModels;
 using Aisentona.Enumeradores;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Net.NetworkInformation;
 using System.Security.Principal;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Aisentona.Biz.Services.Postagens
 {

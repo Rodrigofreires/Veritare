@@ -7,10 +7,7 @@ using Aisentona.Entities.Response;
 using Aisentona.Entities.ViewModels;
 using Aisentona.Enumeradores;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Security.Claims;
 
 
@@ -101,49 +98,37 @@ namespace Aisentona.API.Controllers.Postagens
         }
 
 
-        [HttpPost("criar-noticia")]
         [Authorize]
+        [HttpPost("criar-noticia")]
         public IActionResult CreatePost([FromBody] PostagemResponse postagemResponse)
         {
+
+
             // Validação do corpo da requisição
             if (postagemResponse is null)
             {
                 return BadRequest("Objeto preenchido incorretamente.");
             }
 
-            // Pegar ID e Permissões do Usuário Autenticado
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var regras = User.FindFirst(ClaimTypes.Role)?.Value;
+            // Obtém as permissões do usuário logado
+            var userClaims = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
 
-            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(regras))
+            // Lista de permissões necessárias para criar uma postagem
+            var permissoesNecessarias = new List<string> { "CadastrarPostsSimples", "CadastrarPostsPremium" };
+
+            // Verifica se o usuário possui pelo menos uma das permissões necessárias
+            if (!userClaims.Any(permissoesNecessarias.Contains))
             {
-                return Unauthorized("Usuário não autenticado.");
-            }
-
-            // Verificar se o role é válido
-            if (!Enum.TryParse(regras, out Autorizacao autorizacao))
-            {
-                return Unauthorized("Role inválido.");
-            }
-
-            // Pegar as permissões associadas ao role
-            var permissoes = autorizacao.GetPermissions(); // Método de extensão
-
-            // Verificar se o usuário tem permissão para criar postagens
-            if (!permissoes.Contains("CadastrarPostsSimples") && !permissoes.Contains("CadastrarPostsPremium"))
-            {
-                return Forbid("Você não tem permissão para criar postagens."); // Retorna 403 se não tiver permissão
+                return Forbid("Você não tem permissão para criar notícias.");
             }
 
             // Criar a postagem
             var postagem = _postagemService.CriarPostagem(postagemResponse);
+
             return Ok(postagem); // Retorna a postagem criada com status 200
         }
 
-
-
         [HttpPut("editar/{idPostagem}")]
-
         public IActionResult UpdatePostagem(int idPostagem, [FromBody] PostagemResponse postagemResponse)
         {
             try

@@ -1,6 +1,6 @@
 import { Component, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { EditoriaRequest } from '../core/interfaces/Request/Editorias';
 import { StatusRequest } from '../core/interfaces/Request/Status';
@@ -21,7 +21,7 @@ export class NoticiaService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private _authService: AuthService
   
   ) {}
 
@@ -40,12 +40,8 @@ buscarListaDeStatus(): Observable<StatusRequest[]> {
 // POSTAR NOVA NOTÍCIA 
 
 criarPostagem(postagem: PostagemResponse): Observable<any> {
-  const token = this.authService.getDecodedToken(); // Obtenha o token do AuthService
-  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); // Adiciona o token ao header
-
-  return this.http.post(`${this.apiUrl}/${this.API}/criar-noticia`, postagem, { headers });
+  return this.http.post(`${this.apiUrl}/${this.API}/criar-noticia`, postagem);
 }
-
 
 // EDITAR NOTÍCIA JÁ EXISTENTE
 editarNoticia(id: number, postagem: PostagemResponse): Observable<PostagemResponse> {
