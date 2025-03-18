@@ -15,7 +15,6 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
-import { PostagemResponse } from '../../core/interfaces/Response/Postagem';
 import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
 import { ActivatedRoute, RouterModule , Router } from '@angular/router';
@@ -27,6 +26,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { EditoriaRequest } from '../../core/interfaces/Request/Editorias';
 import { StatusRequest } from '../../core/interfaces/Request/Status';
+import { PostagemResponse } from '../../core/interfaces/Response/Postagem';
 
 @Component({
   selector: 'app-painel-de-controle',

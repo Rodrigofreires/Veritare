@@ -40,7 +40,8 @@ public class TokenService
         var claims = new ClaimsIdentity(new[]
         {
             new Claim(ClaimTypes.Name, usuario.Nm_Nome),
-            new Claim("IdTipoUsuario", usuario.Id_Usuario.ToString())
+            new Claim("IdUsuario", usuario.Id_Usuario.ToString()),
+            new Claim("IdTipoDeUsuario", usuario.Id_TipoUsuario.ToString())
         });
 
         claims.AddClaim(new Claim(ClaimTypes.Role, usuario.Id_TipoUsuario.ToString()));

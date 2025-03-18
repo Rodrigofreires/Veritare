@@ -1,20 +1,17 @@
-﻿using Aisentona.DataBase.Aisentona.DataBase;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aisentona.Entities.Request
+namespace Aisentona.Entities.Response
 {
-    public class PerfilDeUsuarioRequest
+    public class PerfilDeUsuarioResponse
     {
-        public PerfilDeUsuarioRequest()
+        public PerfilDeUsuarioResponse()
         {
-            
         }
-        public PerfilDeUsuarioRequest(string nome, string email, string contato, string tipoDeUsuario, DateTime tempoDeAcesso, DateTime dataDeNascimento, string endereco, string cpf, bool acessoPremium, DateTime? premiumExpiraEm, int idUsuario)
+        public PerfilDeUsuarioResponse(string nome, string email, string contato, string tipoDeUsuario, DateTime tempoDeAcesso, DateTime dataDeNascimento, string endereco, string cpf, bool acessoPremium, DateTime? premiumExpiraEm, int idUsuario)
         {
 
             IdUsuario = idUsuario;
@@ -29,19 +26,19 @@ namespace Aisentona.Entities.Request
             AcessoPremium = acessoPremium;
             PremiumExpiraEm = premiumExpiraEm;
         }
+
         public int IdUsuario { get; set; }
         public string Nome { get; set; }
         public string CPF { get; set; }
         public string Email { get; set; }
         public string Contato { get; set; }
         public string TipoDeUsuario { get; set; }
-        public string? Endereco { get; set; }
-        public DateTime? DataDeNascimento { get; set; } // Nullable
-        public DateTime? TempoDeAcesso { get; set; }
-        public bool? AcessoPremium { get; set; } // Nullable
-        public DateTime? PremiumExpiraEm { get; set; } // Nullable
+        public string Endereco { get; set; }
+        public bool AcessoPremium { get; set; }
+        public DateTime TempoDeAcesso { get; set; }
+        public DateTime DataDeNascimento { get; set; }
+        public DateTime? PremiumExpiraEm { get; set; }
+
 
     }
-
 }
-

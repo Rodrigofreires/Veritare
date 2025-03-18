@@ -55,17 +55,10 @@ export class ListagemPorEditoriaComponent {
     }
 
     carregaNoticiasRelacionadas(): void {
-      // // Certifica-se de que o idCategoria é válido
-      // if (!this.idCategoria || this.idCategoria <= 0) {
-      //   console.error('ID da categoria inválido:', this.idCategoria);
-      //   this._snackBarService.MostrarErro('Erro: ID da categoria inválido.');
-      //   return;
-      // }
     
       // Chama o serviço para carregar as notícias por editoria
       this._noticiaService.carregarPostagensPorEditoria(this.idCategoria).subscribe(
         (dados: PostagemRequest[]) => {
-          console.log('Dados recebidos:', dados);
           this.noticiasRelacionadas = dados; // Armazena as notícias relacionadas
         },
         (erro) => {

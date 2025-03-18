@@ -36,13 +36,13 @@
           <p>Filtros</p>
           <div class="filters">
             <mat-form-field appearance="outline">
-              <mat-label>Título</mat-label>
-              <input matInput placeholder="Search" [(ngModel)]="tituloProcurado" />
+              <mat-label>Nome</mat-label>
+              <input matInput placeholder="Search" [(ngModel)]="nomeProcurado" />
             </mat-form-field>
           
             <mat-form-field appearance="outline">
               <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="statusDaPublicacao">
+              <mat-select [(ngModel)]="cpfProcurado">
                 <mat-option *ngFor="let status of ListaDeStatus" [value]="status.id">
                   {{ status.descricao }}
                 </mat-option>
@@ -51,30 +51,13 @@
           
             <mat-form-field appearance="outline">
               <mat-label>Editoria</mat-label>
-              <mat-select [(ngModel)]="editoriaProcurada">
+              <mat-select [(ngModel)]="emailProcurado">
                 <mat-option *ngFor="let editoria of listaDeEditorias" [value]="editoria.id">
                   {{ editoria.nome }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Tipo de Publicação</mat-label>
-              <mat-select [(ngModel)]="tipoSelecionado" name="tipoSelecionado">
-                <mat-option *ngFor="let tipo of tipoDePublicacao" [value]="tipo">
-                  {{ tipo }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
             
-            
-          
-            <mat-form-field appearance="outline">
-              <mat-label>Data de publicação</mat-label>
-              <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" [value]="selectedDate" />
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
           
             <div class="actions">
               <button mat-raised-button color="primary" (click)="aplicarFiltros()">
@@ -88,29 +71,29 @@
 
 
           
-          <table mat-table [dataSource]="infosPostagem" class="mat-elevation-z8">
+          <table mat-table [dataSource]="infosPerfilUsuarioRequest" class="mat-elevation-z8">
   
             <!-- Título Column -->
             <ng-container matColumnDef="titulo">
-              <th mat-header-cell *matHeaderCellDef> Título </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.titulo }} </td>
+              <th mat-header-cell *matHeaderCellDef> Nome </th>
+              <td mat-cell *matCellDef="let perfilUsuario"> {{ perfilUsuario.nome }} </td>
             </ng-container>
           
             <!-- Descrição Column -->
             <ng-container matColumnDef="descricao">
-              <th mat-header-cell *matHeaderCellDef> Descrição </th>
+              <th mat-header-cell *matHeaderCellDef> Contato </th>
               <td mat-cell *matCellDef="let postagem"> {{ postagem.descricao }} </td>
             </ng-container>
           
             <!-- Categoria Column -->
             <ng-container matColumnDef="nomeCategoria">
-              <th mat-header-cell *matHeaderCellDef> Categoria </th>
+              <th mat-header-cell *matHeaderCellDef> E-mail </th>
               <td mat-cell *matCellDef="let postagem"> {{ postagem.nomeCategoria }} </td>
             </ng-container>
           
             <!-- Status Column -->
             <ng-container matColumnDef="nomeStatus">
-              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <th mat-header-cell *matHeaderCellDef> Tipo de Usuário </th>
               <td mat-cell *matCellDef="let postagem"> {{ postagem.nomeStatus || 'Status não disponível' }} </td>
             </ng-container>
 
@@ -121,7 +104,7 @@
             </ng-container>
             <!-- Data de Criação Column -->
             <ng-container matColumnDef="dataCriacao">
-              <th mat-header-cell *matHeaderCellDef> Data de Criação </th>
+              <th mat-header-cell *matHeaderCellDef> Expira em: </th>
               <td mat-cell *matCellDef="let postagem"> {{ postagem.dataCriacao | date:'dd/MM/yyyy HH:mm' }} </td>
 
             </ng-container>
@@ -131,13 +114,13 @@
               <th mat-header-cell *matHeaderCellDef> Ações </th>
               <td mat-cell *matCellDef="let postagem">
 
-                <button mat-icon-button (click)="editarNoticia(postagem.idPostagem)">
+                <button mat-icon-button (click)="editarUsuario(postagem.idPostagem)">
                   <mat-icon>edit</mat-icon>
                 </button>
-                <button mat-icon-button (click)="excluirNoticia(postagem.idPostagem)">
+                <button mat-icon-button (click)="excluirUsuario(postagem.idPostagem)">
                   <mat-icon>delete</mat-icon>
                 </button>
-                <button mat-icon-button (click)="visualizarNoticia(postagem.idPostagem)">
+                <button mat-icon-button (click)="visualizarUsuario(postagem.idPostagem)">
                   <mat-icon>visibility</mat-icon>
                 </button>
               </td>

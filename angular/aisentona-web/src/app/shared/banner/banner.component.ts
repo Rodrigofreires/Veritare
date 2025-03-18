@@ -47,7 +47,6 @@ export class BannerComponent implements OnInit {
   carregarUltimasNoticias(): void {
     this._noticiaService.carregarUltimasPostagens().subscribe(
       (dados: PostagemRequest[]) => {
-        console.log('Dados recebidos:', dados);
         this.infosPostagem = dados;
       },
       (erro) => {

@@ -25,7 +25,5 @@ namespace Aisentona.DataBase
         public DateTime? DT_Criacao { get; set; } = DateTime.UtcNow;
         public DateTime DT_UltimaAlteracao { get; set; } = DateTime.UtcNow;
 
-
-
     }
 }

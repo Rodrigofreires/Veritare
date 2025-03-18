@@ -28,7 +28,6 @@ login(Email: string, Senha: string): Observable<any> {
       if (response.token) {
 
         window.localStorage.setItem('token', response.token)
-        console.log('Tokens salvos com sucesso:', response.token, response.refreshToken);
       } else {
         console.warn(' Nenhum refreshToken retornado pelo backend.');
       }
@@ -52,7 +51,6 @@ logout(): void {
     this.http.post(`${this.apiUrl}/Login/logout`, { token }).subscribe({
       next: () => {
         // Se o logout no backend for bem-sucedido, remova o token
-        console.log('Logout realizado com sucesso.');
         localStorage.removeItem('token'); // Remove o token armazenado
         localStorage.removeItem('userPermissions'); // Remova permissões, se armazenadas
         localStorage.removeItem('userName'); // Remova dados adicionais relacionados

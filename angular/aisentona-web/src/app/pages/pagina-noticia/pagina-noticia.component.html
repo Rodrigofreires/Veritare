@@ -3,7 +3,7 @@
 
     <div class="cabecalho-pagina">
       <h2 class="nome-categoria">{{ infosPostagem.nomeCategoria }}</h2>
-      <button class="botao-editar" mat-raised-button color="primary" (click)="editarNoticia()">
+      <button *ngIf="isLoggedIn && acessarEditarNoticia()" class="botao-editar" mat-raised-button color="primary" (click)="editarNoticia()">
         EDITAR
       </button>
     </div>

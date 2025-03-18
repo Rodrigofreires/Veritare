@@ -100,7 +100,6 @@ export class LoginComponent {
     }
   }
   
-
   loginWithGoogle() {
     console.warn('Método loginWithGoogle ainda não implementado');
   }

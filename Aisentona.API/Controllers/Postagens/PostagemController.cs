@@ -98,28 +98,14 @@ namespace Aisentona.API.Controllers.Postagens
         }
 
 
-        [Authorize]
         [HttpPost("criar-noticia")]
         public IActionResult CreatePost([FromBody] PostagemResponse postagemResponse)
         {
-
 
             // Validação do corpo da requisição
             if (postagemResponse is null)
             {
                 return BadRequest("Objeto preenchido incorretamente.");
-            }
-
-            // Obtém as permissões do usuário logado
-            var userClaims = User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
-
-            // Lista de permissões necessárias para criar uma postagem
-            var permissoesNecessarias = new List<string> { "CadastrarPostsSimples", "CadastrarPostsPremium" };
-
-            // Verifica se o usuário possui pelo menos uma das permissões necessárias
-            if (!userClaims.Any(permissoesNecessarias.Contains))
-            {
-                return Forbid("Você não tem permissão para criar notícias.");
             }
 
             // Criar a postagem

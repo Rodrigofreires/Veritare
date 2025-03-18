@@ -72,7 +72,6 @@ export class CadastroDeNoticiaComponent {
     this.carregarEditorias();
     this.carregarStatus();
 
-    console.log('Editoria Selecionada = ' + this.editoriaSelecionada);
   }
 
   carregarEditorias(): void {

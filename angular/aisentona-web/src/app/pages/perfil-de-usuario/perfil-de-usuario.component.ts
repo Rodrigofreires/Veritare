@@ -65,9 +65,7 @@ export class PerfilDeUsuarioComponent implements OnInit {
   carregarPerfilDoUsuario(idUsuario: number): void {
     this._perfilService.carregarPerfilDoUsuario(idUsuario).subscribe(
       (dados) => {
-        console.log('Dados carregados do serviço:', dados);
         this.infosPerfilUsuario = { ...dados }; // Garante uma nova referência no objeto
-        console.log('Objeto atualizado:', this.infosPerfilUsuario);
         this.cdr.detectChanges(); // Garante que o Angular renderize a mudança
       },
       (erro) => {

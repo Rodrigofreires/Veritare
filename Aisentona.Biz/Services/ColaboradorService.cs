@@ -10,6 +10,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Aisentona.DataBase.Aisentona.DataBase;
 using Aisentona.Biz.Mappers;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Aisentona.Biz.Services
 {
@@ -28,6 +29,61 @@ namespace Aisentona.Biz.Services
         }
 
         private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
+
+
+        public List<Colaborador>? ListarTodosOsColaboradores()
+        {
+            var ListaDeColaboradores = _context.CF_Colaborador.Where(x => x.Fl_Ativo).ToList();
+
+            return ListaDeColaboradores;
+
+        }
+
+        public List<PerfilDeUsuarioRequest> ListarTodosPerfis()
+        {
+            try
+            {
+                var colaboradores = ListarTodosOsColaboradores(); 
+
+                if (colaboradores == null || !colaboradores.Any())
+                    return new List<PerfilDeUsuarioRequest>(); // Retorna lista vazia, se não houver colaboradores
+
+                List<PerfilDeUsuarioRequest> perfisDeUsuario = new();
+
+                foreach (var colaborador in colaboradores)
+                {
+                    var tipoDoUsuario = _context.CF_ColaboradorTipoUsuario
+                        .FirstOrDefault(x => x.Id_TipoUsuario == colaborador.Id_TipoUsuario);
+
+                    if (tipoDoUsuario == null) continue; // Se não encontrar o tipo de usuário, pula para o próximo colaborador
+
+                    var perfilDeUsuarioRequest = new PerfilDeUsuarioRequest
+                    {
+                        IdUsuario = colaborador.Id_Usuario,
+                        Nome = colaborador.Nm_Nome,
+                        CPF = colaborador.Ds_CPF, 
+                        Email = colaborador.Ds_Email,
+                        Contato = colaborador.Ds_ContatoCadastro,
+                        TipoDeUsuario = tipoDoUsuario?.Nm_TipoUsuario,
+                        DataDeNascimento = colaborador.DT_Nascimento,
+                        AcessoPremium = colaborador.AcessoUsuario?.AcessoPremium,
+                        PremiumExpiraEm = colaborador.AcessoUsuario?.Dt_ExpiracaoPremium,
+                    };
+
+                    perfisDeUsuario.Add(perfilDeUsuarioRequest);
+                }
+
+                return perfisDeUsuario;
+            }
+            catch (Exception ex) // Usar Exception para capturar outros tipos de erro
+            {
+                // Logar e tratar o erro adequadamente
+                Console.WriteLine($"Erro ao acessar dados do banco: {ex.Message}");
+                // Caso haja erro, pode retornar uma lista vazia ou algum valor de fallback
+                return new List<PerfilDeUsuarioRequest>();
+            }
+        }
+
 
         public List<Colaborador>? ListarColaboradorPorId(int id)
         {
@@ -51,7 +107,7 @@ namespace Aisentona.Biz.Services
 
             if(colaborador is null) return null;
 
-            ColaboradorTipoUsuario tipoDoUsuario = _context.CF_ColaboradorTipoUsuario.FirstOrDefault(x => x.Id_TipoUsuario == colaborador.Id_TipoUsuario);
+            var tipoDoUsuario = _context.CF_ColaboradorTipoUsuario.FirstOrDefault(x => x.Id_TipoUsuario == colaborador.Id_TipoUsuario);
 
             PerfilDeUsuarioRequest perfilDeUsuarioRequest = new();
 
@@ -203,5 +259,47 @@ namespace Aisentona.Biz.Services
             return colaborador;
         }
 
+        public List<PerfilDeUsuarioRequest> ListarUsuariosComFiltro(PerfilDeUsuarioResponse filtro)
+        {
+            var listaDePerfilUsuario = ListarTodosPerfis();
+
+            // Aplicando os filtros de forma sequencial e convertendo para lista somente no final
+            if (!string.IsNullOrEmpty(filtro.Nome))
+            {
+                listaDePerfilUsuario = listaDePerfilUsuario.Where(p => p.Nome.Contains(filtro.Nome)).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Email))
+            {
+                listaDePerfilUsuario = listaDePerfilUsuario.Where(p => p.Email.Contains(filtro.Email)).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(filtro.Contato))
+            {
+                listaDePerfilUsuario = listaDePerfilUsuario.Where(p => p.Contato.Contains(filtro.Contato)).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(filtro.TipoDeUsuario))
+            {
+                listaDePerfilUsuario = listaDePerfilUsuario.Where(p => p.TipoDeUsuario.Contains(filtro.TipoDeUsuario)).ToList();
+            }
+
+            if (filtro.AcessoPremium)
+            {
+                listaDePerfilUsuario = listaDePerfilUsuario.Where(p => p.AcessoPremium == true).ToList();
+            }
+
+            if (filtro.PremiumExpiraEm != null)
+            {
+                listaDePerfilUsuario = listaDePerfilUsuario.Where(p => p.PremiumExpiraEm <= filtro.PremiumExpiraEm).ToList();
+            }
+
+            // Materializando a lista no final
+            return listaDePerfilUsuario;
+        }
+
+
     }
 }
+
+

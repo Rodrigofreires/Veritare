@@ -1,4 +1,5 @@
 ﻿using Aisentona.Biz.Services;
+using Aisentona.Biz.Services.Postagens;
 using Aisentona.DataBase;
 using Aisentona.Entities.Request;
 using Aisentona.Entities.Response;
@@ -18,24 +19,50 @@ namespace Aisentona.API.Controllers
             _colaboradorService = colaboradorService;
         }
 
-        // GET api/<ColaboradorController>
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        [HttpGet]
+        [HttpGet("lista-colaboradores/")]
+        public IActionResult GetTodosOsColaboradores()
         {
-            if (id <= 0)
-            {
-                return BadRequest("ID inválido.");
-            }
 
-            var colaborador = _colaboradorService.ListarColaboradorPorId(id);
-            if (colaborador == null)
+            var listaDeTodosOsColaboradores = _colaboradorService.ListarTodosOsColaboradores();
+            if (listaDeTodosOsColaboradores == null)
             {
                 return NotFound();
             }
-            return Ok(colaborador);
+            return Ok(listaDeTodosOsColaboradores);
         }
 
-        // GET api/<ColaboradorController>
+
+        [HttpGet("lista-perfil-usuarios")]
+        public IActionResult GetTodosUsuarios()
+        {
+            List<PerfilDeUsuarioRequest> listaDePerfisDeUsuarios = _colaboradorService.ListarTodosPerfis();
+            if (listaDePerfisDeUsuarios == null || !listaDePerfisDeUsuarios.Any())
+            {
+                return NotFound("Nenhum usuário encontrado.");
+            }
+            return Ok(listaDePerfisDeUsuarios);
+        }
+
+        [HttpPost("/listar-usuarios/filtros")]
+        public IActionResult CarregarTodasAsPostagensPorFiltro([FromBody] PerfilDeUsuarioResponse filtro)
+        {
+            if (filtro == null)
+            {
+                return BadRequest("Filtros não fornecidos.");
+            }
+
+            var listaDePostagens = _colaboradorService.ListarUsuariosComFiltro(filtro);
+            if (listaDePostagens == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(listaDePostagens);
+        }
+
+
+
         [HttpGet("perfil-usuario/{id}")]
         public IActionResult GetPerfilUsuario(int id)
         {
@@ -51,7 +78,6 @@ namespace Aisentona.API.Controllers
             }
             return Ok(perfilDeUsuarioRequest);
         }
-
 
         // POST api/<ColaboradorController>
         [HttpPost]

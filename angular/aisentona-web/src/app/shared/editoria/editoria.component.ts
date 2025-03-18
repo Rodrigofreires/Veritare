@@ -68,7 +68,6 @@ export class EditoriaComponent {
 
     this._noticiaService.carregarPostagensPorEditoria(this.idEditoria).subscribe(
       (dados) => {
-        console.log('Dados recebidos:', dados);
         this.noticiasRelacionadas = dados;
 
         // Redireciona para a rota específica

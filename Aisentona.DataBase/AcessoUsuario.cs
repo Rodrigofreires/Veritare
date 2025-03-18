@@ -18,7 +18,7 @@ namespace Aisentona.DataBase
             {
                 
             }
-            public AcessoUsuario(int idAcessoUsuario, int idUsuario, DateTime dtInicioAcesso, DateTime? dtFimAcesso, bool acessoPremium, DateTime? dtExpiracaoPremium)
+            public AcessoUsuario(int idAcessoUsuario, int idUsuario, DateTime? dtInicioAcesso, DateTime? dtFimAcesso, bool acessoPremium, DateTime? dtExpiracaoPremium)
             {
                 Id_AcessoUsuario = idAcessoUsuario;
                 Id_Usuario = idUsuario;
@@ -32,7 +32,7 @@ namespace Aisentona.DataBase
             [Key]
             public int Id_AcessoUsuario { get; set; } 
             public int Id_Usuario { get; set; } 
-            public DateTime Dt_InicioAcesso { get; set; }
+            public DateTime? Dt_InicioAcesso { get; set; }
             public DateTime? Dt_FimAcesso { get; set; } 
             public bool AcessoPremium { get; set; } 
             public DateTime? Dt_ExpiracaoPremium { get; set; } 

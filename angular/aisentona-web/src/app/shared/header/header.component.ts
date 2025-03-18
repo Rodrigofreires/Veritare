@@ -37,10 +37,6 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  // hasPermission(permission: string): boolean {
-  //   return this._authService.hasPermission(permission);
-  // }
-
   logout(): void {
     // Chama o serviço de logout para invalidar o token no backend
     this._loginService.logout();

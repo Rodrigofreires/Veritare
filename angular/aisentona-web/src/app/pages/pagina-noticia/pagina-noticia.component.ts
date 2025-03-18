@@ -9,6 +9,8 @@ import { SnackbarService } from '../../services/snackbar.service';
 import {MatListModule} from '@angular/material/list';
 import { QuillModule } from 'ngx-quill';
 import { FooterComponent } from "../../shared/footer/footer.component";
+import { AuthService } from '../../services/auth.service';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   standalone: true,
@@ -30,12 +32,16 @@ export class PaginaNoticiaComponent {
     private _noticiaService: NoticiaService,
     private _route: ActivatedRoute,
     private _router: Router,
+    private _authService: AuthService,
+    private _loginService: LoginService,
     private _snackBarService : SnackbarService
+    
 
   
   ) {}
 
   ngOnInit(): void {
+    this.isLoggedIn = this._authService.isLoggedIn();
     this.carregaNoticia();
 
   }
@@ -43,6 +49,7 @@ export class PaginaNoticiaComponent {
 textoSelecionado: string = 'ia'; // Exibe o texto da IA por padrão
 infosPostagem: PostagemRequest = {} as PostagemRequest;
 noticiasRelacionadas: PostagemRequest[] = [];
+isLoggedIn: boolean = false;
 
   mostrarTexto(opcao: string): void {
     this.textoSelecionado = opcao;
@@ -83,7 +90,6 @@ noticiasRelacionadas: PostagemRequest[] = [];
   carregaNoticiasRelacionadas(): void {
     this._noticiaService.carregarPostagensPorEditoria(this.infosPostagem.idCategoria).subscribe(
       (dados: PostagemRequest[]) => {
-        console.log('Dados recebidos:', dados);
         this.noticiasRelacionadas = dados; // Armazena as notícias relacionadas
       },
       (erro) => {
@@ -92,6 +98,11 @@ noticiasRelacionadas: PostagemRequest[] = [];
       }
     );
   }
+
+  acessarEditarNoticia(): boolean {
+    return this._authService.acessarEditarNoticia(); // Somente usuários com permissões 3;4 e 5
+  }
+
 
 
 }

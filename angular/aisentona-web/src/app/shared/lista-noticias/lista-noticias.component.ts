@@ -103,7 +103,6 @@ export class ListaNoticiasComponent implements OnInit {
   carregarTodasAsNoticias(): void {
     this._noticiaService.carregarTodasAsPostagens().subscribe(
       (dados) => {
-        console.log('Todas as notícias carregadas:', dados);
         this.infosTodasAsPostagem = dados; // Carrega todas as notícias
         this.postagensExibidas = this.infosTodasAsPostagem.slice(0, this.quantidadeExibida); // Exibe as iniciais
       },
@@ -117,7 +116,6 @@ export class ListaNoticiasComponent implements OnInit {
   carregarMaisNoticias(): void {
     this.quantidadeExibida += 10; // Incrementa a quantidade de postagens exibidas
     this.postagensExibidas = this.infosTodasAsPostagem.slice(0, this.quantidadeExibida); // Atualiza a lista exibida
-    console.log('Mais notícias exibidas:', this.postagensExibidas);
   }
 
   navegarParaNoticia(idPostagem: number): void {
