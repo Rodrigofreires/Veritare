@@ -33,7 +33,7 @@ namespace Aisentona.Biz.Services
 
         public List<Colaborador>? ListarTodosOsColaboradores()
         {
-            var ListaDeColaboradores = _context.CF_Colaborador.Where(x => x.Fl_Ativo).ToList();
+            var ListaDeColaboradores = _context.CF_Colaborador.Where(x => x.Fl_Ativo).OrderByDescending(p => p.DT_Criacao).ToList();
 
             return ListaDeColaboradores;
 
@@ -69,6 +69,7 @@ namespace Aisentona.Biz.Services
                         AcessoPremium = colaborador.AcessoUsuario?.AcessoPremium,
                         PremiumExpiraEm = colaborador.AcessoUsuario?.Dt_ExpiracaoPremium,
                     };
+
 
                     perfisDeUsuario.Add(perfilDeUsuarioRequest);
                 }

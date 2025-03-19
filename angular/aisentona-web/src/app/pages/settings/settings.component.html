@@ -1,10 +1,12 @@
 <mat-sidenav-container class="dashboard-container">
     
     <mat-sidenav mode="side" opened class="sidenav">
-      <div class="painel-de-controle">
-        <h3>Painel de Controle</h3>
-        <p>veritare.com.br</p>
-      </div>
+        <div class="painel-de-controle">
+            <h3>
+              <a routerLink="/painel-de-controle" class="clickable-link">Painel de Controle</a>
+            </h3>
+            <p><a routerLink="/painel-de-controle" class="clickable-link">veritare.com.br</a></p>
+          </div>
       <mat-nav-list>
         <a mat-list-item  routerLink="/dashboard">
           <mat-icon>dashboard</mat-icon>
@@ -29,7 +31,7 @@
     <mat-sidenav-content>
       <div class="content">
         <mat-toolbar >
-          <span>Painel de Publicações</span>
+          <span>Painel de Usuários</span>
         </mat-toolbar>
 
         <mat-card>
@@ -37,27 +39,27 @@
           <div class="filters">
             <mat-form-field appearance="outline">
               <mat-label>Nome</mat-label>
-              <input matInput placeholder="Search" [(ngModel)]="nomeProcurado" />
-            </mat-form-field>
-          
-            <mat-form-field appearance="outline">
-              <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="cpfProcurado">
-                <mat-option *ngFor="let status of ListaDeStatus" [value]="status.id">
-                  {{ status.descricao }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          
-            <mat-form-field appearance="outline">
-              <mat-label>Editoria</mat-label>
-              <mat-select [(ngModel)]="emailProcurado">
-                <mat-option *ngFor="let editoria of listaDeEditorias" [value]="editoria.id">
-                  {{ editoria.nome }}
-                </mat-option>
-              </mat-select>
+              <input matInput placeholder="Buscar por nome" [(ngModel)]="nomeProcurado" />
             </mat-form-field>
             
+            <mat-form-field appearance="outline">
+                <mat-label>Contato</mat-label>
+                <input matInput placeholder="Buscar por contato" [(ngModel)]="contatoProcurado" />
+              </mat-form-field>
+                   
+            <mat-form-field appearance="outline">
+                <mat-label>E-mail</mat-label>
+                <input matInput placeholder="Buscar por e-mail" [(ngModel)]="emailProcurado" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo de Usuário</mat-label>
+                <mat-select [(ngModel)]="tiposDeUsuarios">
+                  <mat-option *ngFor="let tipo of ListaDeTiposDeUsuarios" [value]="tipo.id">
+                    {{ tipo.nome }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
           
             <div class="actions">
               <button mat-raised-button color="primary" (click)="aplicarFiltros()">
@@ -68,59 +70,60 @@
               Resetar Filtros
             </button>
           </div>
-
-
-          
+     
           <table mat-table [dataSource]="infosPerfilUsuarioRequest" class="mat-elevation-z8">
   
-            <!-- Título Column -->
-            <ng-container matColumnDef="titulo">
+            <!-- Nome Column -->
+            <ng-container matColumnDef="nome">
               <th mat-header-cell *matHeaderCellDef> Nome </th>
               <td mat-cell *matCellDef="let perfilUsuario"> {{ perfilUsuario.nome }} </td>
             </ng-container>
           
-            <!-- Descrição Column -->
-            <ng-container matColumnDef="descricao">
-              <th mat-header-cell *matHeaderCellDef> Contato </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.descricao }} </td>
+            <!-- Contato Column -->
+            <ng-container matColumnDef="contato">
+                <th mat-header-cell *matHeaderCellDef> Contato </th>
+                <td mat-cell *matCellDef="let perfilUsuario">
+                {{ perfilUsuario?.contato ? (perfilUsuario.contato | mask: '(00) 00000-0000') : 'Sem contato' }}
+                </td>
             </ng-container>
-          
+                      
             <!-- Categoria Column -->
-            <ng-container matColumnDef="nomeCategoria">
+            <ng-container matColumnDef="email">
               <th mat-header-cell *matHeaderCellDef> E-mail </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.nomeCategoria }} </td>
+              <td mat-cell *matCellDef="let perfilUsuario"> {{ perfilUsuario.email }} </td>
             </ng-container>
           
             <!-- Status Column -->
-            <ng-container matColumnDef="nomeStatus">
+            <ng-container matColumnDef="tipoDeUsuario">
               <th mat-header-cell *matHeaderCellDef> Tipo de Usuário </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.nomeStatus || 'Status não disponível' }} </td>
+              <td mat-cell *matCellDef="let perfilUsuario"> {{ perfilUsuario.tipoDeUsuario || 'Não disponível' }} </td>
             </ng-container>
 
             <ng-container matColumnDef="premiumOuComum">
               <th mat-header-cell *matHeaderCellDef> Premium/Comum </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.premiumOuComum === true ? 'Premium' : 'Comum' }} </td>
-
+              <td mat-cell *matCellDef="let perfilUsuario"> {{ perfilUsuario.premiumOuComum === true ? 'Premium' : 'Comum' }} </td>
             </ng-container>
-            <!-- Data de Criação Column -->
-            <ng-container matColumnDef="dataCriacao">
-              <th mat-header-cell *matHeaderCellDef> Expira em: </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.dataCriacao | date:'dd/MM/yyyy HH:mm' }} </td>
 
-            </ng-container>
+            <ng-container matColumnDef="premiumExpiraEm">
+                <th mat-header-cell *matHeaderCellDef> Premium expira em: </th>
+                <td mat-cell *matCellDef="let perfilUsuario">
+                  {{ perfilUsuario.premiumExpiraEm ? (perfilUsuario.premiumExpiraEm | date: 'dd/MM/yyyy') : 'O usuário não é Premium' }}
+                </td>
+              </ng-container>
+              
           
             <!-- Ações Column -->
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef> Ações </th>
-              <td mat-cell *matCellDef="let postagem">
+              <td mat-cell *matCellDef="let perfilUsuario">
 
-                <button mat-icon-button (click)="editarUsuario(postagem.idPostagem)">
+                <button mat-icon-button (click)="editarUsuario(perfilUsuario.idUsuario)">
                   <mat-icon>edit</mat-icon>
                 </button>
-                <button mat-icon-button (click)="excluirUsuario(postagem.idPostagem)">
+                <button *ngIf=" verBotaoExcluirUsuario()" mat-icon-button (click)="excluirUsuario(perfilUsuario.idUsuario)">
                   <mat-icon>delete</mat-icon>
                 </button>
-                <button mat-icon-button (click)="visualizarUsuario(postagem.idPostagem)">
+                <button mat-icon-button (click)="visualizarUsuario(perfilUsuario.idUsuario)">
                   <mat-icon>visibility</mat-icon>
                 </button>
               </td>

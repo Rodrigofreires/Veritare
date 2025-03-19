@@ -84,6 +84,15 @@ export class AuthService {
     return idTipoUsuario !== '5' && idTipoUsuario !== '11';
   }
 
+  podeExcluirUsuario(): boolean {
+    const decodedToken = this.getDecodedToken();
+    if (!decodedToken) {
+      return false;
+    }
+    const idTipoUsuario = decodedToken.IdTipoUsuario;
+    return idTipoUsuario !== '1' ;
+  }
+
   acessarEditarNoticia(): boolean {
     const decodedToken = this.getDecodedToken();
     if (!decodedToken) {
@@ -92,8 +101,6 @@ export class AuthService {
     const idTipoUsuario = decodedToken.IdTipoUsuario;
     return idTipoUsuario !== '5' && idTipoUsuario !== '11';
   }
-
-
 
   getTipoUsuario(): string {
     const decodedToken = this.getDecodedToken();
@@ -114,5 +121,10 @@ export class AuthService {
     const decodedToken = this.getDecodedToken();
     return decodedToken?.Permission || [];
   }
+
+
+
+
+
 
 }

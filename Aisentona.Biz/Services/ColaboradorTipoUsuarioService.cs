@@ -1,4 +1,5 @@
 ﻿using Aisentona.DataBase;
+using Aisentona.Entities.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,16 +21,30 @@ namespace Aisentona.Biz.Services
         }
         private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
 
-        public List<ColaboradorTipoUsuario>? ListarColaboradorTipoUsuarioPorId()
+        public List<TipoUsuarioDTO>? ListarColaboradorTipoUsuario()
         {
-            var colaboradorTipoUsuario = _context.CF_ColaboradorTipoUsuario;
-            List<ColaboradorTipoUsuario> listaDeColaboradoresTipoUsuario = new List<ColaboradorTipoUsuario>();
+            // Filtra os registros ativos.
+            var listaDeColaboradoresTipoUsuario = _context.CF_ColaboradorTipoUsuario.Where(x => x.Fl_Ativo == true).ToList();
 
-            listaDeColaboradoresTipoUsuario = colaboradorTipoUsuario.Where(x => x.Fl_Ativo == true).ToList();
-            
-            return listaDeColaboradoresTipoUsuario;
+            // Cria a lista de DTOs.
+            List<TipoUsuarioDTO> tipoUsuarioDTOs = new List<TipoUsuarioDTO>();
 
+            // Transforma os objetos ColaboradorTipoUsuario em TipoUsuarioDTO.
+            foreach (var colaborador in listaDeColaboradoresTipoUsuario)
+            {
+                var tipoUsuarioDTO = new TipoUsuarioDTO
+                {
+                    id = colaborador.Id_TipoUsuario,
+                    nome = colaborador.Nm_TipoUsuario,
+                };
+
+                tipoUsuarioDTOs.Add(tipoUsuarioDTO);
+            }
+
+            // Retorna a lista de DTOs.
+            return tipoUsuarioDTOs;
         }
+
         public ColaboradorTipoUsuario CriarColaboradorTipoUsuario(string nomeTipoUsuario, int id_TipoUsuario)
         {
             ColaboradorTipoUsuario colaboradorTipoUsuario = new ColaboradorTipoUsuario()

@@ -84,8 +84,6 @@ export class PainelDeControleComponent implements AfterViewInit {
   tipoSelecionado: string = ""; // Para armazenar a opção escolhida
   isFiltroAplicado = false; // Flag de controle para saber se os filtros foram aplicados
 
-
-
   // Dados fictícios para a tabela
   infosPostagem: PostagemRequest[] = [
     {

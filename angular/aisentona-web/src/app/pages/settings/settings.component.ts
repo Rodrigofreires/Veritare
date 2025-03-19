@@ -28,12 +28,15 @@ import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { PerfilDeUsuarioRequest } from '../../core/interfaces/Request/PerfilDeUsuario';
 import { PerfilService } from '../../services/perfil-service';
 import { PerfilDeUsuarioResponse } from '../../core/interfaces/Response/PerfilDeUsuario';
+import { provideNgxMask, NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
+import { AuthService } from '../../services/auth.service';
+import { TipoDeUsuarioRequest } from '../../core/interfaces/Request/TipoDeUsuário';
 
 @Component({
   selector: 'app-painel-de-controle',
   standalone: true,
 
-  providers: [DatePipe, ],
+  providers: [DatePipe, provideNgxMask()],
   
   imports: [
     MatSidenavModule,
@@ -55,6 +58,7 @@ import { PerfilDeUsuarioResponse } from '../../core/interfaces/Response/PerfilDe
     MatDatepickerModule,
     MatNativeDateModule,
     DatePipe, 
+    NgxMaskPipe,
   
   ],
   
@@ -67,43 +71,30 @@ export class SettingsComponent {
       private _noticiaService: NoticiaService,
       private _snackBarService: SnackbarService,
       private _perfilService: PerfilService,
-      private _twitterService: TwitterService,
-      private _route: ActivatedRoute,
       private _router: Router,
       private cdr: ChangeDetectorRef,
       private dialog: MatDialog,
-      private datePipe: DatePipe, 
+      private _authService: AuthService,
+
     ) {}
 
+
+
     ListaDeUsuarios: PerfilDeUsuarioRequest[] = []; // Variável para armazenar os usuários
-
-
-    listaDeEditorias: EditoriaRequest[] = []; // Variável para armazenar as editorias
-    ListaDeStatus: StatusRequest[] = []; // Variável para armazenar os status
+    ListaDeTiposDeUsuarios: TipoDeUsuarioRequest[] = [];
+    tiposDeUsuarios: number = 0; 
     nomeProcurado: string = '';
     cpfProcurado: string = '';
     emailProcurado: string = '';
+    contatoProcurado: string = '';
+    tipoDeUsuarioProcurado: string = '';
+    dataExpiracaoProcurada: string = '';
+    
     isFiltroAplicado = false; // Flag de controle para saber se os filtros foram aplicados
   
-    
-      // Dados fictícios para a tabela
-      infosPerfilUsuarioRequest: PerfilDeUsuarioRequest[] = [
-        {
-          IdUsuario: 0,
-          nome: 'Carregando...',
-          cpf: 'Carregando...',
-          email: 'Carregando...',
-          contato: 'Carregando...',
-          tipoDeUsuario: 'Carregando...',
-          endereco: 'Carregando...', // Pode ser null
-          acessoPremium: false,
-          tempoDeAcesso: '',
-          dataDeNascimento:'',
-          premiumExpiraEm: '',
-        },
-      ];
-    
-      filtroDeBusca: PerfilDeUsuarioResponse = {
+    // Dados fictícios para a tabela
+    infosPerfilUsuarioRequest: PerfilDeUsuarioRequest[] = [
+      {
         IdUsuario: 0,
         nome: 'Carregando...',
         cpf: 'Carregando...',
@@ -115,19 +106,31 @@ export class SettingsComponent {
         tempoDeAcesso: '',
         dataDeNascimento:'',
         premiumExpiraEm: '',
-      }
+      },
+    ];
     
-    
+    filtroDeBusca: PerfilDeUsuarioResponse = {
+      IdUsuario: 0,
+      nome: 'Carregando...',
+      cpf: 'Carregando...',
+      email: 'Carregando...',
+      contato: 'Carregando...',
+      tipoDeUsuario: 'Carregando...',
+      endereco: 'Carregando...', // Pode ser null
+      acessoPremium: false,
+      tempoDeAcesso: '',
+      dataDeNascimento:'',
+      premiumExpiraEm: '',
+    }
       ngOnInit(): void {
       
+        this.carregarTiposDeUsuários()
+
         if (this.isFiltroAplicado) {
           this.aplicarFiltros(); // Se já há um filtro, aplica automaticamente ao carregar a página
         } else {
           this.carregarTodosOsUsuarios(); // Caso contrário, carrega todas as notícias
         }
-      
-        this.carregarEditorias(); 
-        this.carregarStatus();
       }
     
       dataSource = new MatTableDataSource(this.infosPerfilUsuarioRequest);
@@ -138,25 +141,23 @@ export class SettingsComponent {
         this.dataSource.paginator = this.paginator;
       }
       
-      displayedColumns: string[] = ['titulo', 'descricao', 'nomeCategoria', 'nomeStatus', 'premiumOuComum',  'dataCriacao', 'actions'];
-    
+      displayedColumns: string[] = ['nome', 'contato', 'email', 'premiumOuComum',  'tipoDeUsuario', 'premiumExpiraEm', 'actions'];
     
       aplicarFiltros() {
         this.filtroDeBusca = {
           IdUsuario: 0,
-          contato: 'Carregando...',
           nome: this.nomeProcurado,
-          cpf: this.cpfProcurado,
+          contato: this.contatoProcurado,
           email: this.emailProcurado,
-          tipoDeUsuario: 'Carregando...',
-          endereco: 'Carregando...', // Pode ser null
+          tipoDeUsuario: this.tipoDeUsuarioProcurado,
+          premiumExpiraEm: this.dataExpiracaoProcurada,
+          cpf: this.cpfProcurado,
+          endereco: 'Carregando...', 
           acessoPremium: false,
           tempoDeAcesso: '',
           dataDeNascimento:'',
-          premiumExpiraEm: '',
 
         };
-
       
         if (
           this.filtroDeBusca.nome === '' &&
@@ -201,6 +202,8 @@ export class SettingsComponent {
       
     
       visualizarUsuario(IdUsuario: number) {
+        IdUsuario = this.infosPerfilUsuarioRequest[0].IdUsuario;
+
         if (!IdUsuario) {
           this._snackBarService.MostrarErro(
             'ID da postagem não encontrado. Não é possível editar.'
@@ -221,19 +224,23 @@ export class SettingsComponent {
       this._router.navigate(['/editar-noticia/', id]);
     }
     
-    excluirUsuario(idPostagem: number): void {
+    verBotaoExcluirUsuario(): boolean {
+      return this._authService.podeExcluirUsuario();
+    }
+
+    excluirUsuario(idUsuario: number): void {
           const dialogRef = this.dialog.open(ConfirmacaoDialogComponent);
         
           dialogRef.afterClosed().subscribe((confirmado) => {
             if (confirmado) {
-              if (!idPostagem) {
-                this._snackBarService.MostrarErro('Publicação não identificada para exclusão.');
+              if (!idUsuario) {
+                this._snackBarService.MostrarErro('Usuário não identificado para exclusão.');
                 return;
               }
         
-              this._noticiaService.excluirNoticia(idPostagem).subscribe(
+              this._perfilService.excluirPerfilDoUsuario(idUsuario).subscribe(
                 () => {
-                  this._snackBarService.MostrarSucesso('Publicação excluída com sucesso.');
+                  this._snackBarService.MostrarSucesso('Usuário excluído com sucesso.');
                   this.infosPerfilUsuarioRequest = [];
                   this.cdr.markForCheck();
         
@@ -266,29 +273,18 @@ export class SettingsComponent {
         }
       );
     }
-    
-    
-      carregarEditorias(): void {
-        this._noticiaService.buscarListaDeEditorias().subscribe(
-          (data) => {
-            this.listaDeEditorias = data; // Atribui os dados retornados pela API
-          },
-          (error) => {
-            console.error('Erro ao carregar editorias:', error);
-          }
-        );
-      }
-    
-      carregarStatus(): void {
-        this._noticiaService.buscarListaDeStatus().subscribe(
-          (data) => {
-            this.ListaDeStatus = data; // Atribui os dados retornados pela API
-          },
-          (error) => {
-            console.error('Erro ao carregar editorias:', error);
-          }
-        );
-      }
+
+    carregarTiposDeUsuários(): void {
+      this._perfilService.buscarTiposDeUsuarios().subscribe(
+        (data) => {
+          this.ListaDeTiposDeUsuarios = data; // Atribui os dados retornados pela API
+        },
+        (error) => {
+          console.error('Erro ao carregar editorias:', error);
+        }
+      );
+    }
+
 
 
 }

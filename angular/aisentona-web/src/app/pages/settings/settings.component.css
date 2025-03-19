@@ -20,6 +20,19 @@
     flex-shrink: 0; /* Barra lateral não encolhe */
   }
   
+  .painel-de-controle .clickable-link {
+    font-size: 25px !important; /* Tamanho do texto */
+    cursor: pointer;
+    color: #fff !important; /* Cor do texto */
+    text-decoration: none !important; /* Retira o sublinhado padrão do link */
+  }
+  
+  .painel-de-controle  .clickable-link:hover {
+    color: #7070AC !important ; /* Altere a cor conforme necessário */
+    text-decoration: underline !important; /* Adiciona sublinhado ao passar o mouse */
+  }
+
+
   /* Perfil e título da barra lateral */
   .sidenav .profile-pic {
     width: 80px;

@@ -4,11 +4,14 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { PerfilDeUsuarioRequest } from '../core/interfaces/Request/PerfilDeUsuario';
 import { PerfilDeUsuarioResponse } from '../core/interfaces/Response/PerfilDeUsuario';
+import { AuthService } from './auth.service';
+import { TipoDeUsuarioRequest } from '../core/interfaces/Request/TipoDeUsuário';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PerfilService {
+
 
   private apiUrl = environment.apiUrl;
   private API = 'colaborador';
@@ -41,13 +44,23 @@ export class PerfilService {
     });
   }
 
-// LISTAR COM FILTROS
-carregarTodasAsPostagensPorFiltro(filtros: PerfilDeUsuarioResponse): Observable<PerfilDeUsuarioRequest[]> {
-  return this.http.post<PerfilDeUsuarioRequest[]>(`${this.apiUrl}/${this.API}/listar-usuarios/filtros`, filtros, {
+  // LISTAR COM FILTROS
+  carregarTodasAsPostagensPorFiltro(filtros: PerfilDeUsuarioResponse): Observable<PerfilDeUsuarioRequest[]> {
+  return this.http.post<PerfilDeUsuarioRequest[]>(`${this.apiUrl}/${this.API}/listar-usuarios-filtros`, filtros, {
     headers: {
       'Content-Type': 'application/json',
     }
   });
 }
+
+// LISTAR COM TIPOS DE USUÁRIOS
+buscarTiposDeUsuarios(): Observable<TipoDeUsuarioRequest[]> {
+  return this.http.get<TipoDeUsuarioRequest[]>(`${this.apiUrl}/ColaboradorTipoUsuario`, {
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+}
+
 
 }

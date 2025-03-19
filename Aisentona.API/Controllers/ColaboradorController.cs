@@ -44,7 +44,7 @@ namespace Aisentona.API.Controllers
             return Ok(listaDePerfisDeUsuarios);
         }
 
-        [HttpPost("/listar-usuarios/filtros")]
+        [HttpPost("/listar-usuarios-filtros")]
         public IActionResult CarregarTodasAsPostagensPorFiltro([FromBody] PerfilDeUsuarioResponse filtro)
         {
             if (filtro == null)
