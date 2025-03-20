@@ -10,9 +10,10 @@ import { LoginComponent } from './authentication/login/login.component';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 import { PainelDeControleComponent } from './pages/painel-de-controle/painel-de-controle.component';
-import { AuthGuard } from '../guard';
 import { RoleGuard } from '../role.guard';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { PerfilGuard } from '../guards/perfil.guard';
+import { AuthGuard } from '../guards/guard';
 
 export const routes: Routes = [
   {
@@ -35,10 +36,10 @@ export const routes: Routes = [
         canActivate: [AuthGuard, RoleGuard], 
         data: { role: ['EditarPostsSimples', 'EditarPostsPremium'] }
       },
-      { 
-        path: 'perfil-de-usuario/:id', 
+      {
+        path: 'perfil-de-usuario/:id',
         component: PerfilDeUsuarioComponent,
-        canActivate: [AuthGuard] 
+        canActivate: [AuthGuard, PerfilGuard] // Primeiro verifica se está logado, depois valida a permissão
       },
       { 
         path: 'painel-de-controle', 
@@ -51,7 +52,7 @@ export const routes: Routes = [
         path: 'painel-de-controle/settings', 
         component: SettingsComponent,
         canActivate: [AuthGuard, RoleGuard], 
-        data: { IdTipoDeUsuario: ['1', '2'] }
+        data: { IdTipoDeUsuario: ['1'] }
       },
 
     ],

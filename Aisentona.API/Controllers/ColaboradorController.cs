@@ -110,8 +110,8 @@ namespace Aisentona.API.Controllers
 
         }
 
-        [HttpPut("editar-perfil-usuario{id}")]
-        public IActionResult UpdateColaborador(int id, [FromBody] PerfilDeUsuarioRequest perfilDeUsuarioRequest)
+        [HttpPut("editar-perfil-usuario")]
+        public IActionResult UpdateColaborador([FromBody] PerfilDeUsuarioRequest perfilDeUsuarioRequest)
         {
             if (perfilDeUsuarioRequest == null)
             {

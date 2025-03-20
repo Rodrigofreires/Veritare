@@ -43,6 +43,7 @@ export class PerfilDeUsuarioComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    
     // Inicializa o formulário
     this.userProfileForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(3)]],

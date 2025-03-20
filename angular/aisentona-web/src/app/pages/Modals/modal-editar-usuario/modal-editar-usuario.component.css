@@ -8,8 +8,12 @@
 
 .informacoes-do-perfil {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-wrap: wrap; /* Para quebrar a linha quando necessário */
+    gap: 20px; /* Adiciona espaço entre as colunas */
+}
+
+.informacoes-do-perfil > div {
+    width: 48%; /* Cada campo ocupa 50% da largura disponível, com um pequeno espaço entre eles */
 }
 
 .full-width {

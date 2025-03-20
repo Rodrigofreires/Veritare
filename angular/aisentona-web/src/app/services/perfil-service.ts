@@ -28,7 +28,6 @@ export class PerfilService {
     });
   }
 
-
   // LISTAR PERFIL DO USUÁRIO
   carregarPerfilDoUsuario(idUsuario: number): Observable<PerfilDeUsuarioRequest> {
     return this.http.get<PerfilDeUsuarioRequest>(`${this.apiUrl}/colaborador/perfil-usuario/${idUsuario}`, {
@@ -56,6 +55,15 @@ export class PerfilService {
 // LISTAR COM TIPOS DE USUÁRIOS
 buscarTiposDeUsuarios(): Observable<TipoDeUsuarioRequest[]> {
   return this.http.get<TipoDeUsuarioRequest[]>(`${this.apiUrl}/ColaboradorTipoUsuario`, {
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+}
+
+// ATUALIZAR PERFIL DO USUÁRIO
+atualizarPerfil(perfilDeUsuario: PerfilDeUsuarioRequest): Observable<void> {
+  return this.http.put<void>(`${this.apiUrl}/colaborador/editar-perfil-usuario`, perfilDeUsuario, {
     headers: {
       'Content-Type': 'application/json',
     }

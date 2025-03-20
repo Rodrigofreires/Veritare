@@ -215,7 +215,7 @@ namespace Aisentona.Biz.Services
             perfilNaoEditado.DT_Nascimento = perfilAtualizado.DataDeNascimento;
             perfilNaoEditado.Id_TipoUsuario = filtroDeTipoUsuario;
 
-            if (perfilNaoEditado.AcessoUsuario != null)
+            if (perfilNaoEditado.AcessoUsuario.AcessoPremium)
             {
                 perfilNaoEditado.AcessoUsuario.Dt_InicioAcesso = perfilAtualizado.TempoDeAcesso;
                 perfilNaoEditado.AcessoUsuario.AcessoPremium = (bool)perfilAtualizado.AcessoPremium;

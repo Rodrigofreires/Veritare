@@ -218,31 +218,33 @@ export class SettingsComponent {
         }
         this._router.navigate(['/perfil-de-usuario/', IdUsuario]);
         }
-    
-    
-      editarUsuario(id: number): void {
-      if (!id) {
-        this._snackBarService.MostrarErro(
-          'ID do usuário não encontrado. Não é possível editar.'
-        );
-        return;
-      }
-      this._router.navigate(['/editar-noticia/', id]);
-    }
-
-    // Abre o modal com os dados do usuário
-  abrirModalEditarUsuario(idUsuario: number): void {
-    const dialogRef = this.dialog.open(ModalEditarUsuarioComponent,  
-      {
-        width: '50vw', // 50% da tela
-        maxWidth: '50vw', // Largura máxima de 50% da tela
-        data: { 
-          infosPerfilUsuario: this.infosPerfilUsuarioRequest, 
-          ListaDeTiposDeUsuarios: this.ListaDeTiposDeUsuarios,
-          premiumComumProcurado: this.premiumComumProcurado, 
+        abrirModalEditarUsuario(idUsuario: number): void {
+          this._perfilService.carregarPerfilDoUsuario(idUsuario).subscribe(
+            (perfilSelecionado) => {
+              console.log("Perfil Selecionado:", perfilSelecionado);
+        
+              const dialogRef = this.dialog.open(ModalEditarUsuarioComponent, {
+                width: '60vw',
+                maxWidth: '60vw',
+                data: { 
+                  perfilSelecionado: perfilSelecionado, 
+                  ListaDeTiposDeUsuarios: this.ListaDeTiposDeUsuarios,
+                  premiumComumProcurado: this.premiumComumProcurado, 
+                }
+              });
+        
+              // Após fechar o modal, atualiza os dados da lista
+              dialogRef.afterClosed().subscribe((perfilAtualizado) => {
+                if (perfilAtualizado) {
+                  this.carregarTodosOsUsuarios(); // Atualiza a lista de usuários
+                }
+              });
+            },
+            (error) => {
+              console.error("Erro ao carregar o perfil do usuário:", error);
+            }
+          );
         }
-    });
-  }
     
     verBotaoExcluirUsuario(): boolean {
       return this._authService.podeExcluirUsuario();
