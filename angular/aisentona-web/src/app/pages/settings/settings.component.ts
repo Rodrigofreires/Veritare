@@ -17,7 +17,7 @@ import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
 import { ActivatedRoute, RouterModule , Router } from '@angular/router';
 import { ConfirmacaoDialogComponent } from '../../shared/dialogs/confirmacao-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { timeout } from 'rxjs';
 import { TwitterService } from '../../services/twitter.service';
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -31,11 +31,11 @@ import { PerfilDeUsuarioResponse } from '../../core/interfaces/Response/PerfilDe
 import { provideNgxMask, NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import { AuthService } from '../../services/auth.service';
 import { TipoDeUsuarioRequest } from '../../core/interfaces/Request/TipoDeUsuário';
+import { ModalEditarUsuarioComponent } from '../Modals/modal-editar-usuario/modal-editar-usuario.component';
 
 @Component({
   selector: 'app-painel-de-controle',
   standalone: true,
-
   providers: [DatePipe, provideNgxMask()],
   
   imports: [
@@ -59,16 +59,18 @@ import { TipoDeUsuarioRequest } from '../../core/interfaces/Request/TipoDeUsuár
     MatNativeDateModule,
     DatePipe, 
     NgxMaskPipe,
-  
+    MatDialogModule,
+ 
   ],
   
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css'
 })
+
+
 export class SettingsComponent {
 
    constructor(
-      private _noticiaService: NoticiaService,
       private _snackBarService: SnackbarService,
       private _perfilService: PerfilService,
       private _router: Router,
@@ -78,8 +80,6 @@ export class SettingsComponent {
 
     ) {}
 
-
-
     ListaDeUsuarios: PerfilDeUsuarioRequest[] = []; // Variável para armazenar os usuários
     ListaDeTiposDeUsuarios: TipoDeUsuarioRequest[] = [];
     tiposDeUsuarios: number = 0; 
@@ -88,7 +88,9 @@ export class SettingsComponent {
     emailProcurado: string = '';
     contatoProcurado: string = '';
     tipoDeUsuarioProcurado: string = '';
+    premiumComumProcurado: boolean = false;
     dataExpiracaoProcurada: string = '';
+    selectedDate: string = '';
     
     isFiltroAplicado = false; // Flag de controle para saber se os filtros foram aplicados
   
@@ -100,7 +102,8 @@ export class SettingsComponent {
         cpf: 'Carregando...',
         email: 'Carregando...',
         contato: 'Carregando...',
-        tipoDeUsuario: 'Carregando...',
+        nomeTipoDeUsuario: 'Carregando...',
+        IdTipoUsuario: 0,
         endereco: 'Carregando...', // Pode ser null
         acessoPremium: false,
         tempoDeAcesso: '',
@@ -111,16 +114,17 @@ export class SettingsComponent {
     
     filtroDeBusca: PerfilDeUsuarioResponse = {
       IdUsuario: 0,
-      nome: 'Carregando...',
-      cpf: 'Carregando...',
-      email: 'Carregando...',
-      contato: 'Carregando...',
-      tipoDeUsuario: 'Carregando...',
-      endereco: 'Carregando...', // Pode ser null
-      acessoPremium: false,
-      tempoDeAcesso: '',
-      dataDeNascimento:'',
-      premiumExpiraEm: '',
+      Nome: 'Carregando...',
+      CPF: 'Carregando...',
+      Email: 'Carregando...',
+      Contato: 'Carregando...',
+      nomeTipoDeUsuario: 'Carregando...',
+      IdTipoUsuario: 0,
+      Endereco: 'Carregando...', // Pode ser null
+      AcessoPremium: false,
+      TempoDeAcesso: '',
+      DataDeNascimento:'',
+      PremiumExpiraEm: '',
     }
       ngOnInit(): void {
       
@@ -141,28 +145,30 @@ export class SettingsComponent {
         this.dataSource.paginator = this.paginator;
       }
       
-      displayedColumns: string[] = ['nome', 'contato', 'email', 'premiumOuComum',  'tipoDeUsuario', 'premiumExpiraEm', 'actions'];
+      displayedColumns: string[] = ['nome', 'contato', 'email', 'tipoDeUsuario','premiumOuComum', 'premiumExpiraEm', 'actions'];
     
       aplicarFiltros() {
         this.filtroDeBusca = {
           IdUsuario: 0,
-          nome: this.nomeProcurado,
-          contato: this.contatoProcurado,
-          email: this.emailProcurado,
-          tipoDeUsuario: this.tipoDeUsuarioProcurado,
-          premiumExpiraEm: this.dataExpiracaoProcurada,
-          cpf: this.cpfProcurado,
-          endereco: 'Carregando...', 
-          acessoPremium: false,
-          tempoDeAcesso: '',
-          dataDeNascimento:'',
+          Nome: this.nomeProcurado,
+          Contato: this.contatoProcurado,
+          Email: this.emailProcurado,
+          nomeTipoDeUsuario: this.tipoDeUsuarioProcurado,
+          IdTipoUsuario: this.tiposDeUsuarios,
+          PremiumExpiraEm: this.dataExpiracaoProcurada,
+          CPF: this.cpfProcurado,
+          Endereco: 'Carregando...', 
+          AcessoPremium: this.premiumComumProcurado,
+          TempoDeAcesso: '',
+          DataDeNascimento:'',
 
         };
       
         if (
-          this.filtroDeBusca.nome === '' &&
-          this.filtroDeBusca.cpf === '' &&
-          this.filtroDeBusca.email === ''
+          this.filtroDeBusca.Nome === '' &&
+          this.filtroDeBusca.Contato === '' &&
+          this.filtroDeBusca.Email === '' &&
+          this.filtroDeBusca.nomeTipoDeUsuario === ''
         ) {
           this.carregarTodosOsUsuarios();
         }
@@ -192,6 +198,9 @@ export class SettingsComponent {
         this.nomeProcurado = '';
         this.cpfProcurado = '';
         this.emailProcurado = '';
+        this.contatoProcurado = '';
+        this.tipoDeUsuarioProcurado = '';
+        this.premiumComumProcurado = false;
         
         // Resetando a flag de filtro aplicado
         this.isFiltroAplicado = false;
@@ -199,11 +208,8 @@ export class SettingsComponent {
         // Carregar todas as postagens novamente sem filtros
         this.carregarTodosOsUsuarios();
       }
-      
-    
+       
       visualizarUsuario(IdUsuario: number) {
-        IdUsuario = this.infosPerfilUsuarioRequest[0].IdUsuario;
-
         if (!IdUsuario) {
           this._snackBarService.MostrarErro(
             'ID da postagem não encontrado. Não é possível editar.'
@@ -217,12 +223,26 @@ export class SettingsComponent {
       editarUsuario(id: number): void {
       if (!id) {
         this._snackBarService.MostrarErro(
-          'ID da postagem não encontrado. Não é possível editar.'
+          'ID do usuário não encontrado. Não é possível editar.'
         );
         return;
       }
       this._router.navigate(['/editar-noticia/', id]);
     }
+
+    // Abre o modal com os dados do usuário
+  abrirModalEditarUsuario(idUsuario: number): void {
+    const dialogRef = this.dialog.open(ModalEditarUsuarioComponent,  
+      {
+        width: '50vw', // 50% da tela
+        maxWidth: '50vw', // Largura máxima de 50% da tela
+        data: { 
+          infosPerfilUsuario: this.infosPerfilUsuarioRequest, 
+          ListaDeTiposDeUsuarios: this.ListaDeTiposDeUsuarios,
+          premiumComumProcurado: this.premiumComumProcurado, 
+        }
+    });
+  }
     
     verBotaoExcluirUsuario(): boolean {
       return this._authService.podeExcluirUsuario();

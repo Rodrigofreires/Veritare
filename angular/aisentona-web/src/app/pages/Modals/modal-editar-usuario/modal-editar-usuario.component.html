@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>Editar Perfil de Usuário</h2>
+<mat-dialog-content class="perfil-usuario">
+  <p> INFORMAÇÕES BÁSICAS</p>
+  <form #perfilForm="ngForm">
+    <div class="informacoes-do-perfil">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nome</mat-label>
+        <input matInput [(ngModel)]="infosPerfilUsuario.nome" name="nome" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>E-mail</mat-label>
+        <input disabled="" matInput [(ngModel)]="infosPerfilUsuario.email" name="email" type="email">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contato</mat-label>
+        <input matInput [(ngModel)]="infosPerfilUsuario.contato" name="contato">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Data de Nascimento</mat-label>
+        <input matInput [(ngModel)]="infosPerfilUsuario.dataDeNascimento" name="dataDeNascimento" type="date">
+      </mat-form-field>
+
+      <p> INFORMAÇÕES DO PERFIL </p>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Tipo de Usuário</mat-label>
+        <mat-select [(ngModel)]="infosPerfilUsuario.nomeTipoDeUsuario" name="tipoDeUsuario">
+          <mat-option *ngFor="let tipo of ListaDeTiposDeUsuarios" [value]="tipo.nome">
+            {{ tipo.nome }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Premium/Comum</mat-label>
+        <mat-select [(ngModel)]="premiumComumProcurado">
+          <mat-option [value]="0">Comum</mat-option>
+          <mat-option [value]="1">Premium</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="start">
+  <button mat-raised-button color="primary" (click)="onNoClick()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="salvarAlteracoes()">Salvar</button>
+</mat-dialog-actions>

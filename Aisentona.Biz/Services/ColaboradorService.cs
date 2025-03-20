@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Aisentona.DataBase.Aisentona.DataBase;
 using Aisentona.Biz.Mappers;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Linq;
 
 namespace Aisentona.Biz.Services
 {
@@ -64,7 +65,7 @@ namespace Aisentona.Biz.Services
                         CPF = colaborador.Ds_CPF, 
                         Email = colaborador.Ds_Email,
                         Contato = colaborador.Ds_ContatoCadastro,
-                        TipoDeUsuario = tipoDoUsuario?.Nm_TipoUsuario,
+                        NomeTipoDeUsuario = tipoDoUsuario?.Nm_TipoUsuario,
                         DataDeNascimento = colaborador.DT_Nascimento,
                         AcessoPremium = colaborador.AcessoUsuario?.AcessoPremium,
                         PremiumExpiraEm = colaborador.AcessoUsuario?.Dt_ExpiracaoPremium,
@@ -86,7 +87,7 @@ namespace Aisentona.Biz.Services
         }
 
 
-        public List<Colaborador>? ListarColaboradorPorId(int id)
+        public List<Colaborador>? GetColaboradorPorId(int id)
         {
             var colaborador = _context.CF_Colaborador.FirstOrDefault(c => c.Id_Usuario == id);
             
@@ -117,7 +118,7 @@ namespace Aisentona.Biz.Services
             perfilDeUsuarioRequest.CPF = colaborador.Ds_CPF;
             perfilDeUsuarioRequest.Email = colaborador.Ds_Email;
             perfilDeUsuarioRequest.Contato = colaborador.Ds_ContatoCadastro;
-            perfilDeUsuarioRequest.TipoDeUsuario = tipoDoUsuario.Nm_TipoUsuario;
+            perfilDeUsuarioRequest.NomeTipoDeUsuario = tipoDoUsuario.Nm_TipoUsuario;
             perfilDeUsuarioRequest.DataDeNascimento = colaborador.DT_Nascimento;
             perfilDeUsuarioRequest.TempoDeAcesso = colaborador.DT_Criacao;
             perfilDeUsuarioRequest.AcessoPremium = colaborador.AcessoUsuario.AcessoPremium;
@@ -188,62 +189,43 @@ namespace Aisentona.Biz.Services
 
             return novoColaborador;
         }
-
-
-        public Colaborador EditarColaborador(int idColaborador, ColaboradorRequest colaboradorRequest)
+        public void EditarPerfilDeUsuario(PerfilDeUsuarioRequest perfilAtualizado)
         {
-            Colaborador colaborador = _context.CF_Colaborador.FirstOrDefault(x => x.Id_Usuario == idColaborador);
-            if (colaborador == null)
+            var perfilNaoEditado = _context.CF_Colaborador
+                .Include(c => c.AcessoUsuario)
+                .FirstOrDefault(c => c.Id_Usuario == perfilAtualizado.IdUsuario);
+
+
+            if (perfilNaoEditado == null)
             {
                 throw new KeyNotFoundException("Colaborador não encontrado");
             }
 
-            int tipoDeUsuario = colaborador.Id_TipoUsuario;
+            int filtroDeTipoUsuario = 0;
 
-            // Verifica permissões com base no papel
-            switch (tipoDeUsuario)
+            if (Enum.TryParse<Autorizacao>(perfilAtualizado.NomeTipoDeUsuario, out var tipoUsuarioEnum))
             {
-                case (int)Autorizacao.LeitorSimples:
-
-                    // Usuário pode apenas editar informações básicas
-                    colaborador.Nm_Nome = colaboradorRequest.Nome;
-                    colaborador.DT_Nascimento = colaboradorRequest.DataNascimento;
-                    break;
-                case (int)Autorizacao.LeitorPremium:
-
-                    // Usuário pode apenas editar informações básicas
-                    colaborador.Nm_Nome = colaboradorRequest.Nome;
-                    colaborador.DT_Nascimento = colaboradorRequest.DataNascimento;
-                    break;
-                case (int)Autorizacao.EditorBase:
-
-                    // Usuário pode apenas editar informações básicas
-                    colaborador.Nm_Nome = colaboradorRequest.Nome;
-                    colaborador.DT_Nascimento = colaboradorRequest.DataNascimento;
-                    break;
-                case (int)Autorizacao.EditorChefe:
-
-                    // Usuário pode apenas editar informações básicas
-                    colaborador.Nm_Nome = colaboradorRequest.Nome;
-                    colaborador.DT_Nascimento = colaboradorRequest.DataNascimento;
-                    break;
-                default:
-                    throw new UnauthorizedAccessException("Permissão insuficiente para esta ação");
+                filtroDeTipoUsuario = (int)tipoUsuarioEnum; // Obtém o número correspondente
             }
 
-                colaborador.DT_UltimaAlteracao = DateTime.Now;
-                colaborador.Ds_UltimaAlteracao = GetWindowsUsername();
+            perfilNaoEditado.Nm_Nome = perfilAtualizado.Nome;
+            perfilNaoEditado.Ds_CPF = perfilAtualizado.CPF;
+            perfilNaoEditado.Ds_Email = perfilAtualizado.Email;
+            perfilNaoEditado.Ds_ContatoCadastro = perfilAtualizado.Contato;
+            perfilNaoEditado.DT_Nascimento = perfilAtualizado.DataDeNascimento;
+            perfilNaoEditado.Id_TipoUsuario = filtroDeTipoUsuario;
 
-                if (colaborador.DT_UltimaAlteracao < (DateTime)SqlDateTime.MinValue)
-                {
-                    colaborador.DT_UltimaAlteracao = (DateTime)SqlDateTime.MinValue;
-                }
+            if (perfilNaoEditado.AcessoUsuario != null)
+            {
+                perfilNaoEditado.AcessoUsuario.Dt_InicioAcesso = perfilAtualizado.TempoDeAcesso;
+                perfilNaoEditado.AcessoUsuario.AcessoPremium = (bool)perfilAtualizado.AcessoPremium;
+                perfilNaoEditado.AcessoUsuario.Dt_FimAcesso = perfilAtualizado.PremiumExpiraEm;
+            }
 
-            _context.CF_Colaborador.Update(colaborador);
+            _context.CF_Colaborador.Update(perfilNaoEditado);
             _context.SaveChanges();
-
-            return colaborador;
         }
+
         public Colaborador TrocarFlagAtivaColaborador(int idColaborador)
         {
             var colaborador = _context.CF_Colaborador.Find(idColaborador);
@@ -280,12 +262,19 @@ namespace Aisentona.Biz.Services
                 listaDePerfilUsuario = listaDePerfilUsuario.Where(p => p.Contato.Contains(filtro.Contato)).ToList();
             }
 
-            if (!string.IsNullOrEmpty(filtro.TipoDeUsuario))
+            if (!string.IsNullOrEmpty(filtro.NomeTipoDeUsuario))
             {
-                listaDePerfilUsuario = listaDePerfilUsuario.Where(p => p.TipoDeUsuario.Contains(filtro.TipoDeUsuario)).ToList();
+                if (Enum.TryParse<Autorizacao>(filtro.NomeTipoDeUsuario, out var tipoUsuarioEnum))
+                {
+                    int filtroDeTipoUsuario = (int)tipoUsuarioEnum; // Obtém o número correspondente
+
+                    listaDePerfilUsuario = listaDePerfilUsuario
+                        .Where(p => (int)Enum.Parse<Autorizacao>(p.NomeTipoDeUsuario) == filtroDeTipoUsuario)
+                        .ToList();
+                }
             }
 
-            if (filtro.AcessoPremium)
+            if (filtro.AcessoPremium is true)
             {
                 listaDePerfilUsuario = listaDePerfilUsuario.Where(p => p.AcessoPremium == true).ToList();
             }

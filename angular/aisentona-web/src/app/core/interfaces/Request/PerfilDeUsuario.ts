@@ -4,7 +4,8 @@ export interface PerfilDeUsuarioRequest {
     cpf: string;
     email: string;
     contato: string;
-    tipoDeUsuario: string;
+    nomeTipoDeUsuario: string;
+    IdTipoUsuario: number;
     endereco: string | null; // Pode ser null
     acessoPremium: boolean;
     tempoDeAcesso: string; // Use string, pois datas vêm como ISO string

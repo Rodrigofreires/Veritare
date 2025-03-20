@@ -19,7 +19,18 @@ namespace Aisentona.API.Controllers
             _colaboradorService = colaboradorService;
         }
 
-        [HttpGet]
+        [HttpGet("id")]
+        public IActionResult GetTodosOsColaboradores(int id)
+        {
+
+            var colaborador = _colaboradorService.GetColaboradorPorId(id);
+            if (colaborador == null)
+            {
+                return NotFound();
+            }
+            return Ok(colaborador);
+        }
+
         [HttpGet("lista-colaboradores/")]
         public IActionResult GetTodosOsColaboradores()
         {
@@ -44,7 +55,7 @@ namespace Aisentona.API.Controllers
             return Ok(listaDePerfisDeUsuarios);
         }
 
-        [HttpPost("/listar-usuarios-filtros")]
+        [HttpPost("listar-usuarios-filtros")]
         public IActionResult CarregarTodasAsPostagensPorFiltro([FromBody] PerfilDeUsuarioResponse filtro)
         {
             if (filtro == null)
@@ -60,8 +71,6 @@ namespace Aisentona.API.Controllers
 
             return Ok(listaDePostagens);
         }
-
-
 
         [HttpGet("perfil-usuario/{id}")]
         public IActionResult GetPerfilUsuario(int id)
@@ -101,20 +110,19 @@ namespace Aisentona.API.Controllers
 
         }
 
-        // PUT api/<ColaboradorController>
-        [HttpPut("editar/{id}")]
-        public IActionResult UpdateColaborador(int id, [FromBody] ColaboradorRequest colaboradorRequest)
+        [HttpPut("editar-perfil-usuario{id}")]
+        public IActionResult UpdateColaborador(int id, [FromBody] PerfilDeUsuarioRequest perfilDeUsuarioRequest)
         {
-            if (colaboradorRequest == null)
+            if (perfilDeUsuarioRequest == null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
 
             try
             {
-                var colaborador = _colaboradorService.EditarColaborador(id, colaboradorRequest);
+               _colaboradorService.EditarPerfilDeUsuario(perfilDeUsuarioRequest);
 
-                return Ok(colaborador);
+                return Ok();
             }
             catch (KeyNotFoundException ex)
             {

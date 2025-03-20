@@ -14,7 +14,6 @@ import { AuthGuard } from '../guard';
 import { RoleGuard } from '../role.guard';
 import { SettingsComponent } from './pages/settings/settings.component';
 
-
 export const routes: Routes = [
   {
     path: '',

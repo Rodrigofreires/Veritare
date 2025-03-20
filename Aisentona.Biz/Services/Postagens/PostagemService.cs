@@ -281,7 +281,7 @@ namespace Aisentona.Biz.Services.Postagens
 
         private PostagemRequest ConverterPostagemDTO(Postagem? postagem)
         {
-            PostagemRequest postagemDTO = new PostagemRequest()
+             PostagemRequest postagemDTO = new PostagemRequest()
             {
                 IdCategoria = postagem.Id_Categoria,
                 IdStatus = postagem.Id_Status,

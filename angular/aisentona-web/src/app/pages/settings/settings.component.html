@@ -5,7 +5,7 @@
             <h3>
               <a routerLink="/painel-de-controle" class="clickable-link">Painel de Controle</a>
             </h3>
-            <p><a routerLink="/painel-de-controle" class="clickable-link">veritare.com.br</a></p>
+            <p><a routerLink="/home" class="clickable-link">veritare.com.br</a></p>
           </div>
       <mat-nav-list>
         <a mat-list-item  routerLink="/dashboard">
@@ -31,7 +31,7 @@
     <mat-sidenav-content>
       <div class="content">
         <mat-toolbar >
-          <span>Painel de Usuários</span>
+          <span>Settings - Painel de Usuários</span>
         </mat-toolbar>
 
         <mat-card>
@@ -54,13 +54,21 @@
 
             <mat-form-field appearance="outline">
                 <mat-label>Tipo de Usuário</mat-label>
-                <mat-select [(ngModel)]="tiposDeUsuarios">
+                <mat-select [(ngModel)]="tipoDeUsuarioProcurado">
                   <mat-option *ngFor="let tipo of ListaDeTiposDeUsuarios" [value]="tipo.id">
                     {{ tipo.nome }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-          
+
+              <mat-form-field appearance="outline">
+                <mat-label>Premium/Comum</mat-label>
+                <mat-select [(ngModel)]="premiumComumProcurado">
+                  <mat-option [value]="0">Comum</mat-option>
+                  <mat-option [value]="1">Premium</mat-option>
+                </mat-select>
+              </mat-form-field>
+
             <div class="actions">
               <button mat-raised-button color="primary" (click)="aplicarFiltros()">
                 Aplicar Filtros
@@ -96,7 +104,7 @@
             <!-- Status Column -->
             <ng-container matColumnDef="tipoDeUsuario">
               <th mat-header-cell *matHeaderCellDef> Tipo de Usuário </th>
-              <td mat-cell *matCellDef="let perfilUsuario"> {{ perfilUsuario.tipoDeUsuario || 'Não disponível' }} </td>
+              <td mat-cell *matCellDef="let perfilUsuario"> {{ perfilUsuario.nomeTipoDeUsuario || 'Não disponível' }} </td>
             </ng-container>
 
             <ng-container matColumnDef="premiumOuComum">
@@ -117,7 +125,7 @@
               <th mat-header-cell *matHeaderCellDef> Ações </th>
               <td mat-cell *matCellDef="let perfilUsuario">
 
-                <button mat-icon-button (click)="editarUsuario(perfilUsuario.idUsuario)">
+                <button mat-icon-button (click)="abrirModalEditarUsuario(perfilUsuario.idUsuario)">
                   <mat-icon>edit</mat-icon>
                 </button>
                 <button *ngIf=" verBotaoExcluirUsuario()" mat-icon-button (click)="excluirUsuario(perfilUsuario.idUsuario)">
@@ -134,8 +142,8 @@
           </table>
           
           <mat-paginator
-          [pageSize]="5"
-          [pageSizeOptions]="[5, 10, 20]"
+          [pageSize]="10"
+          [pageSizeOptions]="[10, 20]"
           showFirstLastButtons>
         </mat-paginator>
           
