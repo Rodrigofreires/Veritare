@@ -1,26 +1,31 @@
-<mat-card
-  *ngFor="let postagem of postagensExibidas"
-  class="item-noticia"
-  appearance="outlined"
-  (click)="navegarParaNoticia(postagem.idPostagem)"
->
-  <!-- Imagem -->
-  <img
-    class="imagem-noticia"
-    mat-card-image 
-    [src]="postagem.imagem"
-    alt="Imagem da notícia"
-  />
-  <div class="imagem-descricao">
-    <!-- Nome da Editoria -->
-    <div class="detalhes-texto">
-      <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
-      <!-- Título -->
-      <h3 class="titulo-noticia">
-        {{ postagem.titulo }}
-      </h3>
-      <!-- Data Criação -->
-      <p class="descricao-noticia">{{ postagem.dataCriacao | date: 'ddd/MM/yyyy  HH:mm' }}</p>
-    </div>
+<div class="painel-noticias">
+  <div class="listagem-de-noticias">
+    <mat-card
+      class="item-noticia"
+      *ngFor="let postagem of postagensExibidas"
+      appearance="outlined"
+      (click)="navegarParaNoticia(postagem.idPostagem)"
+    >
+      <!-- Imagem -->
+      <img
+        class="imagem-noticia"
+        mat-card-image 
+        [src]="postagem.imagem"
+        alt="Imagem da notícia"
+      />
+      <div class="imagem-descricao">
+        <!-- Nome da Editoria -->
+        <div class="detalhes-texto">
+          <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
+          <!-- Título -->
+          <h3 class="titulo-noticia">
+            {{ postagem.titulo }}
+          </h3>
+          <!-- Data Criação -->
+          <p class="descricao-noticia">{{ postagem.dataCriacao | date: 'ddd/MM/yyyy  HH:mm' }}</p>
+        </div>
+      </div>
+    </mat-card>
   </div>
-</mat-card>
+  <app-weather class="weather-widget"></app-weather>
+</div>

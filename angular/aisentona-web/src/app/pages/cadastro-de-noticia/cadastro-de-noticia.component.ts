@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FooterComponent } from '../../shared/footer/footer.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ContainerComponent } from '../../shared/container/container.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -16,14 +15,9 @@ import { FormsModule } from '@angular/forms';
 import { StatusRequest } from '../../core/interfaces/Request/Status';
 import { SnackbarService } from '../../services/snackbar.service';
 import { ImagemService } from '../../services/imagem-service';
-import { TextoService } from '../../services/texto-service';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { ContentChange, QuillModule } from 'ngx-quill';
-import { Console } from 'console';
 import { AuthService } from '../../services/auth.service';
-import { jwtDecode } from 'jwt-decode';
-import { HTTP_INTERCEPTORS } from '@angular/common/http'
-import { AuthInterceptor } from '../../interceptors/auth-interceptor';
 
 @Component({
   selector: 'app-cadastro-de-noticia',
@@ -44,7 +38,7 @@ import { AuthInterceptor } from '../../interceptors/auth-interceptor';
     QuillModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    
   ],
 
 

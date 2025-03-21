@@ -40,6 +40,7 @@ using Microsoft.OpenApi.Models;
     builder.Services.AddScoped<LoginService>();
     builder.Services.AddScoped<AuthService>();
     builder.Services.AddScoped<DateMapper>();
+    builder.Services.AddScoped<WeatherService>();
 
 
     builder.Services.AddScoped<TokenService>(provider =>

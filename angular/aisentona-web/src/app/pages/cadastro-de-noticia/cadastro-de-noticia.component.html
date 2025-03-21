@@ -48,34 +48,28 @@
             <div class="texto-da-noticia">
                 <quill-editor class="texto-da-noticia"
                   [(ngModel)]="infosPostagem.conteudo"
-                  [style.height]="'300px'">
+                  [style.height]="'800px'">
                 </quill-editor>
             </div>
         
             <!-- Gerado Por AISENTONA -->
             <h3>GERADO PELA AISENTONA</h3>
-            <mat-form-field class="texto-da-noticia" appearance="fill">
-                <mat-label>ESCREVA AQUI</mat-label>
-                <textarea
-                matInput
-                cdkTextareaAutosize
-                cdkAutosizeMinRows="10"
-                cdkAutosizeMaxRows="5000"
-                    [(ngModel)]="infosPostagem.textoAlteradoPorIA"
-                    rows="5"></textarea>
-            </mat-form-field>
+                <div class="texto-da-noticia">
+                    <quill-editor class="texto-da-noticia"
+                      [(ngModel)]="infosPostagem.textoAlteradoPorIA"
+                      [style.height]="'800px'">
+                    </quill-editor>
+                </div>
+
 
             <!-- PALAVRAS CORTADAS-->
             <h3>PALAVRAS CORTADAS</h3>
-            <mat-form-field class="texto-da-noticia">
-                <mat-label>ESCREVA AQUI</mat-label>
-                <textarea  
-                matInput
-                cdkTextareaAutosize
-                cdkAutosizeMinRows="10"
-                cdkAutosizeMaxRows="5000"
-                    [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"></textarea>
-            </mat-form-field>
+            <div class="texto-da-noticia">
+                <quill-editor class="texto-da-noticia"
+                  [(ngModel)]="infosPostagem.textoAlteradoPorIA"
+                  [style.height]="'500px'">
+                </quill-editor>
+            </div>
         </div>
 
         <div>

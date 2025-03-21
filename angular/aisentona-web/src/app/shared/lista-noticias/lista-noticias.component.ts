@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -7,16 +7,18 @@ import { SnackbarService } from '../../services/snackbar.service';
 import { Router } from '@angular/router';
 import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { ContainerComponent } from "../container/container.component";
+import { WeatherComponent } from '../weather/weather.component';
 
 @Component({
   selector: 'app-lista-noticias',
   standalone: true,
   imports: [
     MatCardModule,
-     MatButtonModule,
-      CommonModule
-    ],
-
+    MatButtonModule,
+    CommonModule,
+    WeatherComponent
+],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './lista-noticias.component.html',
   styleUrls: ['./lista-noticias.component.css']
 })
