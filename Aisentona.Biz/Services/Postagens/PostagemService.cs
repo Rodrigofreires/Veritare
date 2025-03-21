@@ -168,14 +168,7 @@ namespace Aisentona.Biz.Services.Postagens
             novaPostagem.Ds_UltimaAlteracao = GetWindowsUsername();
             novaPostagem.DT_UltimaAlteracao = null;
             novaPostagem.Id_Usuario = novaPostagem.Id_Usuario;
-
-            if (postagemResponse.PremiumOuComum.Contains("Publicação Comum"))
-            {
-                novaPostagem.Fl_Premium = false;
-            }
-            novaPostagem.Fl_Premium = true;
-
-
+            novaPostagem.Fl_Premium = bool.Parse(postagemResponse.PremiumOuComum);
 
             _context.CF_Postagem.Add(novaPostagem);
             _context.SaveChanges();

@@ -1,3 +1,12 @@
+
+
+.noticia-card {
+  width: 100%;
+  padding: 20px;
+  border: none; /* Remove qualquer borda padrão */
+  box-shadow: none; /* Remove sombra do Material Design */
+}
+
 .noticia-container {
     display: flex;
     flex-direction: column; /* Empilha os elementos verticalmente */
@@ -26,13 +35,6 @@
   .botao-editar {
     font-size: 14px;
     padding: 8px 16px;
-  }
-
-
-  .noticia-card {
-    width: 100%;
-    border: none; /* Remove qualquer borda padrão */
-    box-shadow: none; /* Remove sombra do Material Design */
   }
 
   .titulo-container {
@@ -111,44 +113,6 @@
     background-color: #7070AC; /* Cor mais escura ao passar o mouse */
   }
 
-  .lista-noticias-relacionadas{
-    width: 100%;
-    display: flex;
-    align-items: start;
-    justify-content: start !important;
-    border: none; /* Remove qualquer borda padrão */
-    box-shadow: none; /* Remove sombra do Material Design */
-  }
-
-  .lista-noticias-relacionadas {
-    width: 100%;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .noticias-relacionadas-card {
-    background: none; /* Remove o fundo do mat-card */
-    box-shadow: none; /* Remove sombras */
-    border: none; /* Remove bordas */
-    padding: 0; /* Remove padding interno */
-    margin: 0;
-  }
-  
-  .noticias-relacionadas-list {
-    padding: 0;
-    margin: 0;
-    list-style: none; /* Remove marcadores de lista */
-  }
-  
-  mat-list-item {
-    border: none;
-    box-shadow: none;
-    padding: 5px 0; /* Espaçamento entre os itens */
-  }
-  
   .noticia-link {
     text-decoration: underline;
     color: blue;

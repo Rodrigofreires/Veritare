@@ -1,6 +1,5 @@
 <div class="noticia-container mat-elevation-z4">
   <mat-card class="noticia-card">
-
     <div class="cabecalho-pagina">
       <h2 class="nome-categoria">{{ infosPostagem.nomeCategoria }}</h2>
       <button *ngIf="isLoggedIn && acessarEditarNoticia()" class="botao-editar" mat-raised-button color="primary" (click)="editarNoticia()">
@@ -25,7 +24,6 @@
       <img mat-card-image src="{{ infosPostagem.imagem }}" alt="Imagem da Notícia" class="noticia-imagem" />
     </div>
     
-
     <!-- Botões de Controle -->
     <div class="botoes-controle">
       <button
@@ -47,21 +45,24 @@
     <div *ngIf="textoSelecionado === 'ia'">
       <h2>Gerado pela IASentona</h2>
       <mat-card-content>
-        <p class="noticia-conteudo">
-          {{ infosPostagem.textoAlteradoPorIA }}
-        </p>
+        <quill-view
+          class="noticia-conteudo"
+          [content]="infosPostagem.textoAlteradoPorIA">
+        </quill-view>
       </mat-card-content>
 
       <h2>Palavras e opiniões retiradas</h2>
       <mat-card-content>
-        <p class="noticia-conteudo">
-          {{ infosPostagem.palavrasRetiradasPorIA}}
-        </p>
+
+        <quill-view
+        class="noticia-conteudo"
+        [content]="infosPostagem.palavrasRetiradasPorIA">
+      </quill-view>
       </mat-card-content>
     </div>
 
     <div *ngIf="textoSelecionado === 'humano'">
-      
+    
       <h2>Matéria escrita por humanos</h2>
       <mat-card-content>
         <quill-view
@@ -75,19 +76,22 @@
     <mat-card-actions class="botoes-de-envio">
       <button class="botao" color="primary">Compartilhar</button>
     </mat-card-actions>
+
+    <div class="lista-noticias-relacionadas">
+      <mat-card class="noticias-relacionadas-card">
+        <h2>Notícias Relacionadas</h2>
+        <mat-list class="noticias-relacionadas-list">
+          <mat-list-item *ngFor="let noticia of noticiasRelacionadas | slice:0:5">
+            <a href="/noticia/{{noticia.idPostagem}}" class="noticia-link">
+              {{ noticia.titulo }}
+            </a>
+          </mat-list-item>
+        </mat-list>
+      </mat-card>
+    </div>
+
   </mat-card>
 
-  <div class="lista-noticias-relacionadas">
-    <mat-card class="noticias-relacionadas-card">
-      <h2>Notícias Relacionadas</h2>
-      <mat-list class="noticias-relacionadas-list">
-        <mat-list-item *ngFor="let noticia of noticiasRelacionadas | slice:0:5">
-          <a href="/noticia/{{noticia.idPostagem}}" class="noticia-link">
-            {{ noticia.titulo }}
-          </a>
-        </mat-list-item>
-      </mat-list>
-    </mat-card>
-  </div>
+
 
 </div>

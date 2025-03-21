@@ -17,7 +17,6 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-listagem-por-editoria',
   imports: [
     ContainerComponent,
-    FooterComponent,
     MatCardModule, 
     MatButtonModule, 
     CommonModule,

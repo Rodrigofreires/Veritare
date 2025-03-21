@@ -6,7 +6,10 @@
     gap: 0; /* Remove qualquer espaço entre os itens */
   }
 
-
+  .painel-de-publicacoes{
+    padding: 20px !important;
+    margin: 20px !important;
+  }
 
   /* Barra lateral */
   .sidenav {

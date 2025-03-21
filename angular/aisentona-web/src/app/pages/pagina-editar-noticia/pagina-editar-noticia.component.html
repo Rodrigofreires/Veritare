@@ -5,8 +5,8 @@
       <mat-label>TÍTULO DA NOTÍCIA</mat-label>
       <textarea
         class="titulo"
-        placeholder="Máximo de 65 caracteres"
-        maxlength="65"
+        placeholder="Máximo de 200 caracteres"
+        maxlength="200"
         matInput
         [(ngModel)]="infosPostagem.titulo"
         name="titulo"
@@ -18,8 +18,8 @@
       <mat-label>DESCRIÇÃO DA NOTÍCIA</mat-label>
       <textarea
         class="descricao"
-        maxlength="160"
-        placeholder="Máximo de 160 caracteres"
+        placeholder="Máximo de 300 caracteres"
+        maxlength="300"
         matInput
         [(ngModel)]="infosPostagem.descricao"
         name="descricao"
@@ -45,11 +45,10 @@
     </div>
 
   <div>
-  
       <div class="textos-principais-editados">
-        <!-- Texto Gerado Por Humano -->
+
+        <!-- Texto Manual -->
         <h3>GERADO POR HUMANO</h3>        
-        
         <quill-editor
         class="texto-da-noticia-editada"
         [(ngModel)]="infosPostagem.conteudo"
@@ -59,31 +58,26 @@
       </quill-editor>
 
         <!-- Texto Gerado Pela IASentona -->
-        <h3>GERADO PELA IASENTONA</h3>
-        <mat-form-field class="texto-da-noticia-editada" appearance="fill">
-          <mat-label>ALTERAÇÕES REALIZADAS PELA IA</mat-label>
-          <textarea
-          matInput
-          cdkTextareaAutosize
-          cdkAutosizeMinRows="10"
-          cdkAutosizeMaxRows="5000"
-            [(ngModel)]="infosPostagem.textoAlteradoPorIA"
-            rows="5"
-          ></textarea>
-        </mat-form-field>
+        <h3>GERADO POR VERITARE</h3>
+        <quill-editor
+          class="texto-da-noticia-editada"
+          [(ngModel)]="infosPostagem.textoAlteradoPorIA"
+          [modules]="modules"
+          [style.height]="'800px'"
+          >
+        </quill-editor>
   
         <!-- Palavras Cortadas -->
-        <h3>PALAVRAS CORTADAS</h3>
-        <mat-form-field class="texto-da-noticia-editada">
-          <mat-label>LISTA DE PALAVRAS REMOVIDAS</mat-label>
-          <textarea
-            matInput
-            cdkTextareaAutosize
-            cdkAutosizeMinRows="10"
-            cdkAutosizeMaxRows="5000"
-            [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"
-          ></textarea>
-        </mat-form-field>
+        <h3>O QUE A VERITARE MUDOU:</h3>
+
+        <h3>GERADO POR VERITARE</h3>
+        <quill-editor
+          class="texto-da-noticia-editada"
+          [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"
+          [modules]="modules"
+          [style.height]="'800px'"
+          >
+        </quill-editor>
       </div>
   
         <!-- Status -->
@@ -115,7 +109,7 @@
         mat-raised-button
         color="primary"
         (click)="salvarEdicao()">
-        FINALIZAR EDIÇÃO
+        SALVAR ALTERAÇÕES
       </button>
     </div>
     
