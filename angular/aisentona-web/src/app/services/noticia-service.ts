@@ -90,6 +90,13 @@ carregarUltimasPostagens(): Observable<PostagemRequest[]> {
 
 }
 
+carregarUltimasNoticiasPremium(): Observable<PostagemRequest[]> {
+  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-ultimas-postagens-premium`)
+
+}
+
+
+
 //CARREGAR POSTAGENS POR EDITORIA
 carregarPostagensPorEditoria(idEditoria: number): Observable<PostagemRequest[]> {
   return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-por-editoria/${idEditoria}`)

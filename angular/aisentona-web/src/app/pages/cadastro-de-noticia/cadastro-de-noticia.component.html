@@ -60,13 +60,11 @@
                       [style.height]="'800px'">
                     </quill-editor>
                 </div>
-
-
             <!-- PALAVRAS CORTADAS-->
             <h3>PALAVRAS CORTADAS</h3>
             <div class="texto-da-noticia">
                 <quill-editor class="texto-da-noticia"
-                  [(ngModel)]="infosPostagem.textoAlteradoPorIA"
+                  [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"
                   [style.height]="'500px'">
                 </quill-editor>
             </div>

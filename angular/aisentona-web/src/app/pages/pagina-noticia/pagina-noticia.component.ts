@@ -41,56 +41,67 @@ export class PaginaNoticiaComponent {
   ) {}
 
   ngOnInit(): void {
-    this.isLoggedIn = this._authService.isLoggedIn();
+    this.isLoggedIn = this._authService.isLoggedIn() ?? false;
     this.carregaNoticia();
-
   }
 
-textoSelecionado: string = 'ia'; // Exibe o texto da IA por padrão
-infosPostagem: PostagemRequest = {} as PostagemRequest;
-noticiasRelacionadas: PostagemRequest[] = [];
-isLoggedIn: boolean = false;
+  textoSelecionado: string = 'ia'; // Exibe o texto da IA por padrão
+  infosPostagem: PostagemRequest = {} as PostagemRequest;
+  noticiasRelacionadas: PostagemRequest[] = [];
+  isLoggedIn: boolean = false;
+  editorOptions = {
+    theme: 'snow',
+    readOnly: true,
+    formats: ['bold', 'italic', 'underline', 'strike', 'link', 'image', 'blockquote', 'code-block']
+  };
 
   mostrarTexto(opcao: string): void {
     this.textoSelecionado = opcao;
   }
 
   carregaNoticia(): void {
-    const id = this._route.snapshot.paramMap.get('id'); // Obtém o ID como string | null
-  
-    if (id) {
-      this. _noticiaService.buscarPostagemPorId(+id).subscribe( // Converte para number usando '+'
-        (dados) => {
-          this.infosPostagem = dados;
-          this.carregaNoticiasRelacionadas();
-        },
-        (erro) => {
-          this._snackBarService.MostrarErro('Erro ao carregar a notícia:', erro);
-        }
-      );
-    } else {
-      this._snackBarService.MostrarErro('ID inválido ou ausente na URL');
-    }
-  }
-
-  editarNoticia(): void {
-    const id = this._route.snapshot.paramMap.get('id'); // Obtém o ID diretamente da URL
-  
+    const id = this._route.snapshot.paramMap.get('id'); 
+    
     if (!id) {
-      this._snackBarService.MostrarErro(
-        'ID da postagem não encontrado na URL. Não é possível editar.'
-      );
+      this._snackBarService.MostrarErro('ID inválido ou ausente na URL');
       return;
     }
   
-    // Redirecionar para a página de edição com o ID da postagem
-    this._router.navigate(['/editar-noticia', id]);
+    this._noticiaService.buscarPostagemPorId(+id).subscribe(
+      (dados) => {
+        this.infosPostagem = dados;
+        if (this.infosPostagem?.idCategoria) {
+          this.carregaNoticiasRelacionadas();
+        }
+      },
+      (erro) => {
+        this._snackBarService.MostrarErro('Erro ao carregar a notícia:', erro);
+      }
+    );
   }
+  
+
+  editarNoticia(): void {
+    const id = this._route.snapshot.paramMap.get('id');
+  
+    if (!id) {
+      this._snackBarService.MostrarErro('ID da postagem não encontrado.');
+      return;
+    }
+  
+    this._router.navigate([`/editar-noticia/${id}`]);
+  }
+  
 
   carregaNoticiasRelacionadas(): void {
+    if (!this.infosPostagem?.idCategoria) {
+      console.warn('ID da categoria não encontrado. Não é possível carregar notícias relacionadas.');
+      return;
+    }
+  
     this._noticiaService.carregarPostagensPorEditoria(this.infosPostagem.idCategoria).subscribe(
       (dados: PostagemRequest[]) => {
-        this.noticiasRelacionadas = dados; // Armazena as notícias relacionadas
+        this.noticiasRelacionadas = dados;
       },
       (erro) => {
         this._snackBarService.MostrarErro('Erro ao carregar as notícias:', erro);
@@ -98,6 +109,7 @@ isLoggedIn: boolean = false;
       }
     );
   }
+  
 
   acessarEditarNoticia(): boolean {
     return this._authService.acessarEditarNoticia(); // Somente usuários com permissões 3;4 e 5

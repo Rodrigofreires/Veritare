@@ -85,6 +85,17 @@ namespace Aisentona.API.Controllers.Postagens
             return Ok(listaDePostagens);
         }
 
+        [HttpGet("listar-ultimas-postagens-premium")]
+        public IActionResult ListarUltimasPostagensPremium()
+        {
+            List<PostagemRequest> listaDePostagens = _postagemService.ListarUltimasPostagensPremium();
+            if (listaDePostagens == null)
+            {
+                return NotFound();
+            }
+            return Ok(listaDePostagens);
+        }
+
 
         [HttpGet("listar-por-editoria/{idEditoria}")]
         public IActionResult FiltrarPostagensPorEditoria(int idEditoria)

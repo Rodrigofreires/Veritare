@@ -26,9 +26,25 @@ namespace Aisentona.Biz.Services.Postagens
             List<Postagem> ultimasPostagens = _context.CF_Postagem
                 .Include(p => p.Categoria) // Inclui a relação com a Categoria
                 .Include(p => p.Status)
-                .Where(p => p.Fl_Ativo == true) // Filtra apenas as postagens ativas
+                .Where(p => p.Fl_Ativo == true && p.Fl_Premium == false) // Filtra apenas as postagens ativas
                 .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
                 .Take(4) // Limita a 4 postagens
+                .ToList();
+
+            // Mapeia as postagens para PostagemDTO
+            return MapearParaDTO(ultimasPostagens);
+        }
+
+        public List<PostagemRequest> ListarUltimasPostagensPremium()
+        {
+            // Busca as últimas 4 postagens ativas, ordenadas pela data de criação
+
+            List<Postagem> ultimasPostagens = _context.CF_Postagem
+                .Include(p => p.Categoria) // Inclui a relação com a Categoria
+                .Include(p => p.Status)
+                .Where(p => p.Fl_Ativo == true && p.Fl_Premium == true) // Filtra apenas as postagens ativas e Premium
+                .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
+                .Take(3) // Limita a 4 postagens
                 .ToList();
 
             // Mapeia as postagens para PostagemDTO
@@ -56,6 +72,7 @@ namespace Aisentona.Biz.Services.Postagens
                 .AsNoTracking()  // Não rastrear as entidades para melhorar a performance
                 .Include(p => p.Categoria)
                 .Include(p => p.Status)
+                .OrderByDescending(p => p.DT_Criacao)
                 .Where(p => p.Fl_Ativo == true);
 
             // Filtro por Título
@@ -101,12 +118,6 @@ namespace Aisentona.Biz.Services.Postagens
             var postagens = query.ToList();
             return MapearParaDTO(postagens);
         }
-
-
-
-
-
-
 
         public PostagemRequest CarregarPostagem(int id)
         {
@@ -242,7 +253,7 @@ namespace Aisentona.Biz.Services.Postagens
             List<Postagem> listaDePostagensFiltradas = _context.CF_Postagem
                 .Include(p => p.Categoria) // Inclui a relação com a Categoria
                 .Include(p => p.Status)
-                .Where(p => p.Fl_Ativo == true && p.Id_Categoria == IdCategoria) // Filtra apenas as postagens ativas
+                .Where(p => p.Fl_Ativo == true && p.Id_Categoria == IdCategoria && p.Fl_Premium == false) // Filtra apenas as postagens ativas
                 .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
                 .ToList();
 

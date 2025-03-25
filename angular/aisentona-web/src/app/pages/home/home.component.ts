@@ -4,10 +4,12 @@ import { BannerComponent } from "../../shared/banner/banner.component";
 import { FooterComponent } from "../../shared/footer/footer.component";
 import { ListaNoticiasComponent } from '../../shared/lista-noticias/lista-noticias.component';
 import { WeatherComponent } from "../../shared/weather/weather.component";
+import { BannerNoticiasPremiumComponent } from "../../shared/banner-noticias-premium/banner-noticias-premium.component";
+import { FaixaAssineVeritareComponent } from "../../shared/faixa-assine-veritare/faixa-assine-veritare.component";
 
 @Component({
   selector: 'app-home',
-  imports: [ContainerComponent, BannerComponent, ListaNoticiasComponent],
+  imports: [ContainerComponent, BannerComponent, ListaNoticiasComponent, BannerNoticiasPremiumComponent, FaixaAssineVeritareComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,

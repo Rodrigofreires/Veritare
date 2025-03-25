@@ -48,17 +48,17 @@
       <div class="textos-principais-editados">
 
         <!-- Texto Manual -->
-        <h3>GERADO POR HUMANO</h3>        
+        <h3>ONDE ENCONTRAR A MATÉRIA ORIGINAL</h3>        
         <quill-editor
         class="texto-da-noticia-editada"
         [(ngModel)]="infosPostagem.conteudo"
         [modules]="modules"
-        [style.height]="'800px'"
+        [style.height]="'500px'"
         >
       </quill-editor>
 
         <!-- Texto Gerado Pela IASentona -->
-        <h3>GERADO POR VERITARE</h3>
+        <h3>MATÉRIA GERADA POR VERITARE</h3>
         <quill-editor
           class="texto-da-noticia-editada"
           [(ngModel)]="infosPostagem.textoAlteradoPorIA"
@@ -68,9 +68,7 @@
         </quill-editor>
   
         <!-- Palavras Cortadas -->
-        <h3>O QUE A VERITARE MUDOU:</h3>
-
-        <h3>GERADO POR VERITARE</h3>
+        <h3>NOTÍCIA COMENTADA POR VERITARE:</h3>
         <quill-editor
           class="texto-da-noticia-editada"
           [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"
@@ -99,6 +97,16 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+
+          <mat-form-field class="premiumOuComum">
+            <mat-label>TIPO DE PUBLICAÇÃO</mat-label>
+            <mat-select [(ngModel)]="tipoSelecionado"> 
+                <mat-option *ngFor="let tipo of tipoDePublicacao" [value]="tipo">
+                    {{ tipo }} 
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
         </div>
     </div>
   

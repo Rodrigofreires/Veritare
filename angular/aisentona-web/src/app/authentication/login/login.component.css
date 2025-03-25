@@ -115,7 +115,7 @@
 @media (max-width: 1200px) {
     .signup-wrapper {
         flex-direction: column;
-        width: 90%;
+        width: 0%;
     }
 
     .info-section {

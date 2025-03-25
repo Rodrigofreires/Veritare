@@ -20,15 +20,22 @@
     resize: none !important; 
 } 
 .editoria{
-    width: 50%;
+    width: 33%;
     margin: 0;
     padding: 0;
 } 
 .status{
-    width: 50%;
+    width: 33%;
     margin: 0;
     padding: 0;
 }
+
+.premiumOuComum{
+  width: 33%;
+  margin: 0;
+  padding: 0;
+}
+
 
 .corpo-da-noticia{
     margin: 10px;

@@ -20,6 +20,7 @@
         </div>
       </div>
     </mat-card-header>
+
     <div class="imagem-da-noticia">
       <img mat-card-image src="{{ infosPostagem.imagem }}" alt="Imagem da Notícia" class="noticia-imagem" />
     </div>
@@ -30,20 +31,20 @@
         mat-raised-button
         [ngClass]="{ 'botao-selecionado': textoSelecionado === 'ia' }"
         (click)="mostrarTexto('ia')">
-        Escrito pela IASentona
+        Escrito por Veritare
       </button>
       <button
         mat-raised-button
         [ngClass]="{ 'botao-selecionado': textoSelecionado === 'humano' }"
         color="accent"
         (click)="mostrarTexto('humano')">
-        Escrito por Humanos
+        Notícia Original
       </button>
     </div>
 
-    <!-- Conteúdo Controlado -->
+    <!-- Conteúdo IA -->
     <div *ngIf="textoSelecionado === 'ia'">
-      <h2>Gerado pela IASentona</h2>
+      <h2>Escrito por Veritare</h2>
       <mat-card-content>
         <quill-view
           class="noticia-conteudo"
@@ -51,25 +52,22 @@
         </quill-view>
       </mat-card-content>
 
-      <h2>Palavras e opiniões retiradas</h2>
+      <h2>Comentários Veritare</h2>
       <mat-card-content>
-
         <quill-view
-        class="noticia-conteudo"
-        [content]="infosPostagem.palavrasRetiradasPorIA">
-      </quill-view>
+          class="noticia-conteudo"
+          [content]="infosPostagem.palavrasRetiradasPorIA">
+        </quill-view>
       </mat-card-content>
     </div>
 
+    <!-- Conteúdo Humano -->
     <div *ngIf="textoSelecionado === 'humano'">
-    
-      <h2>Matéria escrita por humanos</h2>
       <mat-card-content>
         <quill-view
           class="noticia-conteudo"
           [content]="infosPostagem.conteudo">
         </quill-view>
-
       </mat-card-content>
     </div>
 
@@ -77,12 +75,13 @@
       <button class="botao" color="primary">Compartilhar</button>
     </mat-card-actions>
 
+    <!-- Notícias Relacionadas -->
     <div class="lista-noticias-relacionadas">
       <mat-card class="noticias-relacionadas-card">
         <h2>Notícias Relacionadas</h2>
         <mat-list class="noticias-relacionadas-list">
           <mat-list-item *ngFor="let noticia of noticiasRelacionadas | slice:0:5">
-            <a href="/noticia/{{noticia.idPostagem}}" class="noticia-link">
+            <a [routerLink]="['/noticia', noticia.idPostagem]" class="noticia-link">
               {{ noticia.titulo }}
             </a>
           </mat-list-item>
@@ -90,8 +89,7 @@
       </mat-card>
     </div>
 
+    <img src="assets/images/veritare-assine.png" alt="imagem-assine" class="imagem-assine">
+
   </mat-card>
-
-
-
 </div>

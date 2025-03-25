@@ -12,6 +12,7 @@ import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { FaixaAssineVeritareComponent } from '../../shared/faixa-assine-veritare/faixa-assine-veritare.component';
 
 @Component({
   selector: 'app-listagem-por-editoria',
@@ -20,6 +21,7 @@ import { MatCardModule } from '@angular/material/card';
     MatCardModule, 
     MatButtonModule, 
     CommonModule,
+    FaixaAssineVeritareComponent,
    
     ],
 
