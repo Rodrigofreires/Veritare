@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import {MatCardModule } from '@angular/material/card';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -38,20 +38,12 @@ throw new Error('Method not implemented.');
     
     public dialogRef: MatDialogRef<ModalNoticiaBloqueadaComponent>,
 
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: { permissaoAtendida: boolean }
   ) {}
 
-  ngOnInit() {
-    // Pode adicionar qualquer lógica para verificar se o usuário tem permissão
-    if (this.data.permissaoAtendida) {
-      this.permissaoAtendida = true;
-      this.dialogRef.close(); // Fecha o modal se a permissão for atendida
-    }
+  ngOnInit() {    
+
   }
 
-  // Método que não permite o fechamento do modal, enquanto o usuário não tiver permissão
-  onNoPermission() {
-    // Lógica para não fechar o modal ou permitir ações
-  }
 }
 

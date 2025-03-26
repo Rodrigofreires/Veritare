@@ -50,12 +50,11 @@ export class ModalEditarUsuarioComponent {
     private _perfilService: PerfilService,
     public _dataValidators: DataValidators,
     public dialogRef: MatDialogRef<ModalEditarUsuarioComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { 
+    @Inject(MAT_DIALOG_DATA) 
+      public data: { 
       perfilSelecionado: PerfilDeUsuarioRequest,
       premiumComumProcurado: boolean,
       ListaDeTiposDeUsuarios: TipoDeUsuarioRequest[],
-
-
     }
       ,
   ) {

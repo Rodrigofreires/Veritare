@@ -130,7 +130,7 @@ export class ListaNoticiasComponent implements OnInit {
   
       if (categoria) {
         // Se encontrar a categoria, chama o serviço de navegação
-        this._navigationService.navegarParaNoticia(infosPostagem, categoria);
+        this._navigationService.onAbrirNoticia(infosPostagem, categoria);
       } else {
         console.error('Categoria não encontrada para a postagem');
       }

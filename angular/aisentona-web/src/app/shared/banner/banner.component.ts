@@ -66,16 +66,12 @@ export class BannerComponent implements OnInit {
   
       if (categoria) {
         // Se encontrar a categoria, chama o serviço de navegação
-        this._navigationService.navegarParaNoticia(infosPostagem, categoria);
+        this._navigationService.onAbrirNoticia(infosPostagem, categoria);
       } else {
         console.error('Categoria não encontrada para a postagem');
       }
     });
   }   
-
-
-
-
 
   compartilharPostagem(postagem: PostagemRequest): void {
     console.log('Compartilhando postagem:', postagem);

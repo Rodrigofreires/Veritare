@@ -29,6 +29,8 @@ export const routes: Routes = [
       { 
         path: 'noticia/:editoria/:tipoPost/:ano/:titulo/:id',
         component: PaginaNoticiaComponent,
+        canActivate: [PremiumGuard], // Protege a rota
+        runGuardsAndResolvers: 'always'
       },
 
 

@@ -20,6 +20,7 @@ export class AuthService {
     private platformService: PlatformService,
     private _loginSerivce: LoginService,
     private _dialog: MatDialog,  // Somente MatDialog, não precisa do componente aqui
+
   ) {}
 
   // Verificar se o Token expirou
@@ -134,17 +135,20 @@ export class AuthService {
 
   // Método para mostrar o modal de conteúdo bloqueado
   exibirModalNoticiaBloqueada(): void {
-    // Passa a permissão no modal
-    this._dialog.open(ModalNoticiaBloqueadaComponent, {
-      width: '400px',
-      panelClass: 'premium-modal',
+    const permissaoAtendida = this.podeVisualizarNoticiaPremium();
+  
+    const dialogRef = this._dialog.open(ModalNoticiaBloqueadaComponent, {
+      disableClose: true,
+      panelClass: 'modal-noticia-bloqueada',
       data: {
-        permissaoAtendida: this.podeVisualizarNoticiaPremium(), // Passa a verificação de permissão
+        permissaoAtendida: permissaoAtendida,  // Passando a permissão corretamente
       },
     });
-  }
   
-
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal fechado.');
+    });
+  }
   acessarNoticiaPremium(): void {
     if (!this.isLoggedIn()) {
       // Usuário não está logado, não permite acesso à notícia premium

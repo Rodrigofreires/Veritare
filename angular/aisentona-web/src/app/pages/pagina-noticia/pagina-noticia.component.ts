@@ -39,7 +39,7 @@ export class PaginaNoticiaComponent {
     private _router: Router,
     private _authService: AuthService,
     private dialog: MatDialog,
-    private _snackBarService: SnackbarService
+    private _snackBarService: SnackbarService,
   ) {}
 
   ngOnInit(): void {
@@ -64,15 +64,26 @@ export class PaginaNoticiaComponent {
 
   carregaNoticia(): void {
     const id = this._route.snapshot.paramMap.get('id'); 
-
+  
     if (!id) {
       this._snackBarService.MostrarErro('ID inválido ou ausente na URL');
       return;
     }
-
+  
     this._noticiaService.buscarPostagemPorId(+id).subscribe(
       (dados) => {
         this.infosPostagem = dados;
+  
+        // Verifica se a notícia é premium e se o usuário tem acesso
+        if (this.infosPostagem?.premiumOuComum === true) {
+          // Se a notícia é premium, verificar se o usuário pode visualizar
+          if (!this._authService.podeVisualizarNoticiaPremium()) {
+            this._authService.acessarNoticiaPremium(); // Abre o modal bloqueando o conteúdo
+            return; // Não continuar carregando o restante da notícia
+          }
+        }
+  
+        // Carrega notícias relacionadas, se existir a categoria
         if (this.infosPostagem?.idCategoria) {
           this.carregaNoticiasRelacionadas();
         }
@@ -121,7 +132,7 @@ export class PaginaNoticiaComponent {
   
       if (categoria) {
         // Se encontrar a categoria, chama o serviço de navegação
-        this._navigationService.navegarParaNoticia(infosPostagem, categoria);
+        this._navigationService.onAbrirNoticia(infosPostagem, categoria);
       } else {
         console.error('Categoria não encontrada para a postagem');
       }

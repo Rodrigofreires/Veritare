@@ -1,34 +1,27 @@
 <div class="backdrop"></div> <!-- Fundo escuro borrado -->
 
 <mat-card class="modal-content">
-  <!-- Cabeçalho com nome do serviço -->
-  <mat-card-header class="header-content">
-    <h2 class="premium-title">Veritare Premium</h2>
-  </mat-card-header>
+  <!-- Card Layout com imagem e conteúdo -->
+  <div class="card-layout">
 
-  <!-- Imagem destacada -->
-  <div class="premium-header">
-    <img src="assets/veritare-premium-banner.jpg" alt="Veritare Premium" class="premium-image" />
-  </div>
+    <div class="image-section"></div>
 
-  <mat-card-content class="modal-body">
-    <p class="premium-description">
-      Descubra conteúdos exclusivos, notícias personalizadas e benefícios incríveis que preparamos especialmente para você.
-    </p>
+    <div class="content-section">
 
-    <!-- Preço destacado -->
-    <p class="premium-price">Apenas <strong>R$10,00/mês</strong> para uma experiência completa!</p>
+      <mat-card-content class="header-content text-center">
+        <a href="/home">Voltar a página inicial</a>
+        <p class="login-option">Já é Premium? <a href="/login">Faça login</a> para acessar agora!</p>
 
-    <mat-divider></mat-divider>
+        <h2 class="premium-title">Veritare Premium</h2>
 
-    <div *ngIf="!permissaoAtendida" class="action-buttons">
-      <button mat-raised-button color="primary" (click)="tornarSePremium()">Quero ser Premium!</button>
+        <p class="premium-description">
+          Acesse conteúdos exclusivos e notícias personalizadas por apenas <strong>R$9,99/mês</strong>.
+        </p>
+
+        <div *ngIf="!permissaoAtendida" class="action-buttons">
+          <button mat-raised-button color="primary" (click)="tornarSePremium()" class="premium-button" routerLink="/assine" >Assine Agora! </button>
+        </div>
+      </mat-card-content>
     </div>
-
-    <p class="login-option">Já é Premium? <a href="#" (click)="irParaLogin()">Faça login</a> para acessar agora!</p>
-  </mat-card-content>
-
-  <mat-card-actions align="end">
-    <button mat-button color="warn" (click)="dialogRef.close()">Fechar</button>
-  </mat-card-actions>
+  </div>
 </mat-card>
