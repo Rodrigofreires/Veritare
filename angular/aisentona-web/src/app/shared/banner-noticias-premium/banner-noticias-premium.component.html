@@ -1,13 +1,17 @@
 <h2>VERITARE PREMIUM - O JORNALISMO QUE VOCÊ PODE CONFIAR</h2>
+
 <div class="noticias-container">
-  <mat-card class="card-premium" appearance="outlined" *ngFor="let postagem of infosPostagem; let i = index">
+  <mat-card class="card-premium" *ngFor="let postagem of infosPostagem; let i = index" (click)="navegarParaNoticia(postagem)">
+    
     <!-- Imagem do banner -->
     <img class="imagem-banner-premium" mat-card-image [src]="postagem.imagem" 
-         [alt]="'Imagem do Veritare Premium ' + i">
+         [alt]="postagem.titulo" >
+
     <!-- Texto sobreposto na imagem -->
     <div class="texto-sobre-imagem">
       <h2>{{ postagem.titulo }}</h2>
       <p>{{ postagem.descricao }}</p>
     </div>
+    
   </mat-card>
 </div>

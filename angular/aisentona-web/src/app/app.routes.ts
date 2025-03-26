@@ -14,6 +14,7 @@ import { RoleGuard } from '../role.guard';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { PerfilGuard } from '../guards/perfil.guard';
 import { AuthGuard } from '../guards/guard';
+import { PremiumGuard } from '../guards/premium.guard';
 
 export const routes: Routes = [
   {
@@ -22,7 +23,15 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
-      { path: 'noticia/:id', component: PaginaNoticiaComponent },
+      
+      
+      // Proteção para posts premium
+      { 
+        path: 'noticia/:editoria/:tipoPost/:ano/:titulo/:id',
+        component: PaginaNoticiaComponent,
+      },
+
+
       { path: 'lista-noticia/:nomeCategoria/:idCategoria', component: ListagemPorEditoriaComponent },
       { 
         path: 'cadastro-de-noticia', 

@@ -119,7 +119,7 @@ namespace Aisentona.Biz.Services.Postagens
             return MapearParaDTO(postagens);
         }
 
-        public PostagemRequest CarregarPostagem(int id)
+        public PostagemRequest CarregarPostagemPorId(int id)
         {
             Postagem? postagem = _context.CF_Postagem.FirstOrDefault(c => c.Id_Postagem == id && c.Fl_Ativo);
 

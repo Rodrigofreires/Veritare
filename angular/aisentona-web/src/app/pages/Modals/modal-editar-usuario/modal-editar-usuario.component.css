@@ -1,27 +1,129 @@
-.perfil-usuario {
+/* Modal flexível e responsivo */
+.modal-content {
+    position: fixed;
+    bottom: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    width: 95%;
+    max-width: 2000px; /* Mantém um limite máximo */
+    height: 80vh; /* Usa 80% da altura da tela */
+    max-height: 90vh; /* Nunca passa de 90% da tela */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    animation: slideUp 1s ease-out forwards;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    padding: 20px;
+    overflow: hidden; /* Garante que nada ultrapasse */
+  }
+  
+  /* Animação do modal */
+  @keyframes slideUp {
+    0% {
+      bottom: -100%;
+    }
+    100% {
+      bottom: 10%; /* Sempre sobe até 10% da tela */
+    }
+  }
+  
+  /* Fundo escuro com efeito de borrado */
+  .backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    z-index: -1;
+    pointer-events: none;
+  }
+  
+  /* Cabeçalho */
+  .header-content {
     width: 100%;
-}
-
-.informacoes-do-perfil {
-    display: flex;
-    flex-wrap: wrap; /* Para quebrar a linha quando necessário */
-    gap: 20px; /* Adiciona espaço entre as colunas */
-}
-
-.informacoes-do-perfil > div {
-    width: 48%; /* Cada campo ocupa 50% da largura disponível, com um pequeno espaço entre eles */
-}
-
-.full-width {
+    text-align: center;
+  }
+  
+  .premium-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1e88e5;
+  }
+  
+  /* Imagem responsiva */
+  .premium-header {
     width: 100%;
-}
-
-mat-dialog-actions {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  
+  .premium-image {
+    width: 100%;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  /* Conteúdo com scroll interno se necessário */
+  .modal-body {
+    flex-grow: 1; /* Permite que o conteúdo ocupe o espaço necessário */
+    overflow-y: auto; /* Adiciona scroll se precisar */
+    padding: 0 20px;
+  }
+  
+  /* Descrição */
+  .premium-description {
+    text-align: center;
+    font-size: 16px;
+    margin: 12px 0;
+  }
+  
+  /* Preço destacado */
+  .premium-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #4caf50;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  
+  /* Botões */
+  .action-buttons {
     display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  button {
+    width: 80%;
+  }
+  
+  /* Opção de login */
+  .login-option {
+    text-align: center;
+    margin-top: 12px;
+  }
+  
+  /* Responsividade extra para telas menores */
+  @media (max-width: 600px) {
+    .modal-content {
+      height: 90vh; /* Usa quase toda a tela em celulares */
+    }
+  
+    .premium-title {
+      font-size: 20px;
+    }
+  
+    .premium-price {
+      font-size: 18px;
+    }
+  
+    button {
+      width: 100%; /* Botões maiores em telas pequenas */
+    }
+  }
+  

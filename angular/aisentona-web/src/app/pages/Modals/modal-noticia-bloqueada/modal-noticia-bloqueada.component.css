@@ -1,0 +1,57 @@
+/* Animação para o modal subir de baixo para cima */
+.modal-content {
+  position: fixed;
+  bottom: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  height: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  animation: slideUp 1s ease-out forwards;
+  padding: 16px;
+}
+
+/* Ícone premium */
+.premium-icon {
+  font-size: 40px;
+  color: #fbc02d; /* Dourado */
+  margin-right: 8px;
+}
+
+/* Animação para o modal subir da parte inferior até o centro da tela */
+@keyframes slideUp {
+  0% {
+    bottom: -100%;
+  }
+  100% {
+    bottom: 25%;
+  }
+}
+
+/* Efeito de fundo borrado */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Estilo dos botões */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+button {
+  width: 100%;
+}

@@ -9,6 +9,7 @@
         *ngFor="let postagem of noticiasRelacionadas | slice: 0:quantidadeNoticias"
         class="item-noticia"
         appearance="outlined"
+        (click)="navegarParaNoticia(postagem)"
       >
         <!-- Imagem -->
         <div class="imagem-descricao">
@@ -17,14 +18,14 @@
             mat-card-image
             [src]="postagem.imagem"
             alt="Imagem da notícia"
-            (click)="navegarParaNoticia(postagem.idPostagem)"
+            
           />
           <!-- Detalhes da Notícia -->
           <div class="detalhes-texto">
             <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
             <h3
               class="titulo-noticia"
-              (click)="navegarParaNoticia(postagem.idPostagem)"
+              (click)="navegarParaNoticia(postagem)"
             >
               {{ postagem.titulo }}
             </h3>

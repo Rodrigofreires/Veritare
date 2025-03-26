@@ -75,21 +75,36 @@
       <button class="botao" color="primary">Compartilhar</button>
     </mat-card-actions>
 
-    <!-- Notícias Relacionadas -->
-    <div class="lista-noticias-relacionadas">
-      <mat-card class="noticias-relacionadas-card">
-        <h2>Notícias Relacionadas</h2>
-        <mat-list class="noticias-relacionadas-list">
-          <mat-list-item *ngFor="let noticia of noticiasRelacionadas | slice:0:5">
-            <a [routerLink]="['/noticia', noticia.idPostagem]" class="noticia-link">
-              {{ noticia.titulo }}
-            </a>
-          </mat-list-item>
-        </mat-list>
+    <div class=".painel-noticias-relacionadas">
+      <h2>Veja também</h2>
+      <mat-card
+        *ngFor="let postagem of noticiasRelacionadas | slice: 0:quantidadeNoticias"
+        class="item-noticia-relacionadas"
+        appearance="outlined"
+        (click)="navegarParaNoticia(postagem)"
+      >
+        <!-- Imagem -->
+        <div class="imagem-descricao-relacionadas">
+          <img
+            class="imagem-noticia-relacionadas"
+            mat-card-image
+            [src]="postagem.imagem"
+            alt="Imagem da notícia"
+            
+          />
+          <!-- Detalhes da Notícia -->
+          <div class="detalhes-texto-relacionadas">
+            <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
+            <h3
+              class="titulo-noticia-relacionadas"
+            >
+              {{ postagem.titulo }}
+            </h3>
+            <p class="descricao-noticia-relacionadas">{{ postagem.descricao }}</p>
+          </div>
+        </div>
       </mat-card>
     </div>
-
-    <img src="assets/images/veritare-assine.png" alt="imagem-assine" class="imagem-assine">
 
   </mat-card>
 </div>

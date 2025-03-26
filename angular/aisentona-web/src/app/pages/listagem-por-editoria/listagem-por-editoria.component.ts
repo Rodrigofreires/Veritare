@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FaixaAssineVeritareComponent } from '../../shared/faixa-assine-veritare/faixa-assine-veritare.component';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-listagem-por-editoria',
@@ -42,6 +43,7 @@ export class ListagemPorEditoriaComponent {
       private _route: ActivatedRoute,
       private _noticiaService: NoticiaService,
       private _snackBarService: SnackbarService,
+      private _navigationService: NavigationService,
       private router: Router,
     ) {}
 
@@ -69,9 +71,20 @@ export class ListagemPorEditoriaComponent {
       );
     }
     
-    navegarParaNoticia(idPostagem: number): void {
-      this.router.navigate(['/noticia', idPostagem]);
-    }
+    navegarParaNoticia(infosPostagem: PostagemRequest): void {
+      // Chama o serviço que retorna a lista de editorias
+      this._noticiaService.buscarListaDeEditorias().subscribe(listaDeEditorias => {
+        // Filtra a categoria pela correspondência do id
+        const categoria = listaDeEditorias.find(editoria => editoria.id === infosPostagem.idCategoria);
+    
+        if (categoria) {
+          // Se encontrar a categoria, chama o serviço de navegação
+          this._navigationService.navegarParaNoticia(infosPostagem, categoria);
+        } else {
+          console.error('Categoria não encontrada para a postagem');
+        }
+      });
+    }    
 
     carregarMaisNoticias(): void {
       if (this.quantidadeNoticias < this.noticiasRelacionadas.length) {

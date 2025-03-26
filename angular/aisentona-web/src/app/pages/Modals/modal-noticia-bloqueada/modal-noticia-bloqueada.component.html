@@ -1,0 +1,34 @@
+<div class="backdrop"></div> <!-- Fundo escuro borrado -->
+
+<mat-card class="modal-content">
+  <!-- Cabeçalho com nome do serviço -->
+  <mat-card-header class="header-content">
+    <h2 class="premium-title">Veritare Premium</h2>
+  </mat-card-header>
+
+  <!-- Imagem destacada -->
+  <div class="premium-header">
+    <img src="assets/veritare-premium-banner.jpg" alt="Veritare Premium" class="premium-image" />
+  </div>
+
+  <mat-card-content class="modal-body">
+    <p class="premium-description">
+      Descubra conteúdos exclusivos, notícias personalizadas e benefícios incríveis que preparamos especialmente para você.
+    </p>
+
+    <!-- Preço destacado -->
+    <p class="premium-price">Apenas <strong>R$10,00/mês</strong> para uma experiência completa!</p>
+
+    <mat-divider></mat-divider>
+
+    <div *ngIf="!permissaoAtendida" class="action-buttons">
+      <button mat-raised-button color="primary" (click)="tornarSePremium()">Quero ser Premium!</button>
+    </div>
+
+    <p class="login-option">Já é Premium? <a href="#" (click)="irParaLogin()">Faça login</a> para acessar agora!</p>
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button mat-button color="warn" (click)="dialogRef.close()">Fechar</button>
+  </mat-card-actions>
+</mat-card>

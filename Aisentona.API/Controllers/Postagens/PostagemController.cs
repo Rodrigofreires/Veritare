@@ -30,14 +30,14 @@ namespace Aisentona.API.Controllers.Postagens
         }
 
         [HttpGet("{id}")]
-        public IActionResult CarregarNotícia(int id)
+        public IActionResult GetNoticiaById(int id)
         {
             if (id <= 0)
             {
                 return BadRequest("ID inválido.");
             }
 
-            PostagemRequest postagemRequest = _postagemService.CarregarPostagem(id);
+            PostagemRequest postagemRequest = _postagemService.CarregarPostagemPorId(id);
             if (postagemRequest == null)
             {
                 return NotFound();

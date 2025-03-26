@@ -49,7 +49,6 @@ editarNoticia(id: number, postagem: PostagemResponse): Observable<PostagemRespon
   return this.http.put<PostagemResponse>(url, postagem);
 }
 
-
   // EXCLUIR (DESATIVAR) NOTÍCIA
   excluirNoticia(idPostagem: number): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/postagem/ativar-desativar/${idPostagem}`, {
@@ -80,10 +79,6 @@ carregarTodasAsPostagensPorFiltro(filtros: PostagemResponse): Observable<Postage
   });
 }
 
-
-
-
-
 // LISTAR ÚLTIMAS POSTAGENS
 carregarUltimasPostagens(): Observable<PostagemRequest[]> {
   return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-ultimas-postagens`)
@@ -95,13 +90,15 @@ carregarUltimasNoticiasPremium(): Observable<PostagemRequest[]> {
 
 }
 
-
-
 //CARREGAR POSTAGENS POR EDITORIA
 carregarPostagensPorEditoria(idEditoria: number): Observable<PostagemRequest[]> {
   return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-por-editoria/${idEditoria}`)
 
 }
+
+//DIRECIONAR PARA A ROTA CORRETA DA NOTÍCIA
+
+
 
 
 

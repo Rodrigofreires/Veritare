@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
+import { NavigationService } from '../../services/navigation.service';
+import { PostagemResponse } from '../../core/interfaces/Response/Postagem';
+import { EditoriaRequest } from '../../core/interfaces/Request/Editorias';
 
 @Component({
   standalone: true,
@@ -22,6 +25,7 @@ export class BannerNoticiasPremiumComponent {
     constructor(
       private _noticiaService: NoticiaService,
       private _snackBarService: SnackbarService,
+      private _navigationService: NavigationService,
       private router: Router,
     ) {}
   
@@ -39,9 +43,21 @@ export class BannerNoticiasPremiumComponent {
         }
       );
     }
-  
-    navegarParaNoticia(idPostagem: number): void {
-      this.router.navigate(['/noticia', idPostagem]);
-    }
+
+    navegarParaNoticia(infosPostagem: PostagemRequest): void {
+      // Chama o serviço que retorna a lista de editorias
+      this._noticiaService.buscarListaDeEditorias().subscribe(listaDeEditorias => {
+        // Filtra a categoria pela correspondência do id
+        const categoria = listaDeEditorias.find(editoria => editoria.id === infosPostagem.idCategoria);
+    
+        if (categoria) {
+          // Se encontrar a categoria, chama o serviço de navegação
+          this._navigationService.onAbrirNoticia(infosPostagem, categoria);
+        } else {
+          console.error('Categoria não encontrada para a postagem');
+        }
+      });
+    }    
+    
   }
 

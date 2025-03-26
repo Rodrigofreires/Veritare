@@ -1,16 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
-import {MatListModule} from '@angular/material/list';
+import { MatListModule } from '@angular/material/list';
 import { QuillModule } from 'ngx-quill';
-import { FooterComponent } from "../../shared/footer/footer.component";
 import { AuthService } from '../../services/auth.service';
 import { LoginService } from '../../services/login.service';
+import { ListagemPorEditoriaComponent } from "../listagem-por-editoria/listagem-por-editoria.component";
+import { NavigationService } from '../../services/navigation.service';
+import { ModalNoticiaBloqueadaComponent } from '../Modals/modal-noticia-bloqueada/modal-noticia-bloqueada.component';
 
 @Component({
   standalone: true,
@@ -22,7 +25,8 @@ import { LoginService } from '../../services/login.service';
     CommonModule,
     MatListModule,
     QuillModule,
-],
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './pagina-noticia.component.html',
   styleUrl: './pagina-noticia.component.css'
 })
@@ -30,14 +34,12 @@ export class PaginaNoticiaComponent {
 
   constructor(
     private _noticiaService: NoticiaService,
+    private _navigationService: NavigationService,
     private _route: ActivatedRoute,
     private _router: Router,
     private _authService: AuthService,
-    private _loginService: LoginService,
-    private _snackBarService : SnackbarService
-    
-
-  
+    private dialog: MatDialog,
+    private _snackBarService: SnackbarService
   ) {}
 
   ngOnInit(): void {
@@ -45,6 +47,7 @@ export class PaginaNoticiaComponent {
     this.carregaNoticia();
   }
 
+  quantidadeNoticias: number = 10;
   textoSelecionado: string = 'ia'; // Exibe o texto da IA por padrão
   infosPostagem: PostagemRequest = {} as PostagemRequest;
   noticiasRelacionadas: PostagemRequest[] = [];
@@ -61,12 +64,12 @@ export class PaginaNoticiaComponent {
 
   carregaNoticia(): void {
     const id = this._route.snapshot.paramMap.get('id'); 
-    
+
     if (!id) {
       this._snackBarService.MostrarErro('ID inválido ou ausente na URL');
       return;
     }
-  
+
     this._noticiaService.buscarPostagemPorId(+id).subscribe(
       (dados) => {
         this.infosPostagem = dados;
@@ -79,26 +82,22 @@ export class PaginaNoticiaComponent {
       }
     );
   }
-  
 
   editarNoticia(): void {
     const id = this._route.snapshot.paramMap.get('id');
-  
     if (!id) {
       this._snackBarService.MostrarErro('ID da postagem não encontrado.');
       return;
     }
-  
     this._router.navigate([`/editar-noticia/${id}`]);
   }
-  
 
   carregaNoticiasRelacionadas(): void {
     if (!this.infosPostagem?.idCategoria) {
       console.warn('ID da categoria não encontrado. Não é possível carregar notícias relacionadas.');
       return;
     }
-  
+
     this._noticiaService.carregarPostagensPorEditoria(this.infosPostagem.idCategoria).subscribe(
       (dados: PostagemRequest[]) => {
         this.noticiasRelacionadas = dados;
@@ -109,14 +108,25 @@ export class PaginaNoticiaComponent {
       }
     );
   }
-  
 
   acessarEditarNoticia(): boolean {
-    return this._authService.acessarEditarNoticia(); // Somente usuários com permissões 3;4 e 5
+    return this._authService.acessarEditarNoticia(); // Somente usuários com permissões adequadas podem editar
   }
 
+  navegarParaNoticia(infosPostagem: PostagemRequest): void {
+    // Chama o serviço que retorna a lista de editorias
+    this._noticiaService.buscarListaDeEditorias().subscribe(listaDeEditorias => {
+      // Filtra a categoria pela correspondência do id
+      const categoria = listaDeEditorias.find(editoria => editoria.id === infosPostagem.idCategoria);
+  
+      if (categoria) {
+        // Se encontrar a categoria, chama o serviço de navegação
+        this._navigationService.navegarParaNoticia(infosPostagem, categoria);
+      } else {
+        console.error('Categoria não encontrada para a postagem');
+      }
+    });
+  }    
 
 
 }
-  
-

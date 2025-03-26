@@ -4,6 +4,8 @@ import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../environments/environment';
 import { PlatformService } from './platform.service';
 import { LoginService } from './login.service';
+import { ModalNoticiaBloqueadaComponent } from '../pages/Modals/modal-noticia-bloqueada/modal-noticia-bloqueada.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -13,17 +15,14 @@ export class AuthService {
   private readonly TOKEN_KEY = 'token';
   private readonly API = environment.apiUrl; // A URL da API é extraída do environment
 
-  //private readonly API_AUTH = 'auth'; // O endpoint de autenticação é armazenado em uma constante
-
   constructor(
     private http: HttpClient,
     private platformService: PlatformService,
-    private _loginSerivce: LoginService
-  
+    private _loginSerivce: LoginService,
+    private _dialog: MatDialog,  // Somente MatDialog, não precisa do componente aqui
   ) {}
 
   // Verificar se o Token expirou
-
   isTokenExpired(): boolean {
     const token = this.getToken();
     if (!token) {
@@ -119,11 +118,52 @@ export class AuthService {
 
   getUserPermissions(): string[] {
     const decodedToken = this.getDecodedToken();
-    return decodedToken?.Permission || [];
+    return decodedToken?.role || [];
   }
 
+  // Método para verificar se o usuário tem permissão para ver conteúdo premium
+  podeVisualizarNoticiaPremium(): boolean {
+    const decodedToken = this.getDecodedToken();
+    if (!decodedToken) {
+      return false;
+    }
+    const userPermissions = decodedToken?.role || [];
+    // Verifica se o usuário tem a permissão 'VisualizarPostsPremium'
+    return userPermissions.includes('VisualizarPostsPremium');
+  }
 
+  // Método para mostrar o modal de conteúdo bloqueado
+  exibirModalNoticiaBloqueada(): void {
+    // Passa a permissão no modal
+    this._dialog.open(ModalNoticiaBloqueadaComponent, {
+      width: '400px',
+      panelClass: 'premium-modal',
+      data: {
+        permissaoAtendida: this.podeVisualizarNoticiaPremium(), // Passa a verificação de permissão
+      },
+    });
+  }
+  
 
+  acessarNoticiaPremium(): void {
+    if (!this.isLoggedIn()) {
+      // Usuário não está logado, não permite acesso à notícia premium
+      this._dialog.open(ModalNoticiaBloqueadaComponent, {
+        panelClass: 'modal-noticia-bloqueada', // Classe personalizada para o modal
+      });
+      return;
+    }
+
+    if (!this.podeVisualizarNoticiaPremium()) {
+      // O token existe, mas o usuário não tem permissão para ver o conteúdo premium
+      this._dialog.open(ModalNoticiaBloqueadaComponent, {
+        panelClass: 'modal-noticia-bloqueada', // Classe personalizada para o modal
+      });
+    } else {
+      // O usuário está logado e tem permissão para visualizar a notícia premium
+      console.log("Usuário pode visualizar a notícia premium");
+    }
+}
 
 
 
