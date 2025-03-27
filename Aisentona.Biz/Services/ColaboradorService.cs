@@ -1,6 +1,5 @@
 ﻿using Aisentona.DataBase;
 using System.Security.Principal;
-using System.Data.SqlTypes;
 using Aisentona.Entities.Request;
 using Aisentona.Enumeradores;
 using Aisentona.Biz.Validators;
@@ -8,10 +7,6 @@ using FluentValidation.Results;
 using Aisentona.Entities.Response;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Aisentona.DataBase.Aisentona.DataBase;
-using Aisentona.Biz.Mappers;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System.Linq;
 
 namespace Aisentona.Biz.Services
 {
@@ -67,8 +62,7 @@ namespace Aisentona.Biz.Services
                         Contato = colaborador.Ds_ContatoCadastro,
                         NomeTipoDeUsuario = tipoDoUsuario?.Nm_TipoUsuario,
                         DataDeNascimento = colaborador.DT_Nascimento,
-                        AcessoPremium = colaborador.AcessoUsuario?.AcessoPremium,
-                        PremiumExpiraEm = colaborador.AcessoUsuario?.Dt_ExpiracaoPremium,
+                        AcessoPremium = colaborador.AcessoUsuario?.Fl_AcessoPremium
                     };
 
 
@@ -121,8 +115,7 @@ namespace Aisentona.Biz.Services
             perfilDeUsuarioRequest.NomeTipoDeUsuario = tipoDoUsuario.Nm_TipoUsuario;
             perfilDeUsuarioRequest.DataDeNascimento = colaborador.DT_Nascimento;
             perfilDeUsuarioRequest.TempoDeAcesso = colaborador.DT_Criacao;
-            perfilDeUsuarioRequest.AcessoPremium = colaborador.AcessoUsuario.AcessoPremium;
-            perfilDeUsuarioRequest.PremiumExpiraEm = colaborador.AcessoUsuario?.Dt_ExpiracaoPremium;
+            perfilDeUsuarioRequest.AcessoPremium = colaborador.AcessoUsuario.Fl_AcessoPremium;
 
             return perfilDeUsuarioRequest;
 
@@ -168,13 +161,13 @@ namespace Aisentona.Biz.Services
             novoColaborador.PasswordSalt = salt;
             novoColaborador.Ds_UltimaAlteracao = GetWindowsUsername();
 
-            novoColaborador.DT_Criacao = DateTime.UtcNow;
+            novoColaborador.DT_Criacao = DateTime.Now;
             novoColaborador.DT_Nascimento = colaboradorResponse.DataNascimento;
-            novoColaborador.DT_UltimaAlteracao =  DateTime.UtcNow;
+            novoColaborador.DT_UltimaAlteracao =  DateTime.Now;
 
-            novoColaborador.AcessoUsuario.Dt_InicioAcesso = DateTime.UtcNow;
-            novoColaborador.AcessoUsuario.Dt_FimAcesso = DateTime.UtcNow;
-            novoColaborador.AcessoUsuario.AcessoPremium = false;
+            novoColaborador.AcessoUsuario.Dt_InicioAcesso = DateTime.Now;
+            novoColaborador.AcessoUsuario.Dt_FimAcesso = DateTime.Now;
+            novoColaborador.AcessoUsuario.Fl_AcessoPremium = false;
 
                 _context.CF_Colaborador.Add(novoColaborador);
                 _context.SaveChanges();
@@ -215,10 +208,10 @@ namespace Aisentona.Biz.Services
             perfilNaoEditado.DT_Nascimento = perfilAtualizado.DataDeNascimento;
             perfilNaoEditado.Id_TipoUsuario = filtroDeTipoUsuario;
 
-            if (perfilNaoEditado.AcessoUsuario.AcessoPremium)
+            if (perfilNaoEditado.AcessoUsuario.Fl_AcessoPremium)
             {
                 perfilNaoEditado.AcessoUsuario.Dt_InicioAcesso = perfilAtualizado.TempoDeAcesso;
-                perfilNaoEditado.AcessoUsuario.AcessoPremium = (bool)perfilAtualizado.AcessoPremium;
+                perfilNaoEditado.AcessoUsuario.Fl_AcessoPremium = (bool)perfilAtualizado.AcessoPremium;
                 perfilNaoEditado.AcessoUsuario.Dt_FimAcesso = perfilAtualizado.PremiumExpiraEm;
             }
 

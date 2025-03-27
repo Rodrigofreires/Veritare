@@ -9,8 +9,10 @@ using Aisentona.Biz.Validators;
 using Aisentona.Biz.Mappers;
 using Aisentona.Biz.Services.Compartilhar;
 using Microsoft.OpenApi.Models;
+using Aisentona.Biz.Services.Premium;
+using Aisentona.Biz.Services.Background;
 
-    var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
     var configuration = builder.Configuration; // Defina a variável configuration
 
     // Adiciona o ApplicationDbContext e configura a string de conexão
@@ -41,9 +43,12 @@ using Microsoft.OpenApi.Models;
     builder.Services.AddScoped<AuthService>();
     builder.Services.AddScoped<DateMapper>();
     builder.Services.AddScoped<WeatherService>();
+    builder.Services.AddScoped<PremiumService>();
+    builder.Services.AddHostedService<PremiumExpirationService>();
 
 
-    builder.Services.AddScoped<TokenService>(provider =>
+
+builder.Services.AddScoped<TokenService>(provider =>
     {
         var configuration = provider.GetRequiredService<IConfiguration>(); // Obtém a configuração
         var jwtSettings = configuration.GetSection("JwtSettings");
