@@ -1,12 +1,19 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
   selector: 'app-faixa-assine-veritare',
-  imports: [],
   templateUrl: './faixa-assine-veritare.component.html',
-  styleUrl: './faixa-assine-veritare.component.css'
+  styleUrls: ['./faixa-assine-veritare.component.css']
 })
 export class FaixaAssineVeritareComponent {
 
+  constructor(
+    private router: Router) 
+    {}
+
+  navigateToAssine() {
+    this.router.navigate(['/assine']);
+  }
 }

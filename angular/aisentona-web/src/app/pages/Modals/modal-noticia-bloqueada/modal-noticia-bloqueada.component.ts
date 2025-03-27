@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -24,25 +25,36 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrl: './modal-noticia-bloqueada.component.css'
 })
 export class ModalNoticiaBloqueadaComponent {
-irParaLogin() {
-throw new Error('Method not implemented.');
-}
-tornarSePremium() {
-throw new Error('Method not implemented.');
-}
 
-  // Se a permissão for atendida, o modal será fechado
   permissaoAtendida = false;
 
   constructor(
     
     public dialogRef: MatDialogRef<ModalNoticiaBloqueadaComponent>,
 
+    private router: Router,
+
     @Inject(MAT_DIALOG_DATA) public data: { permissaoAtendida: boolean }
   ) {}
 
   ngOnInit() {    
 
+  }
+
+    // Método para fechar o modal
+    closeModal() {
+      // Seu código para fechar o modal (ex: setando uma variável de controle)
+      const modal = document.getElementById('modal'); // Supondo que o modal tenha id 'modal'
+      if (modal) {
+        modal.style.display = 'none'; // Alterando o display para ocultar o modal
+      }
+    }
+
+  // Método para navegar e forçar o recarregamento da página
+  navigateToAssine() {
+    this.router.navigate(['/assine']).then(() => {
+      location.reload(); // Força o recarregamento da página
+    });
   }
 
 }

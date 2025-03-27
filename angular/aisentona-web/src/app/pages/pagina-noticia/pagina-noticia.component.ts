@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,8 +10,6 @@ import { SnackbarService } from '../../services/snackbar.service';
 import { MatListModule } from '@angular/material/list';
 import { QuillModule } from 'ngx-quill';
 import { AuthService } from '../../services/auth.service';
-import { LoginService } from '../../services/login.service';
-import { ListagemPorEditoriaComponent } from "../listagem-por-editoria/listagem-por-editoria.component";
 import { NavigationService } from '../../services/navigation.service';
 import { ModalNoticiaBloqueadaComponent } from '../Modals/modal-noticia-bloqueada/modal-noticia-bloqueada.component';
 
@@ -28,9 +26,20 @@ import { ModalNoticiaBloqueadaComponent } from '../Modals/modal-noticia-bloquead
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './pagina-noticia.component.html',
-  styleUrl: './pagina-noticia.component.css'
+  styleUrls: ['./pagina-noticia.component.css']
 })
 export class PaginaNoticiaComponent {
+
+  quantidadeNoticias: number = 10;
+  textoSelecionado: string = 'ia'; // Exibe o texto da IA por padrão
+  infosPostagem: PostagemRequest = {} as PostagemRequest;
+  noticiasRelacionadas: PostagemRequest[] = [];
+  isLoggedIn: boolean = false;
+  editorOptions = {
+    theme: 'snow',
+    readOnly: true,
+    formats: ['bold', 'italic', 'underline', 'strike', 'link', 'image', 'blockquote', 'code-block']
+  };
 
   constructor(
     private _noticiaService: NoticiaService,
@@ -44,19 +53,21 @@ export class PaginaNoticiaComponent {
 
   ngOnInit(): void {
     this.isLoggedIn = this._authService.isLoggedIn() ?? false;
-    this.carregaNoticia();
+    // Subscreve as mudanças na URL
+    
+    this._route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.carregaNoticia(); // Recarrega a notícia automaticamente com o novo ID
+      }
+    });
   }
 
-  quantidadeNoticias: number = 10;
-  textoSelecionado: string = 'ia'; // Exibe o texto da IA por padrão
-  infosPostagem: PostagemRequest = {} as PostagemRequest;
-  noticiasRelacionadas: PostagemRequest[] = [];
-  isLoggedIn: boolean = false;
-  editorOptions = {
-    theme: 'snow',
-    readOnly: true,
-    formats: ['bold', 'italic', 'underline', 'strike', 'link', 'image', 'blockquote', 'code-block']
-  };
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['routeParam']) {
+      this.carregaNoticia(); // Carrega automaticamente quando o parâmetro da URL mudar
+    }
+  }
 
   mostrarTexto(opcao: string): void {
     this.textoSelecionado = opcao;
@@ -64,25 +75,24 @@ export class PaginaNoticiaComponent {
 
   carregaNoticia(): void {
     const id = this._route.snapshot.paramMap.get('id'); 
-  
+    
     if (!id) {
       this._snackBarService.MostrarErro('ID inválido ou ausente na URL');
       return;
     }
-  
+
     this._noticiaService.buscarPostagemPorId(+id).subscribe(
       (dados) => {
         this.infosPostagem = dados;
-  
+
         // Verifica se a notícia é premium e se o usuário tem acesso
         if (this.infosPostagem?.premiumOuComum === true) {
-          // Se a notícia é premium, verificar se o usuário pode visualizar
           if (!this._authService.podeVisualizarNoticiaPremium()) {
-            this._authService.acessarNoticiaPremium(); // Abre o modal bloqueando o conteúdo
-            return; // Não continuar carregando o restante da notícia
+            this._authService.acessarNoticiaPremium();
+            return;
           }
         }
-  
+
         // Carrega notícias relacionadas, se existir a categoria
         if (this.infosPostagem?.idCategoria) {
           this.carregaNoticiasRelacionadas();
@@ -110,12 +120,11 @@ export class PaginaNoticiaComponent {
     }
 
     this._noticiaService.carregarPostagensPorEditoria(this.infosPostagem.idCategoria).subscribe(
-      (dados: PostagemRequest[]) => {
+      (dados) => {
         this.noticiasRelacionadas = dados;
       },
       (erro) => {
-        this._snackBarService.MostrarErro('Erro ao carregar as notícias:', erro);
-        console.error('Erro ao carregar as notícias:', erro);
+        this._snackBarService.MostrarErro('Erro ao carregar as notícias relacionadas:', erro);
       }
     );
   }
@@ -125,19 +134,13 @@ export class PaginaNoticiaComponent {
   }
 
   navegarParaNoticia(infosPostagem: PostagemRequest): void {
-    // Chama o serviço que retorna a lista de editorias
     this._noticiaService.buscarListaDeEditorias().subscribe(listaDeEditorias => {
-      // Filtra a categoria pela correspondência do id
       const categoria = listaDeEditorias.find(editoria => editoria.id === infosPostagem.idCategoria);
-  
       if (categoria) {
-        // Se encontrar a categoria, chama o serviço de navegação
         this._navigationService.onAbrirNoticia(infosPostagem, categoria);
       } else {
         console.error('Categoria não encontrada para a postagem');
       }
     });
-  }    
-
-
+  }
 }

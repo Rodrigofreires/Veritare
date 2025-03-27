@@ -253,7 +253,7 @@ namespace Aisentona.Biz.Services.Postagens
             List<Postagem> listaDePostagensFiltradas = _context.CF_Postagem
                 .Include(p => p.Categoria) // Inclui a relação com a Categoria
                 .Include(p => p.Status)
-                .Where(p => p.Fl_Ativo == true && p.Id_Categoria == IdCategoria && p.Fl_Premium == false) // Filtra apenas as postagens ativas
+                .Where(p => p.Fl_Ativo == true && p.Id_Categoria == IdCategoria) // Filtra apenas as postagens ativas
                 .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
                 .ToList();
 

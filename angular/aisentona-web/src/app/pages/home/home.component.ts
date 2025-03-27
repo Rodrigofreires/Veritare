@@ -6,6 +6,8 @@ import { ListaNoticiasComponent } from '../../shared/lista-noticias/lista-notici
 import { WeatherComponent } from "../../shared/weather/weather.component";
 import { BannerNoticiasPremiumComponent } from "../../shared/banner-noticias-premium/banner-noticias-premium.component";
 import { FaixaAssineVeritareComponent } from "../../shared/faixa-assine-veritare/faixa-assine-veritare.component";
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -16,9 +18,22 @@ import { FaixaAssineVeritareComponent } from "../../shared/faixa-assine-veritare
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomeComponent implements OnInit {
+
+    constructor(
+    private _route: ActivatedRoute,
+    private router: Router,
+  
+    ) {}
   
   ngOnInit(): void {
     
   }
+
+    // Método para navegar e forçar o recarregamento da página
+    navigateToAssine() {
+      this.router.navigate(['/assine']).then(() => {
+
+      });
+    }
  
 }

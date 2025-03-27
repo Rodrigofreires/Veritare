@@ -15,6 +15,8 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { PerfilGuard } from '../guards/perfil.guard';
 import { AuthGuard } from '../guards/guard';
 import { PremiumGuard } from '../guards/premium.guard';
+import { PricingComponent } from './pages/pricing/pricing.component';
+
 
 export const routes: Routes = [
   {
@@ -30,7 +32,6 @@ export const routes: Routes = [
         path: 'noticia/:editoria/:tipoPost/:ano/:titulo/:id',
         component: PaginaNoticiaComponent,
         canActivate: [PremiumGuard], // Protege a rota
-        runGuardsAndResolvers: 'always'
       },
 
 
@@ -74,6 +75,7 @@ export const routes: Routes = [
     children: [
       { path: 'login', component: LoginComponent },
       { path: 'cadastro-de-usuario', component: CadastroUsuarioComponent },
+      { path: 'assine', component: PricingComponent },
     ],
   },
 ];

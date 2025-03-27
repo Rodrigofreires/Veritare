@@ -80,11 +80,11 @@
   }
 
   .noticia-conteudo {
-    font-size: 16px;
+    font-size: 16p !important;
     line-height: 1.5;
     color: #333;
   }
-  
+
   .mat-card-actions {
     display: flex;
     justify-content: flex-end;

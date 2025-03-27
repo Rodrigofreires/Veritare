@@ -50,6 +50,7 @@ export const MY_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
   ],
 })
+
 export class LoginComponent {
   loginValid: boolean = true;
   emailTouched: boolean = false;

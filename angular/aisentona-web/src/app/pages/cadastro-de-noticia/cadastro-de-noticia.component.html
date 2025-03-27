@@ -44,16 +44,16 @@
 
         <div class="textos-principais">
             <!-- Gerado Por Humano -->
-            <h3>GERADO POR HUMANO</h3>
+            <h3>ONDE ENCONTRAR A MATÉRIA ORIGINAL</h3>
             <div class="texto-da-noticia">
                 <quill-editor class="texto-da-noticia"
                   [(ngModel)]="infosPostagem.conteudo"
-                  [style.height]="'800px'">
+                  [style.height]="'500px'">
                 </quill-editor>
             </div>
         
             <!-- Gerado Por AISENTONA -->
-            <h3>GERADO PELA AISENTONA</h3>
+            <h3>MATÉRIA GERADA POR VERITARE</h3>
                 <div class="texto-da-noticia">
                     <quill-editor class="texto-da-noticia"
                       [(ngModel)]="infosPostagem.textoAlteradoPorIA"
@@ -61,7 +61,7 @@
                     </quill-editor>
                 </div>
             <!-- PALAVRAS CORTADAS-->
-            <h3>PALAVRAS CORTADAS</h3>
+            <h3>NOTÍCIA COMENTADA POR VERITARE:</h3>
             <div class="texto-da-noticia">
                 <quill-editor class="texto-da-noticia"
                   [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"

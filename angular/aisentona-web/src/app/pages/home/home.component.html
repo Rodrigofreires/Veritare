@@ -4,7 +4,7 @@
 <app-container>
     <app-banner-noticias-premium></app-banner-noticias-premium>
     <app-banner></app-banner>
-    <img src="assets/images/veritare-assine.png" alt="imagem-assine" class="imagem-assine" routerLink="/assine">
+    <img src="assets/images/veritare-assine.png" alt="imagem-assine" class="imagem-assine" (click)="navigateToAssine()" style="cursor:pointer;">
     <app-lista-noticias></app-lista-noticias>
 </app-container>
 

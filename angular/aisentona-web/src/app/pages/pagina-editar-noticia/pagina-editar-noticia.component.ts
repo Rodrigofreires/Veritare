@@ -198,7 +198,7 @@ export class PaginaEditarNoticiaComponent implements OnInit {
     this._noticiaService.editarNoticia(this.infosPostagem.idPostagem, this.infosPostagem).subscribe(
       () => {
         this._snackBarService.MostrarSucesso('Notícia editada com sucesso!');
-        this._router.navigate(['/noticia', this.infosPostagem.idPostagem]);
+        this._router.navigate(['/painel-de-controle']);
       },
       (error) => {
         this._snackBarService.MostrarErro('Erro ao salvar edição. Verifique os dados.', error);

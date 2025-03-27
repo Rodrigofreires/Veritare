@@ -18,6 +18,7 @@ import { ImagemService } from '../../services/imagem-service';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { ContentChange, QuillModule } from 'ngx-quill';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro-de-noticia',
@@ -59,7 +60,8 @@ export class CadastroDeNoticiaComponent {
     private _noticiaService: NoticiaService,
     private _snackBarService: SnackbarService,
     private _imagemService: ImagemService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _router: Router, 
   ) {}
 
   ngOnInit(): void {
@@ -128,6 +130,8 @@ export class CadastroDeNoticiaComponent {
     this._noticiaService.criarPostagem(this.infosPostagem).subscribe(
       (response) => {
         this._snackBarService.MostrarSucesso('Notícia salva com sucesso!');
+        this._router.navigate(['/painel-de-controle']);
+
       },
       (error) => {
         console.error('Erro ao publicar notícia:', error);

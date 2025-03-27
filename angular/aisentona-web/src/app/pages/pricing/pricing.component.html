@@ -1,0 +1,70 @@
+<div class="container-principal">
+    <!-- Barra de navegação -->
+    <mat-toolbar color="primary" class="navbar">
+      <span class="logo">VERITARE</span>
+      <span class="spacer"></span>
+      <button mat-raised-button color="accent" class="botao-assinar" (click)="navigateToHome()">IR PARA O SITE</button>
+    </mat-toolbar>
+    
+    <!-- Seção de Preços e Planos -->
+    <div id="planos" class="pricing-container">
+      <h2>Seja premium e transforme o jornalismo no Brasil!</h2>
+      <p>Apoie a verdade com o Veritare, seu jornal isento de jornalistas</p>
+  
+      <div class="plans">
+        <mat-card class="plan" *ngFor="let plan of plans">
+          <h3>{{ plan.name }}</h3>
+          <p>{{ plan.description }}</p>
+          <h2>{{ plan.price }}</h2>
+          <button mat-raised-button class="botao-assinar">QUERO SER VERITARE</button>
+          <ul>
+            <li *ngFor="let feature of plan.features">✔ {{ feature }}</li>
+          </ul>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Dúvidas Frequentes -->
+    <div id="faq" class="faq-container">
+        <h3 class="duvidas-frequentes">Dúvidas Frequentes</h3>
+        <mat-accordion class="faq-accordion">
+          <mat-expansion-panel class="faq-panel">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="faq-title">
+                Como posso assinar o Veritare?
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="texto-resposta">Para assinar, basta clicar no botão 'QUERO SER VERITARE' e seguir os passos para efetuar o pagamento.</p>
+          </mat-expansion-panel>
+    
+          <mat-expansion-panel class="faq-panel">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="faq-title">
+                Como posso cancelar minha assinatura?
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="texto-resposta"> Você pode cancelar sua assinatura a qualquer momento acessando sua conta e selecionando a opção de cancelamento.</p>
+          </mat-expansion-panel>
+    
+          <mat-expansion-panel class="faq-panel">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="faq-title">
+                Quais formas de pagamento são aceitas?
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <p class="texto-resposta"> O Veritare aceita cartões de crédito e PIX.</p>
+          </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+    <!-- Seção de Contato -->
+    <div id="faq" class="faq-container" style=" display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;">
+        <h3 class="duvidas-frequentes">Entre em contato</h3>
+        <img src="assets/images/whatsap-ia.png" (click)="openWhatsapp()" alt="imagem-assine" class="imagem-assine" style="cursor:pointer; width: 150px; height: auto;">
+        <h2>Envie um e-mail para: <u>contato&#64;veritare.com.br</u></h2>
+
+    </div>
+
