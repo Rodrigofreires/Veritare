@@ -6,8 +6,6 @@ import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
 import { NavigationService } from '../../services/navigation.service';
-import { PostagemResponse } from '../../core/interfaces/Response/Postagem';
-import { EditoriaRequest } from '../../core/interfaces/Request/Editorias';
 
 @Component({
   standalone: true,

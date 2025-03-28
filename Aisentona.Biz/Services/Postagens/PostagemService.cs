@@ -51,19 +51,20 @@ namespace Aisentona.Biz.Services.Postagens
             return MapearParaDTO(ultimasPostagens);
         }
 
-        public List<PostagemRequest> ListarPostagens()
+        public List<PostagemRequest> ListarPostagensPaginadas(int pagina, int quantidadePorPagina)
         {
-
-            List<Postagem> postagens = _context.CF_Postagem
-                .Include(p => p.Categoria) // Inclui a relação com a Categoria
+            var postagens = _context.CF_Postagem
+                .Include(p => p.Categoria)
                 .Include(p => p.Status)
-                .Where(p => p.Fl_Ativo == true) // Filtra apenas as postagens ativas
-                .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
+                .Where(p => p.Fl_Ativo == true)
+                .OrderByDescending(p => p.DT_Criacao)
+                .Skip((pagina - 1) * quantidadePorPagina) // Pula os registros das páginas anteriores
+                .Take(quantidadePorPagina) // Pega apenas a quantidade necessária
                 .ToList();
 
-            // Mapeia as postagens para PostagemDTO
             return MapearParaDTO(postagens);
         }
+
 
         public List<PostagemRequest> ListarPostagensComFiltro(PostagemResponse postagemResponse)
         {

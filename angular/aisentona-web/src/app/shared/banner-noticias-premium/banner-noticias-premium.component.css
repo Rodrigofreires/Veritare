@@ -15,14 +15,34 @@
     overflow: hidden;
     cursor: pointer;
   }
-  
-  /* Imagem de cada notícia */
-  .imagem-banner-premium {
+
+  .imagem-container {
+    position: relative;
     width: 100%;
-    height: 450px;  /* Definindo uma altura fixa para a imagem */
-    object-fit: cover;
-    border-radius: 8px;
   }
+
+  /* Etiqueta fixa no topo da imagem */
+  .veritare-card-premium {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 170px;
+    background: transparent;
+  }
+  
+
+  .mat-card-image {
+    background: transparent !important;
+  }
+
+/* Imagem de cada notícia */
+.imagem-banner-premium {
+  width: 100%;
+  height: 450px;  /* Definindo uma altura fixa para a imagem */
+  object-fit: cover;
+  border-radius: 8px;
+}
   
   /* Texto sobreposto na imagem */
   .texto-sobre-imagem {

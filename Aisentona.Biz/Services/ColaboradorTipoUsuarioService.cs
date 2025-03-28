@@ -52,7 +52,7 @@ namespace Aisentona.Biz.Services
                 Nm_TipoUsuario = nomeTipoUsuario,
                 Id_TipoUsuario = id_TipoUsuario,
                 Fl_Ativo = true,
-                DT_Criacao = DateTime.UtcNow,
+                DT_Criacao = DateTime.Now,
             };
 
             // Lógica para salvar o colaborador no banco de dados

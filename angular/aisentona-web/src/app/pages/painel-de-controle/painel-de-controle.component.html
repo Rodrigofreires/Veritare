@@ -87,7 +87,7 @@
             </button>
           </div>
           
-          <table mat-table [dataSource]="infosPostagem" class="mat-elevation-z8">
+          <table mat-table [dataSource]="infosTodasAsPostagem" class="mat-elevation-z8">
   
             <!-- Título Column -->
             <ng-container matColumnDef="titulo">
@@ -147,9 +147,9 @@
           </table>
           
           <mat-paginator
-          [pageSize]="10"
-          [pageSizeOptions]="[10, 20]"
-          showFirstLastButtons>
+          [pageSizeOptions]="[10, 20, 50]"
+          showFirstLastButtons
+          (page)="onPageChange($event)">
         </mat-paginator>
           
         </mat-card>

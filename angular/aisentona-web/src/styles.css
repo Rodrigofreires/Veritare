@@ -33,13 +33,18 @@ body {
   margin-bottom: 20px; /* Adiciona margem inferior */
 }
 
-.botao {
-  padding: 10px 20px; /* Aumenta o espaço interno do botão */
-  font-size: 16px; /* Aumenta o tamanho da fonte */
-  font-weight: bold; /* Deixa o texto em negrito */
-  border-radius: 8px; /* Arredonda as bordas */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona sombra ao botão */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
+/* Botão de assinatura */
+.botao-global {
+  background: linear-gradient(135deg, #070C18, #14153E, #0A0C1B);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
 }
 
 .botao:hover {

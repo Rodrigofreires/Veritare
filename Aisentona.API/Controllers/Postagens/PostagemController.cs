@@ -45,16 +45,19 @@ namespace Aisentona.API.Controllers.Postagens
             return Ok(postagemRequest);
         }
 
-        [HttpGet("listar-postagens")]
-        public IActionResult CarregarListaDePostagens()
+        [HttpGet("listar-postagens-paginadas")]
+        public IActionResult CarregarListaDePostagens(int pagina = 1, int quantidadePorPagina = 10)
         {
-            List<PostagemRequest> listaDePostagens = _postagemService.ListarPostagens();
-            if (listaDePostagens == null)
+            var listaDePostagens = _postagemService.ListarPostagensPaginadas(pagina, quantidadePorPagina);
+            if (listaDePostagens == null || !listaDePostagens.Any())
             {
                 return NotFound();
             }
             return Ok(listaDePostagens);
         }
+
+
+
 
         [HttpPost("listar-postagens/filtros")]
         public IActionResult CarregarTodasAsPostagensPorFiltro([FromBody] PostagemResponse filtro)

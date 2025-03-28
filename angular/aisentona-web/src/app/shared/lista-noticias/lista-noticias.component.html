@@ -27,5 +27,13 @@
       </div>
     </mat-card>
   </div>
+
   <app-weather class="weather-widget"></app-weather>
 </div>
+  <!-- Botão "Carregar mais" -->
+  <div class="botao-carregar-mais">
+    <button class="botao-global" (click)="carregarMaisPostagens()" *ngIf="!carregandoMais">
+      Carregar mais
+    </button>
+    <p *ngIf="carregandoMais">Carregando...</p>
+  </div>

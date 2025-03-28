@@ -84,7 +84,7 @@ body {
 }
 
 /* Botão de assinatura */
-.botao-assinar {
+.botao-global {
   background: linear-gradient(135deg, #070C18, #14153E, #0A0C1B);
   color: white;
   font-size: 1.2rem;

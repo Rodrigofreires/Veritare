@@ -36,7 +36,7 @@ namespace Aisentona.Biz.Services
             {
                 Nm_Apelido = telefoneRequest.Apelido,
                 Ds_Numero = telefoneRequest.NumeroContato,
-                DT_Criacao = DateTime.UtcNow,
+                DT_Criacao = DateTime.Now,
                 Ds_UltimaAlteracao = GetWindowsUsername(),
                 Id_Usuario = telefoneRequest.UsuarioId,
             };
@@ -61,7 +61,7 @@ namespace Aisentona.Biz.Services
             colaboradorTelefone.Ds_Numero = telefoneRequest.NumeroContato;
             colaboradorTelefone.DT_UltimaAlteracao = DateTime.Now;
             colaboradorTelefone.Ds_UltimaAlteracao = GetWindowsUsername();
-            colaboradorTelefone.DT_UltimaAlteracao = DateTime.UtcNow;
+            colaboradorTelefone.DT_UltimaAlteracao = DateTime.Now;
 
             if (colaboradorTelefone.DT_UltimaAlteracao < (DateTime)SqlDateTime.MinValue)
             {

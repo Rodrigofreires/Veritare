@@ -3,7 +3,7 @@
     <mat-toolbar color="primary" class="navbar">
       <span class="logo">VERITARE</span>
       <span class="spacer"></span>
-      <button mat-raised-button color="accent" class="botao-assinar" (click)="navigateToHome()">IR PARA O SITE</button>
+      <button mat-raised-button color="accent" class="botao-global" (click)="navigateToHome()">IR PARA O SITE</button>
     </mat-toolbar>
 
     <!-- Seção de Apresentação -->
@@ -25,7 +25,7 @@
           <h3>{{ plan.name }}</h3>
           <p>{{ plan.description }}</p>
           <h2>{{ plan.price }}</h2>
-          <button mat-raised-button class="botao-assinar">QUERO SER VERITARE</button>
+          <button mat-raised-button class="botao-global">QUERO SER VERITARE</button>
           <ul>
             <li *ngFor="let feature of plan.features">✔ {{ feature }}</li>
           </ul>

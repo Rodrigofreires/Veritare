@@ -69,6 +69,18 @@ carregarTodasAsPostagens(): Observable<PostagemRequest[]> {
     }
   });
 }
+// LISTAR POSTAGENS COM PAGINAÇÃO
+carregarPostagensPaginadas(pagina: number, quantidadePorPagina: number): Observable<PostagemRequest[]> {
+  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-postagens-paginadas`, {
+    params: {
+      pagina: pagina.toString(),
+      quantidadePorPagina: quantidadePorPagina.toString()
+    },
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+}
 
 // LISTAR TODAS AS POSTAGENS
 carregarTodasAsPostagensPorFiltro(filtros: PostagemResponse): Observable<PostagemRequest[]> {
