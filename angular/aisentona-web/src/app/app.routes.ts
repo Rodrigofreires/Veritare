@@ -16,6 +16,7 @@ import { PerfilGuard } from '../guards/perfil.guard';
 import { AuthGuard } from '../guards/guard';
 import { PremiumGuard } from '../guards/premium.guard';
 import { PricingComponent } from './pages/pricing/pricing.component';
+import { AtivacaoSucessoComponent } from './pages/ativacao-sucesso/ativacao-sucesso.component';
 
 
 export const routes: Routes = [
@@ -76,6 +77,7 @@ export const routes: Routes = [
       { path: 'login', component: LoginComponent },
       { path: 'cadastro-de-usuario', component: CadastroUsuarioComponent },
       { path: 'assine', component: PricingComponent },
+      { path: 'ativacao/sucesso', component: AtivacaoSucessoComponent },
     ],
   },
 ];

@@ -19,11 +19,11 @@ namespace Aisentona.Biz.Services.Background
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var timer = new PeriodicTimer(TimeSpan.FromHours(1)); // Executa a cada 1 hora
+            var timer = new PeriodicTimer(TimeSpan.FromHours(1)); 
 
             while (await timer.WaitForNextTickAsync(stoppingToken))
             {
-                // Chama o método para processar a expiração dos usuários
+                
                 await ProcessarExpiracao(stoppingToken);
             }
         }
@@ -51,7 +51,6 @@ namespace Aisentona.Biz.Services.Background
 
                         _logger.LogInformation($"Removendo Premium do usuário: {colaborador.Nm_Nome} ({colaborador.Id_Usuario})");
 
-                        // Aqui você precisa atualizar os dados no banco, portanto é preciso rastrear essas entidades.
                         colaborador.AcessoUsuario.Fl_AcessoPremium = false;
                         colaborador.AcessoUsuario.Id_Plano = null;
                         colaborador.AcessoUsuario.Dt_FimAcesso = DateTime.Now;
@@ -64,11 +63,8 @@ namespace Aisentona.Biz.Services.Background
                             Acao = "Premium removido automaticamente"
                         });
                     }
-
-                    // Adicionando os logs de uma vez
                     await context.Job_ExpiracaoPremium_Log.AddRangeAsync(logList, stoppingToken);
 
-                    // Salvar as alterações no banco
                     await context.SaveChangesAsync(stoppingToken);
                 }
             }
@@ -76,7 +72,6 @@ namespace Aisentona.Biz.Services.Background
             {
                 _logger.LogError($"Erro ao processar expiração de Premium: {ex}");
 
-                // Log de erro no banco
                 var errorLog = new JobExpiracaoPremiumLog
                 {
                     NomeUsuario = "Sistema",

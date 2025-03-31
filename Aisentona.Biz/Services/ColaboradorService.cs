@@ -7,6 +7,7 @@ using FluentValidation.Results;
 using Aisentona.Entities.Response;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Aisentona.Biz.Services.Email;
 
 namespace Aisentona.Biz.Services
 {
@@ -15,12 +16,14 @@ namespace Aisentona.Biz.Services
         private readonly ApplicationDbContext _context;
         private readonly ColaboradorValidator _validator;
         private readonly AuthService _authService;
+        private readonly EmailAtivacaoService _emailAtivacaoService;
 
-        public ColaboradorService(ApplicationDbContext context, ColaboradorValidator validator, AuthService authService)
+        public ColaboradorService(ApplicationDbContext context, ColaboradorValidator validator, AuthService authService, EmailAtivacaoService emailAtivaçãoService)
         {
-             _context = context;
+            _context = context;
             _validator = validator;
             _authService = authService;
+            _emailAtivacaoService = emailAtivaçãoService;
 
         }
 
@@ -155,7 +158,7 @@ namespace Aisentona.Biz.Services
             novoColaborador.Ds_CPF = colaboradorResponse.CPF;
             novoColaborador.Ds_Email = colaboradorResponse.Email;
             novoColaborador.Ds_ContatoCadastro = colaboradorResponse.Celular;
-            novoColaborador.Fl_Ativo = true;
+            novoColaborador.Fl_Ativo = false;
             novoColaborador.Id_TipoUsuario = (int)Autorizacao.LeitorSimples;
             novoColaborador.PasswordHash = hash;
             novoColaborador.PasswordSalt = salt;
@@ -169,7 +172,14 @@ namespace Aisentona.Biz.Services
             novoColaborador.AcessoUsuario.Dt_FimAcesso = DateTime.Now;
             novoColaborador.AcessoUsuario.Fl_AcessoPremium = false;
 
-                _context.CF_Colaborador.Add(novoColaborador);
+            // Gerar Token de Ativação
+            novoColaborador.Token_Ativacao = Guid.NewGuid().ToString();
+            novoColaborador.Token_AtivacaoExpiracao = DateTime.Now.AddHours(2);
+
+            // Enviar e-mail com o token de ativação
+            _emailAtivacaoService.EnviarEmailAtivacao(novoColaborador);
+
+            _context.CF_Colaborador.Add(novoColaborador);
                 _context.SaveChanges();
 
                 LoginRequest loginRequest = new LoginRequest

@@ -7,7 +7,7 @@ namespace Aisentona.DataBase
         public Colaborador()
         {
         }
-        public Colaborador(int idUsuario, string nome, string cpf, string email, byte[] passwordHash, byte[] passwordSalt, bool flAtivo, DateTime? dtCriacao, DateTime? dtUltimaAlteracao, int idTipoUsuario, string dsUltimaAlteracao, DateTime? dtNascimento, string ds_ContatoCadastro)
+        public Colaborador(int idUsuario, string nome, string cpf, string email, byte[] passwordHash, byte[] passwordSalt, bool flAtivo, DateTime? dtCriacao, DateTime? dtUltimaAlteracao, int idTipoUsuario, string dsUltimaAlteracao, DateTime? dtNascimento, string ds_ContatoCadastro, string? tokenAtivacao, DateTime? tokenAtivacaoExpiracao)
         {
             Id_Usuario = idUsuario;
             Nm_Nome = nome;
@@ -16,6 +16,8 @@ namespace Aisentona.DataBase
             PasswordHash = passwordHash;
             PasswordSalt = passwordSalt;
             Fl_Ativo = flAtivo;
+            Token_Ativacao= tokenAtivacao;
+            Token_AtivacaoExpiracao = tokenAtivacaoExpiracao;
             DT_Criacao = dtCriacao;
             DT_UltimaAlteracao = dtUltimaAlteracao;
             DT_Nascimento = dtNascimento;
@@ -33,7 +35,9 @@ namespace Aisentona.DataBase
         public string Ds_Email {  get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public bool Fl_Ativo { get; set; }
+        public string? Token_Ativacao { get; set; }
+        public DateTime? Token_AtivacaoExpiracao { get; set; }
+        public bool Fl_Ativo { get; set; } = false;
         public DateTime? DT_Nascimento { get; set; } 
         public DateTime? DT_Criacao { get; set; } 
         public DateTime? DT_UltimaAlteracao { get; set; }

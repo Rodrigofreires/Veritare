@@ -15,6 +15,9 @@ import { SnackbarService } from '../../services/snackbar.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { provideNgxMask } from 'ngx-mask';
+import { ModalConfirmacaoCadastroComponent } from '../Modals/modal-confirmacao-cadastro/modal-confirmacao-cadastro.component';
+import { MatDialog } from '@angular/material/dialog';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-cadastro-usuario',
@@ -29,6 +32,7 @@ import { provideNgxMask } from 'ngx-mask';
     MatButtonModule,
     MatIconModule,
     FormsModule,
+
   ],
   providers: [
     provideNgxMask(), // Configurado corretamente como provedor
@@ -54,7 +58,9 @@ export class CadastroUsuarioComponent {
   constructor(
     private _loginService: LoginService,
     private router: Router,
-    private _snackBarService: SnackbarService
+    private _snackBarService: SnackbarService,
+    private dialog: MatDialog,
+    private loadingService: LoadingService,
   ) {}
 
   isValid(): boolean {
@@ -108,26 +114,26 @@ export class CadastroUsuarioComponent {
 
   Cadastro(): void {
     if (this.isValid()) {
-      this._loginService
-        .cadastroDeColaborador(this.infosColaborador)
-        .subscribe({
-          next: () => {
-            this._snackBarService.MostrarSucesso(
-              'Cadastro realizado com sucesso'
-            );
-            this.router.navigate(['home']);
-          },
-
-          error: () => {
-            this._snackBarService.MostrarErro('Preencha os campos corretamente');
-            this.loginValid = false;
-          },
-        });
+      this.loadingService.show(); // Mostrar o spinner enquanto o cadastro está sendo realizado
+      this._loginService.cadastroDeColaborador(this.infosColaborador).subscribe({
+        next: () => {
+          this.loadingService.hide(); // Esconder o spinner quando a resposta for recebida
+          // Exibir modal após cadastro bem-sucedido
+          this.dialog.open(ModalConfirmacaoCadastroComponent, {
+            width: '400px',
+          });
+        },
+        error: () => {
+          this.loadingService.hide(); // Esconder o spinner em caso de erro
+          this._snackBarService.MostrarErro('Preencha os campos corretamente');
+          this.loginValid = false;
+        },
+      });
     } else {
       this.loginValid = false;
     }
-    
   }
+
 
   //VALIDADORES DOS CAMPOS DE CADASTRO - POSSIVELMENTE TEREMOS DE TIRAR DAQUI E CRIAR CAMPOS DE VALIDAÇÃO ESPECÍFICOS
   

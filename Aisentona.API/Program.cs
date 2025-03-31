@@ -11,6 +11,7 @@ using Aisentona.Biz.Services.Compartilhar;
 using Microsoft.OpenApi.Models;
 using Aisentona.Biz.Services.Premium;
 using Aisentona.Biz.Services.Background;
+using Aisentona.Biz.Services.Email;
 
 var builder = WebApplication.CreateBuilder(args);
     var configuration = builder.Configuration; // Defina a variável configuration
@@ -44,11 +45,13 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<DateMapper>();
     builder.Services.AddScoped<WeatherService>();
     builder.Services.AddScoped<PremiumService>();
+    builder.Services.AddScoped<EmailAtivacaoService>();
     builder.Services.AddHostedService<PremiumExpirationService>();
 
 
 
-builder.Services.AddScoped<TokenService>(provider =>
+
+    builder.Services.AddScoped<TokenService>(provider =>
     {
         var configuration = provider.GetRequiredService<IConfiguration>(); // Obtém a configuração
         var jwtSettings = configuration.GetSection("JwtSettings");

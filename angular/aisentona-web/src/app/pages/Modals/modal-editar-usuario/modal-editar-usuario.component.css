@@ -1,133 +1,23 @@
-  /* Modal bloqueando completamente o acesso ao conteúdo abaixo */
-  .modal-content {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    width: 90%;
-    max-width: 800px;
-    height: 60vh;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    border-radius: 12px;
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+  }
+
+  .grid-item {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    z-index: 100000; /* Máxima prioridade */
-}
+  }
 
-/* Impede interações com a tela abaixo */
-html, body {
-    overflow: hidden;
-    height: 100%;
-    width: 100%;
-    position: fixed;
-    touch-action: none; /* Impede interações em touch devices */
-}
-
-/* Fundo escuro bloqueando interações */
-.backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
-    z-index: 99999;
-    pointer-events: all;
-}
-
-/* Impede que qualquer clique fora feche o modal */
-.backdrop::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: 99999;
-}
-
-/* Cabeçalho */
-.header-content {
-    width: 100%;
-    text-align: center;
-}
-
-.premium-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #1e88e5;
-}
-
-/* Imagem responsiva */
-.premium-header {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 12px;
-}
-
-.premium-image {
-    width: 100%;
-    max-height: 160px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-/* Conteúdo com scroll interno se necessário */
-.modal-body {
-    flex-grow: 1;
-    overflow-y: auto;
-    padding: 0 20px;
-}
-
-/* Descrição */
-.premium-description {
-    text-align: center;
-    font-size: 16px;
-    margin: 12px 0;
-}
-
-/* Preço destacado */
-.premium-price {
-    font-size: 20px;
-    font-weight: bold;
-    color: #4caf50;
-    text-align: center;
-    margin-bottom: 16px;
-}
-
-/* Botões */
-.action-buttons {
+  mat-dialog-actions {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-}
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px;
+  }
 
-button {
-    width: 80%;
-}
-
-/* Opção de login */
-.login-option {
-    text-align: center;
-    margin-top: 12px;
-}
-
-/* Responsividade extra para telas menores */
-@media (max-width: 600px) {
-    .modal-content {
-        width: 95%;
-        height: 70vh;
-    }
-    .premium-title {
-        font-size: 20px;
-    }
-    .premium-price {
-        font-size: 18px;
-    }
-    button {
-        width: 100%;
-    }
-}
+  button {
+    min-width: 100px;
+    font-size: 14px;
+    padding: 6px 12px;
+  }
