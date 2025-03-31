@@ -1,0 +1,21 @@
+.voltar-login {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.voltar-login a {
+    color: #a29bfe;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.voltar-login a:hover {
+    text-decoration: underline;
+}
+
+.mensagem {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #ffffff;
+    text-align: center;
+}

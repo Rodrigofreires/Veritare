@@ -66,5 +66,17 @@ cadastroDeColaborador(infosColaborador: ColaboradorResponse): Observable<any> {
   return this.http.post(`${this.apiUrl}/colaborador`, infosColaborador);
 }
 
+redefinirSenha(token: string, novaSenha: string, confirmarSenha: string): Observable<string> {
+  return this.http.post<string>(`${this.apiUrl}/redefinir`, {
+    token,
+    novaSenha,
+    confirmarSenha
+  });
+}
+
+enviarEmailRedefinicao(email: string): Observable<any> {
+  return this.http.post(`${this.apiUrl}/solicitar`, { email });
+}
+
 
 }

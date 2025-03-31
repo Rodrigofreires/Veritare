@@ -51,7 +51,12 @@
           <span *ngIf="senhaTouched && loginRequest.Senha && loginRequest.Senha.length < 6" class="error">
             A senha deve ter no mínimo 6 caracteres.
           </span>
-  
+
+                  <!-- Link para redefinição de senha -->
+          <p class="forgot-password">
+            <a routerLink="/esqueci-minha-senha">Esqueceu sua senha?</a>
+          </p>
+    
           <span *ngIf="!loginValid" class="error">
             E-mail ou Senha incorretos.
           </span>

@@ -104,7 +104,7 @@ namespace Aisentona.Biz.Services.Email
             /// <summary>
             /// Ativa a conta do usuário usando o token.
             /// </summary>
-            public string AtivarConta(string token)
+        public string AtivarConta(string token)
         {
             // Buscar o colaborador usando o token
             var colaborador = _context.CF_Colaborador.FirstOrDefault(c => c.Token_Ativacao == token);
@@ -130,5 +130,63 @@ namespace Aisentona.Biz.Services.Email
 
             return "Conta ativada com sucesso.";
         }
+
+        public void EnviarEmailRedefinirSenha(string email)
+        {
+            var colaborador = _context.CF_Colaborador.FirstOrDefault(c => c.Ds_Email == email);
+
+            if (colaborador == null)
+            {
+                throw new InvalidOperationException("E-mail não encontrado.");
+            }
+
+            // Gerar token único de redefinição de senha
+            colaborador.Token_Redefinir_SenhaAtivacao = Guid.NewGuid().ToString();
+            colaborador.Token_Redefinir_SenhaAtivacaoExpiracao = DateTime.UtcNow.AddHours(1); // Token expira em 1 hora
+
+            _context.SaveChanges();
+
+            // Construir URL para redefinir senha
+            string urlRedefinirSenha = $"https://localhost:7086/api/emailAtivacao/redefinir-senha?token={colaborador.Token_Redefinir_SenhaAtivacao}";
+
+            try
+            {
+                var mensagem = new MailMessage
+                {
+                    From = new MailAddress("do-not-reply@veritare.com.br"),
+                    Subject = "VERITARE - Redefinição de Senha",
+                    SubjectEncoding = Encoding.UTF8,
+                    IsBodyHtml = true,
+                    Body = $@"
+                <html>
+                    <head>
+                        <meta charset='UTF-8'>
+                    </head>
+                    <body style='font-family: Arial, sans-serif; color: #333;'>
+                        <h2>VERITARE - Redefinição de Senha</h2>
+                        <p>Olá!</p>
+                        <p>Recebemos uma solicitação para redefinir sua senha. Clique no botão abaixo para criar uma nova senha:</p>
+                        <p>
+                            <a href='{urlRedefinirSenha}' style='display: inline-block; padding: 10px 20px; 
+                                font-size: 16px; color: white; background-color: #007bff; text-decoration: none; 
+                                border-radius: 5px;'>
+                                Redefinir Senha
+                            </a>
+                        </p>
+                        <p>Se você não solicitou essa redefinição, ignore este e-mail.</p>
+                    </body>
+                </html>"
+                };
+
+                mensagem.To.Add(email);
+                _smtpClient.Send(mensagem);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Erro ao enviar o e-mail de redefinição de senha", ex);
+            }
+        }
+
+
     }
 }

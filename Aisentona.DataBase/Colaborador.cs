@@ -7,7 +7,7 @@ namespace Aisentona.DataBase
         public Colaborador()
         {
         }
-        public Colaborador(int idUsuario, string nome, string cpf, string email, byte[] passwordHash, byte[] passwordSalt, bool flAtivo, DateTime? dtCriacao, DateTime? dtUltimaAlteracao, int idTipoUsuario, string dsUltimaAlteracao, DateTime? dtNascimento, string ds_ContatoCadastro, string? tokenAtivacao, DateTime? tokenAtivacaoExpiracao)
+        public Colaborador(int idUsuario, string nome, string cpf, string email, byte[] passwordHash, byte[] passwordSalt, bool flAtivo, DateTime? dtCriacao, DateTime? dtUltimaAlteracao, int idTipoUsuario, string dsUltimaAlteracao, DateTime? dtNascimento, string ds_ContatoCadastro, string? tokenAtivacao, DateTime? tokenAtivacaoExpiracao, string? tokenRedefinirSenhaAtivacao, DateTime? tokenRedefinirSenhaAtivacaoExpiracao)
         {
             Id_Usuario = idUsuario;
             Nm_Nome = nome;
@@ -16,8 +16,10 @@ namespace Aisentona.DataBase
             PasswordHash = passwordHash;
             PasswordSalt = passwordSalt;
             Fl_Ativo = flAtivo;
-            Token_Ativacao= tokenAtivacao;
+            Token_Ativacao = tokenAtivacao;
             Token_AtivacaoExpiracao = tokenAtivacaoExpiracao;
+            Token_Redefinir_SenhaAtivacao = tokenRedefinirSenhaAtivacao;
+            Token_Redefinir_SenhaAtivacaoExpiracao = tokenRedefinirSenhaAtivacaoExpiracao;
             DT_Criacao = dtCriacao;
             DT_UltimaAlteracao = dtUltimaAlteracao;
             DT_Nascimento = dtNascimento;
@@ -37,6 +39,8 @@ namespace Aisentona.DataBase
         public byte[] PasswordSalt { get; set; }
         public string? Token_Ativacao { get; set; }
         public DateTime? Token_AtivacaoExpiracao { get; set; }
+        public string? Token_Redefinir_SenhaAtivacao { get; set; }
+        public DateTime? Token_Redefinir_SenhaAtivacaoExpiracao { get; set; }
         public bool Fl_Ativo { get; set; } = false;
         public DateTime? DT_Nascimento { get; set; } 
         public DateTime? DT_Criacao { get; set; } 

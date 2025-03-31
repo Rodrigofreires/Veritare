@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="signup-wrapper">
+      <!-- Seção de Vídeo -->
+      <div class="info-section">
+        <video autoplay muted loop width="600" height="750" onloadedmetadata="this.currentTime=1;">
+          <source src="assets/videos/veritaIa.mp4" type="video/mp4;">
+          Seu navegador não suporta vídeos HTML5.
+        </video>
+      </div>
+  
+      <!-- Seção do Formulário -->
+      <div class="form-section">
+        <h2>Redefinir Senha</h2>
+        <p>Informe seu e-mail para receber um link de redefinição.</p>
+  
+        <form (ngSubmit)="enviarEmail()" class="signup-form">
+          <input
+            matInput
+            type="email"
+            placeholder="Digite seu e-mail"
+            [(ngModel)]="email"
+            name="email"
+            required
+            class="input-email"
+            (blur)="onBlurEmail()"
+          />
+          <span *ngIf="emailTouched && !email" class="error">
+            O e-mail é obrigatório.
+          </span>
+          <span *ngIf="emailTouched && email && !email.includes('@')" class="error">
+            E-mail inválido.
+          </span>
+  
+          <button class="botão-entrar" type="submit" [disabled]="!email || !email.includes('@')">
+            Enviar link de redefinição
+          </button>
+        </form>
+  
+        <p class="voltar-login">
+          <a routerLink="/login">Voltar para o login</a>
+        </p>
+  
+        <p *ngIf="mensagem" class="mensagem">
+          {{ mensagem }}
+        </p>
+      </div>
+    </div>
+  </div>
+  

@@ -17,6 +17,8 @@ import { AuthGuard } from '../guards/guard';
 import { PremiumGuard } from '../guards/premium.guard';
 import { PricingComponent } from './pages/pricing/pricing.component';
 import { AtivacaoSucessoComponent } from './pages/ativacao-sucesso/ativacao-sucesso.component';
+import { RedefinirSenhaComponent } from './authentication/redefinir-senha/redefinir-senha.component';
+import { EsqueciMinhaSenhaComponent } from './authentication/esqueci-minha-senha/esqueci-minha-senha.component';
 
 
 export const routes: Routes = [
@@ -78,6 +80,9 @@ export const routes: Routes = [
       { path: 'cadastro-de-usuario', component: CadastroUsuarioComponent },
       { path: 'assine', component: PricingComponent },
       { path: 'ativacao/sucesso', component: AtivacaoSucessoComponent },
+      { path: 'redefinir-senha', component: RedefinirSenhaComponent },
+      { path: 'esqueci-minha-senha', component: EsqueciMinhaSenhaComponent },
+      { path: '**', redirectTo: 'login' }
     ],
   },
 ];
