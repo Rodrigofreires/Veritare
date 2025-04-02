@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LoginService } from '../../services/login.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
     standalone: true,
@@ -26,8 +27,10 @@ export class RedefinirSenhaComponent {
 
   constructor(
     private _loginService: LoginService,
+    private _snackBar: SnackbarService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+
   ) {}
 
   ngOnInit(): void {
@@ -50,18 +53,22 @@ export class RedefinirSenhaComponent {
 
   redefinirSenha() {
     if (!this.token) {
-      this.mensagem = 'Token inválido ou ausente.';
+      this._snackBar.MostrarErro('Token inválido ou ausente.');
       return;
     }
-
+  
     this._loginService.redefinirSenha(this.token, this.novaSenha, this.confirmarSenha).subscribe({
-      next: (res) => {
-        this.mensagem = res;
-        setTimeout(() => this.router.navigate(['/login']), 3000);
+      next: (res: any) => {
+        this._snackBar.MostrarSucesso(res.mensagem || 'Senha redefinida com sucesso! Redirecionando...');
+        setTimeout(() => this.router.navigate(['/login']), 5000);
       },
       error: (err) => {
-        this.mensagem = 'Erro ao redefinir a senha. Tente novamente.';
+        console.error('Erro ao redefinir senha:', err);
+        const mensagemErro = err.error?.erro || 'Não foi possível redefinir a senha. Reinicie o processo.';
+        this._snackBar.MostrarErro(mensagemErro);
       }
     });
   }
+  
+  
 }

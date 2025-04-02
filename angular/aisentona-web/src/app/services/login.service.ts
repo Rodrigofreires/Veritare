@@ -67,7 +67,7 @@ cadastroDeColaborador(infosColaborador: ColaboradorResponse): Observable<any> {
 }
 
 redefinirSenha(token: string, novaSenha: string, confirmarSenha: string): Observable<string> {
-  return this.http.post<string>(`${this.apiUrl}/redefinir`, {
+  return this.http.post<string>(`${this.apiUrl}/EmailRedefinirSenha/redefinir`, {
     token,
     novaSenha,
     confirmarSenha
@@ -75,8 +75,7 @@ redefinirSenha(token: string, novaSenha: string, confirmarSenha: string): Observ
 }
 
 enviarEmailRedefinicao(email: string): Observable<any> {
-  return this.http.post(`${this.apiUrl}/solicitar`, { email });
+  return this.http.post(`${this.apiUrl}/EmailRedefinirSenha/solicitar`, { email });
 }
-
 
 }

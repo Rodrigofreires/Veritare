@@ -47,11 +47,13 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<PremiumService>();
     builder.Services.AddScoped<EmailAtivacaoService>();
     builder.Services.AddHostedService<PremiumExpirationService>();
+    builder.Services.AddScoped<EmailRedefinirSenhaService>();
 
 
 
 
-    builder.Services.AddScoped<TokenService>(provider =>
+
+builder.Services.AddScoped<TokenService>(provider =>
     {
         var configuration = provider.GetRequiredService<IConfiguration>(); // Obtém a configuração
         var jwtSettings = configuration.GetSection("JwtSettings");

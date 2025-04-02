@@ -1,6 +1,99 @@
+/* Estilização Geral */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #1e1e2e;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+.signup-wrapper {
+    display: flex;
+    background: #2b2b3d;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 1200px;
+}
+
+/* Seção do Vídeo */
+.info-section {
+    position: relative;
+    flex: 6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1e1e2e;
+}
+
+.info-section video {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* Seção do Formulário */
+.form-section {
+    flex: 4;
+    background: #1e1e2e;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.form-section h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.form-section p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.signup-form input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #4e4e6d;
+    background-color: #2b2b3d;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.botão-entrar {
+    background: #a29bfe;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+}
+
+.botão-entrar:hover {
+    background: #8c82fc;
+}
+
 .voltar-login {
     margin-top: 10px;
-    text-align: center;
+    cursor: pointer;
 }
 
 .voltar-login a {
@@ -17,5 +110,34 @@
     margin-top: 20px;
     font-size: 1rem;
     color: #ffffff;
-    text-align: center;
+}
+
+.error {
+    color: red;
+    font-size: 0.9rem;
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .signup-wrapper {
+        flex-direction: column;
+    }
+    .info-section {
+        flex: none;
+        height: 300px;
+    }
+    .form-section {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-section {
+        padding: 20px;
+    }
+    .signup-form input,
+    .botão-entrar {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
 }

@@ -20,21 +20,22 @@ namespace Aisentona.API.Controllers
         /// Endpoint para enviar o e-mail de solicitação de redefinição de senha.
         /// </summary>
         [HttpPost("solicitar")]
-        public IActionResult SolicitarRedefinicaoSenha([FromBody] string email)
+        public IActionResult SolicitarRedefinicaoSenha([FromBody] EmailRedefinirSenhaRequest emailRedefinirSenhaRequest)
         {
-            if (string.IsNullOrWhiteSpace(email))
-                return BadRequest("O e-mail não pode ser vazio.");
+            if (string.IsNullOrWhiteSpace(emailRedefinirSenhaRequest.Email))
+                return BadRequest(new { erro = "O e-mail não pode ser vazio." });
 
             try
             {
-                _emailRedefinirSenhaService.EnviarEmailRedefinirSenha(email);
-                return Ok("E-mail de redefinição enviado com sucesso.");
+                _emailRedefinirSenhaService.EnviarEmailRedefinirSenha(emailRedefinirSenhaRequest.Email);
+                return Ok(new { mensagem = "E-mail de redefinição enviado com sucesso." });
             }
             catch (Exception ex)
             {
-                return BadRequest($"Erro ao enviar e-mail: {ex.Message}");
+                return BadRequest(new { erro = $"Erro ao enviar e-mail: {ex.Message}" });
             }
         }
+
 
 
 
@@ -45,17 +46,18 @@ namespace Aisentona.API.Controllers
         public async Task<IActionResult> RedefinirSenha([FromBody] RedefinirSenhaRequest request)
         {
             if (string.IsNullOrWhiteSpace(request.NovaSenha) || string.IsNullOrWhiteSpace(request.ConfirmarSenha))
-                return BadRequest("As senhas não podem estar vazias.");
+                return BadRequest(new { erro = "As senhas não podem estar vazias." });
 
             if (request.NovaSenha != request.ConfirmarSenha)
-                return BadRequest("As senhas não coincidem.");
+                return BadRequest(new { erro = "As senhas não coincidem." });
 
             var resultado = await Task.Run(() => _emailRedefinirSenhaService.RedefinirSenha(request.Token, request.NovaSenha));
 
             if (resultado != "Senha redefinida com sucesso.")
-                return BadRequest(resultado);
+                return BadRequest(new { erro = resultado });
 
-            return Ok(resultado);
+            return Ok(new { mensagem = resultado });
         }
+
     }
 }

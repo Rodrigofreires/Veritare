@@ -22,7 +22,7 @@ namespace Aisentona.Biz.Services
 
         public LoginResponse Authenticate(LoginRequest loginRequest)
         {
-            Colaborador user = _context.CF_Colaborador.FirstOrDefault(u => u.Ds_Email == loginRequest.Email);
+            Colaborador user = _context.CF_Colaborador.FirstOrDefault(u => u.Ds_Email == loginRequest.Email && u.Fl_Ativo == true);
 
             if (user == null)
             {

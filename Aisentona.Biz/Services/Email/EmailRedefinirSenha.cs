@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Text;
 using Aisentona.DataBase;
 using System.Security.Cryptography;
+using Aisentona.Entities.Response;
 
 namespace Aisentona.Biz.Services.Email
 {
@@ -14,6 +15,7 @@ namespace Aisentona.Biz.Services.Email
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
         private readonly SmtpClient _smtpClient;
+
 
         public EmailRedefinirSenhaService(IConfiguration configuration, ApplicationDbContext context)
         {
@@ -31,6 +33,8 @@ namespace Aisentona.Biz.Services.Email
                 Credentials = new NetworkCredential(email, senha),
                 Timeout = 120000
             };
+
+
         }
 
         /// <summary>
@@ -38,7 +42,7 @@ namespace Aisentona.Biz.Services.Email
         /// </summary>
         public void EnviarEmailRedefinirSenha(string email)
         {
-            var colaborador = _context.CF_Colaborador.FirstOrDefault(c => c.Ds_Email == email);
+            var colaborador = _context.CF_Colaborador.FirstOrDefault(c => c.Ds_Email == email && c.Fl_Ativo == true);
 
             if (colaborador == null)
             {
@@ -50,9 +54,11 @@ namespace Aisentona.Biz.Services.Email
             colaborador.Token_Redefinir_SenhaAtivacaoExpiracao = DateTime.UtcNow.AddHours(1);
 
             _context.SaveChanges();
+            
 
             // Construir URL para redefinir senha
-            string urlRedefinirSenha = $"https://localhost:7086/api/redefinir-senha?token={colaborador.Token_Redefinir_SenhaAtivacao}";
+            string urlRedefinirSenha = $"http://localhost:4200/redefinir-senha?token={colaborador.Token_Redefinir_SenhaAtivacao}";
+
 
             try
             {
@@ -100,7 +106,7 @@ namespace Aisentona.Biz.Services.Email
         /// </summary>
         public string RedefinirSenha(string token, string novaSenha)
         {
-            var colaborador = _context.CF_Colaborador.FirstOrDefault(c => c.Token_Redefinir_SenhaAtivacao == token);
+            var colaborador = _context.CF_Colaborador.FirstOrDefault(c => c.Token_Redefinir_SenhaAtivacao == token && c.Fl_Ativo == true);
 
             if (colaborador == null || colaborador.Token_Redefinir_SenhaAtivacaoExpiracao < DateTime.UtcNow)
             {
@@ -108,11 +114,10 @@ namespace Aisentona.Biz.Services.Email
             }
 
             // Gerar novo hash de senha
-            using (var hmac = new HMACSHA512())
-            {
-                colaborador.PasswordSalt = hmac.Key;
-                colaborador.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(novaSenha));
-            }
+            (byte[] hash, byte[] salt) = HashingUtils.GeneratePasswordHash(novaSenha);
+            colaborador.PasswordSalt = salt;
+            colaborador.PasswordHash = hash;
+
 
             // Remover token para evitar reuso
             colaborador.Token_Redefinir_SenhaAtivacao = null;
