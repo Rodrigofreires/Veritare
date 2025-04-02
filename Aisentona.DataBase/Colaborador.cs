@@ -1,6 +1,4 @@
-﻿using Aisentona.DataBase.Aisentona.DataBase;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Aisentona.DataBase
 {
@@ -9,7 +7,7 @@ namespace Aisentona.DataBase
         public Colaborador()
         {
         }
-        public Colaborador(int idUsuario, string nome, string cpf, string email, byte[] passwordHash, byte[] passwordSalt, bool flAtivo, DateTime dtCriacao, DateTime dtUltimaAlteracao, int idTipoUsuario, string dsUltimaAlteracao, DateTime dtNascimento, string ds_ContatoCadastro)
+        public Colaborador(int idUsuario, string nome, string cpf, string email, byte[] passwordHash, byte[] passwordSalt, bool flAtivo, DateTime? dtCriacao, DateTime? dtUltimaAlteracao, int idTipoUsuario, string dsUltimaAlteracao, DateTime? dtNascimento, string ds_ContatoCadastro, string? tokenAtivacao, DateTime? tokenAtivacaoExpiracao, string? tokenRedefinirSenhaAtivacao, DateTime? tokenRedefinirSenhaAtivacaoExpiracao)
         {
             Id_Usuario = idUsuario;
             Nm_Nome = nome;
@@ -18,9 +16,13 @@ namespace Aisentona.DataBase
             PasswordHash = passwordHash;
             PasswordSalt = passwordSalt;
             Fl_Ativo = flAtivo;
-            DT_Criacao = AjustarData(dtCriacao);
-            DT_UltimaAlteracao = AjustarData(dtUltimaAlteracao);
-            DT_Nascimento = AjustarData(dtNascimento);
+            Token_Ativacao = tokenAtivacao;
+            Token_AtivacaoExpiracao = tokenAtivacaoExpiracao;
+            Token_Redefinir_SenhaAtivacao = tokenRedefinirSenhaAtivacao;
+            Token_Redefinir_SenhaAtivacaoExpiracao = tokenRedefinirSenhaAtivacaoExpiracao;
+            DT_Criacao = dtCriacao;
+            DT_UltimaAlteracao = dtUltimaAlteracao;
+            DT_Nascimento = dtNascimento;
             Id_TipoUsuario = idTipoUsuario;
             Ds_UltimaAlteracao = dsUltimaAlteracao;
             Ds_ContatoCadastro = ds_ContatoCadastro;
@@ -35,30 +37,25 @@ namespace Aisentona.DataBase
         public string Ds_Email {  get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public bool Fl_Ativo { get; set; }
-        public DateTime DT_Nascimento { get; set; } 
-        public DateTime DT_Criacao { get; set; } 
-        public DateTime DT_UltimaAlteracao { get; set; }
+        public string? Token_Ativacao { get; set; }
+        public DateTime? Token_AtivacaoExpiracao { get; set; }
+        public string? Token_Redefinir_SenhaAtivacao { get; set; }
+        public DateTime? Token_Redefinir_SenhaAtivacaoExpiracao { get; set; }
+        public bool Fl_Ativo { get; set; } = false;
+        public DateTime? DT_Nascimento { get; set; } 
+        public DateTime? DT_Criacao { get; set; } 
+        public DateTime? DT_UltimaAlteracao { get; set; }
         [Required]
         public int Id_TipoUsuario { get; set; }
         public string Ds_UltimaAlteracao { get; set; }
-
-
-
         // Propriedades de navegação
         public virtual ColaboradorTelefone? Telefones { get; set; }
-        //public virtual ColaboradorPermissao? Permissoes { get; set; }
+
         public virtual AcessoUsuario? AcessoUsuario { get; set; }
 
         public virtual ColaboradorTipoUsuario? TipoUsuario { get; set; }
 
         public virtual ICollection<Postagem> Postagem { get; set; }
-
-        // Função auxiliar para ajustar datas
-        private DateTime AjustarData(DateTime data)
-        {
-            return data < new DateTime(1753, 1, 1) ? new DateTime(1753, 1, 1) : data;
-        }
 
 
     }

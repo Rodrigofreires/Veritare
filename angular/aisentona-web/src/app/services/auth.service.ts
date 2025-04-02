@@ -2,52 +2,71 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../environments/environment';
-import { tap, throwError } from 'rxjs';
 import { PlatformService } from './platform.service';
-
-
-
+import { LoginService } from './login.service';
+import { ModalNoticiaBloqueadaComponent } from '../pages/Modals/modal-noticia-bloqueada/modal-noticia-bloqueada.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly TOKEN_KEY = 'token'; 
-  private readonly PERMISSIONS_KEY = 'userPermissions'; // Nome da chave para permissões
-  private readonly API = environment
 
+  private readonly TOKEN_KEY = 'token';
+  private readonly API = environment.apiUrl; // A URL da API é extraída do environment
 
   constructor(
     private http: HttpClient,
     private platformService: PlatformService,
-
+    private _loginSerivce: LoginService,
+    private _dialog: MatDialog,  // Somente MatDialog, não precisa do componente aqui
 
   ) {}
 
-// Verifica se o token existe (usuário está logado)
-isLoggedIn(): boolean {
-  // Só tenta acessar o localStorage no navegador
-  if (this.platformService.isBrowser()) {
-    const token = localStorage.getItem('token');
-    return !!token; // Retorna true se o token existir
+  // Verificar se o Token expirou
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) {
+      return true; // Sem token, considera expirado
+    }
+    try {
+      const decodedToken: any = jwtDecode(token);
+      const exp = decodedToken.exp;
+      if (!exp) {
+        return true; // Se não houver expiração, trata como expirado
+      }
+      return Date.now() >= exp * 1000; // Compara com a data atual
+    } catch (error) {
+      console.error('Erro ao decodificar token:', error);
+      return true; // Se houver erro, trata como expirado
+    }
   }
-  return false; // Retorna false se não estiver no navegador
-}
 
-
-getToken(): string | null {
-  if (!this.platformService.isBrowser()) {
-    return null; // Não tenta acessar localStorage no SSR
+  // Verifica se o token existe (usuário está logado)
+  isLoggedIn(): boolean {
+    if (this.platformService.isBrowser()) {
+      const token = localStorage.getItem(this.TOKEN_KEY);
+      if (!token || this.isTokenExpired()) {
+        this._loginSerivce.logout(); // Remove o token se estiver expirado
+        return false;
+      }
+      return true;
+    }
+    return false;
   }
-  return localStorage.getItem('token');
-}
 
-  // Decodifica o token e retorna as informações
+  getToken(): string | null {
+    if (!this.platformService.isBrowser()) {
+      return null; // Não tenta acessar localStorage no SSR
+    }
+    return localStorage.getItem('token');
+  }
+
   getDecodedToken(): any {
     const token = this.getToken();
     if (token) {
       try {
-        return jwtDecode(token); // Decodifica o token usando jwtDecode
+        return jwtDecode(token);
       } catch (error) {
         console.error('Erro ao decodificar o token:', error);
         return null;
@@ -56,54 +75,100 @@ getToken(): string | null {
     return null;
   }
 
-    // Método para verificar se o IdTipoUsuario é válido
-    podeAccessarPainelDeControle(): boolean {
-      const decodedToken = this.getDecodedToken();
-      if (!decodedToken) {
-        return false;
-      }   
-      const idTipoUsuario = decodedToken.IdTipoUsuario;
-      return idTipoUsuario !== '5' && idTipoUsuario !== '4';
-    }
-
-    // Retorna o Tipo usuario
-  
-    getTipoUsuario(): string[] {
+  podeAccessarPainelDeControle(): boolean {
     const decodedToken = this.getDecodedToken();
-    return decodedToken?.IdTipoUsuario;
+    if (!decodedToken) {
+      return false;
+    }
+    const idTipoUsuario = decodedToken.IdTipoUsuario;
+    return idTipoUsuario !== '5' && idTipoUsuario !== '11';
   }
 
-    
-  // Retorna o nome do usuário (campo `unique_name`) do token
+  podeExcluirUsuario(): boolean {
+    const decodedToken = this.getDecodedToken();
+    if (!decodedToken) {
+      return false;
+    }
+    const idTipoUsuario = decodedToken.IdTipoUsuario;
+    return idTipoUsuario !== '1' ;
+  }
+
+  acessarEditarNoticia(): boolean {
+    const decodedToken = this.getDecodedToken();
+    if (!decodedToken) {
+      return false;
+    }
+    const idTipoUsuario = decodedToken.IdTipoUsuario;
+    return idTipoUsuario !== '5' && idTipoUsuario !== '11';
+  }
+
+  getTipoUsuario(): string {
+    const decodedToken = this.getDecodedToken();
+    return decodedToken?.IdTipoUsuario?.toString() || ''; // Garante que seja uma string
+  }
+
   getUserName(): string | null {
     const decodedToken = this.getDecodedToken();
-    return decodedToken?.unique_name || null; // Extrai o campo `unique_name`
+    return decodedToken?.unique_name || null;
   }
 
-    // Retorna o nome do usuário (campo `unique_name`) do token
-    getUserId(): number {
-      const decodedToken = this.getDecodedToken();
-      return decodedToken?.IdUsuario || null; // Extrai o campo `unique_name`
-    }
+  getUserId(): number {
+    const decodedToken = this.getDecodedToken();
+    return decodedToken?.IdUsuario || null;
+  }
 
-  // Retorna as permissões do usuário a partir do token
   getUserPermissions(): string[] {
     const decodedToken = this.getDecodedToken();
-    return decodedToken?.Permission || [];
+    return decodedToken?.role || [];
   }
 
+  // Método para verificar se o usuário tem permissão para ver conteúdo premium
+  podeVisualizarNoticiaPremium(): boolean {
+    const decodedToken = this.getDecodedToken();
+    if (!decodedToken) {
+      return false;
+    }
+    const userPermissions = decodedToken?.role || [];
+    // Verifica se o usuário tem a permissão 'VisualizarPostsPremium'
+    return userPermissions.includes('VisualizarPostsPremium');
+  }
 
-
-  // // Verifica se o usuário possui uma permissão específica
-  // hasPermission(permission: string): boolean {
-  //   const decodedToken = this.getDecodedToken();
-  //   if (decodedToken && decodedToken.permissions) {
-  //     return decodedToken.permissions.includes(permission); // Verifica a permissão no token
-  //   }
-
-  //   // Alternativamente, verifica em outra chave, como o localStorage (não recomendado)
-  //   const permissions = JSON.parse(localStorage.getItem(this.PERMISSIONS_KEY) || '[]');
-  //   return permissions.includes(permission);
-  // }
+  // Método para mostrar o modal de conteúdo bloqueado
+  exibirModalNoticiaBloqueada(): void {
+    const permissaoAtendida = this.podeVisualizarNoticiaPremium();
   
+    const dialogRef = this._dialog.open(ModalNoticiaBloqueadaComponent, {
+      disableClose: true,
+      panelClass: 'modal-noticia-bloqueada',
+      data: {
+        permissaoAtendida: permissaoAtendida,  // Passando a permissão corretamente
+      },
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Modal fechado.');
+    });
+  }
+  acessarNoticiaPremium(): void {
+    if (!this.isLoggedIn()) {
+      // Usuário não está logado, não permite acesso à notícia premium
+      this._dialog.open(ModalNoticiaBloqueadaComponent, {
+        panelClass: 'modal-noticia-bloqueada', // Classe personalizada para o modal
+      });
+      return;
+    }
+
+    if (!this.podeVisualizarNoticiaPremium()) {
+      // O token existe, mas o usuário não tem permissão para ver o conteúdo premium
+      this._dialog.open(ModalNoticiaBloqueadaComponent, {
+        panelClass: 'modal-noticia-bloqueada', // Classe personalizada para o modal
+      });
+    } else {
+      // O usuário está logado e tem permissão para visualizar a notícia premium
+      console.log("Usuário pode visualizar a notícia premium");
+    }
+}
+
+
+
 }

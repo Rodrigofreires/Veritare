@@ -1,10 +1,13 @@
-<mat-sidenav-container class="dashboard-container">
-    
+<mat-sidenav-container class="dashboard-container">    
     <mat-sidenav mode="side" opened class="sidenav">
       <div class="painel-de-controle">
-        <h3>Painel de Controle</h3>
-        <p>veritare.com.br</p>
+        <h3>
+          <a routerLink="/painel-de-controle" class="clickable-link">Painel de Controle</a>
+        </h3>
+        <p><a routerLink="/home" class="clickable-link">veritare.com.br</a></p>
       </div>
+      
+      
       <mat-nav-list>
         <a mat-list-item  routerLink="/dashboard">
           <mat-icon>dashboard</mat-icon>
@@ -15,11 +18,11 @@
           <span>Criar nova publicação</span>
         </a> 
         
-        <a mat-list-item routerLink="/analytics">
+        <a mat-list-item routerLink="painel-de-controle/analytics">
           <mat-icon>bar_chart</mat-icon>
           <span>Analytics</span>
         </a>
-        <a mat-list-item routerLink="/settings">
+        <a mat-list-item routerLink="settings">
           <mat-icon>settings</mat-icon>
           <span>Settings</span>
         </a>
@@ -28,11 +31,11 @@
   
     <mat-sidenav-content>
       <div class="content">
-        <mat-toolbar >
+        <mat-toolbar cl >
           <span>Painel de Publicações</span>
         </mat-toolbar>
 
-        <mat-card>
+        <mat-card class="painel-de-publicacoes">
           <p>Filtros</p>
           <div class="filters">
             <mat-form-field appearance="outline">
@@ -66,9 +69,7 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            
-            
-          
+                   
             <mat-form-field appearance="outline">
               <mat-label>Data de publicação</mat-label>
               <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" [value]="selectedDate" />
@@ -85,10 +86,8 @@
               Resetar Filtros
             </button>
           </div>
-
-
           
-          <table mat-table [dataSource]="infosPostagem" class="mat-elevation-z8">
+          <table mat-table [dataSource]="infosTodasAsPostagem" class="mat-elevation-z8">
   
             <!-- Título Column -->
             <ng-container matColumnDef="titulo">
@@ -148,9 +147,9 @@
           </table>
           
           <mat-paginator
-          [pageSize]="5"
-          [pageSizeOptions]="[5, 10, 20]"
-          showFirstLastButtons>
+          [pageSizeOptions]="[10, 20, 50]"
+          showFirstLastButtons
+          (page)="onPageChange($event)">
         </mat-paginator>
           
         </mat-card>

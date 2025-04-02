@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ViewChild, } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
@@ -15,25 +15,25 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
 import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
-import { PostagemResponse } from '../../core/interfaces/Response/Postagem';
 import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
-import { ActivatedRoute, RouterModule , Router } from '@angular/router';
+import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ConfirmacaoDialogComponent } from '../../shared/dialogs/confirmacao-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { timeout } from 'rxjs';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { TwitterService } from '../../services/twitter.service';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { EditoriaRequest } from '../../core/interfaces/Request/Editorias';
 import { StatusRequest } from '../../core/interfaces/Request/Status';
+import { PostagemResponse } from '../../core/interfaces/Response/Postagem';
 
 @Component({
   selector: 'app-painel-de-controle',
   standalone: true,
 
-  providers: [DatePipe, ],
-  
+  providers: [DatePipe],
+
   imports: [
     MatSidenavModule,
     MatToolbarModule,
@@ -49,19 +49,17 @@ import { StatusRequest } from '../../core/interfaces/Request/Status';
     MatDividerModule,
     FormsModule,
     CommonModule,
-    MatPaginator, 
+    MatPaginator,
     RouterModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    DatePipe, 
-    
+    DatePipe,
+    MatPaginatorModule,
   ],
   templateUrl: './painel-de-controle.component.html',
   styleUrls: ['./painel-de-controle.component.css'],
 })
-
 export class PainelDeControleComponent implements AfterViewInit {
-
   constructor(
     private _noticiaService: NoticiaService,
     private _snackBarService: SnackbarService,
@@ -70,24 +68,27 @@ export class PainelDeControleComponent implements AfterViewInit {
     private _router: Router,
     private cdr: ChangeDetectorRef,
     private dialog: MatDialog,
-    private datePipe: DatePipe, 
+    private datePipe: DatePipe
   ) {}
 
   listaDeEditorias: EditoriaRequest[] = []; // Variável para armazenar as editorias
   ListaDeStatus: StatusRequest[] = []; // Variável para armazenar os status
-  
+
   tituloProcurado: string = '';
   statusDaPublicacao: number = 0;
   editoriaProcurada: number = 0;
   selectedDate: string | null = null;
-  tipoDePublicacao: string[] = ["Publicação Comum", "Publicação Premium"];
-  tipoSelecionado: string = ""; // Para armazenar a opção escolhida
+  tipoDePublicacao: string[] = ['Publicação Comum', 'Publicação Premium'];
+  tipoSelecionado: string = ''; // Para armazenar a opção escolhida
   isFiltroAplicado = false; // Flag de controle para saber se os filtros foram aplicados
 
-
-
+  quantidadeExibida: number = 10;
+  paginaAtual: number = 1;
+  quantidadePorPagina: number = 10;
+  carregandoMais: boolean = false;
+  
   // Dados fictícios para a tabela
-  infosPostagem: PostagemRequest[] = [
+  infosTodasAsPostagem: PostagemRequest[] = [
     {
       titulo: 'Carregando...',
       descricao: 'Descrição indisponível no momento.',
@@ -102,7 +103,26 @@ export class PainelDeControleComponent implements AfterViewInit {
       palavrasRetiradasPorIA: '',
       dataCriacao: '',
       nomeStatus: '',
-      premiumOuComum: true
+      premiumOuComum: true,
+    },
+  ];
+
+  postagensExibidas: PostagemRequest[] = [
+    {
+      titulo: 'Carregando...',
+      descricao: 'Descrição indisponível no momento.',
+      conteudo: '',
+      idPostagem: 0,
+      idCategoria: 0,
+      nomeCategoria: 'Categoria Indisponível',
+      idStatus: 0,
+      idUsuario: 0,
+      imagem: '',
+      textoAlteradoPorIA: '',
+      palavrasRetiradasPorIA: '',
+      dataCriacao: '',
+      nomeStatus: '',
+      premiumOuComum: true,
     },
   ];
 
@@ -118,35 +138,42 @@ export class PainelDeControleComponent implements AfterViewInit {
     idUsuario: 0,
     imagem: '',
     textoAlteradoPorIA: '',
-    palavrasRetiradasPorIA: ''
+    palavrasRetiradasPorIA: '',
+  };
+
+ngOnInit(): void {
+  console.log('Estado do filtro aplicado:', this.isFiltroAplicado);
+
+  // Carregar editorias e status antes de carregar postagens
+  this.carregarEditorias();
+  this.carregarStatus();
+
+  if (this.isFiltroAplicado) {
+    this.aplicarFiltros();
+  } else {
+    this.carregarPrimeirasPostagens();
   }
+}
 
 
-  ngOnInit(): void {
-    console.log("Estado do filtro aplicado:", this.isFiltroAplicado);
-  
-    if (this.isFiltroAplicado) {
-      this.aplicarFiltros(); // Se já há um filtro, aplica automaticamente ao carregar a página
-    } else {
-      this.carregarTodasAsNoticias(); // Caso contrário, carrega todas as notícias
-    }
-  
-    this.carregarEditorias(); 
-    this.carregarStatus();
-  }
-
-  dataSource = new MatTableDataSource(this.infosPostagem);
+  dataSource = new MatTableDataSource(this.infosTodasAsPostagem);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
+  
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
   
 
-
-  displayedColumns: string[] = ['titulo', 'descricao', 'nomeCategoria', 'nomeStatus', 'premiumOuComum',  'dataCriacao', 'actions'];
-
+  displayedColumns: string[] = [
+    'titulo',
+    'descricao',
+    'nomeCategoria',
+    'nomeStatus',
+    'premiumOuComum',
+    'dataCriacao',
+    'actions',
+  ];
 
   aplicarFiltros() {
     this.filtroDeBusca = {
@@ -161,42 +188,47 @@ export class PainelDeControleComponent implements AfterViewInit {
       idUsuario: 0,
       imagem: '',
       textoAlteradoPorIA: '',
-      palavrasRetiradasPorIA: ''
+      palavrasRetiradasPorIA: '',
     };
-  
+
     if (
-      this.filtroDeBusca.titulo === "" &&
+      this.filtroDeBusca.titulo === '' &&
       this.filtroDeBusca.idStatus === 0 &&
       this.filtroDeBusca.idCategoria === 0 &&
-      (this.tipoSelecionado === "" || this.tipoSelecionado === null) &&
+      (this.tipoSelecionado === '' || this.tipoSelecionado === null) &&
       this.filtroDeBusca.dataCriacao === null
     ) {
-      this.carregarTodasAsNoticias();
+      this.carregarPrimeirasPostagens();
     }
 
-    console.log("Filtro de busca aplicado: ", this.filtroDeBusca);
-  
+    console.log('Filtro de busca aplicado: ', this.filtroDeBusca);
+
     // Definir que os filtros foram aplicados
     this.isFiltroAplicado = true;
-  
-    this._noticiaService.carregarTodasAsPostagensPorFiltro(this.filtroDeBusca).subscribe({
+
+    this._noticiaService
+    .carregarTodasAsPostagensPorFiltro(this.filtroDeBusca)
+    .subscribe({
       next: (response) => {
-        console.log("Postagens filtradas carregadas com sucesso:", response);
+        console.log('Postagens filtradas carregadas com sucesso:', response);
         
         // Atualiza a lista de postagens e a fonte de dados da tabela
-        this.infosPostagem = response;
-        this.dataSource.data = this.infosPostagem;
-        
-        this._snackBarService.MostrarSucesso("Publicações Filtradas Corretamente");
+        this.infosTodasAsPostagem = response;
+        this.dataSource.data = this.infosTodasAsPostagem;
+  
+        this._snackBarService.MostrarSucesso(
+          'Publicações Filtradas Corretamente'
+        );
       },
       error: (error) => {
-        console.error("Erro ao carregar postagens:", error);
-        this._snackBarService.MostrarErro("Erro ao filtrar as publicações. Tente novamente.");
-      }
+        console.error('Erro ao carregar postagens:', error);
+        this._snackBarService.MostrarErro(
+          'Erro ao filtrar as publicações. Tente novamente.'
+        );
+      },
     });
   }
-  
-    
+
   resetarFiltros() {
     // Resetando as variáveis associadas aos mat-select
     this.tituloProcurado = '';
@@ -204,17 +236,16 @@ export class PainelDeControleComponent implements AfterViewInit {
     this.editoriaProcurada = 0;
     this.selectedDate = null;
     this.tipoSelecionado = '';
-    
+
     // Resetando a flag de filtro aplicado
     this.isFiltroAplicado = false;
-  
+
     // Se o 'mat-select' usa o 'ngModel', o valor será resetado automaticamente
     // Não há necessidade de resetar manualmente o mat-select. Isso é feito com a atualização dos valores acima.
-    
+
     // Carregar todas as postagens novamente sem filtros
-    this.carregarTodasAsNoticias();
+    this.carregarPrimeirasPostagens();
   }
-  
 
   visualizarNoticia(id: number) {
     if (!id) {
@@ -224,66 +255,120 @@ export class PainelDeControleComponent implements AfterViewInit {
       return;
     }
     this._router.navigate(['/noticia/', id]);
-    }
-
-
-editarNoticia(id: number): void {
-  if (!id) {
-    this._snackBarService.MostrarErro(
-      'ID da postagem não encontrado. Não é possível editar.'
-    );
-    return;
   }
-  this._router.navigate(['/editar-noticia/', id]);
-}
+
+  editarNoticia(id: number): void {
+    if (!id) {
+      this._snackBarService.MostrarErro(
+        'ID da postagem não encontrado. Não é possível editar.'
+      );
+      return;
+    }
+    this._router.navigate(['/editar-noticia/', id]);
+  }
 
   excluirNoticia(idPostagem: number): void {
-      const dialogRef = this.dialog.open(ConfirmacaoDialogComponent);
-    
-      dialogRef.afterClosed().subscribe((confirmado) => {
-        if (confirmado) {
-          if (!idPostagem) {
-            this._snackBarService.MostrarErro('Publicação não identificada para exclusão.');
-            return;
-          }
-    
-          this._noticiaService.excluirNoticia(idPostagem).subscribe(
-            () => {
-              this._snackBarService.MostrarSucesso('Publicação excluída com sucesso.');
-              this.infosPostagem = [];
-              this.cdr.markForCheck();
-    
-              caches.keys().then((names) => {
-                names.forEach((name) => caches.delete(name));
-              });
-    
-              this._router.navigate(['/painel-de-controle']).then(() => {
-                window.location.href = window.location.origin + '/painel-de-controle';
-              });
-            },
-            (erro) => {
-              this._snackBarService.MostrarErro('Erro ao excluir perfil do usuário.', erro);
+    const dialogRef = this.dialog.open(ConfirmacaoDialogComponent);
 
-            }
+    dialogRef.afterClosed().subscribe((confirmado) => {
+      if (confirmado) {
+        if (!idPostagem) {
+          this._snackBarService.MostrarErro(
+            'Publicação não identificada para exclusão.'
+          );
+          return;
+        }
+
+        this._noticiaService.excluirNoticia(idPostagem).subscribe(
+          () => {
+            this._snackBarService.MostrarSucesso(
+              'Publicação excluída com sucesso.'
+            );
+            this.infosTodasAsPostagem = [];
+            this.cdr.markForCheck();
+
+            caches.keys().then((names) => {
+              names.forEach((name) => caches.delete(name));
+            });
+
+            this._router.navigate(['/painel-de-controle']).then(() => {
+              window.location.href =
+                window.location.origin + '/painel-de-controle';
+            });
+          },
+          (erro) => {
+            this._snackBarService.MostrarErro(
+              'Erro ao excluir perfil do usuário.',
+              erro
+            );
+          }
+        );
+      }
+    });
+  }
+
+  // Método para carregar as primeiras postagens
+  carregarPrimeirasPostagens(): void {
+    this._noticiaService
+      .carregarPostagensPaginadas(this.paginaAtual, this.quantidadePorPagina)
+      .subscribe(
+        (dados) => {
+          this.infosTodasAsPostagem = dados;
+          this.postagensExibidas = this.infosTodasAsPostagem.slice(
+            0,
+            this.quantidadeExibida
+          ); // Atualiza as exibidas
+        },
+        (erro) => {
+          console.error('Erro ao carregar postagens:', erro);
+          this._snackBarService.MostrarErro(
+            'Erro ao carregar postagens.',
+            erro
           );
         }
-      });
-    }
+      );
+  }
 
-carregarTodasAsNoticias(): void {
-  this._noticiaService.carregarTodasAsPostagens().subscribe(
-    (dados) => {
-      console.log(dados);  // Verifique a estrutura do objeto aqui
-      this.infosPostagem = dados;
-      this.dataSource.data = this.infosPostagem;  // Atualize a fonte de dados da tabela
-    },
-    (erro) => {
-      console.error('Erro ao carregar todas as notícias:', erro);
-      this._snackBarService.MostrarErro('Erro ao carregar notícias.', erro);
-    }
-  );
-}
+  // Método para carregar mais postagens
+  carregarMaisPostagens(): void {
+    if (this.carregandoMais) return; // Evita múltiplas chamadas simultâneas
+  
+    this.carregandoMais = true;
+  
+    this._noticiaService
+      .carregarPostagensPaginadas(this.paginaAtual, this.quantidadePorPagina)
+      .subscribe(
+        (dados) => {
+          if (dados.length > 0) {
+            this.infosTodasAsPostagem = [
+              ...this.infosTodasAsPostagem,
+              ...dados,
+            ]; // Adiciona as novas postagens
+            this.postagensExibidas = this.infosTodasAsPostagem.slice(
+              0,
+              this.quantidadeExibida * this.paginaAtual
+            ); // Atualiza as exibidas
+          }
+          this.carregandoMais = false;
+        },
+        (erro) => {
+          console.error('Erro ao carregar mais postagens:', erro);
+          this.carregandoMais = false;
+        }
+      );
+  }
+  
 
+  onPageChange(event: any): void {
+    console.log('Página alterada:', event.pageIndex, 'Tamanho da página:', event.pageSize);
+  
+    // Atualizar a página atual e o número de itens por página
+    this.paginaAtual = event.pageIndex + 1; // O paginator começa em 0, então somamos 1
+    this.quantidadePorPagina = event.pageSize;
+  
+    // Chama o método para carregar mais postagens
+    this.carregarMaisPostagens();
+  }
 
   carregarEditorias(): void {
     this._noticiaService.buscarListaDeEditorias().subscribe(
@@ -306,10 +391,4 @@ carregarTodasAsNoticias(): void {
       }
     );
   }
-
-
-
-
-
-
 }

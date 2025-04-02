@@ -4,11 +4,12 @@ export interface PerfilDeUsuarioRequest {
     cpf: string;
     email: string;
     contato: string;
-    tipoDeUsuario: string;
+    nomeTipoDeUsuario: string;
+    IdTipoUsuario: number;
     endereco: string | null; // Pode ser null
     acessoPremium: boolean;
-    tempoDeAcesso: Date; // Use string, pois datas vêm como ISO string
-    dataDeNascimento: Date; // Use string e converta para Date se necessário
-    premiumExpiraEm: Date | null; // Pode ser null
+    tempoDeAcesso: string; // Use string, pois datas vêm como ISO string
+    dataDeNascimento: string; // Use string e converta para Date se necessário
+    premiumExpiraEm: string | null; // Pode ser null
   }
   

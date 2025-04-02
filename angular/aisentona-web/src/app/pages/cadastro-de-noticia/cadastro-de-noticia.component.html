@@ -6,7 +6,7 @@
         <mat-form-field class="titulo">
             <mat-label>TITULO DA NOTÍCIA</mat-label>
             <textarea
-            placeholder="Máximo de 65 caracteres"
+            placeholder="Máximo de 200 caracteres"
             maxlength="200"  
             matInput [(ngModel)]="infosPostagem.titulo"></textarea>
         </mat-form-field>
@@ -16,8 +16,8 @@
             <mat-form-field class="descricao">
                 <mat-label>DESCRIÇÃO DA NOTÍCIA</mat-label>
                 <textarea 
-                maxlength="160"
-                placeholder="Máximo de 160 caracteres"
+                maxlength="300"
+                placeholder="Máximo de 300 caracteres"
                 matInput [(ngModel)]="infosPostagem.descricao"></textarea>
             </mat-form-field>
         </div>
@@ -44,38 +44,30 @@
 
         <div class="textos-principais">
             <!-- Gerado Por Humano -->
-            <h3>GERADO POR HUMANO</h3>
+            <h3>ONDE ENCONTRAR A MATÉRIA ORIGINAL</h3>
             <div class="texto-da-noticia">
                 <quill-editor class="texto-da-noticia"
                   [(ngModel)]="infosPostagem.conteudo"
-                  [style.height]="'300px'">
+                  [style.height]="'500px'">
                 </quill-editor>
             </div>
         
             <!-- Gerado Por AISENTONA -->
-            <h3>GERADO PELA AISENTONA</h3>
-            <mat-form-field class="texto-da-noticia" appearance="fill">
-                <mat-label>ESCREVA AQUI</mat-label>
-                <textarea
-                matInput
-                cdkTextareaAutosize
-                cdkAutosizeMinRows="10"
-                cdkAutosizeMaxRows="5000"
-                    [(ngModel)]="infosPostagem.textoAlteradoPorIA"
-                    rows="5"></textarea>
-            </mat-form-field>
-
+            <h3>MATÉRIA GERADA POR VERITARE</h3>
+                <div class="texto-da-noticia">
+                    <quill-editor class="texto-da-noticia"
+                      [(ngModel)]="infosPostagem.textoAlteradoPorIA"
+                      [style.height]="'800px'">
+                    </quill-editor>
+                </div>
             <!-- PALAVRAS CORTADAS-->
-            <h3>PALAVRAS CORTADAS</h3>
-            <mat-form-field class="texto-da-noticia">
-                <mat-label>ESCREVA AQUI</mat-label>
-                <textarea  
-                matInput
-                cdkTextareaAutosize
-                cdkAutosizeMinRows="10"
-                cdkAutosizeMaxRows="5000"
-                    [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"></textarea>
-            </mat-form-field>
+            <h3>NOTÍCIA COMENTADA POR VERITARE:</h3>
+            <div class="texto-da-noticia">
+                <quill-editor class="texto-da-noticia"
+                  [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"
+                  [style.height]="'500px'">
+                </quill-editor>
+            </div>
         </div>
 
         <div>

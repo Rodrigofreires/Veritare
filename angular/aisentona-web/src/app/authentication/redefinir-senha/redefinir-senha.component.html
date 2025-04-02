@@ -1,0 +1,62 @@
+<div class="container">
+    <div class="signup-wrapper">
+      <!-- Seção de Vídeo -->
+      <div class="info-section">
+      <!-- Seção do Formulário -->
+      <div class="form-section">
+        <h2>Redefinir Senha</h2>
+        <p>Informe a nova senha e confirme a senha para redefini-la.</p>
+  
+        <form (ngSubmit)="redefinirSenha()" class="signup-form">
+          <!-- Nova Senha -->
+          <input
+            matInput
+            type="password"
+            placeholder="Digite sua nova senha"
+            [(ngModel)]="novaSenha"
+            name="novaSenha"
+            required
+            class="input-nova-senha"
+            (blur)="onBlurConfirmarSenha()"
+          />
+          <span *ngIf="novaSenhaTouched && !novaSenha" class="error">
+            A nova senha é obrigatória.
+          </span>
+          <span *ngIf="novaSenhaTouched && novaSenha && novaSenha.length < 6" class="error">
+            A nova senha deve ter no mínimo 6 caracteres.
+          </span>
+  
+          <!-- Confirmar Senha -->
+          <input
+            matInput
+            type="password"
+            placeholder="Confirme sua nova senha"
+            [(ngModel)]="confirmarSenha"
+            name="confirmarSenha"
+            required
+            class="input-confirmar-senha"
+            (blur)="onBlurConfirmarSenha()"
+          />
+          <span *ngIf="confirmarSenhaTouched && !confirmarSenha" class="error">
+            A confirmação da senha é obrigatória.
+          </span>
+          <span *ngIf="confirmarSenhaTouched && novaSenha !== confirmarSenha" class="error">
+            As senhas não coincidem.
+          </span>
+  
+          <button class="botão-entrar" type="submit" [disabled]="!novaSenha || !confirmarSenha || novaSenha !== confirmarSenha">
+            Redefinir Senha
+          </button>
+        </form>
+  
+        <p class="voltar-login">
+          <a routerLink="/login">Voltar para o login</a>
+        </p>
+  
+        <p *ngIf="mensagem" class="mensagem">
+          {{ mensagem }}
+        </p>
+      </div>
+    </div>
+  </div>
+  

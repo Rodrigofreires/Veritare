@@ -1,5 +1,6 @@
 ﻿using Aisentona.Biz.Services;
 using Aisentona.DataBase;
+using Aisentona.Entities.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,10 +19,10 @@ namespace Aisentona.API.Controllers
 
         // GET api/<ColaboradorController>
         [HttpGet]
-        public IActionResult GetAllColaboradorTipoUsuarioById()
+        public IActionResult GetAllColaboradorTipoUsuario()
         {
 
-            List<ColaboradorTipoUsuario> ListaColaboradorTipoUsuario = _colaboradorTipoUsuarioService.ListarColaboradorTipoUsuarioPorId();
+            List<TipoUsuarioDTO> ListaColaboradorTipoUsuario = _colaboradorTipoUsuarioService.ListarColaboradorTipoUsuario();
             if (ListaColaboradorTipoUsuario == null)
             {
                 return NotFound();

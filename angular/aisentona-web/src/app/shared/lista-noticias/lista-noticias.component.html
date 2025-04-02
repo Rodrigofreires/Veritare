@@ -1,42 +1,39 @@
 <div class="painel-noticias">
-  <!-- Exibição das postagens -->
-  <mat-card
-    *ngFor="let postagem of postagensExibidas"
-    class="item-noticia"
-    appearance="outlined"
-  >
-    <!-- Imagem -->
-    <img
-      class="imagem-noticia"
-      mat-card-image
-      [src]="postagem.imagem"
-      alt="Imagem da notícia"
-      (click)="navegarParaNoticia(postagem.idPostagem)"
-    />
-    <div class="imagem-descricao">
-      <!-- Nome da Editoria -->
-      <div class="detalhes-texto">
-        <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
-        <!-- Título -->
-        <h3
-          class="titulo-noticia"
-          (click)="navegarParaNoticia(postagem.idPostagem)"
-        >
-          {{ postagem.titulo }}
-        </h3>
-        <!-- Descrição -->
-        <p class="descricao-noticia">{{ postagem.descricao }}</p>
+  <div class="listagem-de-noticias">
+    <mat-card
+      class="item-noticia"
+      *ngFor="let postagem of postagensExibidas"
+      appearance="outlined"
+      (click)="navegarParaNoticia(postagem)"
+    >
+      <!-- Imagem -->
+      <img
+        class="imagem-noticia"
+        mat-card-image 
+        [src]="postagem.imagem"
+        alt="Imagem da notícia"
+      />
+      <div class="imagem-descricao">
+        <!-- Nome da Editoria -->
+        <div class="detalhes-texto">
+          <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
+          <!-- Título -->
+          <h3 class="titulo-noticia">
+            {{ postagem.titulo }}
+          </h3>
+          <!-- Data Criação -->
+          <p class="descricao-noticia">{{ postagem.dataCriacao | date: 'ddd/MM/yyyy  HH:mm' }}</p>
+        </div>
       </div>
-    </div>
-  </mat-card>
+    </mat-card>
+  </div>
 
-<!-- Botão para carregar mais notícias -->
-<div class="botoes-de-envio " *ngIf="quantidadeExibida < infosTodasAsPostagem.length">
-  <button class="botao"  (click)="carregarMaisNoticias()">
-    Carregar Mais
-  </button>
+  <app-weather class="weather-widget"></app-weather>
 </div>
-
-
-</div>
-
+  <!-- Botão "Carregar mais" -->
+  <div class="botao-carregar-mais">
+    <button class="botao-global" (click)="carregarMaisPostagens()" *ngIf="!carregandoMais">
+      Carregar mais
+    </button>
+    <p *ngIf="carregandoMais">Carregando...</p>
+  </div>

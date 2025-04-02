@@ -1,0 +1,27 @@
+<div class="backdrop"></div> <!-- Fundo escuro borrado -->
+
+<mat-card class="modal-content">
+  <!-- Card Layout com imagem e conteúdo -->
+  <div class="card-layout">
+
+    <div class="image-section"></div>
+
+    <div class="content-section">
+
+      <mat-card-content class="header-content text-center">
+        <a href="/home">Voltar a página inicial</a>
+        <p class="login-option">Já é Premium? <a href="/login">Faça login</a> para acessar agora!</p>
+
+        <h2 class="premium-title">Veritare Premium</h2>
+
+        <p class="premium-description">
+          Acesse conteúdos exclusivos e notícias personalizadas por apenas <strong>R$9,99/mês</strong>.
+        </p>
+
+        <div *ngIf="!permissaoAtendida" class="action-buttons">
+          <button mat-raised-button color="primary" (click)="navigateToAssine()" class="premium-button" routerLink="/assine" >Assine Agora! </button>
+        </div>
+      </mat-card-content>
+    </div>
+  </div>
+</mat-card>

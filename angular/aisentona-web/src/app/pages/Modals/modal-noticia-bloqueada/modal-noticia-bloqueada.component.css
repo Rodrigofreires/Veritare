@@ -1,0 +1,117 @@
+/* Animação para o modal subir de baixo para cima */
+.modal-content {
+  position: fixed;
+  bottom: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  width: 90%;
+  max-width: 800px;
+  height: 60%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  animation: slideUp 1s ease-out forwards;
+  
+}
+
+/* Animação para o modal subir da parte inferior até o centro da tela */
+@keyframes slideUp {
+  0% {
+    bottom: -100%;
+  }
+  100% {
+    bottom: 25%;
+  }
+}
+
+/* Efeito de fundo borrado */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Estilo dos botões */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-layout {
+  display: flex;
+  width: 100%;
+  height: 100%;;
+}
+
+.image-section {
+  width: 35%; /* Ajuste para a imagem ocupar 30% da largura */
+  height: 100%; /* Para ocupar toda a altura do card */
+  background: linear-gradient(45deg, #7b1fa2, #512da8);  /* Roxo e azul */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-section {
+  width: 65%; /* Ajuste para o conteúdo ocupar 70% da largura */
+  padding: 16px;
+  display: flex; /* Ativa o flexbox */
+  flex-direction: column; /* Garante que os elementos fiquem em coluna */
+  align-items: center; /* Alinha horizontalmente no centro */
+  justify-content: center; /* Alinha verticalmente no centro */
+  text-align: center; /* Para garantir que o texto fique centralizado */
+  height: 100%; /* Garante que o conteúdo ocupe toda a altura do container */
+}
+
+/* Centralizar o texto */
+.text-center {
+  text-align: center;
+}
+
+/* Personalizar o botão */
+.premium-button {
+  background: linear-gradient(45deg, #7b1fa2, #512da8); /* Roxo e azul */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: bold;
+  border: none;
+  transition: background 0.3s;
+}
+
+.premium-button:hover {
+  background: linear-gradient(45deg, #8e24aa, #1565c0); /* Alteração de cor no hover */
+}
+
+/* Ajustar a altura e estilo do login option */
+.login-option {
+  font-size: 20px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+/* Ajustes no conteúdo do card */
+.premium-description {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.premium-title{
+  font-size: 50px;
+}
+
+/* Ajustes no estilo da imagem */
+.premium-image {
+  width: 100%; /* A imagem preencherá a largura do container */
+  height: auto; /* Mantém a proporção da imagem */
+}

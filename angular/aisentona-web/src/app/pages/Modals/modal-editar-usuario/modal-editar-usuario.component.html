@@ -1,0 +1,80 @@
+<h2 mat-dialog-title>Editar Perfil de Usuário</h2>
+<mat-dialog-content class="perfil-usuario">
+  <p>INFORMAÇÕES BÁSICAS</p>
+  <form #perfilForm="ngForm" novalidate>
+    <div class="informacoes-do-perfil grid-container">
+      <div class="grid-item">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nome</mat-label>
+          <input matInput [(ngModel)]="perfilSelecionado.nome" name="nome" required>
+        </mat-form-field>
+      </div>
+
+      <div class="grid-item">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>CPF</mat-label>
+          <input matInput [(ngModel)]="perfilSelecionado.cpf" name="cpf" mask="'000.000.000-00'" disabled>
+        </mat-form-field>
+      </div>
+
+      <div class="grid-item">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Contato</mat-label>
+          <input matInput [(ngModel)]="perfilSelecionado.contato" name="contato" mask="(00) 0.0000-0000" required>
+        </mat-form-field>
+      </div>
+
+      <div class="grid-item">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>E-mail</mat-label>
+          <input matInput [(ngModel)]="perfilSelecionado.email" name="email" type="email" disabled>
+        </mat-form-field>
+      </div>
+
+      <div class="grid-item">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Data de Nascimento</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="perfilSelecionado.dataDeNascimento" name="dataDeNascimento" required>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <p>INFORMAÇÕES DO PERFIL</p>
+    <div class="informacoes-do-perfil grid-container">
+      <div class="grid-item">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tipo de Usuário</mat-label>
+          <mat-select [(ngModel)]="perfilSelecionado.nomeTipoDeUsuario" name="tipoDeUsuario" required>
+            <mat-option *ngFor="let tipo of ListaDeTiposDeUsuarios" [value]="tipo.nome">{{ tipo.nome }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="grid-item">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Premium/Comum</mat-label>
+          <mat-select [(ngModel)]="perfilSelecionado.acessoPremium" name="premiumComum" disabled>
+            <mat-option [value]="false">Comum</mat-option>
+            <mat-option [value]="true">Premium</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="grid-item">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Premium Expira em</mat-label>
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="perfilSelecionado.premiumExpiraEm" name="dataExpiraPremium" [disabled]="!perfilSelecionado.premiumExpiraEm">
+          <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button color="warn" (click)="onNoClick()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="EditarPerfilDoUsuario()">Salvar</button>
+</mat-dialog-actions>

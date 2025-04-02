@@ -1,0 +1,19 @@
+.faixa-assine {
+    background-color: #1E1E2E;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+}
+.subscribe-button {
+    background-color: #7070AC;
+    color: #fff !important;
+    font-size: 15px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.subscribe-button:hover {
+    background-color: #6565b1;
+}

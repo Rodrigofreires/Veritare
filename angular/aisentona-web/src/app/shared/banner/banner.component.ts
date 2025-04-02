@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../../services/snackbar.service';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-banner',
@@ -35,6 +36,7 @@ export class BannerComponent implements OnInit {
 
   constructor(
     private _noticiaService: NoticiaService,
+    private _navigationService: NavigationService,
     private _snackBarService: SnackbarService,
     private router: Router,
 
@@ -47,7 +49,6 @@ export class BannerComponent implements OnInit {
   carregarUltimasNoticias(): void {
     this._noticiaService.carregarUltimasPostagens().subscribe(
       (dados: PostagemRequest[]) => {
-        console.log('Dados recebidos:', dados);
         this.infosPostagem = dados;
       },
       (erro) => {
@@ -56,9 +57,21 @@ export class BannerComponent implements OnInit {
     );
   }
 
-  navegarParaNoticia(idPostagem: number): void {
-    this.router.navigate(['/noticia', idPostagem]);
-  }
+
+  navegarParaNoticia(infosPostagem: PostagemRequest): void {
+    // Chama o serviço que retorna a lista de editorias
+    this._noticiaService.buscarListaDeEditorias().subscribe(listaDeEditorias => {
+      // Filtra a categoria pela correspondência do id
+      const categoria = listaDeEditorias.find(editoria => editoria.id === infosPostagem.idCategoria);
+  
+      if (categoria) {
+        // Se encontrar a categoria, chama o serviço de navegação
+        this._navigationService.onAbrirNoticia(infosPostagem, categoria);
+      } else {
+        console.error('Categoria não encontrada para a postagem');
+      }
+    });
+  }   
 
   compartilharPostagem(postagem: PostagemRequest): void {
     console.log('Compartilhando postagem:', postagem);

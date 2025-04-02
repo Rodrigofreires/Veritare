@@ -34,9 +34,9 @@ namespace Aisentona.DataBase
         public  string Titulo { get; set; }
         public  string Conteudo { get; set; }
         public string Descricao { get; set; }
-        public string Imagem_base64 { get; set; }
-        public string Texto_alterado_por_ia { get; set; }
-        public string Palavras_retiradas_por_ia { get; set; }
+        public string? Imagem_base64 { get; set; }
+        public string? Texto_alterado_por_ia { get; set; }
+        public string? Palavras_retiradas_por_ia { get; set; }
         public  bool Fl_Ativo { get; set; }
         public string Ds_UltimaAlteracao { get; set; }
         public bool Fl_Premium { get; set; }

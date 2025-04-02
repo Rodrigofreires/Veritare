@@ -28,7 +28,6 @@ login(Email: string, Senha: string): Observable<any> {
       if (response.token) {
 
         window.localStorage.setItem('token', response.token)
-        console.log('Tokens salvos com sucesso:', response.token, response.refreshToken);
       } else {
         console.warn(' Nenhum refreshToken retornado pelo backend.');
       }
@@ -52,7 +51,6 @@ logout(): void {
     this.http.post(`${this.apiUrl}/Login/logout`, { token }).subscribe({
       next: () => {
         // Se o logout no backend for bem-sucedido, remova o token
-        console.log('Logout realizado com sucesso.');
         localStorage.removeItem('token'); // Remove o token armazenado
         localStorage.removeItem('userPermissions'); // Remova permissões, se armazenadas
         localStorage.removeItem('userName'); // Remova dados adicionais relacionados
@@ -68,5 +66,16 @@ cadastroDeColaborador(infosColaborador: ColaboradorResponse): Observable<any> {
   return this.http.post(`${this.apiUrl}/colaborador`, infosColaborador);
 }
 
+redefinirSenha(token: string, novaSenha: string, confirmarSenha: string): Observable<string> {
+  return this.http.post<string>(`${this.apiUrl}/EmailRedefinirSenha/redefinir`, {
+    token,
+    novaSenha,
+    confirmarSenha
+  });
+}
+
+enviarEmailRedefinicao(email: string): Observable<any> {
+  return this.http.post(`${this.apiUrl}/EmailRedefinirSenha/solicitar`, { email });
+}
 
 }

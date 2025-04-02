@@ -1,108 +1,103 @@
-using Aisentona.Biz.Services;
+Ôªøusing Aisentona.Biz.Services;
 using Aisentona.Biz.Services.Postagens;
 using Aisentona.DataBase;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.Extensions.DependencyInjection; // Adicione esta linha para o namespace correto
 using Newtonsoft.Json;
 using Aisentona.Biz.Validators;
-using FluentValidation;
 using Aisentona.Biz.Mappers;
 using Aisentona.Biz.Services.Compartilhar;
+using Microsoft.OpenApi.Models;
+using Aisentona.Biz.Services.Premium;
+using Aisentona.Biz.Services.Background;
+using Aisentona.Biz.Services.Email;
 
 var builder = WebApplication.CreateBuilder(args);
+    var configuration = builder.Configuration; // Defina a vari√°vel configuration
 
-// Recupera a chave privada da vari·vel de ambiente
-string privateKey = "KqiSF8LwSrU36fl4GG1oLxbN5eLMuiUJpJBo2+fjR0E=";
+    // Adiciona o ApplicationDbContext e configura a string de conex√£o
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-if (string.IsNullOrEmpty(privateKey))
-{
-    Console.WriteLine("A vari·vel de ambiente JWT_PRIVATE_KEY n„o est· definida. Defina-a antes de executar o aplicativo.");
-    throw new ArgumentNullException("JWT_PRIVATE_KEY", "A chave privada n„o pode ser nula.");
-}
+    // Adicione os servi√ßos do FluentValidation
+    builder.Services.AddScoped<ColaboradorValidator>();
 
-try
-{
-    // Tenta decodificar a chave Base-64 para verificar sua validade
-    byte[] decodedKey = Convert.FromBase64String(privateKey);
-    Console.WriteLine("Chave privada decodificada com sucesso!");
+    // Integrando API do Twitter/X
+    builder.Services.AddScoped<TwitterService>();
 
-    // Adiciona serviÁos ao contÍiner
-    ConfigureServices(builder.Services, decodedKey, builder.Configuration);
-
-    var app = builder.Build();
-
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
+    builder.Services.AddCors(options =>
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
+        options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+    });
 
-    app.UseCors(x => x.AllowAnyHeader()
-          .AllowAnyMethod()
-          .AllowAnyOrigin()
-    );
+    // Registro de servi√ßos e reposit√≥rios
+    builder.Services.AddScoped<ColaboradorService>();
+    builder.Services.AddScoped<ColaboradorTelefoneService>();
+    builder.Services.AddScoped<ColaboradorTipoUsuarioService>();
+    builder.Services.AddScoped<PostagemService>();
+    builder.Services.AddScoped<LoginService>();
+    builder.Services.AddScoped<AuthService>();
+    builder.Services.AddScoped<DateMapper>();
+    builder.Services.AddScoped<WeatherService>();
+    builder.Services.AddScoped<PremiumService>();
+    builder.Services.AddScoped<EmailAtivacaoService>();
+    builder.Services.AddHostedService<PremiumExpirationService>();
+    builder.Services.AddScoped<EmailRedefinirSenhaService>();
 
 
-    // Configura o pipeline de requisiÁ„o HTTP
-    ConfigureMiddleware(app);
 
-    app.Run();
-}
-catch (FormatException ex)
-{
-    Console.WriteLine("Erro de formataÁ„o: A string fornecida n„o È uma Base-64 v·lida.");
-    throw; // LanÁa a exceÁ„o para interromper a execuÁ„o do aplicativo
-}
 
-void ConfigureServices(IServiceCollection services, byte[] decodedKey, ConfigurationManager configuration)
-{
-    services.AddControllers()
+
+builder.Services.AddScoped<TokenService>(provider =>
+    {
+        var configuration = provider.GetRequiredService<IConfiguration>(); // Obt√©m a configura√ß√£o
+        var jwtSettings = configuration.GetSection("JwtSettings");
+        var secretKey = jwtSettings["SecretKey"] ?? throw new InvalidOperationException("SecretKey is missing in JwtSettings");
+
+        return new TokenService(secretKey);
+    });
+
+    builder.Services.AddControllers()
         .AddNewtonsoftJson(options =>
         {
             options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             options.SerializerSettings.Formatting = Formatting.Indented;
         });
 
-    services.AddEndpointsApiExplorer();
-    services.AddSwaggerGen();
+    builder.Services.AddEndpointsApiExplorer();
 
-    // Adiciona o ApplicationDbContext e configura a string de conex„o
-    services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
-    // Adicione os serviÁos do FluentValidation
-    builder.Services.AddScoped<ColaboradorValidator>();
-
-    // Integrando API do Twitter/X
-    builder.Services.AddScoped<TwitterService>();
-
-    services.AddCors(options =>
+    builder.Services.AddSwaggerGen(c =>
     {
-        options.AddPolicy("AllowSpecificOrigin",
-            builder => builder.WithOrigins("http://localhost:4200")
-                              .AllowAnyMethod()
-                              .AllowAnyHeader());
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Please enter JWT with Bearer into field",
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] { }
+            }
+        });
     });
 
 
-    // Registro de serviÁos e repositÛrios
-    services.AddScoped<ColaboradorService>();
-    services.AddScoped<ColaboradorTelefoneService>();
-    services.AddScoped<ColaboradorTipoUsuarioService>();
-    services.AddScoped<PostagemService>();
-    services.AddScoped<TokenService>(); // Adiciona o TokenService
-    services.AddScoped<LoginService>();
-    services.AddScoped<AuthService>();
-    services.AddScoped<DateMapper>();
-
-    //services.AddScoped<TokenValidationMiddleware>();
-
-
-    services.AddAuthentication(options =>
+builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -118,23 +113,31 @@ void ConfigureServices(IServiceCollection services, byte[] decodedKey, Configura
             ValidateIssuerSigningKey = true,
             ValidIssuer = jwtSettings["Issuer"],
             ValidAudience = jwtSettings["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(decodedKey)
+            ClockSkew = TimeSpan.Zero // Ajuste para validar a expira√ß√£o exata do token
         };
     });
 
-    services.AddAuthorization();
-}
+    builder.Services.AddAuthorization();
 
-void ConfigureMiddleware(WebApplication app)
-{
-    // Configura o pipeline de requisiÁ„o HTTP
-    if (app.Environment.IsDevelopment())
+    var app = builder.Build();
+
+    void ConfigureMiddleware(WebApplication app)
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+        // Configura o pipeline de requisi√ß√£o HTTP
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseHttpsRedirection();
+        app.UseCors("AllowSpecificOrigin"); // 1Ô∏è‚É£ Primeiro CORS
+        app.UseAuthentication();
+        app.UseAuthorization(); // 3Ô∏è‚É£ Por √∫ltimo Autoriza√ß√£o
+        app.MapControllers();
     }
-    app.UseHttpsRedirection();
-    app.UseAuthentication(); // Certifique-se de adicionar este middleware antes do UseAuthorization
-    app.UseAuthorization();
-    app.MapControllers();
-}
+
+    // Configure o pipeline de requisi√ß√£o HTTP
+    ConfigureMiddleware(app);
+
+    app.Run();

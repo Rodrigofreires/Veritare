@@ -8,7 +8,7 @@
                         <h3 class="nome-perfil"> {{ infosPerfilUsuario?.nome }} </h3>
                         <p><strong>E-mail:</strong> {{ infosPerfilUsuario?.email || 'Não informado' }}</p>
                         <p><strong>Contato:</strong> {{ infosPerfilUsuario?.contato  || 'Não informado' }}</p>
-                        <p><strong>Tipo de Usuário:</strong> {{ infosPerfilUsuario?.tipoDeUsuario }}</p>
+                        <p><strong>Tipo de Usuário:</strong> {{ infosPerfilUsuario?.nomeTipoDeUsuario }}</p>
                         <p><strong>Tempo de Acesso:</strong> 
                           {{ infosPerfilUsuario?.tempoDeAcesso ? (infosPerfilUsuario?.tempoDeAcesso | date:'dd/MM/yyyy') : 'Não disponível' }}
                         </p>

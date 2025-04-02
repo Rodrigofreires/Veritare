@@ -1,11 +1,16 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from './authentication/interceptor/interceptor-auth';
+import { provideNgxMask, NGX_MASK_CONFIG } from 'ngx-mask';
+
+// 🔹 Defina a configuração antes de usá-la
+const maskConfig = {
+  validation: true,
+};
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,10 +19,8 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(withEventReplay()),
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
-    provideHttpClient(
+    provideNgxMask(),
+    { provide: NGX_MASK_CONFIG, useValue: maskConfig },
 
-      withInterceptors([authInterceptor]
-      )
-    )
   ]
 };

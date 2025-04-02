@@ -7,10 +7,7 @@ using Aisentona.Entities.Response;
 using Aisentona.Entities.ViewModels;
 using Aisentona.Enumeradores;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Security.Claims;
 
 
@@ -33,14 +30,14 @@ namespace Aisentona.API.Controllers.Postagens
         }
 
         [HttpGet("{id}")]
-        public IActionResult CarregarNotícia(int id)
+        public IActionResult GetNoticiaById(int id)
         {
             if (id <= 0)
             {
                 return BadRequest("ID inválido.");
             }
 
-            PostagemRequest postagemRequest = _postagemService.CarregarPostagem(id);
+            PostagemRequest postagemRequest = _postagemService.CarregarPostagemPorId(id);
             if (postagemRequest == null)
             {
                 return NotFound();
@@ -48,16 +45,19 @@ namespace Aisentona.API.Controllers.Postagens
             return Ok(postagemRequest);
         }
 
-        [HttpGet("listar-postagens")]
-        public IActionResult CarregarListaDePostagens()
+        [HttpGet("listar-postagens-paginadas")]
+        public IActionResult CarregarListaDePostagens(int pagina = 1, int quantidadePorPagina = 10)
         {
-            List<PostagemRequest> listaDePostagens = _postagemService.ListarPostagens();
-            if (listaDePostagens == null)
+            var listaDePostagens = _postagemService.ListarPostagensPaginadas(pagina, quantidadePorPagina);
+            if (listaDePostagens == null || !listaDePostagens.Any())
             {
                 return NotFound();
             }
             return Ok(listaDePostagens);
         }
+
+
+
 
         [HttpPost("listar-postagens/filtros")]
         public IActionResult CarregarTodasAsPostagensPorFiltro([FromBody] PostagemResponse filtro)
@@ -88,6 +88,17 @@ namespace Aisentona.API.Controllers.Postagens
             return Ok(listaDePostagens);
         }
 
+        [HttpGet("listar-ultimas-postagens-premium")]
+        public IActionResult ListarUltimasPostagensPremium()
+        {
+            List<PostagemRequest> listaDePostagens = _postagemService.ListarUltimasPostagensPremium();
+            if (listaDePostagens == null)
+            {
+                return NotFound();
+            }
+            return Ok(listaDePostagens);
+        }
+
 
         [HttpGet("listar-por-editoria/{idEditoria}")]
         public IActionResult FiltrarPostagensPorEditoria(int idEditoria)
@@ -102,48 +113,22 @@ namespace Aisentona.API.Controllers.Postagens
 
 
         [HttpPost("criar-noticia")]
-        [Authorize]
         public IActionResult CreatePost([FromBody] PostagemResponse postagemResponse)
         {
+
             // Validação do corpo da requisição
             if (postagemResponse is null)
             {
                 return BadRequest("Objeto preenchido incorretamente.");
             }
 
-            // Pegar ID e Permissões do Usuário Autenticado
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var regras = User.FindFirst(ClaimTypes.Role)?.Value;
-
-            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(regras))
-            {
-                return Unauthorized("Usuário não autenticado.");
-            }
-
-            // Verificar se o role é válido
-            if (!Enum.TryParse(regras, out Autorizacao autorizacao))
-            {
-                return Unauthorized("Role inválido.");
-            }
-
-            // Pegar as permissões associadas ao role
-            var permissoes = autorizacao.GetPermissions(); // Método de extensão
-
-            // Verificar se o usuário tem permissão para criar postagens
-            if (!permissoes.Contains("CadastrarPostsSimples") && !permissoes.Contains("CadastrarPostsPremium"))
-            {
-                return Forbid("Você não tem permissão para criar postagens."); // Retorna 403 se não tiver permissão
-            }
-
             // Criar a postagem
             var postagem = _postagemService.CriarPostagem(postagemResponse);
+
             return Ok(postagem); // Retorna a postagem criada com status 200
         }
 
-
-
         [HttpPut("editar/{idPostagem}")]
-
         public IActionResult UpdatePostagem(int idPostagem, [FromBody] PostagemResponse postagemResponse)
         {
             try

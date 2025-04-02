@@ -4,12 +4,8 @@ using Aisentona.Entities.Request;
 using Aisentona.Entities.Response;
 using Aisentona.Entities.ViewModels;
 using Aisentona.Enumeradores;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Net.NetworkInformation;
 using System.Security.Principal;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Aisentona.Biz.Services.Postagens
 {
@@ -30,7 +26,7 @@ namespace Aisentona.Biz.Services.Postagens
             List<Postagem> ultimasPostagens = _context.CF_Postagem
                 .Include(p => p.Categoria) // Inclui a relação com a Categoria
                 .Include(p => p.Status)
-                .Where(p => p.Fl_Ativo == true) // Filtra apenas as postagens ativas
+                .Where(p => p.Fl_Ativo == true && p.Fl_Premium == false) // Filtra apenas as postagens ativas
                 .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
                 .Take(4) // Limita a 4 postagens
                 .ToList();
@@ -39,19 +35,36 @@ namespace Aisentona.Biz.Services.Postagens
             return MapearParaDTO(ultimasPostagens);
         }
 
-        public List<PostagemRequest> ListarPostagens()
+        public List<PostagemRequest> ListarUltimasPostagensPremium()
         {
+            // Busca as últimas 4 postagens ativas, ordenadas pela data de criação
 
-            List<Postagem> postagens = _context.CF_Postagem
+            List<Postagem> ultimasPostagens = _context.CF_Postagem
                 .Include(p => p.Categoria) // Inclui a relação com a Categoria
                 .Include(p => p.Status)
-                .Where(p => p.Fl_Ativo == true) // Filtra apenas as postagens ativas
+                .Where(p => p.Fl_Ativo == true && p.Fl_Premium == true) // Filtra apenas as postagens ativas e Premium
                 .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
+                .Take(3) // Limita a 4 postagens
                 .ToList();
 
             // Mapeia as postagens para PostagemDTO
+            return MapearParaDTO(ultimasPostagens);
+        }
+
+        public List<PostagemRequest> ListarPostagensPaginadas(int pagina, int quantidadePorPagina)
+        {
+            var postagens = _context.CF_Postagem
+                .Include(p => p.Categoria)
+                .Include(p => p.Status)
+                .Where(p => p.Fl_Ativo == true)
+                .OrderByDescending(p => p.DT_Criacao)
+                .Skip((pagina - 1) * quantidadePorPagina) // Pula os registros das páginas anteriores
+                .Take(quantidadePorPagina) // Pega apenas a quantidade necessária
+                .ToList();
+
             return MapearParaDTO(postagens);
         }
+
 
         public List<PostagemRequest> ListarPostagensComFiltro(PostagemResponse postagemResponse)
         {
@@ -60,6 +73,7 @@ namespace Aisentona.Biz.Services.Postagens
                 .AsNoTracking()  // Não rastrear as entidades para melhorar a performance
                 .Include(p => p.Categoria)
                 .Include(p => p.Status)
+                .OrderByDescending(p => p.DT_Criacao)
                 .Where(p => p.Fl_Ativo == true);
 
             // Filtro por Título
@@ -106,13 +120,7 @@ namespace Aisentona.Biz.Services.Postagens
             return MapearParaDTO(postagens);
         }
 
-
-
-
-
-
-
-        public PostagemRequest CarregarPostagem(int id)
+        public PostagemRequest CarregarPostagemPorId(int id)
         {
             Postagem? postagem = _context.CF_Postagem.FirstOrDefault(c => c.Id_Postagem == id && c.Fl_Ativo);
 
@@ -172,14 +180,7 @@ namespace Aisentona.Biz.Services.Postagens
             novaPostagem.Ds_UltimaAlteracao = GetWindowsUsername();
             novaPostagem.DT_UltimaAlteracao = null;
             novaPostagem.Id_Usuario = novaPostagem.Id_Usuario;
-
-            if (postagemResponse.PremiumOuComum.Contains("Publicação Comum"))
-            {
-                novaPostagem.Fl_Premium = false;
-            }
-            novaPostagem.Fl_Premium = true;
-
-
+            novaPostagem.Fl_Premium = bool.Parse(postagemResponse.PremiumOuComum);
 
             _context.CF_Postagem.Add(novaPostagem);
             _context.SaveChanges();
@@ -285,7 +286,7 @@ namespace Aisentona.Biz.Services.Postagens
 
         private PostagemRequest ConverterPostagemDTO(Postagem? postagem)
         {
-            PostagemRequest postagemDTO = new PostagemRequest()
+             PostagemRequest postagemDTO = new PostagemRequest()
             {
                 IdCategoria = postagem.Id_Categoria,
                 IdStatus = postagem.Id_Status,

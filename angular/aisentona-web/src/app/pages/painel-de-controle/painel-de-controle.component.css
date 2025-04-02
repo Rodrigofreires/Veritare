@@ -5,7 +5,12 @@
     flex-direction: row; /* Itens organizados horizontalmente */
     gap: 0; /* Remove qualquer espaço entre os itens */
   }
-  
+
+  .painel-de-publicacoes{
+    padding: 20px !important;
+    margin: 20px !important;
+  }
+
   /* Barra lateral */
   .sidenav {
     width: 250px; /* Largura fixa para a barra lateral */
@@ -14,10 +19,22 @@
     display: flex;
     flex-direction: column;
     align-items: center; /* Centraliza o conteúdo horizontalmente */
-    padding: 16px 0; /* Espaçamento interno */
+    padding: 16px !important; /* Espaçamento interno */
     box-sizing: border-box;
     border-radius: 0;
     flex-shrink: 0; /* Barra lateral não encolhe */
+  }
+
+  .painel-de-controle .clickable-link {
+    font-size: 25px !important; /* Tamanho do texto */
+    cursor: pointer;
+    color: #fff !important; /* Cor do texto */
+    text-decoration: none !important; /* Retira o sublinhado padrão do link */
+  }
+  
+  .painel-de-controle  .clickable-link:hover {
+    color: #7070AC !important ; /* Altere a cor conforme necessário */
+    text-decoration: underline !important; /* Adiciona sublinhado ao passar o mouse */
   }
   
   /* Perfil e título da barra lateral */
@@ -149,6 +166,7 @@
       width: 100%; /* Campo ocupa toda a largura no modo responsivo */
     }
 
+    
 
   }
   

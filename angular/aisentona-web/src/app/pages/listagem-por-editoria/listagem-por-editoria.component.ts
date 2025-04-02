@@ -12,15 +12,17 @@ import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { FaixaAssineVeritareComponent } from '../../shared/faixa-assine-veritare/faixa-assine-veritare.component';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'app-listagem-por-editoria',
   imports: [
     ContainerComponent,
-    FooterComponent,
     MatCardModule, 
     MatButtonModule, 
     CommonModule,
+    FaixaAssineVeritareComponent,
    
     ],
 
@@ -41,6 +43,7 @@ export class ListagemPorEditoriaComponent {
       private _route: ActivatedRoute,
       private _noticiaService: NoticiaService,
       private _snackBarService: SnackbarService,
+      private _navigationService: NavigationService,
       private router: Router,
     ) {}
 
@@ -55,17 +58,10 @@ export class ListagemPorEditoriaComponent {
     }
 
     carregaNoticiasRelacionadas(): void {
-      // // Certifica-se de que o idCategoria é válido
-      // if (!this.idCategoria || this.idCategoria <= 0) {
-      //   console.error('ID da categoria inválido:', this.idCategoria);
-      //   this._snackBarService.MostrarErro('Erro: ID da categoria inválido.');
-      //   return;
-      // }
     
       // Chama o serviço para carregar as notícias por editoria
       this._noticiaService.carregarPostagensPorEditoria(this.idCategoria).subscribe(
         (dados: PostagemRequest[]) => {
-          console.log('Dados recebidos:', dados);
           this.noticiasRelacionadas = dados; // Armazena as notícias relacionadas
         },
         (erro) => {
@@ -75,9 +71,20 @@ export class ListagemPorEditoriaComponent {
       );
     }
     
-    navegarParaNoticia(idPostagem: number): void {
-      this.router.navigate(['/noticia', idPostagem]);
-    }
+    navegarParaNoticia(infosPostagem: PostagemRequest): void {
+      // Chama o serviço que retorna a lista de editorias
+      this._noticiaService.buscarListaDeEditorias().subscribe(listaDeEditorias => {
+        // Filtra a categoria pela correspondência do id
+        const categoria = listaDeEditorias.find(editoria => editoria.id === infosPostagem.idCategoria);
+    
+        if (categoria) {
+          // Se encontrar a categoria, chama o serviço de navegação
+          this._navigationService.navegarParaNoticia(infosPostagem, categoria);
+        } else {
+          console.error('Categoria não encontrada para a postagem');
+        }
+      });
+    }    
 
     carregarMaisNoticias(): void {
       if (this.quantidadeNoticias < this.noticiasRelacionadas.length) {

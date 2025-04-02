@@ -1,6 +1,7 @@
 .cabecalho-noticia{
     margin: 10px;
     padding: 10px;
+    height: 160px !important;
     display: flex;
     flex-direction: column;
     resize: none !important; 
@@ -8,24 +9,31 @@
 
 .titulo {
     width: 100%;
+    height: 150px !important;
     resize: none !important; 
 }
 .descricao{
     width: 100%;
+    height: 150px !important;
     margin: 0;
     padding: 0;
     resize: none !important; 
-
 } 
 .editoria{
-    width: 50%;
+    width: 33%;
     margin: 0;
     padding: 0;
 } 
 .status{
-    width: 50%;
+    width: 33%;
     margin: 0;
     padding: 0;
+}
+
+.premiumOuComum{
+  width: 33%;
+  margin: 0;
+  padding: 0;
 }
 
 

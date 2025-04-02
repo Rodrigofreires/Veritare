@@ -1,4 +1,5 @@
 ﻿using Aisentona.Biz.Services;
+using Aisentona.Biz.Services.Postagens;
 using Aisentona.DataBase;
 using Aisentona.Entities.Request;
 using Aisentona.Entities.Response;
@@ -18,16 +19,11 @@ namespace Aisentona.API.Controllers
             _colaboradorService = colaboradorService;
         }
 
-        // GET api/<ColaboradorController>
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        [HttpGet("id")]
+        public IActionResult GetTodosOsColaboradores(int id)
         {
-            if (id <= 0)
-            {
-                return BadRequest("ID inválido.");
-            }
 
-            var colaborador = _colaboradorService.ListarColaboradorPorId(id);
+            var colaborador = _colaboradorService.GetColaboradorPorId(id);
             if (colaborador == null)
             {
                 return NotFound();
@@ -35,7 +31,47 @@ namespace Aisentona.API.Controllers
             return Ok(colaborador);
         }
 
-        // GET api/<ColaboradorController>
+        [HttpGet("lista-colaboradores/")]
+        public IActionResult GetTodosOsColaboradores()
+        {
+
+            var listaDeTodosOsColaboradores = _colaboradorService.ListarTodosOsColaboradores();
+            if (listaDeTodosOsColaboradores == null)
+            {
+                return NotFound();
+            }
+            return Ok(listaDeTodosOsColaboradores);
+        }
+
+
+        [HttpGet("lista-perfil-usuarios")]
+        public IActionResult GetTodosUsuarios()
+        {
+            List<PerfilDeUsuarioRequest> listaDePerfisDeUsuarios = _colaboradorService.ListarTodosPerfis();
+            if (listaDePerfisDeUsuarios == null || !listaDePerfisDeUsuarios.Any())
+            {
+                return NotFound("Nenhum usuário encontrado.");
+            }
+            return Ok(listaDePerfisDeUsuarios);
+        }
+
+        [HttpPost("listar-usuarios-filtros")]
+        public IActionResult CarregarTodasAsPostagensPorFiltro([FromBody] PerfilDeUsuarioResponse filtro)
+        {
+            if (filtro == null)
+            {
+                return BadRequest("Filtros não fornecidos.");
+            }
+
+            var listaDePostagens = _colaboradorService.ListarUsuariosComFiltro(filtro);
+            if (listaDePostagens == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(listaDePostagens);
+        }
+
         [HttpGet("perfil-usuario/{id}")]
         public IActionResult GetPerfilUsuario(int id)
         {
@@ -51,7 +87,6 @@ namespace Aisentona.API.Controllers
             }
             return Ok(perfilDeUsuarioRequest);
         }
-
 
         // POST api/<ColaboradorController>
         [HttpPost]
@@ -75,20 +110,19 @@ namespace Aisentona.API.Controllers
 
         }
 
-        // PUT api/<ColaboradorController>
-        [HttpPut("editar/{id}")]
-        public IActionResult UpdateColaborador(int id, [FromBody] ColaboradorRequest colaboradorRequest)
+        [HttpPut("editar-perfil-usuario")]
+        public IActionResult UpdateColaborador([FromBody] PerfilDeUsuarioRequest perfilDeUsuarioRequest)
         {
-            if (colaboradorRequest == null)
+            if (perfilDeUsuarioRequest == null)
             {
                 return BadRequest("Objeto preenchido incorretamente");
             }
 
             try
             {
-                var colaborador = _colaboradorService.EditarColaborador(id, colaboradorRequest);
+               _colaboradorService.EditarPerfilDeUsuario(perfilDeUsuarioRequest);
 
-                return Ok(colaborador);
+                return Ok();
             }
             catch (KeyNotFoundException ex)
             {

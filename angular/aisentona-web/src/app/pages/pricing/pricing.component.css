@@ -1,0 +1,233 @@
+/* Aplica o fundo para toda a página */
+body {
+  background: linear-gradient(135deg, #14153E, #070C18, #0A0C1B);
+  margin: 0;
+  font-family: Arial, sans-serif;
+  scroll-behavior: smooth; /* Navegação suave ao rolar */
+}
+
+/* Container principal */
+.container-principal {
+  background: linear-gradient(135deg, #070C18, #14153E, #0A0C1B) !important;
+  max-width: 100%;
+  overflow-x: hidden; /* Impede que o conteúdo estoure na horizontal */
+  padding: 0;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #111;
+  color: white;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* Chamada container */
+.pricing-chamada {
+  width: 100%;
+  height: auto;
+  text-align: center;
+  padding: 2rem;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.imagem-veritare {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.titulo-chamada {
+  font-size: 80px;
+  margin-bottom: 5px; /* Reduz o espaçamento inferior do título */
+}
+
+.subtitulo-chamada {
+  font-size: 50px;
+  padding: 0 !important;
+  margin: 0 !important;
+  margin-top: -10px; /* Aproxima ainda mais do título */
+}
+
+/* Pricing container */
+.pricing-container {
+  text-align: center;
+  padding: 2rem;
+  color: white;
+}
+
+  .plans {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap; /* Permite que os planos se ajustem em diferentes telas */
+  }
+
+.plan {
+  background: #222;
+  padding: 2rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #070C18, #14153E, #0A0C1B) !important;
+  max-width: 450px; /* Limita a largura máxima */
+  height: 600px;
+  width: 100%; /* Garante que o tamanho do cartão seja responsivo */
+}
+
+/* Botão de assinatura */
+.botao-global {
+  background: linear-gradient(135deg, #070C18, #14153E, #0A0C1B);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.botao-assinar:hover {
+  background: linear-gradient(135deg, #14153E, #070C18, #0A0C1B);
+  transform: translateY(-5px);
+}
+
+.botao-assinar:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+/* FAQ */
+.faq-container {
+  padding: 3rem 2rem;
+  color: white;
+  background: linear-gradient(135deg, #14153E, #070C18, #0A0C1B);
+  border-radius: 10px;
+  margin-top: 3rem;
+}
+
+.faq-container h3 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.faq-accordion {
+  width: 100%;
+}
+
+.faq-panel {
+  background: #1a1a1a;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  transition: background 0.3s ease;
+}
+
+.faq-panel .mat-expansion-panel-header {
+  background: #14153E;
+  color: white;
+}
+
+.faq-panel .mat-expansion-panel-header:hover {
+  background: #070C18;
+}
+
+.faq-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: white !important; /* Cor do título em branco */
+}
+
+.faq-panel p {
+  color: #ccc;
+  font-size: 1rem;
+  padding: 1rem;
+  line-height: 1.5;
+}
+
+.texto-resposta {
+  color: aliceblue !important;
+}
+
+.duvidas-frequentes {
+  text-align: center !important;
+}
+
+mat-expansion-panel-header .mat-panel-title {
+  font-size: 1rem; /* Diminuir tamanho do título */
+}
+
+/* Reduz o tamanho do botão de expandir do Accordion */
+mat-expansion-panel .mat-expansion-indicator {
+  transform: scale(0.7); /* Reduz o tamanho do botão em 30% */
+}
+
+/* Seção de Contato */
+.contato-container {
+  padding: 3rem 2rem;
+  color: white;
+  background: linear-gradient(135deg, #14153E, #070C18, #0A0C1B);
+  border-radius: 10px;
+  margin-top: 3rem;
+}
+
+.contato-texto h3 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.contato-texto {
+  color: aliceblue !important;
+}
+
+.contato-opcao {
+  margin: 20px 0;
+}
+
+.faq-container {
+  padding: 3rem 2rem;
+  color: white;
+  background: linear-gradient(135deg, #14153E, #070C18, #0A0C1B);
+  border-radius: 10px;
+  margin-top: 3rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .titulo-chamada {
+    font-size: 50px;
+  }
+
+  .subtitulo-chamada {
+    font-size: 30px;
+  }
+
+  .plans {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .plan {
+    width: 100%;
+  }
+
+  .faq-container {
+    padding: 2rem 1rem;
+  }
+
+  .faq-container h3 {
+    font-size: 1.5rem;
+  }
+
+  .faq-panel .mat-expansion-panel-header {
+    font-size: 0.9rem;
+  }
+}

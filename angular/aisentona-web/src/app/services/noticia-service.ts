@@ -1,6 +1,6 @@
 import { Component, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { EditoriaRequest } from '../core/interfaces/Request/Editorias';
 import { StatusRequest } from '../core/interfaces/Request/Status';
@@ -21,7 +21,7 @@ export class NoticiaService {
 
   constructor(
     private http: HttpClient,
-    private authService: AuthService
+    private _authService: AuthService
   
   ) {}
 
@@ -40,19 +40,14 @@ buscarListaDeStatus(): Observable<StatusRequest[]> {
 // POSTAR NOVA NOTÍCIA 
 
 criarPostagem(postagem: PostagemResponse): Observable<any> {
-  const token = this.authService.getDecodedToken(); // Obtenha o token do AuthService
-  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`); // Adiciona o token ao header
-
-  return this.http.post(`${this.apiUrl}/${this.API}/criar-noticia`, postagem, { headers });
+  return this.http.post(`${this.apiUrl}/${this.API}/criar-noticia`, postagem);
 }
-
 
 // EDITAR NOTÍCIA JÁ EXISTENTE
 editarNoticia(id: number, postagem: PostagemResponse): Observable<PostagemResponse> {
   const url = `${this.apiUrl}/${this.API}/editar/${id}`;
   return this.http.put<PostagemResponse>(url, postagem);
 }
-
 
   // EXCLUIR (DESATIVAR) NOTÍCIA
   excluirNoticia(idPostagem: number): Observable<void> {
@@ -74,6 +69,18 @@ carregarTodasAsPostagens(): Observable<PostagemRequest[]> {
     }
   });
 }
+// LISTAR POSTAGENS COM PAGINAÇÃO
+carregarPostagensPaginadas(pagina: number, quantidadePorPagina: number): Observable<PostagemRequest[]> {
+  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-postagens-paginadas`, {
+    params: {
+      pagina: pagina.toString(),
+      quantidadePorPagina: quantidadePorPagina.toString()
+    },
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+}
 
 // LISTAR TODAS AS POSTAGENS
 carregarTodasAsPostagensPorFiltro(filtros: PostagemResponse): Observable<PostagemRequest[]> {
@@ -84,13 +91,14 @@ carregarTodasAsPostagensPorFiltro(filtros: PostagemResponse): Observable<Postage
   });
 }
 
-
-
-
-
 // LISTAR ÚLTIMAS POSTAGENS
 carregarUltimasPostagens(): Observable<PostagemRequest[]> {
   return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-ultimas-postagens`)
+
+}
+
+carregarUltimasNoticiasPremium(): Observable<PostagemRequest[]> {
+  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-ultimas-postagens-premium`)
 
 }
 
@@ -99,6 +107,10 @@ carregarPostagensPorEditoria(idEditoria: number): Observable<PostagemRequest[]> 
   return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-por-editoria/${idEditoria}`)
 
 }
+
+//DIRECIONAR PARA A ROTA CORRETA DA NOTÍCIA
+
+
 
 
 

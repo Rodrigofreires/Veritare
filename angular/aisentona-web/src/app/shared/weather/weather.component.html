@@ -1,0 +1,19 @@
+<mat-card class="weather-card">
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon class="weather-icon">wb_sunny</mat-icon> <!-- Ícone de sol -->
+      Previsão do Tempo em {{ local }}
+    </mat-card-title>
+
+  </mat-card-header>
+  <mat-card-content>
+    <div class="current-weather">
+        <p><strong>Hoje:</strong> {{ dataHoje }} | {{ diaDaSemana }} - {{ temperatura }}°C </p>
+    </div>
+
+    <h3>Previsão para os Próximos Dias</h3>
+    <div *ngFor="let previsao of previsaoFutura" class="forecast">
+      <p>{{ previsao.diaDaSemana }} - {{ previsao.dataFormatada }} - {{ previsao.temperatura }}°C</p>
+    </div>
+  </mat-card-content>
+</mat-card>

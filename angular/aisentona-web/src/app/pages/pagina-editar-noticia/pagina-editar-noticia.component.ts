@@ -50,6 +50,8 @@ export class PaginaEditarNoticiaComponent implements OnInit {
   statusSelecionado: number = 0;
   imagemBase64: string = '';
   isCodeView: boolean = false;
+  tipoSelecionado: string = ''; // Para armazenar a opção escolhida
+  tipoDePublicacao: string[] = ['Publicação Comum', 'Publicação Premium'];
   modules: any
 
 
@@ -76,17 +78,19 @@ export class PaginaEditarNoticiaComponent implements OnInit {
       //Framework de edição de texto - comandos para utilização
       toolbar: {
         container: [
-          // Configuração da toolbar
-          ['bold', 'italic', 'underline', 'strike'], // Estilos
-          [{ header: [1, 2, 3, false] }], // Cabeçalhos
-          [{ list: 'ordered' }, { list: 'bullet' }], // Listas
-          [{ align: [] }], // Alinhamento
-          ['link', 'image', 'video'], // Mídia
-          [{ size: ['small', false, 'large', 'huge'] }], // Tamanho de fonte
-          [{ color: [] }, { background: [] }], // Cores
-          ['clean'] // Limpar formatação
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ 'header': [1, 2, 3, false] }],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'align': [] }],
+          ['link', 'image', 'video'],
+          [{ 'size': ['small', false, 'large', 'huge'] }],
+          [{ 'color': [] }, { 'background': [] }],
+          ['clean']
         ]
       },
+      clipboard: {
+        matchVisual: false // Para permitir colar HTML e manter as tags
+      }
     };
 
   }
@@ -129,19 +133,48 @@ export class PaginaEditarNoticiaComponent implements OnInit {
   }
 
   carregarPostagem(id: number): void {
-
     this._noticiaService.buscarPostagemPorId(id).subscribe(
       (postagem) => {
         this.infosPostagem = postagem;
         this.editoriaSelecionada = postagem.idCategoria;
         this.statusSelecionado = postagem.idStatus;
         this.imagemBase64 = postagem.imagem;
+  
+
+        // Processa o conteúdo para incluir as tags
+        this.processarConteudoComTags(postagem.textoAlteradoPorIA);
+        this.processarConteudoComTags(postagem.palavrasRetiradasPorIA);
+        this.processarConteudoComTags(postagem.conteudo);
+
+        this.infosPostagem.premiumOuComum =
+        this.tipoSelecionado.includes('Publicação Premium');
+
+  
+        // Adiciona o conteúdo processado ao editor
+        const editor = document.querySelector('.ql-editor') as HTMLElement;
+        if (editor) {
+          editor.innerHTML = postagem.textoAlteradoPorIA; // ou o campo que contém o conteúdo processado
+        }
       },
       (error) => {
         this._snackBarService.MostrarErro('Erro ao carregar a notícia.', error);
       }
     );
   }
+  
+
+  processarConteudoComTags(conteudo: string): string { // Alterado de void para string
+    // Verifica se há as tags específicas e as converte para o formato correto.
+    if (conteudo) {
+      // Substitui as tags [[<span>]] por tags HTML válidas para o Quill
+      conteudo = conteudo.replace(/\[\[(.*?)\]\]/g, (match, p1) => {
+        return `<span style="color:red; font-weight:bold">${p1}</span>`;
+      });
+    }
+    return conteudo; // Retorna o conteúdo processado
+  }
+  
+  
 
   salvarEdicao(): void {
     const idPostagem = this.route.snapshot.paramMap.get('id');
@@ -159,11 +192,13 @@ export class PaginaEditarNoticiaComponent implements OnInit {
     this.infosPostagem.idStatus = this.statusSelecionado;
     this.infosPostagem.idPostagem = +idPostagem;
     this.infosPostagem.imagem = this.imagemBase64;
+    this.infosPostagem.premiumOuComum = this.tipoSelecionado
   
+    // Aqui você pode adicionar mais lógica, se necessário, para processar o conteúdo antes de salvar
     this._noticiaService.editarNoticia(this.infosPostagem.idPostagem, this.infosPostagem).subscribe(
       () => {
         this._snackBarService.MostrarSucesso('Notícia editada com sucesso!');
-        this._router.navigate(['/noticia', this.infosPostagem.idPostagem]);
+        this._router.navigate(['/painel-de-controle']);
       },
       (error) => {
         this._snackBarService.MostrarErro('Erro ao salvar edição. Verifique os dados.', error);

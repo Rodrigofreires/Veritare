@@ -1,45 +1,58 @@
 .painel-noticias {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  gap: 20px; /* Espaçamento entre os elementos */
   margin: 0 auto;
   width: 100%;
   margin-bottom: 40px;
+  border: none;
+  box-shadow: none;
 }
 
+.listagem-de-noticias {
+  width: 65%; /* A largura da lista de notícias */
+  display: flex;
+  flex-direction: column;
+}
+
+.weather-widget {
+  width: 35%; /* A largura do widget de clima */
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+/* Restante do estilo das notícias */
 .item-noticia {
+  width: 100%; /* A largura da notícia */
   display: flex;
   flex-direction: row;
   gap: 16px;
-  align-items: flex-start;
+  align-items: stretch; /* Garante que a imagem e o texto tenham a mesma altura */
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: none !important;
   background-color: #fff;
-}
-
-.imagem-descricao {
-  display: flex;
-  gap: 16px;
-  align-items: stretch; /* Garante que a imagem e o texto tenham a mesma altura */
+  cursor: pointer;
+  margin-bottom: 20px;
 }
 
 .imagem-noticia {
-  min-width: 150px !important; 
-  max-width: 150px !important;
-  min-width: 150px !important; 
-  max-height: 150px !important; 
-  border-radius: 8px !important;
-  gap: 20px;
-  cursor: pointer;
+  width: 35%; /* Imagem ocupa 35% na horizontal */
+  height: 100%; /* Imagem ocupa 100% na vertical */
+  object-fit: cover; /* Garante que a imagem se ajuste sem distorcer */
+  border-radius: 4px; /* Ajuste nos cantos da imagem */
 }
 
 .detalhes-texto {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Distribui o conteúdo verticalmente */
 }
 
 .nome-editoria {
@@ -55,7 +68,7 @@
   color: #333;
   margin: 8px 0;
   cursor: pointer;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .titulo-noticia:hover {
@@ -63,14 +76,11 @@
 }
 
 .descricao-noticia {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #666;
   margin: 8px 0;
 }
 
-.botao-ver-mais {
-  margin: 20px auto;
-  width: 200px;
-  font-size: large;
-  padding: 10px;
+.botao-global{
+  margin-bottom: 30px;
 }
