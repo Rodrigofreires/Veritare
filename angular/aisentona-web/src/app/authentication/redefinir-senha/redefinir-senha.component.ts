@@ -60,7 +60,7 @@ export class RedefinirSenhaComponent {
     this._loginService.redefinirSenha(this.token, this.novaSenha, this.confirmarSenha).subscribe({
       next: (res: any) => {
         this._snackBar.MostrarSucesso(res.mensagem || 'Senha redefinida com sucesso! Redirecionando...');
-        setTimeout(() => this.router.navigate(['/login']), 5000);
+        setTimeout(() => this.router.navigate(['/login']), 3000);
       },
       error: (err) => {
         console.error('Erro ao redefinir senha:', err);

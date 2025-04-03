@@ -29,11 +29,12 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowSpecificOrigin",
-        builder => builder.WithOrigins("http://localhost:4200")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
+            builder => builder.WithOrigins("http://localhost:4200", "https://localhost:4200") // Permite tanto HTTP quanto HTTPS
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
     });
+
 
     // Registro de serviços e repositórios
     builder.Services.AddScoped<ColaboradorService>();

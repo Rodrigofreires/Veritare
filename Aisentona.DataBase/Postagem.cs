@@ -53,6 +53,7 @@ namespace Aisentona.DataBase
         public Colaborador? Colaborador { get; set; } // Relação com a classe Usuario (CF_COLABORADOR)
         public Status? Status { get; set; }   // Relação com a classe Status
         public Categoria? Categoria { get; set; }  // Relação com a classe Categoria
+        public List<PostagemAlerta>? PostagemAlerta { get; set; }
       
     }
 }

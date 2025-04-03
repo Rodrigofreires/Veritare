@@ -209,5 +209,20 @@
   .botao-ver-mais:hover {
     background-color: #0056b3;
   }
+
+  .alerta-flutuante {
+    position:fixed;
+    z-index: 9999; /* Garante que o alerta fique acima de outros elementos */
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo semitransparente */
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    pointer-events: none; /* Para não bloquear interações com o conteúdo abaixo */
+  }
+  
   
   

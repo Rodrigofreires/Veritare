@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aisentona.Entities.Response;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ namespace Aisentona.Entities.Request {
         {
                 
         }
-        public PostagemRequest(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario, string imagem, string textoAlteradoPorIA, string palavrasRetiradasPorIA, DateTime? dtCriacao, string nomeCategoria, string nomeStatus, bool premiumOuComum)
+        public PostagemRequest(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario, string imagem, string textoAlteradoPorIA, string palavrasRetiradasPorIA, DateTime? dtCriacao, string nomeCategoria, string nomeStatus, bool premiumOuComum, List<AlertaResponse> listaDeAlertas)
         {
             Titulo = titulo;
             Descricao = descricao;
@@ -28,6 +29,7 @@ namespace Aisentona.Entities.Request {
             NomeCategoria = nomeCategoria;
             NomeStatus = nomeStatus;
             PremiumOuComum = premiumOuComum;
+            Alertas = listaDeAlertas;
         }
 
         public string? Titulo { get; set; }
@@ -44,6 +46,7 @@ namespace Aisentona.Entities.Request {
         public string? PalavrasRetiradasPorIA { get; set; }
         public DateTime? DataCriacao { get; set; }
         public bool PremiumOuComum { get; set; }
+        public List<AlertaResponse> Alertas { get; set; }
 
 
 

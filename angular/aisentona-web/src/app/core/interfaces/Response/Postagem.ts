@@ -1,3 +1,5 @@
+import { AlertaResponse } from "./Alerta";
+
 export interface PostagemResponse {
     titulo: string ;
     descricao: string;
@@ -11,4 +13,5 @@ export interface PostagemResponse {
     palavrasRetiradasPorIA: string;
     premiumOuComum: string | any;
     dataCriacao: string | null;
+    alertas: AlertaResponse[];
   }

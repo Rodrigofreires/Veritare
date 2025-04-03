@@ -104,6 +104,7 @@ export class PainelDeControleComponent implements AfterViewInit {
       dataCriacao: '',
       nomeStatus: '',
       premiumOuComum: true,
+      alertas: [],
     },
   ];
 
@@ -123,6 +124,7 @@ export class PainelDeControleComponent implements AfterViewInit {
       dataCriacao: '',
       nomeStatus: '',
       premiumOuComum: true,
+      alertas: [],
     },
   ];
 
@@ -139,6 +141,7 @@ export class PainelDeControleComponent implements AfterViewInit {
     imagem: '',
     textoAlteradoPorIA: '',
     palavrasRetiradasPorIA: '',
+    alertas: [],
   };
 
 ngOnInit(): void {
@@ -189,6 +192,7 @@ ngOnInit(): void {
       imagem: '',
       textoAlteradoPorIA: '',
       palavrasRetiradasPorIA: '',
+      alertas: [],
     };
 
     if (

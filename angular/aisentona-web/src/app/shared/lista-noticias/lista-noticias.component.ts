@@ -40,6 +40,7 @@ export class ListaNoticiasComponent implements OnInit {
       dataCriacao: '',
       nomeStatus: '',
       premiumOuComum: true,
+      alertas: [], // Adicionando a propriedade alertas
     },
   ];
 
@@ -59,6 +60,7 @@ export class ListaNoticiasComponent implements OnInit {
       dataCriacao: '',
       nomeStatus: '',
       premiumOuComum: true,
+      alertas: [], // Adicionando a propriedade alertas
     },
   ];
 
@@ -78,6 +80,8 @@ export class ListaNoticiasComponent implements OnInit {
       dataCriacao: '',
       nomeStatus: '',
       premiumOuComum: true,
+      alertas: [], // Adicionando a propriedade alertas
+      
     },
   ];
 

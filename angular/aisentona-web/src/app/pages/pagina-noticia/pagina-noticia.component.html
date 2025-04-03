@@ -35,26 +35,36 @@
     <!-- Botões de Controle -->
     <div class="botoes-controle">
       <button mat-raised-button
-              [ngClass]="{ 'botao-selecionado': textoSelecionado === 'ia' }"
-              (click)="mostrarTexto('ia')">
-        Escrito por Veritare
+              [ngClass]="{ 'botao-selecionado': textoSelecionado === 'humano' }"
+              (click)="mostrarTexto('humano')">
+        Análise Veritare
       </button>
       <button mat-raised-button
-              [ngClass]="{ 'botao-selecionado': textoSelecionado === 'humano' }"
+              [ngClass]="{ 'botao-selecionado': textoSelecionado === 'ia' }"
               color="accent"
-              (click)="mostrarTexto('humano')">
-        Notícia Original
+              (click)="mostrarTexto('ia')">
+        Resumo Veritare 
       </button>
     </div>
 
     <!-- Conteúdo IA -->
     <div *ngIf="textoSelecionado === 'ia'">
-      <h2>Escrito por Veritare</h2>
+      <h2>Análise Veritare</h2>
       <mat-card-content>
-        <quill-view class="noticia-conteudo" [content]="infosPostagem.textoAlteradoPorIA"></quill-view>
+        <quill-view class="noticia-conteudo" 
+                    [content]="infosPostagem.conteudo" 
+                    (mouseover)="mostrarAlerta($event)" 
+                    (mouseleave)="esconderAlerta()">
+        </quill-view>
+      
+        <!-- Alerta flutuante -->
+        <div *ngIf="alertaVisivel" class="alerta-flutuante" [ngStyle]="getAlertStyle()">
+          {{ alertaTexto }}
+        </div>
       </mat-card-content>
+      
 
-      <h2>Comentários Veritare</h2>
+      <h2>Fonte </h2>
       <mat-card-content>
         <quill-view class="noticia-conteudo" [content]="infosPostagem.palavrasRetiradasPorIA"></quill-view>
       </mat-card-content>
@@ -62,8 +72,9 @@
 
     <!-- Conteúdo Humano -->
     <div *ngIf="textoSelecionado === 'humano'">
+      <h2>Notícia gerada por IA (Sem viés ideológico)</h2>
       <mat-card-content>
-        <quill-view class="noticia-conteudo" [content]="infosPostagem.conteudo"></quill-view>
+        <quill-view class="noticia-conteudo" [content]="infosPostagem.conteudo" (mouseover)="mostrarAlerta($event)"></quill-view>
       </mat-card-content>
     </div>
 
@@ -97,4 +108,9 @@
       </mat-card>
     </div>
   </mat-card>
+</div>
+
+<!-- Exibir pop-up de alerta -->
+<div *ngIf="alertaVisivel" class="alerta-popup" [ngStyle]="{ top: posicaoTooltip.top + 'px', left: posicaoTooltip.left + 'px' }">
+  <div class="alerta-texto">{{ alertaTexto }}</div>
 </div>

@@ -54,18 +54,22 @@ namespace Aisentona.Biz.Services
                     var tipoDoUsuario = _context.CF_ColaboradorTipoUsuario
                         .FirstOrDefault(x => x.Id_TipoUsuario == colaborador.Id_TipoUsuario);
 
+                    var acessoUsario = _context.CF_AcessoUsuario.FirstOrDefault(x => x.Id_Usuario == colaborador.Id_Usuario);
+
                     if (tipoDoUsuario == null) continue; // Se não encontrar o tipo de usuário, pula para o próximo colaborador
 
                     var perfilDeUsuarioRequest = new PerfilDeUsuarioRequest
                     {
                         IdUsuario = colaborador.Id_Usuario,
                         Nome = colaborador.Nm_Nome,
-                        CPF = colaborador.Ds_CPF, 
+                        CPF = colaborador.Ds_CPF,
                         Email = colaborador.Ds_Email,
                         Contato = colaborador.Ds_ContatoCadastro,
                         NomeTipoDeUsuario = tipoDoUsuario?.Nm_TipoUsuario,
                         DataDeNascimento = colaborador.DT_Nascimento,
-                        AcessoPremium = colaborador.AcessoUsuario?.Fl_AcessoPremium
+                        AcessoPremium = acessoUsario?.Fl_AcessoPremium,
+                        PremiumExpiraEm = acessoUsario?.Dt_FimAcesso,
+                       
                     };
 
 
@@ -119,6 +123,7 @@ namespace Aisentona.Biz.Services
             perfilDeUsuarioRequest.DataDeNascimento = colaborador.DT_Nascimento;
             perfilDeUsuarioRequest.TempoDeAcesso = colaborador.DT_Criacao;
             perfilDeUsuarioRequest.AcessoPremium = colaborador.AcessoUsuario.Fl_AcessoPremium;
+            perfilDeUsuarioRequest.PremiumExpiraEm = colaborador.AcessoUsuario.Dt_FimAcesso;
 
             return perfilDeUsuarioRequest;
 

@@ -188,20 +188,27 @@ export class PaginaEditarNoticiaComponent implements OnInit {
       return;
     }
   
-    this.infosPostagem.idCategoria = this.editoriaSelecionada;
-    this.infosPostagem.idStatus = this.statusSelecionado;
-    this.infosPostagem.idPostagem = +idPostagem;
-    this.infosPostagem.imagem = this.imagemBase64;
-    this.infosPostagem.premiumOuComum = this.tipoSelecionado
+    // Atualiza as informações da postagem de forma imutável
+    const novaPostagem = {
+      ...this.infosPostagem,
+      idCategoria: this.editoriaSelecionada,
+      idStatus: this.statusSelecionado,
+      idPostagem: +idPostagem,
+      imagem: this.imagemBase64,
+      premiumOuComum: this.tipoSelecionado.includes('Publicação Premium'),
+    };
   
-    // Aqui você pode adicionar mais lógica, se necessário, para processar o conteúdo antes de salvar
-    this._noticiaService.editarNoticia(this.infosPostagem.idPostagem, this.infosPostagem).subscribe(
+    // Envia a requisição para editar a postagem
+    this._noticiaService.editarNoticia(novaPostagem.idPostagem, novaPostagem).subscribe(
       () => {
         this._snackBarService.MostrarSucesso('Notícia editada com sucesso!');
         this._router.navigate(['/painel-de-controle']);
       },
       (error) => {
-        this._snackBarService.MostrarErro('Erro ao salvar edição. Verifique os dados.', error);
+        console.error('Erro ao salvar edição:', error);
+        this._snackBarService.MostrarErro(
+          'Erro ao salvar edição. Verifique os dados.'
+        );
       }
     );
   }

@@ -30,7 +30,8 @@ export class BannerComponent implements OnInit {
       textoAlteradoPorIA: '',
       palavrasRetiradasPorIA: '',
       dataCriacao: '',
-      premiumOuComum: true
+      premiumOuComum: true,
+      alertas: []
     },
   ];
 

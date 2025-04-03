@@ -39,6 +39,7 @@
         style="display: none;"
         (change)="selecionarImagem($event)"
         accept="image/*" />
+        
       <button class="botao" mat-button (click)="abrirSeletorDeArquivo()">
         SELECIONE UMA IMAGEM
       </button>
@@ -48,7 +49,7 @@
       <div class="textos-principais-editados">
 
         <!-- Texto Manual -->
-        <h3>ONDE ENCONTRAR A MATÉRIA ORIGINAL</h3>        
+        <h3>ANÁLISE VERITARE</h3>        
         <quill-editor
         class="texto-da-noticia-editada"
         [(ngModel)]="infosPostagem.conteudo"
@@ -68,7 +69,7 @@
         </quill-editor>
   
         <!-- Palavras Cortadas -->
-        <h3>NOTÍCIA COMENTADA POR VERITARE:</h3>
+        <h3>FONTE DA MATÉRIA ANALISADA</h3>
         <quill-editor
           class="texto-da-noticia-editada"
           [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"

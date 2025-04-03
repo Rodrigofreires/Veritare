@@ -15,12 +15,12 @@ namespace Aisentona.DataBase
         public DbSet<ColaboradorPermissao> CF_ColaboradorPermissao { get; set; }
         public DbSet<ColaboradorTipoUsuario> CF_ColaboradorTipoUsuario { get; set; }
         public DbSet<Postagem> CF_Postagem { get; set; }
+        public DbSet<PostagemAlerta> CF_PostagemAlertas { get; set; }
         public DbSet<Categoria> CF_Postagem_Categoria { get; set; }
         public DbSet<AcessoUsuario> CF_AcessoUsuario { get; set; }
         public DbSet<Status> CF_Postagem_Status { get; set; }
         public DbSet<Tags> CF_Postagem_Tags { get; set; }
         public DbSet<TipoPlano> CF_TipoPlano { get; set; }
-
         public DbSet<JobExpiracaoPremiumLog> Job_ExpiracaoPremium_Log { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,20 +48,28 @@ namespace Aisentona.DataBase
             // Relacionamento de 1 para 1 entre Colaborador e ColaboradorTelefone
             modelBuilder.Entity<Colaborador>()
                 .HasOne(c => c.Telefones)
-                .WithOne()  // Relacionamento de 1 para 1
+                .WithOne()
                 .HasForeignKey<ColaboradorTelefone>(a => a.Id_Usuario);
 
             modelBuilder.Entity<Colaborador>()
                 .HasOne(c => c.TipoUsuario)
-                .WithOne()  // Relacionamento de 1 para 1
+                .WithOne()
                 .HasForeignKey<ColaboradorTipoUsuario>(a => a.Id_TipoUsuario);
 
             // Relacionamento de 1 para N entre AcessoUsuario e TipoPlano
             modelBuilder.Entity<AcessoUsuario>()
-                .HasOne(a => a.TipoPlano)  // Um AcessoUsuario tem um TipoPlano
-                .WithMany()  // TipoPlano pode ter vários AcessoUsuario
-                .HasForeignKey(a => a.Id_Plano)  // Relacionamento através da FK
-                .OnDelete(DeleteBehavior.SetNull);  // Caso o TipoPlano seja deletado, o AcessoUsuario mantém a referência como nula
+                .HasOne(a => a.TipoPlano)
+                .WithMany()
+                .HasForeignKey(a => a.Id_Plano)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // Relacionamento de 1 para N entre Postagem e PostagemAlerta
+            modelBuilder.Entity<Postagem>()
+                .HasMany(p => p.PostagemAlerta)
+                .WithOne(pa => pa.Postagem)
+                .HasForeignKey(pa => pa.Id_Postagem)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }
