@@ -1,0 +1,22 @@
+<form (ngSubmit)="salvar()">
+    <input [(ngModel)]="widget.titulo" name="titulo" placeholder="Título">
+    <input [(ngModel)]="widget.youtubeId" name="youtubeId" placeholder="ID do YouTube">
+    <select [(ngModel)]="widget.tipo" name="tipo">
+      <option value="video">Vídeo</option>
+      <option value="canal">Canal</option>
+      <option value="playlist">Playlist</option>
+    </select>
+    <button type="submit">Salvar</button>
+  </form>
+  
+  <table>
+    <tr *ngFor="let w of widgets">
+      <td>{{ w.titulo }}</td>
+      <td>{{ w.tipo }}</td>
+      <td>
+        <button (click)="editar(w)">Editar</button>
+        <button (click)="excluir(w.id)">Excluir</button>
+      </td>
+    </tr>
+  </table>
+  

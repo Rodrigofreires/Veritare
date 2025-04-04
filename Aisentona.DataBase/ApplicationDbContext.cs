@@ -22,6 +22,10 @@ namespace Aisentona.DataBase
         public DbSet<Tags> CF_Postagem_Tags { get; set; }
         public DbSet<TipoPlano> CF_TipoPlano { get; set; }
         public DbSet<JobExpiracaoPremiumLog> Job_ExpiracaoPremium_Log { get; set; }
+        public DbSet<YoutubeWidget> CF_YoutubeWidget { get; set; }
+
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

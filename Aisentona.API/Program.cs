@@ -7,11 +7,11 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Aisentona.Biz.Validators;
 using Aisentona.Biz.Mappers;
-using Aisentona.Biz.Services.Compartilhar;
 using Microsoft.OpenApi.Models;
 using Aisentona.Biz.Services.Premium;
 using Aisentona.Biz.Services.Background;
 using Aisentona.Biz.Services.Email;
+using Aisentona.Biz.Services.RedesSociais;
 
 var builder = WebApplication.CreateBuilder(args);
     var configuration = builder.Configuration; // Defina a variável configuration
@@ -23,8 +23,6 @@ var builder = WebApplication.CreateBuilder(args);
     // Adicione os serviços do FluentValidation
     builder.Services.AddScoped<ColaboradorValidator>();
 
-    // Integrando API do Twitter/X
-    builder.Services.AddScoped<TwitterService>();
 
     builder.Services.AddCors(options =>
     {
@@ -49,6 +47,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<EmailAtivacaoService>();
     builder.Services.AddHostedService<PremiumExpirationService>();
     builder.Services.AddScoped<EmailRedefinirSenhaService>();
+    builder.Services.AddScoped<YoutubeWidgetsService>();
 
 
 
