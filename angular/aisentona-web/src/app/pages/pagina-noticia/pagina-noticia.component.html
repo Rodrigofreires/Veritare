@@ -12,43 +12,66 @@
       </button>
     </div>
     
-    <!-- Cabeçalho da Notícia -->
-    <mat-card-header class="cabecalho-noticia">
-      <div class="titulo-container">
-        <mat-card-title class="noticia-titulo">
-          {{ infosPostagem.titulo }}
-        </mat-card-title>
-        <mat-card-subtitle class="noticia-subtitulo">
-          {{ infosPostagem.descricao }}
-        </mat-card-subtitle>
-        <div class="data-criacao">
-          <p><strong>Publicado em:</strong> {{ infosPostagem.dataCriacao | date: 'dd/MM/yyyy - HH:mm' }}</p>
-        </div>
+  <!-- Cabeçalho da Notícia -->
+  <mat-card-header class="cabecalho-noticia">
+    <div class="titulo-container">
+      <mat-card-title class="noticia-titulo">
+        {{ infosPostagem.titulo }}
+      </mat-card-title>
+      <mat-card-subtitle class="noticia-subtitulo">
+        {{ infosPostagem.descricao }}
+      </mat-card-subtitle>
+      <div class="data-criacao">
+        <p><strong>Publicado em:</strong> {{ infosPostagem.dataCriacao | date: 'dd/MM/yyyy - HH:mm' }}</p>
       </div>
-    </mat-card-header>
+
+      <div class="social-share">
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{url}}" target="_blank" class="share-icon" id="facebook">
+          <i class="fab fa-facebook"></i> <!-- Ícone do Facebook -->
+        </a>
+        <a href="https://wa.me/?text={{url}}" target="_blank" class="share-icon" id="whatsapp">
+          <i class="fab fa-whatsapp"></i> <!-- Ícone do WhatsApp -->
+        </a>
+        <a href="https://www.instagram.com/?url={{url}}" target="_blank" class="share-icon" id="instagram">
+          <i class="fab fa-instagram"></i> <!-- Ícone do Instagram -->
+        </a>
+        <a href="https://twitter.com/intent/tweet?url={{url}}" target="_blank" class="share-icon" id="x">
+          <i class="fab fa-x-twitter"></i> <!-- Ícone do X (antigo Twitter) -->
+        </a>
+        <button id="copyLink" class="share-icon" (click)="copyLink()">
+          <i class="fas fa-link"></i> <!-- Ícone de link para copiar -->
+        </button>
+      </div>
+    </div>
+  </mat-card-header>
+
 
     <!-- Imagem da Notícia -->
     <div class="imagem-da-noticia">
       <img mat-card-image src="{{ infosPostagem.imagem }}" alt="Imagem da Notícia" class="noticia-imagem" />
     </div>
     
-    <!-- Botões de Controle -->
-    <div class="botoes-controle">
-      <button mat-raised-button
-              [ngClass]="{ 'botao-selecionado': textoSelecionado === 'humano' }"
-              (click)="mostrarTexto('humano')">
-        Análise Veritare
-      </button>
-      <button mat-raised-button
-              [ngClass]="{ 'botao-selecionado': textoSelecionado === 'ia' }"
-              color="accent"
-              (click)="mostrarTexto('ia')">
-        Resumo Veritare 
-      </button>
-    </div>
+
+  <!-- Botões de Controle -->
+  <div class="botoes-controle">
+    <button mat-raised-button
+            class="botao-global"
+            [ngClass]="{ 'botao-selecionado-global': textoSelecionado === 'humano' }"
+            (click)="mostrarTexto('humano')">
+      Análise Veritare
+    </button>
+    <button mat-raised-button
+            class="botao-global"
+            [ngClass]="{ 'botao-selecionado-global': textoSelecionado === 'ia' }"
+            color="accent"
+            (click)="mostrarTexto('ia')">
+      Marcações na íntegra
+    </button>
+  </div>
+
 
     <!-- Conteúdo IA -->
-    <div *ngIf="textoSelecionado === 'ia'">
+    <div *ngIf="textoSelecionado === 'humano'">
       <h2>Análise Veritare</h2>
       <mat-card-content>
         <quill-view class="noticia-conteudo" 
@@ -62,26 +85,35 @@
           {{ alertaTexto }}
         </div>
       </mat-card-content>
-      
 
+          <!-- Conteúdo Humano -->
+    <div>
+      <h2>Notícia gerada por Veritare</h2>
+      <mat-card-content>
+        <quill-view class="noticia-conteudo" [content]="infosPostagem.textoAlteradoPorIA" (mouseover)="mostrarAlerta($event)"></quill-view>
+      </mat-card-content>
+    </div>
+      
       <h2>Fonte </h2>
       <mat-card-content>
         <quill-view class="noticia-conteudo" [content]="infosPostagem.palavrasRetiradasPorIA"></quill-view>
       </mat-card-content>
     </div>
 
-    <!-- Conteúdo Humano -->
-    <div *ngIf="textoSelecionado === 'humano'">
-      <h2>Notícia gerada por IA (Sem viés ideológico)</h2>
-      <mat-card-content>
-        <quill-view class="noticia-conteudo" [content]="infosPostagem.conteudo" (mouseover)="mostrarAlerta($event)"></quill-view>
+    <div *ngIf="textoSelecionado === 'ia'">
+      <h2>Destaques</h2>
+      <mat-card-content class="alert-list-container">
+        <mat-list class="alert-list">
+          <mat-list-item *ngFor="let alerta of infosPostagem.alertas" class="alert-list-item">
+            <mat-icon matListIcon class="alert-icon"></mat-icon>
+            <div>
+              <p>{{ alerta.mensagem }}</p>
+            </div>
+          </mat-list-item>
+        </mat-list>
       </mat-card-content>
+      
     </div>
-
-    <!-- Ações de Compartilhamento -->
-    <mat-card-actions class="botoes-de-envio">
-      <button class="botao" color="primary">Compartilhar</button>
-    </mat-card-actions>
 
     <!-- Notícias Relacionadas -->
     <div class="painel-noticias-relacionadas">

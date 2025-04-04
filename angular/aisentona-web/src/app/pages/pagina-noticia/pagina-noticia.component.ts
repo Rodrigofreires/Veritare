@@ -30,12 +30,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrls: ['./pagina-noticia.component.css']
 })
 export class PaginaNoticiaComponent {
+  
+  url: string = window.location.href;;
   alertaVisivel = false;
   alertaTexto: string = '';
   alertaPosicao = { x: 30, y: 0 };
   posicaoTooltip = { top: 30, left: 0 };
   quantidadeNoticias = 10;
-  textoSelecionado = 'ia';
+  textoSelecionado = 'humano';
   infosPostagem: PostagemRequest = {
     titulo: '',
     descricao: '',
@@ -63,7 +65,7 @@ export class PaginaNoticiaComponent {
     private _authService: AuthService,
     private dialog: MatDialog,
     private _snackBarService: SnackbarService,
-    private el: ElementRef
+    private el: ElementRef,
   ) {}
 
   ngOnInit(): void {
@@ -164,20 +166,26 @@ export class PaginaNoticiaComponent {
   }
   
   mostrarAlerta(event: MouseEvent): void {
+    const elementoTexto = (event.target as HTMLElement).innerText;
+    
+    // Extraindo o número do texto (assumindo o formato correto com colchetes [10], [11], etc.)
+    const numeroExtraido = this.converterSobrescritoParaNumero(elementoTexto);
+  
+    // Verificando se o número extraído corresponde a um alerta válido
     const textoAlerta = this.infosPostagem.alertas.find(alerta =>
-      event.target && (event.target as HTMLElement).innerText.includes(alerta.numeroAlerta.toString())
+      alerta.numeroAlerta === numeroExtraido
     );
   
     if (textoAlerta) {
       this.alertaTexto = textoAlerta.mensagem;
-      this.alertaVisivel = true;  
+      this.alertaVisivel = true;
       // Adiciona o ouvinte para mover o alerta conforme o mouse se move
       window.addEventListener('mousemove', this.atualizarPosicaoAlerta);
     } else {
-
       this.alertaVisivel = false;
     }
   }
+  
   
   getAlertStyle() {
     return {
@@ -200,10 +208,13 @@ export class PaginaNoticiaComponent {
     }
   
 
-  converterSobrescritoParaNumero(sobrescrito: string): number {
-    const normalizado = sobrescrito.normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
-    return parseInt(normalizado, 10) || -1;
-  }
+    converterSobrescritoParaNumero(sobrescrito: string): number {
+      // Remove os colchetes e tenta converter diretamente para número
+      const numero = sobrescrito.replace('[', '').replace(']', '');
+      return parseInt(numero, 10) || -1;  // Retorna -1 se não for um número válido
+    }
+    
+    
   
 
   detectarReferenciasNaTela(): void {
@@ -212,7 +223,8 @@ export class PaginaNoticiaComponent {
     }
   
     // Expressão regular para detectar números entre 1 até 20 entre colchetes
-    const regex = /\[(1|2[0-9]|20)\]/g;  // Captura números de 1 até 20 entre colchetes
+    const regex = /\[(1[0-9]|20|[1-9])\]/g; // Captura números de 1 até 20 entre colchetes
+
     const numerosEncontrados = this.infosPostagem.conteudo.match(regex);
   
     if (numerosEncontrados) {
@@ -222,10 +234,11 @@ export class PaginaNoticiaComponent {
   
         // Verifica se o número está entre 1 e 20 (isso é redundante, mas garante que estamos na faixa certa)
         if (numeroIndice >= 1 && numeroIndice <= 20) {
-          // Evita alertas duplicados
-          if (!this.infosPostagem.alertas.some(alerta => alerta.numeroAlerta === numeroIndice)) {
+          // Verifica se o número não foi adicionado antes
+          const alertaExistente = this.infosPostagem.alertas.find(alerta => alerta.numeroAlerta === numeroIndice);
+          if (!alertaExistente) {
             this.infosPostagem.alertas.push({
-              numeroAlerta: numeroIndice, // Usando a propriedade correta da interface
+              numeroAlerta: numeroIndice,
               mensagem: `Alerta ${numeroIndice} - Descrição do alerta...`
             });
           }
@@ -233,8 +246,15 @@ export class PaginaNoticiaComponent {
       });
     }
   }
-  
-  
-  
+
+  copyLink(): void {
+    navigator.clipboard.writeText(this.url).then(() => {
+      this._snackBarService.MostrarSucesso('Link copiado com sucesso!');
+    }, (err) => {
+      this._snackBarService.MostrarErro('Falha ao copiar o link');
+    });
+  }
+
+
   
 }

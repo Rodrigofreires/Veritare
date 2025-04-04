@@ -258,8 +258,27 @@ ngOnInit(): void {
       );
       return;
     }
-    this._router.navigate(['/noticia/', id]);
+  
+    // Buscar a postagem com base no ID
+    const postagem = this.infosTodasAsPostagem.find(post => post.idPostagem === id);
+  
+    if (!postagem) {
+      this._snackBarService.MostrarErro(
+        'Postagem não encontrada.'
+      );
+      return;
+    }
+  
+    // Preparar os parâmetros da rota
+    const editoria = postagem.nomeCategoria; // Supondo que 'nomeCategoria' é a editoria
+    const tipoPost = postagem.premiumOuComum ? 'premium' : 'comum'; // Exemplo de tipo de publicação
+    const ano = new Date(postagem.dataCriacao).getFullYear(); // Extrair o ano da data de criação
+    const titulo = postagem.titulo.split(' ').join('-'); // Substituir espaços por hífens no título
+  
+    // Navegar para a rota com os parâmetros
+    this._router.navigate([`noticia/${editoria}/${tipoPost}/${ano}/${titulo}/`, id]);
   }
+  
 
   editarNoticia(id: number): void {
     if (!id) {

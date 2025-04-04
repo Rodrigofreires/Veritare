@@ -5,7 +5,6 @@ using Aisentona.Entities.Response;
 using Aisentona.Entities.ViewModels;
 using Aisentona.Enumeradores;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Principal;
 
 namespace Aisentona.Biz.Services.Postagens
 {
@@ -17,8 +16,6 @@ namespace Aisentona.Biz.Services.Postagens
         {
             _context = postagemContext;
         }
-        private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
-
         public List<PostagemRequest> ListarUltimasPostagens()
         {
             // Busca as últimas 4 postagens ativas, ordenadas pela data de criação
@@ -207,9 +204,11 @@ namespace Aisentona.Biz.Services.Postagens
             var postagemConvertida = ConverterPostagem(postagemResponse);
             var novaPostagem = postagemConvertida;
 
+            var nomeUsuario = _context.CF_Colaborador.FirstOrDefault(x => x.Id_Usuario == postagemResponse.IdUsuario); 
+
             novaPostagem.Fl_Ativo = true;
             novaPostagem.DT_Criacao = DateTime.Now;
-            novaPostagem.Ds_UltimaAlteracao = GetWindowsUsername();
+            novaPostagem.Ds_UltimaAlteracao = nomeUsuario.Nm_Nome;
             novaPostagem.DT_UltimaAlteracao = null;
             novaPostagem.Id_Usuario = postagemResponse.IdUsuario;
             novaPostagem.Fl_Premium = bool.Parse(postagemResponse.PremiumOuComum);
@@ -270,7 +269,7 @@ namespace Aisentona.Biz.Services.Postagens
                 postagem.Id_Categoria = postagemResponse.IdCategoria;
                 postagem.Id_Status = postagemResponse.IdStatus;
                 postagem.DT_UltimaAlteracao = DateTime.Now;
-                postagem.Ds_UltimaAlteracao = GetWindowsUsername();
+                postagem.Ds_UltimaAlteracao = usuario.Nm_Nome;
 
 
                 _context.CF_Postagem.Update(postagem);

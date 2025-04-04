@@ -130,7 +130,7 @@ export class CadastroDeNoticiaComponent implements OnInit {
       idStatus: this.statusSelecionado ?? 0, // Garante que seja um número
       premiumOuComum: this.tipoSelecionado.includes('Publicação Premium'),
       idUsuario: idUsuarioToken,
-      dataCriacao: this.infosPostagem.dataCriacao ?? new Date().toISOString(),
+      dataCriacao: this.infosPostagem.dataCriacao ?? new Date().toDateString(),
       nomeCategoria: this.carregarEditorias.name,
       alertas: this.infosPostagem.alertas ?? []
     };

@@ -1,6 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
-
-
 html,
 body {
   height: 100%;
@@ -47,13 +44,24 @@ body {
   cursor: pointer;
 }
 
-.botao:hover {
+.botao-global:hover {
   background-color: #71e77f; /* Altera a cor do fundo ao passar o mouse */
   transform: translateY(-2px); /* Eleva o botão ao passar o mouse */
 }
 
-.botao-finalizar:active {
+.botao-global:active {
   transform: translateY(0); /* Reseta a elevação ao clicar */
+}
+
+/* Lógica de Botão Selecionado */
+.botao-selecionado-global {
+  background-color: #4CAF50; /* Cor de destaque verde para o botão selecionado */
+  border: 2px solid #000000; /* Borda para realçar o botão selecionado */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Sombra mais forte para indicar seleção */
+}
+
+.botao-selecionado-global:hover {
+  background-color: #45a049; /* Cor mais escura ao passar o mouse */
 }
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
@@ -78,7 +86,14 @@ body {
 }
 
 .ql-container {
-  font-size: 16px !important;
+  font-size: 18px !important;
+  line-height: 1.9 !important
 }
+.ql-editor p {
+  font-size: 18px !important;
+  line-height: 1.9 !important
+}
+
+
 
 /* CSS PARA IMAGENS DO SITE */
