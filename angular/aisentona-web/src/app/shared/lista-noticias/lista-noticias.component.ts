@@ -14,11 +14,12 @@ import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { ContainerComponent } from '../container/container.component';
 import { WeatherComponent } from '../weather/weather.component';
 import { NavigationService } from '../../services/navigation.service';
+import { YoutubeWidgetViewerComponent } from '../youtube-widget-viewer/youtube-widget-viewer.component';
 
 @Component({
   selector: 'app-lista-noticias',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, CommonModule, WeatherComponent],
+  imports: [MatCardModule, MatButtonModule, CommonModule, WeatherComponent, YoutubeWidgetViewerComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './lista-noticias.component.html',
   styleUrls: ['./lista-noticias.component.css'],

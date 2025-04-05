@@ -52,6 +52,7 @@ export class YoutubeAdminComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.initForm(); // Inicializa o formulário
     this.loadWidgets();
   }
 
@@ -70,7 +71,7 @@ export class YoutubeAdminComponent implements OnInit {
       id: 0,
       titulo: '',
       tipo: 'video', // default
-      youtubeId: ''
+      youtubeId: '',
     };
   }
 
@@ -79,25 +80,42 @@ export class YoutubeAdminComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.widget.id === 0) {
-      this.service.create(this.widget).subscribe(() => {
+    const formValues = this.widgetForm.value;
+  
+    const widget: YoutubeWidget = {
+      id: this.widget.id, // mantém o ID do objeto atual
+      titulo: formValues.titulo,
+      tipo: formValues.tipo,
+      youtubeId: formValues.youtubeId
+    };
+  
+    if (widget.id === 0) {
+      this.service.create(widget).subscribe(() => {
         this.loadWidgets();
-        this.widget = this.createEmptyWidget();
+        this.widgetForm.reset({ id: 0, titulo: '', tipo: 'video', youtubeId: '' });
+        this.widget = this.createEmptyWidget(); // opcional
         this.editMode = false;
       });
     } else {
-      this.service.update(this.widget).subscribe(() => {
+      this.service.update(widget).subscribe(() => {
         this.loadWidgets();
-        this.widget = this.createEmptyWidget();
+        this.widgetForm.reset({ id: 0, titulo: '', tipo: 'video', youtubeId: '' });
+        this.widget = this.createEmptyWidget(); // opcional
         this.editMode = false;
       });
     }
   }
 
-  editWidget(widget: YoutubeWidget) {
-    this.widget = { ...widget };
-    this.editMode = true;
-  }
+    editWidget(widget: YoutubeWidget) {
+      this.widget = widget;
+      this.editMode = true;
+    
+      this.widgetForm.patchValue({
+        titulo: widget.titulo,
+        tipo: widget.tipo,
+        youtubeId: widget.youtubeId
+      });
+    }
 
   cancelEdit() {
     this.widget = this.createEmptyWidget();
@@ -109,4 +127,31 @@ export class YoutubeAdminComponent implements OnInit {
       this.service.delete(id).subscribe(() => this.loadWidgets());
     }
   }
+
+  onYoutubeIdBlur() {
+    const tipo = this.widgetForm.get('tipo')?.value;
+    const valor = this.widgetForm.get('youtubeId')?.value;
+  
+    let idExtraido = valor;
+  
+    if (tipo === 'playlist') {
+      const match = valor.match(/[?&]list=([^&]+)/);
+      if (match) {
+        idExtraido = match[1];
+      }
+    } else if (tipo === 'video') {
+      const match = valor.match(/[?&]v=([^&]+)/);
+      if (match) {
+        idExtraido = match[1];
+      }
+    } else if (tipo === 'canal') {
+      const match = valor.match(/(channel\/|user\/)?([^\/\?\&]+)/);
+      if (match) {
+        idExtraido = match[2];
+      }
+    }
+  
+    this.widgetForm.patchValue({ youtubeId: idExtraido });
+  }
+
 }

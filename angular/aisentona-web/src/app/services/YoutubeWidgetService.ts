@@ -7,12 +7,16 @@ import { environment } from "../../environments/environment";
 export class YoutubeWidgetService {
 
     
-  private apiUrl = environment.apiUrl;
+  private apiUrl = `${environment.apiUrl}/YoutubeWidgets`;
 
   constructor(private http: HttpClient) {}
 
   getWidgets() {
     return this.http.get<YoutubeWidget[]>(this.apiUrl);
+  }
+
+  getWidgetsByTipo(tipo: string) {
+    return this.http.get<YoutubeWidget[]>(`${this.apiUrl}/tipo/${tipo}`);
   }
 
   create(widget: YoutubeWidget) {

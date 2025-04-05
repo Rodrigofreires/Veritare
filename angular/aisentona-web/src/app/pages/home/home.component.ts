@@ -8,10 +8,19 @@ import { BannerNoticiasPremiumComponent } from "../../shared/banner-noticias-pre
 import { FaixaAssineVeritareComponent } from "../../shared/faixa-assine-veritare/faixa-assine-veritare.component";
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
+import { YoutubeWidgetViewerComponent } from '../../shared/youtube-widget-viewer/youtube-widget-viewer.component';
 
 @Component({
   selector: 'app-home',
-  imports: [ContainerComponent, BannerComponent, ListaNoticiasComponent, BannerNoticiasPremiumComponent, FaixaAssineVeritareComponent],
+  imports: [
+    ContainerComponent, 
+    BannerComponent, 
+    ListaNoticiasComponent, 
+    BannerNoticiasPremiumComponent, 
+    FaixaAssineVeritareComponent,
+    YoutubeWidgetViewerComponent,
+  
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   standalone: true,

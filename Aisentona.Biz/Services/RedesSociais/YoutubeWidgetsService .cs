@@ -1,4 +1,5 @@
 ﻿using Aisentona.DataBase;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,8 @@ namespace Aisentona.Biz.Services.RedesSociais
 
         public YoutubeWidget Create(YoutubeWidget widget)
         {
+
+
             _context.CF_YoutubeWidget.Add(widget);
             _context.SaveChanges();
             return widget;
@@ -54,6 +57,12 @@ namespace Aisentona.Biz.Services.RedesSociais
             widget.Fl_Ativo = false;
             _context.SaveChanges();
             return true;
+        }
+        public async Task<List<YoutubeWidget>> GetByTipoAsync(string tipo)
+        {
+            return await _context.CF_YoutubeWidget
+                .Where(w => w.Tipo.ToLower() == tipo.ToLower() && w.Fl_Ativo == true)
+                .ToListAsync();
         }
     }
 }

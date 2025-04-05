@@ -53,7 +53,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
-builder.Services.AddScoped<TokenService>(provider =>
+    builder.Services.AddScoped<TokenService>(provider =>
     {
         var configuration = provider.GetRequiredService<IConfiguration>(); // Obtém a configuração
         var jwtSettings = configuration.GetSection("JwtSettings");
@@ -97,7 +97,7 @@ builder.Services.AddScoped<TokenService>(provider =>
     });
 
 
-builder.Services.AddAuthentication(options =>
+    builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
