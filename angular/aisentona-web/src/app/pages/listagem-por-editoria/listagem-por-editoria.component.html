@@ -1,43 +1,46 @@
-
 <app-faixa-assine-veritare></app-faixa-assine-veritare>
 
 <app-container>
-    <h2 class="nome-categoria"> {{ nomeCategoria }} </h2>
-  
-    <div class="painel-noticias">
-      <mat-card
-        *ngFor="let postagem of noticiasRelacionadas | slice: 0:quantidadeNoticias"
-        class="item-noticia"
-        appearance="outlined"
-        (click)="navegarParaNoticia(postagem)"
-      >
-        <!-- Imagem -->
-        <div class="imagem-descricao">
-          <img
-            class="imagem-noticia"
-            mat-card-image
-            [src]="postagem.imagem"
-            alt="Imagem da notícia"
-            
-          />
-          <!-- Detalhes da Notícia -->
-          <div class="detalhes-texto">
-            <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
-            <h3
-              class="titulo-noticia"
-              (click)="navegarParaNoticia(postagem)"
-            >
-              {{ postagem.titulo }}
-            </h3>
-            <p class="descricao-noticia">{{ postagem.descricao }}</p>
-          </div>
+  <h2 class="nome-categoria">{{ nomeCategoria }}</h2>
+
+  <div class="painel-noticias">
+    <mat-card
+      *ngFor="let postagem of noticiasRelacionadas"
+      class="item-noticia"
+      appearance="outlined"
+      (click)="navegarParaNoticia(postagem)"
+    >
+      <!-- Imagem -->
+      <div class="imagem-descricao">
+        <img
+          class="imagem-noticia"
+          mat-card-image
+          [src]="postagem.imagem"
+          alt="Imagem da notícia"
+        />
+        <!-- Detalhes da Notícia -->
+        <div class="detalhes-texto">
+          <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
+          <h3 class="titulo-noticia" (click)="navegarParaNoticia(postagem)">
+            {{ postagem.titulo }}
+          </h3>
+          <p class="descricao-noticia">{{ postagem.descricao }}</p>
         </div>
-      </mat-card>
-    </div>
-  
-    <!-- Botão para carregar mais notícias -->
-    <!-- <button class="botao-ver-mais" (click)="carregarMaisNoticias()">
-      Ver Mais
-    </button> -->
-  </app-container>
-  
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Botão para carregar mais notícias -->
+  <div *ngIf="noticiasRelacionadas.length < totalDeNoticias">
+    <button class="botao-global" (click)="carregarMaisNoticias()" [disabled]="carregandoMais">
+      {{ carregandoMais ? 'Carregando...' : 'Ver Mais' }}
+    </button>
+  </div>
+
+  <div class="youtube-widget">
+    <app-youtube-widget-viewer [widgetId]="13"></app-youtube-widget-viewer>
+
+  </div>
+
+
+</app-container>

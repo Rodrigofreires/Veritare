@@ -15,7 +15,6 @@
                         <p><strong>Data de Nascimento:</strong> 
                           {{ infosPerfilUsuario?.dataDeNascimento ? (infosPerfilUsuario?.dataDeNascimento | date:'dd/MM/yyyy') : 'Não informado' }}
                         </p>
-                        <p><strong>Endereço:</strong> {{ infosPerfilUsuario?.endereco || 'Não informado' }}</p>
                         <p><strong>CPF:</strong> {{ infosPerfilUsuario?.cpf }}</p>
                         <p><strong>Acesso Premium:</strong> {{ infosPerfilUsuario?.acessoPremium ? 'Sim' : 'Não' }}</p>
                         <p><strong>Premium expira em:</strong> 

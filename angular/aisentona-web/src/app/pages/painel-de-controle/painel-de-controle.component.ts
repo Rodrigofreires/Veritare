@@ -13,7 +13,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
@@ -82,6 +82,7 @@ export class PainelDeControleComponent implements AfterViewInit {
   tipoSelecionado: string = ''; // Para armazenar a opção escolhida
   isFiltroAplicado = false; // Flag de controle para saber se os filtros foram aplicados
 
+  totalDePostagens: number = 0; // Total de postagens retornadas pela API
   quantidadeExibida: number = 10;
   paginaAtual: number = 1;
   quantidadePorPagina: number = 10;
@@ -104,6 +105,8 @@ export class PainelDeControleComponent implements AfterViewInit {
       dataCriacao: '',
       nomeStatus: '',
       premiumOuComum: true,
+      alertas: [],
+      visualizacoes: 0,  
     },
   ];
 
@@ -123,6 +126,8 @@ export class PainelDeControleComponent implements AfterViewInit {
       dataCriacao: '',
       nomeStatus: '',
       premiumOuComum: true,
+      alertas: [],
+      visualizacoes: 0, 
     },
   ];
 
@@ -139,21 +144,27 @@ export class PainelDeControleComponent implements AfterViewInit {
     imagem: '',
     textoAlteradoPorIA: '',
     palavrasRetiradasPorIA: '',
+    alertas: [],
+      visualizacoes: 0,  
   };
 
-ngOnInit(): void {
-  console.log('Estado do filtro aplicado:', this.isFiltroAplicado);
-
-  // Carregar editorias e status antes de carregar postagens
-  this.carregarEditorias();
-  this.carregarStatus();
-
-  if (this.isFiltroAplicado) {
-    this.aplicarFiltros();
-  } else {
-    this.carregarPrimeirasPostagens();
+  ngOnInit(): void {
+    console.log('Estado do filtro aplicado:', this.isFiltroAplicado);
+  
+    this.carregarEditorias();
+    this.carregarStatus();
+  
+    // Define valores iniciais
+    this.paginaAtual = 1;
+    this.quantidadePorPagina = 10;
+  
+    if (this.isFiltroAplicado) {
+      this.aplicarFiltros();
+    } else {
+      this.carregarMaisPostagens(); // já usa a lógica da paginação
+    }
   }
-}
+  
 
 
   dataSource = new MatTableDataSource(this.infosTodasAsPostagem);
@@ -189,6 +200,8 @@ ngOnInit(): void {
       imagem: '',
       textoAlteradoPorIA: '',
       palavrasRetiradasPorIA: '',
+      alertas: [],
+      visualizacoes: 0,  
     };
 
     if (
@@ -254,8 +267,27 @@ ngOnInit(): void {
       );
       return;
     }
-    this._router.navigate(['/noticia/', id]);
+  
+    // Buscar a postagem com base no ID
+    const postagem = this.infosTodasAsPostagem.find(post => post.idPostagem === id);
+  
+    if (!postagem) {
+      this._snackBarService.MostrarErro(
+        'Postagem não encontrada.'
+      );
+      return;
+    }
+  
+    // Preparar os parâmetros da rota
+    const editoria = postagem.nomeCategoria; // Supondo que 'nomeCategoria' é a editoria
+    const tipoPost = postagem.premiumOuComum ? 'premium' : 'comum'; // Exemplo de tipo de publicação
+    const ano = new Date(postagem.dataCriacao).getFullYear(); // Extrair o ano da data de criação
+    const titulo = postagem.titulo.split(' ').join('-'); // Substituir espaços por hífens no título
+  
+    // Navegar para a rota com os parâmetros
+    this._router.navigate([`noticia/${editoria}/${tipoPost}/${ano}/${titulo}/`, id]);
   }
+  
 
   editarNoticia(id: number): void {
     if (!id) {
@@ -312,12 +344,12 @@ ngOnInit(): void {
     this._noticiaService
       .carregarPostagensPaginadas(this.paginaAtual, this.quantidadePorPagina)
       .subscribe(
-        (dados) => {
-          this.infosTodasAsPostagem = dados;
-          this.postagensExibidas = this.infosTodasAsPostagem.slice(
-            0,
-            this.quantidadeExibida
-          ); // Atualiza as exibidas
+        (resposta) => {
+          this.totalDePostagens = resposta.total;
+          this.infosTodasAsPostagem = resposta.dados;
+          this.postagensExibidas = resposta.dados.slice(0, this.quantidadeExibida); // se estiver usando paginação manual
+  
+          this._snackBarService.MostrarSucesso('Postagens carregadas com sucesso.');
         },
         (erro) => {
           console.error('Erro ao carregar postagens:', erro);
@@ -328,27 +360,21 @@ ngOnInit(): void {
         }
       );
   }
+  
 
   // Método para carregar mais postagens
   carregarMaisPostagens(): void {
-    if (this.carregandoMais) return; // Evita múltiplas chamadas simultâneas
+    if (this.carregandoMais) return;
   
     this.carregandoMais = true;
   
-    this._noticiaService
-      .carregarPostagensPaginadas(this.paginaAtual, this.quantidadePorPagina)
+    this._noticiaService.carregarPostagensPaginadas(this.paginaAtual, this.quantidadePorPagina)
       .subscribe(
-        (dados) => {
-          if (dados.length > 0) {
-            this.infosTodasAsPostagem = [
-              ...this.infosTodasAsPostagem,
-              ...dados,
-            ]; // Adiciona as novas postagens
-            this.postagensExibidas = this.infosTodasAsPostagem.slice(
-              0,
-              this.quantidadeExibida * this.paginaAtual
-            ); // Atualiza as exibidas
-          }
+        (resposta) => {
+          this.totalDePostagens = resposta.total;
+          this.infosTodasAsPostagem = resposta.dados;
+          this.postagensExibidas = resposta.dados;
+  
           this.carregandoMais = false;
         },
         (erro) => {
@@ -359,14 +385,9 @@ ngOnInit(): void {
   }
   
 
-  onPageChange(event: any): void {
-    console.log('Página alterada:', event.pageIndex, 'Tamanho da página:', event.pageSize);
-  
-    // Atualizar a página atual e o número de itens por página
-    this.paginaAtual = event.pageIndex + 1; // O paginator começa em 0, então somamos 1
+  aoMudarPagina(event: PageEvent) {
     this.quantidadePorPagina = event.pageSize;
-  
-    // Chama o método para carregar mais postagens
+    this.paginaAtual = event.pageIndex + 1; // O Angular começa do 0
     this.carregarMaisPostagens();
   }
 

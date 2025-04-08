@@ -46,7 +46,6 @@ export class EsqueciMinhaSenhaComponent {
       finalize(() => console.log('Requisição finalizada.'))
     ).subscribe({
       next: (res) => {
-        console.log('Resposta da API:', res);
         this._snackBarService.MostrarSucesso('E-mail enviado com sucesso! Redirecionando...');
         setTimeout(() => this.router.navigate(['/login']), 5000);
       },

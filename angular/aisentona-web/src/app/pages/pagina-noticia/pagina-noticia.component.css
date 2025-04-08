@@ -5,6 +5,7 @@
   padding: 20px;
   border: none; /* Remove qualquer borda padrão */
   box-shadow: none; /* Remove sombra do Material Design */
+  background-color: #F9F9F9  !important;
 }
 
 .noticia-container {
@@ -17,6 +18,7 @@
     margin: 20px auto;
     max-width: 900px;
     width: 100%;
+    background-color: #F9F9F9  !important;
   }
   
   .cabecalho-pagina {
@@ -80,8 +82,8 @@
   }
 
   .noticia-conteudo {
-    font-size: 16p !important;
-    line-height: 1.5;
+    font-size: 18px !important;
+    line-height: 2.5 !important;
     color: #333;
   }
 
@@ -91,27 +93,53 @@
     gap: 10px;
   }
   
-  .botoes-controle {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .botoes-controle button {
-    font-weight: bold;
-  }
-  
-  .botao-selecionado {
-    background-color: #7070AC; /* Cor de destaque */
-    color: white;
-    border: 2px solid #000000; /* Borda para realçar o botão */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
-  }
-  
-  .botao-selecionado:hover {
-    background-color: #7070AC; /* Cor mais escura ao passar o mouse */
-  }
+  /* Estilo da div que contém os botões */
+.botoes-controle {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  /* Garantir que os botões dentro da div sejam tratados sem conflito */
+  flex-wrap: wrap;
+}
+
+/* Estilo global dos botões */
+.botao-global {
+  background: linear-gradient(135deg, #070C18, #14153E, #0A0C1B);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+/* Hover do botão */
+.botao-global:hover {
+  background-color: #71e77f; /* Altera a cor do fundo ao passar o mouse */
+  transform: translateY(-2px); /* Eleva o botão ao passar o mouse */
+}
+
+/* Estado de clique no botão */
+.botao-global:active {
+  transform: translateY(0); /* Reseta a elevação ao clicar */
+}
+
+/* Lógica para o botão selecionado */
+.botao-selecionado-global {
+  background-color: #4CAF50; /* Cor de destaque verde */
+  border: 2px solid #000000; /* Borda para realçar o botão selecionado */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Sombra mais forte */
+}
+
+/* Hover do botão selecionado */
+.botao-selecionado-global:hover {
+  background-color: #45a049; /* Cor mais escura ao passar o mouse */
+}
+
 
   .noticia-link {
     text-decoration: underline;
@@ -209,5 +237,148 @@
   .botao-ver-mais:hover {
     background-color: #0056b3;
   }
+
+  .alerta-flutuante {
+    position:fixed;
+    z-index: 9999; /* Garante que o alerta fique acima de outros elementos */
+    background-color: rgba(0, 0, 0, 0.8); /* Fundo semitransparente */
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    pointer-events: none; /* Para não bloquear interações com o conteúdo abaixo */
+  }
+
+  .social-share {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;    
+    gap: 10px;               
+  }
+  
+  
+  
+  .share-icon {
+    font-size: 30px;
+    color: #333;
+    transition: color 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 50%;
+    background-color: #f1f1f1;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .share-icon:hover {
+    transform: scale(1.1);
+  }
+  
+  #facebook:hover {
+    color: #3b5998; /* Azul do Facebook */
+    background-color: #e9f1fa;
+  }
+  
+  #whatsapp:hover {
+    color: #25D366; /* Verde do WhatsApp */
+    background-color: #e1f8e1;
+  }
+  
+  #instagram:hover {
+    color: #E4405F; /* Vermelho/rosa do Instagram */
+    background-color: #f8e1e1;
+  }
+  
+  #x:hover {
+    color: #1d9bf0; /* Azul do X (Twitter) */
+    background-color: #e1f4fa;
+  }
+  
+  #copyLink:hover {
+    color: #6c757d;
+    background-color: #f0f0f0;
+  }
+  
+  /* Efeito de hover e animação */
+  .share-icon:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+  }
+  
+  .alert-list-container {
+    padding: 32px; /* Aumentando o padding geral */
+    background-color: #f5f5f5;
+    border-radius: 8px;
+  }
+  
+  .alert-list {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .alert-list-item {
+    display: flex;
+    align-items: start;
+    margin-bottom: 24px; /* Aumentando o espaçamento entre os itens */
+    padding: 24px; /* Aumentando o padding para itens maiores */
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Sombras mais suaves */
+    transition: transform 0.2s ease-in-out;
+    max-width: 100%;
+    word-wrap: break-word;
+    word-break: break-word;
+    height: 300px !important ; /* Definindo uma altura fixa para os itens */
+  }
+  
+  .alert-list-item:hover {
+    transform: translateY(-5px); /* Efeito de hover suave */
+  }
+  
+  .alert-icon {
+    margin-right: 30px; /* Aumentando o espaço entre o ícone e o texto */
+    color: #4caf50;
+    font-size: 36px; /* Aumentando o tamanho do ícone */
+  }
+  
+  .alert-list-item div {
+    flex-grow: 1;
+    display: block;
+  }
+  
+  .alert-list-item strong {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 20px; /* Aumentando o tamanho do número do alerta */
+  }
+  
+  .alert-list-item p {
+    margin: 0;
+    color: #333;
+    font-size: 20px; /* Aumentando o tamanho da fonte do texto */
+    line-height: 2; /* Aumentando o espaçamento entre as linhas */
+    white-space: pre-line;
+    word-wrap: break-word;
+    max-width: 100%; /* Fazendo o texto ocupar toda a largura disponível */
+    word-break: break-word; /* Garantindo que as palavras longas quebrem de forma adequada */
+  }
+  
+  .alert-list-item p::before {
+    content: "• ";
+    color: #4caf50;
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 15px; /* Aumentando o espaço entre o bullet e o texto */
+  }
+  
+  
+  
   
   

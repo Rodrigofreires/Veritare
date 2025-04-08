@@ -5,7 +5,6 @@ using Aisentona.Entities.Response;
 using Aisentona.Entities.ViewModels;
 using Aisentona.Enumeradores;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Principal;
 
 namespace Aisentona.Biz.Services.Postagens
 {
@@ -17,8 +16,6 @@ namespace Aisentona.Biz.Services.Postagens
         {
             _context = postagemContext;
         }
-        private string GetWindowsUsername() => WindowsIdentity.GetCurrent().Name;
-
         public List<PostagemRequest> ListarUltimasPostagens()
         {
             // Busca as últimas 4 postagens ativas, ordenadas pela data de criação
@@ -63,6 +60,11 @@ namespace Aisentona.Biz.Services.Postagens
                 .ToList();
 
             return MapearParaDTO(postagens);
+        }
+
+        public int ContarTotalDePostagens()
+        {
+            return _context.CF_Postagem.Count(p => p.Fl_Ativo == true);
         }
 
 
@@ -122,18 +124,48 @@ namespace Aisentona.Biz.Services.Postagens
 
         public PostagemRequest CarregarPostagemPorId(int id)
         {
-            Postagem? postagem = _context.CF_Postagem.FirstOrDefault(c => c.Id_Postagem == id && c.Fl_Ativo);
+            // Busca a postagem diretamente no banco de dados
+            Postagem? postagem = _context.CF_Postagem.Include(x => x.PostagemAlerta).FirstOrDefault(c => c.Id_Postagem == id && c.Fl_Ativo);
 
-             List<EditoriaDTO> editoriaDTO = ListarEditorias();
+            if (postagem == null)
+            {
+                throw new Exception("Postagem não encontrada ou inativa."); // Lida com casos em que a postagem não existe
+            }
 
-            PostagemRequest postagemRequest = ConverterPostagemDTO(postagem);
+            // Lista as editorias disponíveis
+            List<EditoriaDTO> editoriaDTO = ListarEditorias();
 
-            EditoriaDTO categoria = editoriaDTO.Where(c => c.Id == postagemRequest.IdCategoria).FirstOrDefault();
+            // Localiza a categoria correspondente
+            EditoriaDTO categoria = editoriaDTO.FirstOrDefault(c => c.Id == postagem.Id_Categoria);
 
-            postagemRequest.NomeCategoria = categoria?.Nome ?? "Categoria não encontrada";
+            // Realiza a conversão dos alertas para o tipo `AlertaResponse`
+            List<AlertaResponse> alertasResponse = postagem.PostagemAlerta
+                .Select(alerta => new AlertaResponse
+                {
+                    NumeroAlerta = alerta.Numero_Alerta,
+                    Mensagem = alerta.Mensagem
+                })
+                .ToList();
 
-            return postagemRequest;
+            // Retorna o objeto PostagemRequest montado diretamente
+            return new PostagemRequest
+            {
+                IdCategoria = postagem.Id_Categoria,
+                IdStatus = postagem.Id_Status,
+                IdUsuario = postagem.Id_Usuario,
+                Titulo = postagem.Titulo,
+                Conteudo = postagem.Conteudo,
+                Descricao = postagem.Descricao,
+                Imagem = postagem.Imagem_base64,
+                TextoAlteradoPorIA = postagem.Texto_alterado_por_ia,
+                PalavrasRetiradasPorIA = postagem.Palavras_retiradas_por_ia,
+                DataCriacao = postagem.DT_Criacao,
+                NomeCategoria = categoria?.Nome ?? "Categoria não encontrada",
+                Alertas = alertasResponse // Adiciona os alertas convertidos para AlertaResponse
+            };
         }
+
+
 
         public List<EditoriaDTO> ListarEditorias()
         {
@@ -151,6 +183,8 @@ namespace Aisentona.Biz.Services.Postagens
 
             return listaEditorias; 
         }
+
+
 
         public List<StatusDTO> ListarStatus()
         {
@@ -172,21 +206,41 @@ namespace Aisentona.Biz.Services.Postagens
 
         public Postagem CriarPostagem(PostagemResponse postagemResponse)
         {
-            Postagem postagemConvertida = ConverterPostagem(postagemResponse);
-            Postagem novaPostagem = postagemConvertida;
+            var postagemConvertida = ConverterPostagem(postagemResponse);
+            var novaPostagem = postagemConvertida;
+
+            var nomeUsuario = _context.CF_Colaborador.FirstOrDefault(x => x.Id_Usuario == postagemResponse.IdUsuario); 
 
             novaPostagem.Fl_Ativo = true;
             novaPostagem.DT_Criacao = DateTime.Now;
-            novaPostagem.Ds_UltimaAlteracao = GetWindowsUsername();
+            novaPostagem.Ds_UltimaAlteracao = nomeUsuario.Nm_Nome;
             novaPostagem.DT_UltimaAlteracao = null;
-            novaPostagem.Id_Usuario = novaPostagem.Id_Usuario;
+            novaPostagem.Id_Usuario = postagemResponse.IdUsuario;
             novaPostagem.Fl_Premium = bool.Parse(postagemResponse.PremiumOuComum);
 
             _context.CF_Postagem.Add(novaPostagem);
             _context.SaveChanges();
 
+            if (postagemResponse.Alertas?.Any() == true)
+            {
+                foreach (var alerta in postagemResponse.Alertas)
+                {
+                    var novoAlerta = new PostagemAlerta
+                    {
+                        Id_Postagem = novaPostagem.Id_Postagem,
+                        Numero_Alerta = alerta.NumeroAlerta,
+                        Mensagem = alerta.Mensagem
+                    };
+                    _context.CF_PostagemAlertas.Add(novoAlerta);
+                }
+                _context.SaveChanges();
+            }
+
             return novaPostagem;
         }
+
+
+
         public Postagem EditarPostagem(PostagemResponse postagemResponse)
         {
             Postagem postagem = _context.CF_Postagem.FirstOrDefault(x => x.Id_Postagem == postagemResponse.IdPostagem);
@@ -220,7 +274,7 @@ namespace Aisentona.Biz.Services.Postagens
                 postagem.Id_Categoria = postagemResponse.IdCategoria;
                 postagem.Id_Status = postagemResponse.IdStatus;
                 postagem.DT_UltimaAlteracao = DateTime.Now;
-                postagem.Ds_UltimaAlteracao = GetWindowsUsername();
+                postagem.Ds_UltimaAlteracao = usuario.Nm_Nome;
 
 
                 _context.CF_Postagem.Update(postagem);
@@ -249,19 +303,59 @@ namespace Aisentona.Biz.Services.Postagens
         }
 
 
-        public List<PostagemRequest> FiltrarPostagensPorEditoria(int IdCategoria)
+        public PostagensPaginadasDTO FiltrarPostagensPorEditoria(int idEditoria, int pagina, int quantidade)
         {
-            List<Postagem> listaDePostagensFiltradas = _context.CF_Postagem
-                .Include(p => p.Categoria) // Inclui a relação com a Categoria
+            var query = _context.CF_Postagem
+                .Include(p => p.Categoria)
                 .Include(p => p.Status)
-                .Where(p => p.Fl_Ativo == true && p.Id_Categoria == IdCategoria) // Filtra apenas as postagens ativas
-                .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
+                .Where(p => p.Fl_Ativo == true && p.Id_Categoria == idEditoria)
+                .OrderByDescending(p => p.DT_Criacao);
+
+            var total = query.Count();
+
+            var postagens = query
+                .Skip((pagina - 1) * quantidade)
+                .Take(quantidade)
                 .ToList();
 
-            // Mapeia as postagens para PostagemDTO
-            return MapearParaDTO(listaDePostagensFiltradas);
+            var postagensDTO = MapearParaDTO(postagens);
 
+            return new PostagensPaginadasDTO 
+            {
+                Total = total,
+                Dados = postagensDTO
+            };
         }
+        public async Task<int> IncrementarVisualizacoesAsync(int idPostagem)
+        {
+            var postagem = await _context.CF_Postagem.FindAsync(idPostagem);
+
+            if (postagem == null)
+                throw new Exception("Postagem não encontrada.");
+
+            postagem.Visualizacoes += 1;
+
+            _context.Entry(postagem).Property(p => p.Visualizacoes).IsModified = true;
+            await _context.SaveChangesAsync();
+
+            return postagem.Visualizacoes;
+        }
+
+        public List<PostagemRequest> ObterMaisLidasUltimaSemana(int quantidade = 5)
+        {
+            var umaSemanaAtras = DateTime.Now.AddDays(-7);
+
+            var postagens = _context.CF_Postagem
+                .Where(p => p.DT_Criacao >= umaSemanaAtras && p.Fl_Ativo)
+                .OrderByDescending(p => p.Visualizacoes)
+                .Take(quantidade)
+                .ToList();
+
+            return MapearParaDTO(postagens);
+        }
+
+
+
 
         #region /*Métodos de conversão*/
         private Postagem ConverterPostagem(PostagemResponse postagemResponse)
@@ -284,32 +378,20 @@ namespace Aisentona.Biz.Services.Postagens
 
         }
 
-        private PostagemRequest ConverterPostagemDTO(Postagem? postagem)
-        {
-             PostagemRequest postagemDTO = new PostagemRequest()
-            {
-                IdCategoria = postagem.Id_Categoria,
-                IdStatus = postagem.Id_Status,
-                IdUsuario = postagem.Id_Usuario, 
-                Titulo = postagem.Titulo,
-                Conteudo = postagem.Conteudo,
-                Descricao = postagem.Descricao,
-                Imagem = postagem.Imagem_base64,
-                TextoAlteradoPorIA = postagem.Texto_alterado_por_ia,
-                PalavrasRetiradasPorIA = postagem.Palavras_retiradas_por_ia,
-                DataCriacao = postagem.DT_Criacao
-            };
-
-            return postagemDTO;
-        }
-
         private List<PostagemRequest> MapearParaDTO(List<Postagem> postagens)
         {
+            if (postagens == null || !postagens.Any())
+                return new List<PostagemRequest>();
+
             return postagens.Select(postagem => new PostagemRequest
             {
                 IdPostagem = postagem.Id_Postagem,
                 IdCategoria = postagem.Id_Categoria,
+                NomeCategoria = postagem.Categoria?.Nome ?? "Categoria não encontrada",
+
                 IdStatus = postagem.Id_Status,
+                NomeStatus = postagem.Status?.Descricao ?? "Status não encontrado",
+
                 IdUsuario = postagem.Id_Usuario,
                 Titulo = postagem.Titulo,
                 Conteudo = postagem.Conteudo,
@@ -318,12 +400,11 @@ namespace Aisentona.Biz.Services.Postagens
                 TextoAlteradoPorIA = postagem.Texto_alterado_por_ia,
                 PalavrasRetiradasPorIA = postagem.Palavras_retiradas_por_ia,
                 DataCriacao = postagem.DT_Criacao,
-                NomeCategoria = postagem.Categoria?.Nome ?? "Categoria não encontrada",
-                NomeStatus = postagem.Status?.Descricao ?? "Status não encontrado",
-                PremiumOuComum = postagem.Fl_Premium
-                
+                PremiumOuComum = postagem.Fl_Premium,
+                Visualizacoes = postagem.Visualizacoes
             }).ToList();
         }
+
 
         #endregion
 

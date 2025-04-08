@@ -7,11 +7,11 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Aisentona.Biz.Validators;
 using Aisentona.Biz.Mappers;
-using Aisentona.Biz.Services.Compartilhar;
 using Microsoft.OpenApi.Models;
 using Aisentona.Biz.Services.Premium;
 using Aisentona.Biz.Services.Background;
 using Aisentona.Biz.Services.Email;
+using Aisentona.Biz.Services.RedesSociais;
 
 var builder = WebApplication.CreateBuilder(args);
     var configuration = builder.Configuration; // Defina a variável configuration
@@ -23,17 +23,16 @@ var builder = WebApplication.CreateBuilder(args);
     // Adicione os serviços do FluentValidation
     builder.Services.AddScoped<ColaboradorValidator>();
 
-    // Integrando API do Twitter/X
-    builder.Services.AddScoped<TwitterService>();
 
     builder.Services.AddCors(options =>
     {
         options.AddPolicy("AllowSpecificOrigin",
-        builder => builder.WithOrigins("http://localhost:4200")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
+            builder => builder.WithOrigins("http://localhost:4200", "https://localhost:4200") // Permite tanto HTTP quanto HTTPS
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
     });
+
 
     // Registro de serviços e repositórios
     builder.Services.AddScoped<ColaboradorService>();
@@ -48,12 +47,13 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<EmailAtivacaoService>();
     builder.Services.AddHostedService<PremiumExpirationService>();
     builder.Services.AddScoped<EmailRedefinirSenhaService>();
+    builder.Services.AddScoped<YoutubeWidgetsService>();
 
 
 
 
 
-builder.Services.AddScoped<TokenService>(provider =>
+    builder.Services.AddScoped<TokenService>(provider =>
     {
         var configuration = provider.GetRequiredService<IConfiguration>(); // Obtém a configuração
         var jwtSettings = configuration.GetSection("JwtSettings");
@@ -97,7 +97,7 @@ builder.Services.AddScoped<TokenService>(provider =>
     });
 
 
-builder.Services.AddAuthentication(options =>
+    builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;

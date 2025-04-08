@@ -129,6 +129,7 @@ export class SettingsComponent {
       ngOnInit(): void {
       
         this.carregarTiposDeUsuários()
+        
 
         if (this.isFiltroAplicado) {
           this.aplicarFiltros(); // Se já há um filtro, aplica automaticamente ao carregar a página
@@ -176,7 +177,7 @@ export class SettingsComponent {
         // Definir que os filtros foram aplicados
         this.isFiltroAplicado = true;
       
-        this._perfilService.carregarTodasAsPostagensPorFiltro(this.filtroDeBusca).subscribe({
+        this._perfilService.carregarTodasOsUsuariosPorFiltro(this.filtroDeBusca).subscribe({
           next: (response) => {
             
             // Atualiza a lista de postagens e a fonte de dados da tabela
@@ -288,6 +289,7 @@ export class SettingsComponent {
         (dados) => {
           this.infosPerfilUsuarioRequest = dados;
           this.dataSource.data = this.infosPerfilUsuarioRequest;  // Atualize a fonte de dados da tabela
+          console.log(dados)
         },
         (erro) => {
           console.error('Erro ao carregar todas as notícias:', erro);
@@ -300,6 +302,7 @@ export class SettingsComponent {
       this._perfilService.buscarTiposDeUsuarios().subscribe(
         (data) => {
           this.ListaDeTiposDeUsuarios = data; // Atribui os dados retornados pela API
+
         },
         (error) => {
           console.error('Erro ao carregar editorias:', error);

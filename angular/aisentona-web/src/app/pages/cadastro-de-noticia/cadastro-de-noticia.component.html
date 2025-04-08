@@ -1,118 +1,124 @@
-<app-container class="container-criar-notícia">
-
+<app-container class="container-criar-noticia">
     <h2>CRIAÇÃO DE NOTÍCIAS</h2>
+  
     <div class="cabecalho-noticia">
-        <!-- Título -->
-        <mat-form-field class="titulo">
-            <mat-label>TITULO DA NOTÍCIA</mat-label>
-            <textarea
-            placeholder="Máximo de 200 caracteres"
-            maxlength="200"  
-            matInput [(ngModel)]="infosPostagem.titulo"></textarea>
-        </mat-form-field>
-
-        <div>
-            <!-- Descrição -->
-            <mat-form-field class="descricao">
-                <mat-label>DESCRIÇÃO DA NOTÍCIA</mat-label>
-                <textarea 
-                maxlength="300"
-                placeholder="Máximo de 300 caracteres"
-                matInput [(ngModel)]="infosPostagem.descricao"></textarea>
-            </mat-form-field>
-        </div>
+      <mat-form-field class="titulo">
+        <mat-label>TÍTULO DA NOTÍCIA</mat-label>
+        <textarea
+          placeholder="Máximo de 200 caracteres"
+          maxlength="200"
+          matInput
+          [(ngModel)]="infosPostagem.titulo"
+        ></textarea>
+      </mat-form-field>
+  
+      <mat-form-field class="descricao">
+        <mat-label>DESCRIÇÃO DA NOTÍCIA</mat-label>
+        <textarea
+          maxlength="300"
+          placeholder="Máximo de 300 caracteres"
+          matInput
+          [(ngModel)]="infosPostagem.descricao"
+        ></textarea>
+      </mat-form-field>
     </div>
-
+  
     <div class="corpo-da-noticia">
-
-        <div class="imagem-pre-visualizar" *ngIf="imagemBase64">
-            <h3>Pré-visualização da Imagem:</h3>
-            <img [src]="infosPostagem.imagem" alt="Pré-visualização da Imagem">
-        </div>        
-
-        <div class="botoes-de-envio">
-            <input
-                type="file"
-                id="fileInput"
-                style="display: none;"
-                (change)="selecionarImagem($event)"
-                accept="image/*" />
-            <button class="botao" mat-button (click)="abrirSeletorDeArquivo()">
-                SELECIONE UMA IMAGEM
-            </button>
-        </div>
-
-        <div class="textos-principais">
-            <!-- Gerado Por Humano -->
-            <h3>ONDE ENCONTRAR A MATÉRIA ORIGINAL</h3>
-            <div class="texto-da-noticia">
-                <quill-editor class="texto-da-noticia"
-                  [(ngModel)]="infosPostagem.conteudo"
-                  [style.height]="'500px'">
-                </quill-editor>
-            </div>
-        
-            <!-- Gerado Por AISENTONA -->
-            <h3>MATÉRIA GERADA POR VERITARE</h3>
-                <div class="texto-da-noticia">
-                    <quill-editor class="texto-da-noticia"
-                      [(ngModel)]="infosPostagem.textoAlteradoPorIA"
-                      [style.height]="'800px'">
-                    </quill-editor>
-                </div>
-            <!-- PALAVRAS CORTADAS-->
-            <h3>NOTÍCIA COMENTADA POR VERITARE:</h3>
-            <div class="texto-da-noticia">
-                <quill-editor class="texto-da-noticia"
-                  [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"
-                  [style.height]="'500px'">
-                </quill-editor>
-            </div>
-        </div>
-
-        <div>
-            <mat-form-field class="status">
-                <mat-label>STATUS DA NOTÍCIA</mat-label>
-                <mat-select [(value)]="statusSelecionado">
-
-                    <mat-option *ngFor="let status of ListaDeStatus"
-                        [value]="status.id">
-                        {{ status.descricao }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <!-- Editoria -->
-
-            <mat-form-field class="editoria">
-                <mat-label>EDITORIA</mat-label>
-                <mat-select [(value)]="editoriaSelecionada">
-
-                    <mat-option *ngFor="let editoria of listaDeEditorias"
-                        [value]="editoria.id"> 
-                        {{ editoria.nome }} 
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <mat-form-field class="premiumOuComum">
-                <mat-label>TIPO DE PUBLICAÇÃO</mat-label>
-                <mat-select [(ngModel)]="tipoSelecionado"> 
-                    <mat-option *ngFor="let tipo of tipoDePublicacao" [value]="tipo">
-                        {{ tipo }} 
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            
-        </div>
-
-    </div>
-
-    <!-- Botão para Enviar -->
-    <div class="botoes-de-envio">
-        <button class="botao" mat-raised-button color="primary"
-            (click)="publicarNoticia()">
-            Criar Publicação
+      <div *ngIf="imagemBase64" class="imagem-pre-visualizar">
+        <h3>Pré-visualização da Imagem:</h3>
+        <img [src]="imagemBase64" alt="Pré-visualização da Imagem" />
+      </div>
+  
+      <div class="botoes-de-envio">
+        <input
+          type="file"
+          id="fileInput"
+          style="display: none;"
+          (change)="selecionarImagem($event)"
+          accept="image/*"
+        />
+        <button class="botao" mat-button (click)="abrirSeletorDeArquivo()">
+          SELECIONE UMA IMAGEM
         </button>
+      </div>
+  
+      <div class="textos-principais">
+        <h3>ANÁLISE VERITARE</h3>
+        <quill-editor
+          class="texto-da-noticia"
+          [(ngModel)]="infosPostagem.conteudo"
+          [style.height]="'500px'"
+        ></quill-editor>
+  
+        <h3>ALERTAS</h3>
+        <div *ngFor="let alerta of infosPostagem.alertas; let i = index" class="alerta-item">
+          <mat-form-field class="alerta">
+            <mat-label>Alerta {{ alerta.numeroAlerta }}</mat-label>
+            <textarea
+              maxlength="300"
+              placeholder="Máximo de 300 caracteres"
+              matInput
+              [(ngModel)]="alerta.mensagem"
+            ></textarea>
+          </mat-form-field>
+          <button mat-icon-button color="warn" (click)="removerAlerta(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+  
+        <button mat-raised-button color="accent" (click)="adicionarAlerta()" [disabled]="infosPostagem.alertas.length >= 20">
+          <mat-icon>add</mat-icon> Adicionar Alerta
+        </button>
+  
+        <h3>MATÉRIA GERADA POR VERITARE</h3>
+        <quill-editor
+          class="texto-da-noticia"
+          [(ngModel)]="infosPostagem.textoAlteradoPorIA"
+          [style.height]="'800px'"
+        ></quill-editor>
+  
+        <h3>FONTE DA MATÉRIA ANALISADA</h3>
+        <quill-editor
+          class="texto-da-noticia"
+          [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"
+          [style.height]="'500px'"
+        ></quill-editor>
+      </div>
+  
+      <div>
+        <mat-form-field class="status">
+          <mat-label>STATUS DA NOTÍCIA</mat-label>
+          <mat-select [(value)]="statusSelecionado">
+            <mat-option *ngFor="let status of listaDeStatus" [value]="status.id">
+              {{ status.descricao }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field class="editoria">
+          <mat-label>EDITORIA</mat-label>
+          <mat-select [(value)]="editoriaSelecionada">
+            <mat-option *ngFor="let editoria of listaDeEditorias" [value]="editoria.id">
+              {{ editoria.nome }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field class="premiumOuComum">
+          <mat-label>TIPO DE PUBLICAÇÃO</mat-label>
+          <mat-select [(ngModel)]="tipoSelecionado">
+            <mat-option *ngFor="let tipo of tipoDePublicacao" [value]="tipo">
+              {{ tipo }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
-</app-container>
+  
+    <div class="botoes-de-envio">
+      <button class="botao" mat-raised-button color="primary" (click)="publicarNoticia()">
+        Criar Publicação
+      </button>
+    </div>
+  </app-container>
+  

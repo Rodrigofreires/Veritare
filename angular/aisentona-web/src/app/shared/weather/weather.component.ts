@@ -3,6 +3,7 @@ import { WeatherService } from '../../services/weather.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatDivider } from '@angular/material/divider';
 
 @Component({
   selector: 'app-weather',
@@ -14,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
     CommonModule,
     MatIconModule,
     MatCardModule,
+    MatDivider,
   ]
 })
 export class WeatherComponent implements OnInit {

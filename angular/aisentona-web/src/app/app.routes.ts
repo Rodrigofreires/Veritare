@@ -19,6 +19,7 @@ import { PricingComponent } from './pages/pricing/pricing.component';
 import { AtivacaoSucessoComponent } from './pages/ativacao-sucesso/ativacao-sucesso.component';
 import { RedefinirSenhaComponent } from './authentication/redefinir-senha/redefinir-senha.component';
 import { EsqueciMinhaSenhaComponent } from './authentication/esqueci-minha-senha/esqueci-minha-senha.component';
+import { YoutubeAdminComponent } from './pages/youtube-admin-component/youtube-admin-component.component';
 
 
 export const routes: Routes = [
@@ -69,7 +70,12 @@ export const routes: Routes = [
         canActivate: [AuthGuard, RoleGuard], 
         data: { IdTipoDeUsuario: ['1'] }
       },
-
+      {
+        path: 'painel-de-controle/widgets', 
+        component: YoutubeAdminComponent,
+          canActivate: [AuthGuard, RoleGuard],
+          data: { IdTipoDeUsuario: ['1', '2']}
+      },
     ],
   },
   {
@@ -82,7 +88,7 @@ export const routes: Routes = [
       { path: 'ativacao/sucesso', component: AtivacaoSucessoComponent },
       { path: 'redefinir-senha', component: RedefinirSenhaComponent },
       { path: 'esqueci-minha-senha', component: EsqueciMinhaSenhaComponent },
-      { path: '**', redirectTo: 'login' }
+      //{ path: '**', redirectTo: 'login' }
     ],
   },
 ];

@@ -14,7 +14,7 @@ namespace Aisentona.DataBase
         public Postagem()
         {
         }
-        public Postagem(string titulo, string conteudo, string descricao, int idStatus, int idCategoria, DateTime dtCriacao, DateTime? dtUltimaAlteracao, string dsUltimaAlteracao, bool flAtivo, bool flPremium)
+        public Postagem(string titulo, string conteudo, string descricao, int idStatus, int idCategoria, DateTime dtCriacao, DateTime? dtUltimaAlteracao, string dsUltimaAlteracao, bool flAtivo, bool flPremium, int visualizacoes)
         {
             Titulo = titulo;
             Descricao = descricao;
@@ -26,6 +26,7 @@ namespace Aisentona.DataBase
             Ds_UltimaAlteracao = dsUltimaAlteracao;
             Fl_Ativo = flAtivo;
             Fl_Premium = flPremium;
+            Visualizacoes = visualizacoes;
         }
 
 
@@ -41,6 +42,8 @@ namespace Aisentona.DataBase
         public string Ds_UltimaAlteracao { get; set; }
         public bool Fl_Premium { get; set; }
 
+        public int Visualizacoes { get; set; }
+
         [ForeignKey("Colaborador")]
         public  int Id_Usuario { get; set; }
         [ForeignKey("Status")]
@@ -53,6 +56,7 @@ namespace Aisentona.DataBase
         public Colaborador? Colaborador { get; set; } // Relação com a classe Usuario (CF_COLABORADOR)
         public Status? Status { get; set; }   // Relação com a classe Status
         public Categoria? Categoria { get; set; }  // Relação com a classe Categoria
+        public List<PostagemAlerta>? PostagemAlerta { get; set; }
       
     }
 }

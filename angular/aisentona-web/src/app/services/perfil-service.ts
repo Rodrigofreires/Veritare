@@ -44,7 +44,7 @@ export class PerfilService {
   }
 
   // LISTAR COM FILTROS
-  carregarTodasAsPostagensPorFiltro(filtros: PerfilDeUsuarioResponse): Observable<PerfilDeUsuarioRequest[]> {
+  carregarTodasOsUsuariosPorFiltro(filtros: PerfilDeUsuarioResponse): Observable<PerfilDeUsuarioRequest[]> {
   return this.http.post<PerfilDeUsuarioRequest[]>(`${this.apiUrl}/${this.API}/listar-usuarios-filtros`, filtros, {
     headers: {
       'Content-Type': 'application/json',

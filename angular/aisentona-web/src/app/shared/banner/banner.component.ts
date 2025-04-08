@@ -30,15 +30,15 @@ export class BannerComponent implements OnInit {
       textoAlteradoPorIA: '',
       palavrasRetiradasPorIA: '',
       dataCriacao: '',
-      premiumOuComum: true
+      premiumOuComum: true,
+      alertas: [],
+      visualizacoes: 0,  
     },
   ];
 
   constructor(
     private _noticiaService: NoticiaService,
     private _navigationService: NavigationService,
-    private _snackBarService: SnackbarService,
-    private router: Router,
 
   ) {}
 
@@ -56,7 +56,6 @@ export class BannerComponent implements OnInit {
       }
     );
   }
-
 
   navegarParaNoticia(infosPostagem: PostagemRequest): void {
     // Chama o serviço que retorna a lista de editorias

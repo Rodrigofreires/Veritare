@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ContainerComponent } from "../../shared/container/container.component";
 import { FooterComponent } from "../../shared/footer/footer.component";
 import { ListaNoticiasComponent } from "../../shared/lista-noticias/lista-noticias.component";
@@ -14,85 +14,100 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FaixaAssineVeritareComponent } from '../../shared/faixa-assine-veritare/faixa-assine-veritare.component';
 import { NavigationService } from '../../services/navigation.service';
+import { YoutubeWidgetViewerComponent } from "../../shared/youtube-widget-viewer/youtube-widget-viewer.component";
 
 @Component({
   selector: 'app-listagem-por-editoria',
   imports: [
     ContainerComponent,
-    MatCardModule, 
-    MatButtonModule, 
+    MatCardModule,
+    MatButtonModule,
     CommonModule,
     FaixaAssineVeritareComponent,
-   
-    ],
+    YoutubeWidgetViewerComponent,
+],
 
   templateUrl: './listagem-por-editoria.component.html',
   styleUrl: './listagem-por-editoria.component.css'
 })
-export class ListagemPorEditoriaComponent {
+export class ListagemPorEditoriaComponent implements 
 
 
+
+OnInit {
   listaDeEditorias: EditoriaRequest[] = [];
   nomeCategoria: string = '';
-  idCategoria: number = 0; 
+  idCategoria: number = 0;
   infosPostagem: PostagemRequest = {} as PostagemRequest;
+
   noticiasRelacionadas: PostagemRequest[] = [];
-  quantidadeNoticias: number = 10;
+  paginaAtual: number = 1;
+  quantidadePorPagina: number = 10;
+  totalDeNoticias: number = 0;
+  carregandoMais: boolean = false;
 
-    constructor(
-      private _route: ActivatedRoute,
-      private _noticiaService: NoticiaService,
-      private _snackBarService: SnackbarService,
-      private _navigationService: NavigationService,
-      private router: Router,
-    ) {}
+  constructor(
+    private _route: ActivatedRoute,
+    private _noticiaService: NoticiaService,
+    private _snackBarService: SnackbarService,
+    private _navigationService: NavigationService,
+    private router: Router,
+  ) {}
 
+  ngOnInit(): void {
+    this._route.params.subscribe((params) => {
+      this.nomeCategoria = params['nomeCategoria'];
+      this.idCategoria = +params['idCategoria'];
+      this.paginaAtual = 1;
+      this.noticiasRelacionadas = [];
+      this.carregarPrimeirasNoticias();
+    });
+  }
 
-    ngOnInit(): void {
-      // Captura os parâmetros 'nomeCategoria' e 'idCategoria' da URL
-      this._route.params.subscribe((params) => {
-        this.nomeCategoria = params['nomeCategoria'];
-        this.idCategoria = +params['idCategoria']; // Converte para número
-        this.carregaNoticiasRelacionadas(); // Carrega as notícias relacionadas
-      });
-    }
-
-    carregaNoticiasRelacionadas(): void {
-    
-      // Chama o serviço para carregar as notícias por editoria
-      this._noticiaService.carregarPostagensPorEditoria(this.idCategoria).subscribe(
-        (dados: PostagemRequest[]) => {
-          this.noticiasRelacionadas = dados; // Armazena as notícias relacionadas
+  carregarPrimeirasNoticias(): void {
+    this._noticiaService.carregarPostagensPorEditoria(this.idCategoria, this.paginaAtual, this.quantidadePorPagina)
+      .subscribe(
+        (res) => {
+          this.noticiasRelacionadas = res.dados;
+          this.totalDeNoticias = res.total;
         },
         (erro) => {
           this._snackBarService.MostrarErro('Erro ao carregar as notícias:', erro);
           console.error('Erro ao carregar as notícias:', erro);
         }
       );
-    }
-    
-    navegarParaNoticia(infosPostagem: PostagemRequest): void {
-      // Chama o serviço que retorna a lista de editorias
-      this._noticiaService.buscarListaDeEditorias().subscribe(listaDeEditorias => {
-        // Filtra a categoria pela correspondência do id
-        const categoria = listaDeEditorias.find(editoria => editoria.id === infosPostagem.idCategoria);
-    
-        if (categoria) {
-          // Se encontrar a categoria, chama o serviço de navegação
-          this._navigationService.navegarParaNoticia(infosPostagem, categoria);
-        } else {
-          console.error('Categoria não encontrada para a postagem');
+  }
+
+  carregarMaisNoticias(): void {
+    if (this.carregandoMais || this.noticiasRelacionadas.length >= this.totalDeNoticias) return;
+
+    this.carregandoMais = true;
+    this.paginaAtual++;
+
+    this._noticiaService.carregarPostagensPorEditoria(this.idCategoria, this.paginaAtual, this.quantidadePorPagina)
+      .subscribe(
+        (res) => {
+          this.noticiasRelacionadas = [...this.noticiasRelacionadas, ...res.dados];
+          this.carregandoMais = false;
+        },
+        (erro) => {
+          console.error('Erro ao carregar mais notícias:', erro);
+          this.carregandoMais = false;
         }
-      });
-    }    
+      );
+  }
 
-    carregarMaisNoticias(): void {
-      if (this.quantidadeNoticias < this.noticiasRelacionadas.length) {
-        this.quantidadeNoticias += 5; // Incrementa em 5 o número de notícias exibidas
+  navegarParaNoticia(infosPostagem: PostagemRequest): void {
+    this._noticiaService.buscarListaDeEditorias().subscribe(listaDeEditorias => {
+      const categoria = listaDeEditorias.find(editoria => editoria.id === infosPostagem.idCategoria);
+      if (categoria) {
+        this._navigationService.navegarParaNoticia(infosPostagem, categoria);
+      } else {
+        console.error('Categoria não encontrada para a postagem');
       }
-    }
-  
-
-
+    });
+  }
 }
+
+
 

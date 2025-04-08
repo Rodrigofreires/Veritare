@@ -6,24 +6,38 @@
   margin-bottom: 40px;
   border: none;
   box-shadow: none;
+  background-color: #F9F9F9;
 }
 
 .listagem-de-noticias {
-  width: 65%; /* A largura da lista de notícias */
+  width: 60%; /* A largura da lista de notícias */
   display: flex;
   flex-direction: column;
+  background-color: #F9F9F9 !important;
 }
 
-.weather-widget {
-  width: 35%; /* A largura do widget de clima */
+.barra-de-widgets {
+  width: 40%; /* A largura do widget de clima */
   display: flex;
   flex-direction: column;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 16px;
-  background-color: #fff;
   box-sizing: border-box;
   margin-bottom: 20px;
+}
+
+.barra-de-widgets > *:last-child {
+  margin-bottom: 10px; /* Espaçamento de 10px abaixo do último item */
+}
+
+.barra-de-widgets {
+  display: inline-flex; /* Ajusta conforme o conteúdo, mas ainda flex */
+  flex-direction: column;
+}
+
+.barra-de-widgets {
+  overflow: hidden;
 }
 
 /* Restante do estilo das notícias */

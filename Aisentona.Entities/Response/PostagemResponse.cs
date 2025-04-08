@@ -10,7 +10,7 @@ namespace Aisentona.Entities.Response
     public class PostagemResponse
     {
 
-        public PostagemResponse(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario, string imagem, string textoAlteradoPorIA, string palavrasRetiradasPorIA, DateTime? dtCriacao, string premiumOuComum)
+        public PostagemResponse(string titulo, string descricao, string conteudo, int idpostagem, int idCategoria, int idStatus, int idUsuario, string imagem, string textoAlteradoPorIA, string palavrasRetiradasPorIA, DateTime? dtCriacao, string premiumOuComum, List<AlertaResponse> listaDeAlertas)
         {
             Titulo = titulo;
             Descricao = descricao;
@@ -24,6 +24,7 @@ namespace Aisentona.Entities.Response
             PalavrasRetiradasPorIA = palavrasRetiradasPorIA;
             DataCriacao = dtCriacao;
             PremiumOuComum = premiumOuComum;
+            Alertas = listaDeAlertas;
 
         }
 
@@ -39,6 +40,7 @@ namespace Aisentona.Entities.Response
         public string PalavrasRetiradasPorIA { get; set; }
         public DateTime? DataCriacao { get; set; }
         public string PremiumOuComum {  get; set; }
+        public List<AlertaResponse> Alertas { get; set; }
 
 
 

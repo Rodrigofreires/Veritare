@@ -22,14 +22,22 @@
             {{ postagem.titulo }}
           </h3>
           <!-- Data Criação -->
-          <p class="descricao-noticia">{{ postagem.dataCriacao | date: 'ddd/MM/yyyy  HH:mm' }}</p>
+          <p class="descricao-noticia">{{ postagem.dataCriacao | date: 'dd/MM/yyyy  HH:mm' }}</p>
         </div>
       </div>
     </mat-card>
   </div>
 
-  <app-weather class="weather-widget"></app-weather>
+  <div class="barra-de-widgets">
+    <app-youtube-widget-viewer [widgetId]="6"></app-youtube-widget-viewer>
+    <app-weather class="weather-widget"></app-weather>
+    <app-mais-lidas></app-mais-lidas>
+  </div>
+
+
 </div>
+
+
   <!-- Botão "Carregar mais" -->
   <div class="botao-carregar-mais">
     <button class="botao-global" (click)="carregarMaisPostagens()" *ngIf="!carregandoMais">

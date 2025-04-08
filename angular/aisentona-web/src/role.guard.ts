@@ -11,8 +11,8 @@ export class RoleGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const userPermissions = this.authService.getUserPermissions();
     const userType = this.authService.getTipoUsuario();
-    const requiredRoles: string[] = route.data['roles']; // Permissões exigidas
-    const requiredUserTypes: string[] = route.data['userTypes']; // Tipos de usuário exigidos
+    const requiredRoles: string[] = route.data['role']; // Permissões exigidas
+    const requiredUserTypes: string[] = route.data['IdTipoDeUsuario']; // Tipos de usuário exigidos
 
     // Se houver permissões necessárias, verifica se o usuário possui alguma delas
     if (requiredRoles && !requiredRoles.some(role => userPermissions.includes(role))) {

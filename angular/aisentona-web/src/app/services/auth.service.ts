@@ -80,7 +80,7 @@ export class AuthService {
     if (!decodedToken) {
       return false;
     }
-    const idTipoUsuario = decodedToken.IdTipoUsuario;
+    const idTipoUsuario = decodedToken.IdTipoDeUsuario;
     return idTipoUsuario !== '5' && idTipoUsuario !== '11';
   }
 
@@ -98,13 +98,14 @@ export class AuthService {
     if (!decodedToken) {
       return false;
     }
-    const idTipoUsuario = decodedToken.IdTipoUsuario;
+    const idTipoUsuario = decodedToken.IdTipoDeUsuario;
     return idTipoUsuario !== '5' && idTipoUsuario !== '11';
   }
+  
 
   getTipoUsuario(): string {
     const decodedToken = this.getDecodedToken();
-    return decodedToken?.IdTipoUsuario?.toString() || ''; // Garante que seja uma string
+    return decodedToken?.IdTipoDeUsuario?.toString() || ''; // Garante que seja uma string
   }
 
   getUserName(): string | null {

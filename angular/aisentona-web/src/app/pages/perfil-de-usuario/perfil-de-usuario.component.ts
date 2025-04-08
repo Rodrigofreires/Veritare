@@ -68,6 +68,7 @@ export class PerfilDeUsuarioComponent implements OnInit {
       (dados) => {
         this.infosPerfilUsuario = { ...dados }; // Garante uma nova referência no objeto
         this.cdr.detectChanges(); // Garante que o Angular renderize a mudança
+        console.log(this.infosPerfilUsuario)
       },
       (erro) => {
         this._snackBarService.MostrarErro('Erro ao carregar perfil do usuário.', erro);

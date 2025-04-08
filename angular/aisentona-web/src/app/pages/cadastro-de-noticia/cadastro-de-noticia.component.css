@@ -108,3 +108,20 @@
     border-radius: 4px;
     padding: 5px;
   }
+
+  .alerta-item {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Ocupa toda a largura do container */
+    margin-bottom: 16px; /* Espaço entre os alertas */
+  }
+  
+  .alerta {
+    flex: 1; /* Faz com que o mat-form-field ocupe o máximo de espaço disponível */
+    margin-right: 8px; /* Adiciona espaço entre o campo de texto e o botão */
+  }
+  
+  button {
+    flex-shrink: 0; /* Garante que o botão mantenha seu tamanho fixo */
+  }
+  

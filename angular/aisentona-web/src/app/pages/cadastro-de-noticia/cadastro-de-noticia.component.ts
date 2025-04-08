@@ -16,9 +16,10 @@ import { StatusRequest } from '../../core/interfaces/Request/Status';
 import { SnackbarService } from '../../services/snackbar.service';
 import { ImagemService } from '../../services/imagem-service';
 import { TextFieldModule } from '@angular/cdk/text-field';
-import { ContentChange, QuillModule } from 'ngx-quill';
+import { QuillModule } from 'ngx-quill';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
 
 @Component({
   selector: 'app-cadastro-de-noticia',
@@ -30,7 +31,6 @@ import { Router } from '@angular/router';
     MatNativeDateModule,
     MatSelectModule,
     CommonModule,
-    MatSelectModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule,
@@ -38,73 +38,86 @@ import { Router } from '@angular/router';
     TextFieldModule,
     QuillModule,
   ],
-  providers: [
-    
-  ],
-
-
   templateUrl: './cadastro-de-noticia.component.html',
   styleUrls: ['./cadastro-de-noticia.component.css'],
 })
-export class CadastroDeNoticiaComponent {
-  listaDeEditorias: EditoriaRequest[] = []; // Variável para armazenar as editorias
-  ListaDeStatus: StatusRequest[] = []; // Variável para armazenar os status
-  editoriaSelecionada: number = 0;
-  statusSelecionado: number = 0;
+export class CadastroDeNoticiaComponent implements OnInit {
+  listaDeEditorias: EditoriaRequest[] = [];
+  listaDeStatus: StatusRequest[] = [];
+  editoriaSelecionada: number | null = null;
+  statusSelecionado: number | null = null;
   imagemBase64: string = '';
   tipoDePublicacao: string[] = ['Publicação Comum', 'Publicação Premium'];
-  tipoSelecionado: string = ''; // Para armazenar a opção escolhida
-  infosPostagem: PostagemResponse = {} as PostagemResponse;
+  tipoSelecionado: string = '';
+  infosPostagem: PostagemResponse = {
+    titulo: '',
+    descricao: '',
+    conteudo: '',
+    idPostagem: 0,
+    idCategoria: 0,
+    idStatus: 0,
+    idUsuario: 0,
+    imagem: '',
+    textoAlteradoPorIA: '',
+    palavrasRetiradasPorIA: '',
+    premiumOuComum: '',
+    dataCriacao: null,
+    alertas: [],
+    visualizacoes: 0,  
+  };
 
   constructor(
     private _noticiaService: NoticiaService,
     private _snackBarService: SnackbarService,
     private _imagemService: ImagemService,
     private _authService: AuthService,
-    private _router: Router, 
+    private _router: Router
   ) {}
 
   ngOnInit(): void {
     this.carregarEditorias();
     this.carregarStatus();
-
   }
 
+
+  adicionarAlerta(): void {
+    if (this.infosPostagem?.alertas && this.infosPostagem.alertas.length < 20) {
+      this.infosPostagem.alertas.push({
+        numeroAlerta: this.infosPostagem.alertas.length + 1, // Numeração sequencial
+        mensagem: '',
+      });
+    }
+  }
+  
+  
+  removerAlerta(index: number): void {
+    if (this.infosPostagem?.alertas && this.infosPostagem.alertas.length > 0) {
+      this.infosPostagem.alertas.splice(index, 1);
+  
+      // Atualiza a numeração dos alertas para manter a sequência correta
+      this.infosPostagem.alertas.forEach((alerta, i) => {
+        alerta.numeroAlerta = i + 1;
+      });
+    }
+  }
+
+
   carregarEditorias(): void {
-    this._noticiaService.buscarListaDeEditorias().subscribe(
-      (data) => {
-        this.listaDeEditorias = data; // Atribui os dados retornados pela API
-      },
-      (error) => {
-        console.error('Erro ao carregar editorias:', error);
-      }
-    );
+    this._noticiaService.buscarListaDeEditorias().subscribe({
+      next: (data) => (this.listaDeEditorias = data),
+      error: (error) => console.error('Erro ao carregar editorias:', error)
+    });
   }
 
   carregarStatus(): void {
-    this._noticiaService.buscarListaDeStatus().subscribe(
-      (data) => {
-        this.ListaDeStatus = data; // Atribui os dados retornados pela API
-      },
-      (error) => {
-        console.error('Erro ao carregar editorias:', error);
-      }
-    );
+    this._noticiaService.buscarListaDeStatus().subscribe({
+      next: (data) => (this.listaDeStatus = data),
+      error: (error) => console.error('Erro ao carregar status:', error)
+    });
   }
 
-  //MÉTODO PARA PUBLICAR NOTÍCIA
-  public publicarNoticia(): void {
-    if (
-      !this.infosPostagem.titulo ||
-      !this.infosPostagem.descricao ||
-      !this.editoriaSelecionada ||
-      !this.statusSelecionado
-    ) {
-      this._snackBarService.MostrarErro(
-        'Preencha todos os campos obrigatórios antes de publicar.'
-      );
-      return;
-    }
+  publicarNoticia(): void {
+    if (!this.validarCamposObrigatorios()) return;
   
     const idUsuarioToken: number = this._authService.getUserId();
     if (!idUsuarioToken) {
@@ -112,60 +125,71 @@ export class CadastroDeNoticiaComponent {
       return;
     }
   
-    this.infosPostagem.idCategoria = this.editoriaSelecionada;
-    this.infosPostagem.idStatus = this.statusSelecionado;
-    this.infosPostagem.premiumOuComum =
-      this.tipoSelecionado.includes('Publicação Premium');
-    this.infosPostagem.idUsuario = idUsuarioToken;
+    const novaPostagem: PostagemRequest = {
+      ...this.infosPostagem,
+      idCategoria: this.editoriaSelecionada ?? 0, // Garante que seja um número
+      idStatus: this.statusSelecionado ?? 0, // Garante que seja um número
+      premiumOuComum: this.tipoSelecionado.includes('Publicação Premium'),
+      idUsuario: idUsuarioToken,
+      dataCriacao: this.infosPostagem.dataCriacao ?? new Date().toDateString(),
+      nomeCategoria: this.carregarEditorias.name,
+      alertas: this.infosPostagem.alertas ?? []
+    };
   
-    // Verifica se a imagem foi selecionada e convertida
-    if (!this.infosPostagem.imagem) {
-      this._snackBarService.MostrarErro(
-        'Por favor, selecione uma imagem para a notícia.'
-      );
-      return;
-    }
-  
-    // Envia a requisição para criar a postagem
-    this._noticiaService.criarPostagem(this.infosPostagem).subscribe(
-      (response) => {
+    this._noticiaService.criarPostagem(novaPostagem).subscribe({
+      next: () => {
         this._snackBarService.MostrarSucesso('Notícia salva com sucesso!');
         this._router.navigate(['/painel-de-controle']);
-
       },
-      (error) => {
+      error: (error) => {
         console.error('Erro ao publicar notícia:', error);
-        this._snackBarService.MostrarErro(
-          'Não foi possível publicar a notícia. Verifique os campos preenchidos.'
-        );
-        console.log(this.infosPostagem);
-      }
-    );
+        this._snackBarService.MostrarErro('Não foi possível publicar a notícia.');
+      },
+    });
   }
-  
-  
-  //LÓGICA PARA INSERIR IMAGENS
+
+  validarCamposObrigatorios(): boolean {
+    if (!this.infosPostagem.titulo?.trim()) {
+      this._snackBarService.MostrarErro('O título é obrigatório.');
+      return false;
+    }
+    if (!this.infosPostagem.descricao?.trim()) {
+      this._snackBarService.MostrarErro('A descrição é obrigatória.');
+      return false;
+    }
+    if (!this.editoriaSelecionada) {
+      this._snackBarService.MostrarErro('Selecione uma editoria.');
+      return false;
+    }
+    if (!this.statusSelecionado) {
+      this._snackBarService.MostrarErro('Selecione um status.');
+      return false;
+    }
+    if (!this.imagemBase64) {
+      this._snackBarService.MostrarErro('Por favor, selecione uma imagem para a notícia.');
+      return false;
+    }
+    return true;
+  }
 
   abrirSeletorDeArquivo(): void {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-    if (fileInput) {
-      fileInput.click();
-    }
+    fileInput?.click();
   }
 
   selecionarImagem(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
+    if (input.files?.length) {
       const file = input.files[0];
-
-      // Validação do arquivo
       this._imagemService.validarArquivo(file);
 
-      // Conversão para Base64
       const reader = new FileReader();
       reader.onload = () => {
         this.imagemBase64 = reader.result as string;
         this.infosPostagem.imagem = this.imagemBase64;
+      };
+      reader.onerror = () => {
+        this._snackBarService.MostrarErro('Erro ao carregar a imagem. Tente novamente.');
       };
       reader.readAsDataURL(file);
     }

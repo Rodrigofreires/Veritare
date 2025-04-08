@@ -1,59 +1,40 @@
+
 .weather-card {
-  width: 100%;
-  max-width: 500px; /* Aumentei o tamanho do card para 500px */
-  border: none;
-  box-shadow: none;
-  background-color: #ffffff;
+  margin: 1rem;
+  padding: 1rem;
 }
 
-.weather-card-header {
-  text-align: left; /* Título alinhado à esquerda */
-  background-color: #0288d1;
-  color: white;
-  padding: 10px;
-  border-radius: 4px;
-  white-space: nowrap; /* Evita quebra de linha no título */
-  overflow: hidden; /* Esconde qualquer conteúdo que ultrapasse o limite do título */
+.weather-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Espaçamento entre os itens */
+  margin-top: 1rem;
 }
 
-.weather-card-title {
-  font-size: 1.2em; /* Diminuí o tamanho da fonte para 1.2em */
-  display: inline-flex; /* Garantir que o título e o ícone fiquem na mesma linha */
+.weather-item {
+  display: flex;
   align-items: center;
-  flex-wrap: nowrap; /* Impede que o conteúdo quebre linha */
+  gap: 1.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.weather-card-title mat-icon {
-  margin-right: 10px;
+.ranking-numero {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #1E1E2E;
+  min-width: 30px;
+  text-align: right;
+  flex-shrink: 0;
 }
 
-.weather-card-subtitle {
-  font-size: 1em;
-  font-weight: lighter;
-  color: #9e9e9e;
-}
-
-.current-weather {
-  text-align: center;
-  margin: 20px 0;
-}
-
-.forecast {
-  display: block;
-  margin-bottom: 10px;
-  font-size: 1.1em;
-  text-align: left;
-}
-
-.forecast p {
-  margin: 5px 0;
-  color: #616161;
-}
-
-mat-card-content {
-  font-family: 'Roboto', sans-serif;
-}
-
-mat-card-header {
-  border-bottom: 2px solid #0288d1;
+.titulo-noticia {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #7070AC;
+  text-decoration: none;
+  cursor: default;
+  flex-grow: 1;
+  white-space: normal; /* permite quebra de linha */
 }

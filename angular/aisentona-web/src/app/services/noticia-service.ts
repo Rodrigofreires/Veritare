@@ -7,6 +7,7 @@ import { StatusRequest } from '../core/interfaces/Request/Status';
 import { PostagemResponse } from '../core/interfaces/Response/Postagem';
 import { PostagemRequest } from '../core/interfaces/Request/Postagem';
 import { AuthService } from './auth.service';
+import { PostagensPaginadas } from '../core/interfaces/Model/PostagensPaginadas';
 
 @Injectable({
   providedIn: 'root',
@@ -69,9 +70,10 @@ carregarTodasAsPostagens(): Observable<PostagemRequest[]> {
     }
   });
 }
-// LISTAR POSTAGENS COM PAGINAÇÃO
-carregarPostagensPaginadas(pagina: number, quantidadePorPagina: number): Observable<PostagemRequest[]> {
-  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-postagens-paginadas`, {
+
+
+carregarPostagensPaginadas(pagina: number, quantidadePorPagina: number): Observable<PostagensPaginadas> {
+  return this.http.get<PostagensPaginadas>(`${this.apiUrl}/${this.API}/listar-postagens-paginadas`, {
     params: {
       pagina: pagina.toString(),
       quantidadePorPagina: quantidadePorPagina.toString()
@@ -102,16 +104,14 @@ carregarUltimasNoticiasPremium(): Observable<PostagemRequest[]> {
 
 }
 
-//CARREGAR POSTAGENS POR EDITORIA
-carregarPostagensPorEditoria(idEditoria: number): Observable<PostagemRequest[]> {
-  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/listar-por-editoria/${idEditoria}`)
-
+carregarPostagensPorEditoria(idCategoria: number, pagina: number, quantidade: number) {
+  const url = `${this.apiUrl}/${this.API}/listar-por-editoria/${idCategoria}?pagina=${pagina}&quantidade=${quantidade}`;
+  return this.http.get<PostagensPaginadas>(url);
 }
 
-//DIRECIONAR PARA A ROTA CORRETA DA NOTÍCIA
-
-
-
+getMaisLidasDaSemana(): Observable<PostagemRequest[]> {
+  return this.http.get<PostagemRequest[]>(`${this.apiUrl}/${this.API}/mais-lidas-semana`);
+}
 
 
 }

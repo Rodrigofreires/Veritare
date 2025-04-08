@@ -30,7 +30,7 @@ namespace Aisentona.API.Controllers.Postagens
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetNoticiaById(int id)
+        public async Task<IActionResult> GetNoticiaById(int id)
         {
             if (id <= 0)
             {
@@ -38,26 +38,33 @@ namespace Aisentona.API.Controllers.Postagens
             }
 
             PostagemRequest postagemRequest = _postagemService.CarregarPostagemPorId(id);
+
             if (postagemRequest == null)
             {
                 return NotFound();
             }
+
+            // Incrementa visualizações de forma assíncrona
+            await _postagemService.IncrementarVisualizacoesAsync(id);
+
             return Ok(postagemRequest);
         }
+
 
         [HttpGet("listar-postagens-paginadas")]
         public IActionResult CarregarListaDePostagens(int pagina = 1, int quantidadePorPagina = 10)
         {
-            var listaDePostagens = _postagemService.ListarPostagensPaginadas(pagina, quantidadePorPagina);
-            if (listaDePostagens == null || !listaDePostagens.Any())
+            var postagensPaginadas = _postagemService.ListarPostagensPaginadas(pagina, quantidadePorPagina);
+            var totalPostagens = _postagemService.ContarTotalDePostagens();
+
+            var resultado = new PostagensPaginadasDTO
             {
-                return NotFound();
-            }
-            return Ok(listaDePostagens);
+                Total = totalPostagens,
+                Dados = postagensPaginadas
+            };
+
+            return Ok(resultado);
         }
-
-
-
 
         [HttpPost("listar-postagens/filtros")]
         public IActionResult CarregarTodasAsPostagensPorFiltro([FromBody] PostagemResponse filtro)
@@ -101,16 +108,17 @@ namespace Aisentona.API.Controllers.Postagens
 
 
         [HttpGet("listar-por-editoria/{idEditoria}")]
-        public IActionResult FiltrarPostagensPorEditoria(int idEditoria)
+        public IActionResult FiltrarPostagensPorEditoria(int idEditoria, int pagina = 1, int quantidade = 10)
         {
-            List<PostagemRequest> listaDePostagensFiltradas = _postagemService.FiltrarPostagensPorEditoria(idEditoria);
-            if (listaDePostagensFiltradas == null)
-            {
-                return NotFound();
-            }
-            return Ok(listaDePostagensFiltradas);
-        }
+            var resultado = _postagemService.FiltrarPostagensPorEditoria(idEditoria, pagina, quantidade);
 
+            if (resultado == null || resultado.Dados == null || !resultado.Dados.Any())
+            {
+                return NotFound("Nenhuma postagem encontrada.");
+            }
+
+            return Ok(resultado);
+        }
 
         [HttpPost("criar-noticia")]
         public IActionResult CreatePost([FromBody] PostagemResponse postagemResponse)
@@ -197,6 +205,18 @@ namespace Aisentona.API.Controllers.Postagens
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpGet("mais-lidas-semana")]
+
+        [ProducesResponseType(typeof(List<PostagemRequest>), StatusCodes.Status200OK)]
+        public ActionResult<List<PostagemRequest>> ObterMaisLidas()
+        {
+            var maisLidas = _postagemService.ObterMaisLidasUltimaSemana();
+            return Ok(maisLidas);
+        }
+
+
+
 
 
 
