@@ -18,7 +18,7 @@ import { YoutubeWidgetViewerComponent } from '../../shared/youtube-widget-viewer
     ListaNoticiasComponent, 
     BannerNoticiasPremiumComponent, 
     FaixaAssineVeritareComponent,
-    YoutubeWidgetViewerComponent,
+    //YoutubeWidgetViewerComponent,
   
   ],
   templateUrl: './home.component.html',

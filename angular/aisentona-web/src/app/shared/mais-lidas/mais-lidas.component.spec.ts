@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { YoutubeAdminComponent } from './youtube-admin-component.component';
+import { MaisLidasComponent } from './mais-lidas.component';
 
-describe('YoutubeAdminComponentComponent', () => {
-  let component: YoutubeAdminComponent;
-  let fixture: ComponentFixture<YoutubeAdminComponent>;
+describe('MaisLidasComponent', () => {
+  let component: MaisLidasComponent;
+  let fixture: ComponentFixture<MaisLidasComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [YoutubeAdminComponent]
+      imports: [MaisLidasComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(YoutubeAdminComponent);
+    fixture = TestBed.createComponent(MaisLidasComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

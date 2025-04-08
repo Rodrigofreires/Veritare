@@ -14,4 +14,5 @@ export interface PostagemResponse {
     premiumOuComum: string | any;
     dataCriacao: string | null;
     alertas: AlertaResponse[];
+    visualizacoes: number;
   }

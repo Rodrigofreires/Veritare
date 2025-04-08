@@ -1,19 +1,21 @@
 <mat-card class="weather-card">
-  <mat-card-header>
-    <mat-card-title>
-      <mat-icon class="weather-icon">wb_sunny</mat-icon> <!-- Ícone de sol -->
-      Previsão do Tempo em {{ local }}
-    </mat-card-title>
+  <mat-card-title>Previsão do Tempo em {{ local }}</mat-card-title>
+  <mat-divider></mat-divider>
 
-  </mat-card-header>
-  <mat-card-content>
-    <div class="current-weather">
-        <p><strong>Hoje:</strong> {{ dataHoje }} | {{ diaDaSemana }} - {{ temperatura }}°C </p>
+  <div class="weather-lista">
+    <div class="weather-item">
+      <span class="ranking-numero">Hoje:</span>
+      <span class="titulo-noticia">
+        {{ dataHoje }} | {{ diaDaSemana }} - {{ temperatura }}°C
+      </span>
     </div>
 
-    <h3>Previsão para os Próximos Dias</h3>
-    <div *ngFor="let previsao of previsaoFutura" class="forecast">
-      <p>{{ previsao.diaDaSemana }} - {{ previsao.dataFormatada }} - {{ previsao.temperatura }}°C</p>
+    <h3>Próximos Dias</h3>
+    <div *ngFor="let previsao of previsaoFutura; index as i" class="weather-item">
+      <span class="ranking-numero">{{ i + 1 }}.</span>
+      <span class="titulo-noticia">
+        {{ previsao.diaDaSemana }} - {{ previsao.dataFormatada }} - {{ previsao.temperatura }}°C
+      </span>
     </div>
-  </mat-card-content>
+  </div>
 </mat-card>

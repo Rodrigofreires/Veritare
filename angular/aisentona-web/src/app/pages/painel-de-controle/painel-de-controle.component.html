@@ -22,9 +22,15 @@
           <mat-icon>bar_chart</mat-icon>
           <span>Analytics</span>
         </a>
+        
         <a mat-list-item routerLink="settings">
           <mat-icon>settings</mat-icon>
           <span>Painel de Usuários</span>
+        </a>
+
+        <a mat-list-item routerLink="widgets">
+          <mat-icon>smart_display</mat-icon>
+          <span>Painel Youtube</span>
         </a>
       </mat-nav-list>
     </mat-sidenav>
@@ -147,10 +153,14 @@
           </table>
           
           <mat-paginator
+          [length]="totalDePostagens"
+          [pageSize]="quantidadePorPagina"
           [pageSizeOptions]="[10, 20, 50]"
           showFirstLastButtons
-          (page)="onPageChange($event)">
+          (page)="aoMudarPagina($event)">
         </mat-paginator>
+        
+        
           
         </mat-card>
       </div>

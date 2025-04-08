@@ -2,7 +2,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
-    padding: 1rem;
   }
   
   .widget-card {
@@ -38,5 +37,6 @@
   .widget-info .tipo {
     font-size: 0.9rem;
     color: #666;
+    margin-bottom: 20px;
   }
   

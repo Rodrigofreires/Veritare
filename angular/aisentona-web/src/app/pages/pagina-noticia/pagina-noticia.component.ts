@@ -12,6 +12,7 @@ import { QuillEditorComponent, QuillModule } from 'ngx-quill';
 import { AuthService } from '../../services/auth.service';
 import { NavigationService } from '../../services/navigation.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { YoutubeWidgetViewerComponent } from "../../shared/youtube-widget-viewer/youtube-widget-viewer.component";
 
 @Component({
   standalone: true,
@@ -24,7 +25,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatListModule,
     QuillModule,
     MatTooltipModule,
-  ],
+    YoutubeWidgetViewerComponent,
+],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './pagina-noticia.component.html',
   styleUrls: ['./pagina-noticia.component.css']
@@ -52,7 +54,8 @@ export class PaginaNoticiaComponent {
     palavrasRetiradasPorIA: '',
     dataCriacao: '',
     premiumOuComum: false,
-    alertas: []
+    alertas: [],
+    visualizacoes: 0,  
   };
   noticiasRelacionadas: PostagemRequest[] = [];
   isLoggedIn = false;
@@ -133,13 +136,22 @@ export class PaginaNoticiaComponent {
       console.warn('ID da categoria não encontrado.');
       return;
     }
-
-    this._noticiaService.carregarPostagensPorEditoria(this.infosPostagem.idCategoria).subscribe(
-      dados => this.noticiasRelacionadas = dados,
-      erro => this._snackBarService.MostrarErro('Erro ao carregar notícias relacionadas:', erro)
-    );
+  
+    const pagina = 1;
+    const quantidade = 6;
+  
+    this._noticiaService.carregarPostagensPorEditoria(this.infosPostagem.idCategoria, pagina, quantidade)
+      .subscribe({
+        next: (resposta) => {
+          this.noticiasRelacionadas = resposta.dados;
+        },
+        error: (erro) => {
+          console.error('Erro ao carregar notícias relacionadas:', erro);
+          this._snackBarService.MostrarErro('Erro ao carregar notícias relacionadas.');
+        }
+      });
   }
-
+  
   acessarEditarNoticia(): boolean {
     return this._authService.acessarEditarNoticia();
   }
@@ -213,9 +225,6 @@ export class PaginaNoticiaComponent {
       const numero = sobrescrito.replace('[', '').replace(']', '');
       return parseInt(numero, 10) || -1;  // Retorna -1 se não for um número válido
     }
-    
-    
-  
 
   detectarReferenciasNaTela(): void {
     if (!this.infosPostagem || !this.infosPostagem.conteudo) {

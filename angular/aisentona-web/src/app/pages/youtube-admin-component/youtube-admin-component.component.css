@@ -1,11 +1,95 @@
+.youtube-admin-page {
+  display: flex;
+  height: 100vh; /* Garante altura total da tela */
+  overflow: hidden;
+}
+
+.youtube-admin-container {
+  flex: 1; /* Ocupa o restante do espaço */
+  overflow-y: auto;
+}
+
+/* Barra lateral */
+.sidenav {
+  width: 250px; /* Largura fixa para a barra lateral */
+  background: #1E1E2E; /* Cor customizada */
+  color: #fff !important; /* Texto branco */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza o conteúdo horizontalmente */
+  padding: 16px !important; /* Espaçamento interno */
+  box-sizing: border-box;
+  border-radius: 0;
+  flex-shrink: 0; /* Barra lateral não encolhe */
+}
+
+.painel-de-controle .clickable-link {
+  font-size: 25px !important; /* Tamanho do texto */
+  cursor: pointer;
+  color: #fff !important; /* Cor do texto */
+  text-decoration: none !important; /* Retira o sublinhado padrão do link */
+}
+
+.painel-de-controle  .clickable-link:hover {
+  color: #7070AC !important ; /* Altere a cor conforme necessário */
+  text-decoration: underline !important; /* Adiciona sublinhado ao passar o mouse */
+}
+
+/* Perfil e título da barra lateral */
+.sidenav .profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 16px;
+}
+
+.sidenav h3 {
+  font-size: 1.2rem;
+  margin: 0;
+  margin-bottom: 8px;
+  text-align: center; /* Centraliza o texto */
+}
+
+.sidenav p {
+  font-size: 0.9rem;
+  margin: 0;
+  margin-bottom: 24px;
+  text-align: center; /* Centraliza o texto */
+  color: #aaa; /* Cor de texto mais clara */
+}
+
+/* Ícones e textos da barra lateral */
+.icones-barra-lateral {
+  width: 100%; /* Ocupa toda a largura disponível */
+  display: flex; /* Usa flexbox */
+  align-items: center; /* Alinha ícones e texto verticalmente */
+  padding: 8px 16px; /* Adiciona espaçamento interno */
+  box-sizing: border-box; /* Garante que padding seja considerado no tamanho */
+  color: #fff !important;
+  gap: 12px; /* Espaço entre ícones e texto */
+}
+
+.icones-barra-lateral:hover {
+  color: #7070AC !important;
+}
+
+.sidenav ::ng-deep .mdc-list-item__primary-text {
+  color: white !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sidenav ::ng-deep .mdc-list-item__primary-text:hover {
+  color: #7070AC !important;
+}
+
+
 .youtube-admin-container {
   background: linear-gradient(135deg, #070C18, #14153E, #0A0C1B);
   color: white;
   padding: 2rem;
-  border-radius: 2rem;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
-  max-width: 1200px;
-  margin: 2rem auto;
+  width: 100%;
 }
 
 .youtube-admin-container h2 {
@@ -67,7 +151,7 @@ mat-list-item {
   margin-bottom: 0.5rem;
   border-radius: 0.75rem;
   padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(61, 8, 207, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -122,3 +206,7 @@ button[color="warn"] mat-icon {
 ::ng-deep .mat-mdc-select-min-line {
   color: #ffffff !important;
 }
+::ng-deep .mat-sys-on-surface {
+  color: #5b73d4 !important;
+}
+

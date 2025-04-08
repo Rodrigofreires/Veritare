@@ -1,7 +1,6 @@
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
-  HostListener,
   OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,86 +9,31 @@ import { MatCardModule } from '@angular/material/card';
 import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
 import { Router } from '@angular/router';
-import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
-import { ContainerComponent } from '../container/container.component';
+import { PostagemRequest} from '../../core/interfaces/Request/Postagem';
 import { WeatherComponent } from '../weather/weather.component';
-import { NavigationService } from '../../services/navigation.service';
 import { YoutubeWidgetViewerComponent } from '../youtube-widget-viewer/youtube-widget-viewer.component';
+import { NavigationService } from '../../services/navigation.service';
+import { PostagensPaginadas } from '../../core/interfaces/Model/PostagensPaginadas';
+import { MaisLidasComponent } from "../mais-lidas/mais-lidas.component";
 
 @Component({
   selector: 'app-lista-noticias',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, CommonModule, WeatherComponent, YoutubeWidgetViewerComponent],
+  imports: [MatCardModule, MatButtonModule, CommonModule, WeatherComponent, YoutubeWidgetViewerComponent, MaisLidasComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './lista-noticias.component.html',
   styleUrls: ['./lista-noticias.component.css'],
 })
 export class ListaNoticiasComponent implements OnInit {
-  infosUltimasPostagem: PostagemRequest[] = [
-    {
-      titulo: 'Carregando...',
-      descricao: 'Descrição indisponível no momento.',
-      conteudo: '',
-      idPostagem: 0,
-      idCategoria: 0,
-      nomeCategoria: 'Categoria Indisponível',
-      idStatus: 0,
-      idUsuario: 0,
-      imagem: '',
-      textoAlteradoPorIA: '',
-      palavrasRetiradasPorIA: '',
-      dataCriacao: '',
-      nomeStatus: '',
-      premiumOuComum: true,
-      alertas: [], // Adicionando a propriedade alertas
-    },
-  ];
-
-  infosTodasAsPostagem: PostagemRequest[] = [
-    {
-      titulo: 'Carregando...',
-      descricao: 'Descrição indisponível no momento.',
-      conteudo: '',
-      idPostagem: 0,
-      idCategoria: 0,
-      nomeCategoria: 'Categoria Indisponível',
-      idStatus: 0,
-      idUsuario: 0,
-      imagem: '',
-      textoAlteradoPorIA: '',
-      palavrasRetiradasPorIA: '',
-      dataCriacao: '',
-      nomeStatus: '',
-      premiumOuComum: true,
-      alertas: [], // Adicionando a propriedade alertas
-    },
-  ];
-
-  postagensExibidas: PostagemRequest[] = [
-    {
-      titulo: 'Carregando...',
-      descricao: 'Descrição indisponível no momento.',
-      conteudo: '',
-      idPostagem: 0,
-      idCategoria: 0,
-      nomeCategoria: 'Categoria Indisponível',
-      idStatus: 0,
-      idUsuario: 0,
-      imagem: '',
-      textoAlteradoPorIA: '',
-      palavrasRetiradasPorIA: '',
-      dataCriacao: '',
-      nomeStatus: '',
-      premiumOuComum: true,
-      alertas: [], // Adicionando a propriedade alertas
-      
-    },
-  ];
+  infosUltimasPostagem: PostagemRequest[] = [];
+  infosTodasAsPostagem: PostagemRequest[] = [];
+  postagensExibidas: PostagemRequest[] = [];
 
   quantidadeExibida: number = 10;
   paginaAtual: number = 1;
   quantidadePorPagina: number = 10;
   carregandoMais: boolean = false;
+  totalDePostagens: number = 0;
 
   constructor(
     private _noticiaService: NoticiaService,
@@ -114,31 +58,24 @@ export class ListaNoticiasComponent implements OnInit {
     );
   }
 
-  // Método para carregar as primeiras postagens
   carregarPrimeirasPostagens(): void {
     this._noticiaService
       .carregarPostagensPaginadas(this.paginaAtual, this.quantidadePorPagina)
       .subscribe(
-        (dados) => {
-          this.infosTodasAsPostagem = dados;
-          this.postagensExibidas = this.infosTodasAsPostagem.slice(
-            0,
-            this.quantidadeExibida
-          ); // Atualiza as exibidas
+        (res: PostagensPaginadas) => {
+          this.totalDePostagens = res.total;
+          this.infosTodasAsPostagem = res.dados;
+          this.postagensExibidas = res.dados.slice(0, this.quantidadeExibida);
         },
         (erro) => {
           console.error('Erro ao carregar postagens:', erro);
-          this._snackBarService.MostrarErro(
-            'Erro ao carregar postagens.',
-            erro
-          );
+          this._snackBarService.MostrarErro('Erro ao carregar postagens.', erro);
         }
       );
   }
 
-  // Método para carregar mais postagens
   carregarMaisPostagens(): void {
-    if (this.carregandoMais) return; // Evita múltiplas chamadas simultâneas
+    if (this.carregandoMais) return;
 
     this.carregandoMais = true;
     this.paginaAtual++;
@@ -146,16 +83,16 @@ export class ListaNoticiasComponent implements OnInit {
     this._noticiaService
       .carregarPostagensPaginadas(this.paginaAtual, this.quantidadePorPagina)
       .subscribe(
-        (dados) => {
-          if (dados.length > 0) {
+        (res: PostagensPaginadas) => {
+          if (res.dados.length > 0) {
             this.infosTodasAsPostagem = [
               ...this.infosTodasAsPostagem,
-              ...dados,
-            ]; // Adiciona as novas postagens
+              ...res.dados,
+            ];
             this.postagensExibidas = this.infosTodasAsPostagem.slice(
               0,
               this.quantidadeExibida * this.paginaAtual
-            ); // Atualiza as exibidas
+            );
           }
           this.carregandoMais = false;
         },
@@ -165,22 +102,27 @@ export class ListaNoticiasComponent implements OnInit {
         }
       );
   }
-  navegarParaNoticia(infosPostagem: PostagemRequest): void {
-    // Chama o serviço que retorna a lista de editorias
-    this._noticiaService
-      .buscarListaDeEditorias()
-      .subscribe((listaDeEditorias) => {
-        // Filtra a categoria pela correspondência do id
-        const categoria = listaDeEditorias.find(
-          (editoria) => editoria.id === infosPostagem.idCategoria
-        );
 
-        if (categoria) {
-          // Se encontrar a categoria, chama o serviço de navegação
-          this._navigationService.onAbrirNoticia(infosPostagem, categoria);
-        } else {
-          console.error('Categoria não encontrada para a postagem');
-        }
-      });
+  navegarParaNoticia(noticia: PostagemRequest): void {
+    if (!noticia.idCategoria) {
+      console.error('Postagem não tem idCategoria');
+      return;
+    }
+  
+    this._noticiaService.buscarListaDeEditorias().subscribe(listaDeEditorias => {
+      const categoria = listaDeEditorias.find(editoria => editoria.id === noticia.idCategoria);
+      
+      if (categoria) {
+        const postagemComCategoria: PostagemRequest = {
+          ...noticia,
+          nomeCategoria: categoria.nome
+        };
+  
+        this._navigationService.navegarParaNoticia(postagemComCategoria, categoria);
+      } else {
+        console.error('Categoria não encontrada para a postagem');
+      }
+    });
   }
+  
 }

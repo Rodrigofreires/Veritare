@@ -62,6 +62,11 @@ namespace Aisentona.Biz.Services.Postagens
             return MapearParaDTO(postagens);
         }
 
+        public int ContarTotalDePostagens()
+        {
+            return _context.CF_Postagem.Count(p => p.Fl_Ativo == true);
+        }
+
 
         public List<PostagemRequest> ListarPostagensComFiltro(PostagemResponse postagemResponse)
         {
@@ -298,19 +303,59 @@ namespace Aisentona.Biz.Services.Postagens
         }
 
 
-        public List<PostagemRequest> FiltrarPostagensPorEditoria(int IdCategoria)
+        public PostagensPaginadasDTO FiltrarPostagensPorEditoria(int idEditoria, int pagina, int quantidade)
         {
-            List<Postagem> listaDePostagensFiltradas = _context.CF_Postagem
-                .Include(p => p.Categoria) // Inclui a relação com a Categoria
+            var query = _context.CF_Postagem
+                .Include(p => p.Categoria)
                 .Include(p => p.Status)
-                .Where(p => p.Fl_Ativo == true && p.Id_Categoria == IdCategoria) // Filtra apenas as postagens ativas
-                .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
+                .Where(p => p.Fl_Ativo == true && p.Id_Categoria == idEditoria)
+                .OrderByDescending(p => p.DT_Criacao);
+
+            var total = query.Count();
+
+            var postagens = query
+                .Skip((pagina - 1) * quantidade)
+                .Take(quantidade)
                 .ToList();
 
-            // Mapeia as postagens para PostagemDTO
-            return MapearParaDTO(listaDePostagensFiltradas);
+            var postagensDTO = MapearParaDTO(postagens);
 
+            return new PostagensPaginadasDTO 
+            {
+                Total = total,
+                Dados = postagensDTO
+            };
         }
+        public async Task<int> IncrementarVisualizacoesAsync(int idPostagem)
+        {
+            var postagem = await _context.CF_Postagem.FindAsync(idPostagem);
+
+            if (postagem == null)
+                throw new Exception("Postagem não encontrada.");
+
+            postagem.Visualizacoes += 1;
+
+            _context.Entry(postagem).Property(p => p.Visualizacoes).IsModified = true;
+            await _context.SaveChangesAsync();
+
+            return postagem.Visualizacoes;
+        }
+
+        public List<PostagemRequest> ObterMaisLidasUltimaSemana(int quantidade = 5)
+        {
+            var umaSemanaAtras = DateTime.Now.AddDays(-7);
+
+            var postagens = _context.CF_Postagem
+                .Where(p => p.DT_Criacao >= umaSemanaAtras && p.Fl_Ativo)
+                .OrderByDescending(p => p.Visualizacoes)
+                .Take(quantidade)
+                .ToList();
+
+            return MapearParaDTO(postagens);
+        }
+
+
+
 
         #region /*Métodos de conversão*/
         private Postagem ConverterPostagem(PostagemResponse postagemResponse)
@@ -335,11 +380,18 @@ namespace Aisentona.Biz.Services.Postagens
 
         private List<PostagemRequest> MapearParaDTO(List<Postagem> postagens)
         {
+            if (postagens == null || !postagens.Any())
+                return new List<PostagemRequest>();
+
             return postagens.Select(postagem => new PostagemRequest
             {
                 IdPostagem = postagem.Id_Postagem,
                 IdCategoria = postagem.Id_Categoria,
+                NomeCategoria = postagem.Categoria?.Nome ?? "Categoria não encontrada",
+
                 IdStatus = postagem.Id_Status,
+                NomeStatus = postagem.Status?.Descricao ?? "Status não encontrado",
+
                 IdUsuario = postagem.Id_Usuario,
                 Titulo = postagem.Titulo,
                 Conteudo = postagem.Conteudo,
@@ -348,12 +400,11 @@ namespace Aisentona.Biz.Services.Postagens
                 TextoAlteradoPorIA = postagem.Texto_alterado_por_ia,
                 PalavrasRetiradasPorIA = postagem.Palavras_retiradas_por_ia,
                 DataCriacao = postagem.DT_Criacao,
-                NomeCategoria = postagem.Categoria?.Nome ?? "Categoria não encontrada",
-                NomeStatus = postagem.Status?.Descricao ?? "Status não encontrado",
-                PremiumOuComum = postagem.Fl_Premium
-                
+                PremiumOuComum = postagem.Fl_Premium,
+                Visualizacoes = postagem.Visualizacoes
             }).ToList();
         }
+
 
         #endregion
 

@@ -24,7 +24,6 @@ namespace Aisentona.DataBase
         public string Tipo { get; set; } // "video", "canal", "playlist"
         public string YoutubeId { get; set; }
         public string Titulo { get; set; }
-
         public bool Fl_Ativo { get; set; } = true;
     }
 

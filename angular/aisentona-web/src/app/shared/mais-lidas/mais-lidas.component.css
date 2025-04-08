@@ -1,0 +1,45 @@
+.mais-lidas-card {
+    margin: 1rem;
+    padding: 1rem;
+  }
+  
+  .mais-lidas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* espaçamento entre as notícias */
+    margin-top: 1rem;
+  }
+  
+  .mais-lidas-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem; /* distância entre o número e o título */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .ranking-numero {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #1E1E2E;
+    min-width: 30px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  
+  .titulo-noticia {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #7070AC;
+    text-decoration: none;
+    cursor: pointer;
+    flex-grow: 1;
+    white-space: normal; /* permite o título quebrar linha se for grande */
+  }
+  
+  .titulo-noticia:hover {
+    color: #5a5a8a;
+    text-decoration: underline;
+  }
+  

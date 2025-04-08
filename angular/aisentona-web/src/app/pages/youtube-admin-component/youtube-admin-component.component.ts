@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select'; // Corrigido
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-youtube-admin-component',
@@ -31,6 +32,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
     MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSidenavModule,
   ],
   templateUrl: './youtube-admin-component.component.html',
   styleUrls: ['./youtube-admin-component.component.css'] // Corrigido

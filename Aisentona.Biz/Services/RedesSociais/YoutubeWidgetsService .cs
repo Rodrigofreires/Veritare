@@ -64,6 +64,13 @@ namespace Aisentona.Biz.Services.RedesSociais
                 .Where(w => w.Tipo.ToLower() == tipo.ToLower() && w.Fl_Ativo == true)
                 .ToListAsync();
         }
+
+        public YoutubeWidget? GetById(int id)
+        {
+            return _context.CF_YoutubeWidget
+                .FirstOrDefault(w => w.Id == id && w.Fl_Ativo);
+        }
+
     }
 }
         

@@ -5,6 +5,7 @@
   padding: 20px;
   border: none; /* Remove qualquer borda padrão */
   box-shadow: none; /* Remove sombra do Material Design */
+  background-color: #F9F9F9  !important;
 }
 
 .noticia-container {
@@ -17,6 +18,7 @@
     margin: 20px auto;
     max-width: 900px;
     width: 100%;
+    background-color: #F9F9F9  !important;
   }
   
   .cabecalho-pagina {

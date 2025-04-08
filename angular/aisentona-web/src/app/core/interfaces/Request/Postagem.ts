@@ -16,4 +16,5 @@ export interface PostagemRequest {
     dataCriacao: string;
     premiumOuComum: boolean;
     alertas: AlertaResponse[];
+    visualizacoes: number;
   }

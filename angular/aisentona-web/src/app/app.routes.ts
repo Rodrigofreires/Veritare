@@ -75,7 +75,6 @@ export const routes: Routes = [
         component: YoutubeAdminComponent,
           canActivate: [AuthGuard, RoleGuard],
           data: { IdTipoDeUsuario: ['1', '2']}
-
       },
     ],
   },
@@ -89,7 +88,7 @@ export const routes: Routes = [
       { path: 'ativacao/sucesso', component: AtivacaoSucessoComponent },
       { path: 'redefinir-senha', component: RedefinirSenhaComponent },
       { path: 'esqueci-minha-senha', component: EsqueciMinhaSenhaComponent },
-      { path: '**', redirectTo: 'login' }
+      //{ path: '**', redirectTo: 'login' }
     ],
   },
 ];

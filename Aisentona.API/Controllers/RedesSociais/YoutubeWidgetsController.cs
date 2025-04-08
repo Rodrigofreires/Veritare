@@ -2,6 +2,7 @@
 using Aisentona.DataBase;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Aisentona.API.Controllers.RedesSociais
 {
@@ -16,12 +17,33 @@ namespace Aisentona.API.Controllers.RedesSociais
             _service = service;
         }
 
+        [HttpGet("tipo/{tipo}")]
+        public async Task<IActionResult> GetByTipo(string tipo)
+        {
+            var widgets = await _service.GetByTipoAsync(tipo);
+            return Ok(widgets);
+        }
+
+
         [HttpGet]
         public IActionResult Get()
         {
             var widgets = _service.GetAll();
             return Ok(widgets);
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var widget = _service.GetById(id);
+
+            if (widget == null)
+                return NotFound();
+
+            return Ok(widget);
+        }
+
+
 
         [HttpPost]
         public IActionResult Create(YoutubeWidget widget)
@@ -45,5 +67,7 @@ namespace Aisentona.API.Controllers.RedesSociais
             if (!success) return NotFound();
             return NoContent();
         }
+
+
     }
 }

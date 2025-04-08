@@ -62,7 +62,8 @@ export class CadastroDeNoticiaComponent implements OnInit {
     palavrasRetiradasPorIA: '',
     premiumOuComum: '',
     dataCriacao: null,
-    alertas: []
+    alertas: [],
+    visualizacoes: 0,  
   };
 
   constructor(

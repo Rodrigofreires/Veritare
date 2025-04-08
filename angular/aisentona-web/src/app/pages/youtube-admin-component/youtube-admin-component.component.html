@@ -1,62 +1,103 @@
-<div class="youtube-admin-container">
-  <h2>Gerenciador de Widgets do YouTube</h2>
-  <p class="description">
-    Este painel permite adicionar, editar e remover widgets do YouTube (vídeos, canais ou playlists)
-    que serão exibidos na aplicação. Preencha os dados e gerencie sua lista com facilidade.
-  </p>
 
-  <div class="dashboard-grid">
-    <!-- 🧾 Formulário -->
-    <form [formGroup]="widgetForm" (ngSubmit)="onSubmit()" class="widget-form">
-      <mat-form-field appearance="outline">
-        <mat-label>Título</mat-label>
-        <input matInput formControlName="titulo" required />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Tipo</mat-label>
-        <mat-select formControlName="tipo" required>
-          <mat-option value="video">Vídeo</mat-option>
-          <mat-option value="canal">Canal</mat-option>
-          <mat-option value="playlist">Playlist</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>ID do YouTube ou URL</mat-label>
-        <input matInput formControlName="youtubeId" (blur)="onYoutubeIdBlur()" required />
-      </mat-form-field>
+<div class="youtube-admin-page">
+  <mat-sidenav mode="side" opened class="sidenav">
+    <div class="painel-de-controle">
+      <h3>
+        <a routerLink="/painel-de-controle" class="clickable-link">Painel de Controle</a>
+      </h3>
+      <p><a routerLink="/home" class="clickable-link">veritare.com.br</a></p>
+    </div>
+    
+    
+    <mat-nav-list>
+      <a mat-list-item  routerLink="/painel-de-controle">
+        <mat-icon>dashboard</mat-icon>
+        <span>Publicações</span>
+      </a>
+      <a mat-list-item [routerLink]="'/cadastro-de-noticia'">
+        <mat-icon>article</mat-icon>
+        <span>Criar nova publicação</span>
+      </a> 
       
+      <a mat-list-item routerLink="painel-de-controle/analytics">
+        <mat-icon>bar_chart</mat-icon>
+        <span>Analytics</span>
+      </a>
+      
+      <a mat-list-item routerLink="/painel-de-controle/settings">
+        <mat-icon>settings</mat-icon>
+        <span>Painel de Usuários</span>
+      </a>
 
-      <div class="form-buttons">
-        <button mat-raised-button color="primary" type="submit">
-          {{ editMode ? 'Atualizar' : 'Adicionar' }}
-        </button>
-        <button *ngIf="editMode" mat-stroked-button color="warn" type="button" (click)="cancelEdit()">
-          Cancelar
-        </button>
+      <a mat-list-item>
+        <mat-icon>smart_display</mat-icon>
+        <span>Painel Youtube</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <div class="youtube-admin-container">
+  
+    <h2>Gerenciador de Widgets do YouTube</h2>
+    <p class="description">
+      Este painel permite adicionar, editar e remover widgets do YouTube (vídeos, canais ou playlists)
+      que serão exibidos na aplicação. Preencha os dados e gerencie sua lista com facilidade.
+    </p>
+  
+    <div class="dashboard-grid">
+      <!-- 🧾 Formulário -->
+      <form [formGroup]="widgetForm" (ngSubmit)="onSubmit()" class="widget-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Título</mat-label>
+          <input matInput formControlName="titulo" required />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="tipo" required>
+            <mat-option value="video">Vídeo</mat-option>
+            <mat-option value="canal">Canal</mat-option>
+            <mat-option value="playlist">Playlist</mat-option>
+          </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>ID do YouTube ou URL</mat-label>
+          <input matInput formControlName="youtubeId" (blur)="onYoutubeIdBlur()" required />
+        </mat-form-field>
+        
+  
+        <div class="form-buttons">
+          <button  class="botao-global" type="submit">
+            {{ editMode ? 'Atualizar' : 'Adicionar' }}
+          </button>
+          <button *ngIf="editMode" mat-stroked-button color="warn" type="button" (click)="cancelEdit()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+  
+      <!-- 🎥 Lista de vídeos -->
+      <div class="widget-list">
+        <h3>Widgets adicionados</h3>
+        <mat-list>
+          <mat-list-item *ngFor="let widget of widgets">
+            <div class="item-content">
+              <h4> ID: {{ widget.id }} | {{ widget.titulo }}</h4>
+             <p><strong>Tipo:</strong> {{ widget.tipo }} | <strong>ID YouTube:</strong> {{ widget.youtubeId }}</p>
+            </div>
+  
+            <button mat-icon-button color="primary" (click)="editWidget(widget)">
+              <mat-icon>edit</mat-icon>
+            </button>
+  
+            <button mat-icon-button  color="warn" (click)="deleteWidget(widget.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-list-item>
+        </mat-list>
       </div>
-    </form>
-
-    <!-- 🎥 Lista de vídeos -->
-    <div class="widget-list">
-      <h3>Widgets adicionados</h3>
-      <mat-list>
-        <mat-list-item *ngFor="let widget of widgets">
-          <div class="item-content">
-            <h4>{{ widget.titulo }}</h4>
-            <p><strong>Tipo:</strong> {{ widget.tipo }} | <strong>ID:</strong> {{ widget.youtubeId }}</p>
-          </div>
-
-          <button mat-icon-button color="primary" (click)="editWidget(widget)">
-            <mat-icon>edit</mat-icon>
-          </button>
-
-          <button mat-icon-button color="warn" (click)="deleteWidget(widget.id)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-list-item>
-      </mat-list>
     </div>
   </div>
 </div>
+
+

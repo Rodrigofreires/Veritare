@@ -19,6 +19,11 @@ export class YoutubeWidgetService {
     return this.http.get<YoutubeWidget[]>(`${this.apiUrl}/tipo/${tipo}`);
   }
 
+  getWidgetById(id: number) {
+    return this.http.get<YoutubeWidget>(`${this.apiUrl}/${id}`);
+  }
+  
+
   create(widget: YoutubeWidget) {
     return this.http.post<YoutubeWidget>(this.apiUrl, widget);
   }
