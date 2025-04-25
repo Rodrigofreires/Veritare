@@ -215,10 +215,5 @@ namespace Aisentona.API.Controllers.Postagens
             return Ok(maisLidas);
         }
 
-
-
-
-
-
     }
 }

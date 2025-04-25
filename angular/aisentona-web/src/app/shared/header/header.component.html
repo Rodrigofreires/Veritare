@@ -4,8 +4,11 @@
 
     <button *ngIf="isLoggedIn && acessarPainelDeControle()" mat-flat-button class="botao-header" routerLink="/painel-de-controle">PAINEL DE CONTROLE</button>
     <div class="login">
+      
       <!-- Exibe o nome do usuário, se ele estiver logado -->
-      <span *ngIf="isLoggedIn" class="user-name">Bem-vindo, {{ userName }}!</span>
+      <!-- <span *ngIf="isLoggedIn" class="user-name">Bem-vindo, {{ userName }}!</span> -->
+
+      <button  mat-flat-button class="botao-header" routerLink="/sobre">Sobre</button>
 
       <!-- Botões para usuários não logados -->
       <button *ngIf="!isLoggedIn" mat-flat-button class="botao-header" routerLink="/cadastro-de-usuario">Cadastre-se</button>

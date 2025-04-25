@@ -20,6 +20,7 @@ import { AtivacaoSucessoComponent } from './pages/ativacao-sucesso/ativacao-suce
 import { RedefinirSenhaComponent } from './authentication/redefinir-senha/redefinir-senha.component';
 import { EsqueciMinhaSenhaComponent } from './authentication/esqueci-minha-senha/esqueci-minha-senha.component';
 import { YoutubeAdminComponent } from './pages/youtube-admin-component/youtube-admin-component.component';
+import { SobreVeritareComponent } from './pages/sobre-veritare/sobre-veritare.component';
 
 
 export const routes: Routes = [
@@ -88,6 +89,7 @@ export const routes: Routes = [
       { path: 'ativacao/sucesso', component: AtivacaoSucessoComponent },
       { path: 'redefinir-senha', component: RedefinirSenhaComponent },
       { path: 'esqueci-minha-senha', component: EsqueciMinhaSenhaComponent },
+      {path: 'sobre', component: SobreVeritareComponent}, // Substitua pelo componente correto
       //{ path: '**', redirectTo: 'login' }
     ],
   },
