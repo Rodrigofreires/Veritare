@@ -1,9 +1,8 @@
 ﻿using Aisentona.Biz.Services;
-using Aisentona.Biz.Services.Postagens;
 using Aisentona.DataBase;
 using Aisentona.Entities.Request;
 using Aisentona.Entities.Response;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization; // Importante para usar [Authorize]
 using Microsoft.AspNetCore.Mvc;
 
 namespace Aisentona.API.Controllers
@@ -19,10 +18,13 @@ namespace Aisentona.API.Controllers
             _colaboradorService = colaboradorService;
         }
 
+        // --- Rotas de Visualização (Geralmente Públicas ou com Autenticação Básica) ---
+        // Se desejar que estas rotas exijam apenas autenticação (qualquer usuário logado),
+        // adicione [Authorize] sem Role ou Policy.
+
         [HttpGet("id")]
         public IActionResult GetTodosOsColaboradores(int id)
         {
-
             var colaborador = _colaboradorService.GetColaboradorPorId(id);
             if (colaborador == null)
             {
@@ -34,7 +36,6 @@ namespace Aisentona.API.Controllers
         [HttpGet("lista-colaboradores/")]
         public IActionResult GetTodosOsColaboradores()
         {
-
             var listaDeTodosOsColaboradores = _colaboradorService.ListarTodosOsColaboradores();
             if (listaDeTodosOsColaboradores == null)
             {
@@ -43,8 +44,8 @@ namespace Aisentona.API.Controllers
             return Ok(listaDeTodosOsColaboradores);
         }
 
-
         [HttpGet("lista-perfil-usuarios")]
+        [Authorize(Roles = "Administrador")]
         public IActionResult GetTodosUsuarios()
         {
             List<PerfilDeUsuarioRequest> listaDePerfisDeUsuarios = _colaboradorService.ListarTodosPerfis();
@@ -88,7 +89,8 @@ namespace Aisentona.API.Controllers
             return Ok(perfilDeUsuarioRequest);
         }
 
-        // POST api/<ColaboradorController>
+        // --- Rotas de Gerenciamento de Colaboradores (Exclusivo para Administrador) ---
+
         [HttpPost]
         public IActionResult CreateColaborador([FromBody] ColaboradorResponse colaboradorResponse)
         {
@@ -97,7 +99,6 @@ namespace Aisentona.API.Controllers
                 return BadRequest("Objeto preenchido incorretamente");
             }
 
-            // Criar um novo colaborador usando o serviço
             var novoColaborador = _colaboradorService.CriarColaborador(colaboradorResponse);
 
             if (novoColaborador == null)
@@ -105,12 +106,12 @@ namespace Aisentona.API.Controllers
                 return BadRequest("Não foi possível criar o colaborador");
             }
 
-            // Retornar um código 201 (Created) com o novo colaborador criado
             return CreatedAtAction(nameof(CreateColaborador), new { id = novoColaborador.Id_Usuario }, new { novoColaborador.Id_Usuario });
-
         }
 
         [HttpPut("editar-perfil-usuario")]
+        // Somente usuários com a role "Administrador" podem editar perfis de usuário
+        [Authorize(Roles = "Administrador")]
         public IActionResult UpdateColaborador([FromBody] PerfilDeUsuarioRequest perfilDeUsuarioRequest)
         {
             if (perfilDeUsuarioRequest == null)
@@ -120,8 +121,7 @@ namespace Aisentona.API.Controllers
 
             try
             {
-               _colaboradorService.EditarPerfilDeUsuario(perfilDeUsuarioRequest);
-
+                _colaboradorService.EditarPerfilDeUsuario(perfilDeUsuarioRequest);
                 return Ok();
             }
             catch (KeyNotFoundException ex)
@@ -130,8 +130,9 @@ namespace Aisentona.API.Controllers
             }
         }
 
-        // Delete api/<ColaboradorController>
         [HttpPut("ativar-desativar/{id}")]
+        // Somente usuários com a role "Administrador" podem ativar/desativar colaboradores
+        [Authorize(Roles = "Administrador")]
         public IActionResult SwapFlagColaborador(int id)
         {
             try

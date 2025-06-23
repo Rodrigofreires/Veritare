@@ -1,15 +1,11 @@
 ﻿using Aisentona.Biz.Services;
 using Aisentona.Biz.Services.Postagens;
 using Aisentona.DataBase;
-using Aisentona.Entities;
 using Aisentona.Entities.Request;
 using Aisentona.Entities.Response;
 using Aisentona.Entities.ViewModels;
-using Aisentona.Enumeradores;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-
 
 namespace Aisentona.API.Controllers.Postagens
 {
@@ -20,7 +16,6 @@ namespace Aisentona.API.Controllers.Postagens
         private readonly PostagemService _postagemService;
         private readonly ApplicationDbContext _context;
         private readonly AuthService _authService;
-
 
         public PostagemController(PostagemService postagemService, ApplicationDbContext context, AuthService authService)
         {
@@ -33,144 +28,88 @@ namespace Aisentona.API.Controllers.Postagens
         public async Task<IActionResult> GetNoticiaById(int id)
         {
             if (id <= 0)
-            {
                 return BadRequest("ID inválido.");
-            }
 
-            PostagemRequest postagemRequest = _postagemService.CarregarPostagemPorId(id);
+            var postagem = _postagemService.CarregarPostagemPorId(id);
 
-            if (postagemRequest == null)
-            {
+            if (postagem == null)
                 return NotFound();
-            }
 
-            // Incrementa visualizações de forma assíncrona
             await _postagemService.IncrementarVisualizacoesAsync(id);
 
-            return Ok(postagemRequest);
+            return Ok(postagem);
         }
-
 
         [HttpGet("listar-postagens-paginadas")]
         public IActionResult CarregarListaDePostagens(int pagina = 1, int quantidadePorPagina = 10)
         {
-            var postagensPaginadas = _postagemService.ListarPostagensPaginadas(pagina, quantidadePorPagina);
-            var totalPostagens = _postagemService.ContarTotalDePostagens();
+            var dados = _postagemService.ListarPostagensPaginadas(pagina, quantidadePorPagina);
+            var total = _postagemService.ContarTotalDePostagens();
 
-            var resultado = new PostagensPaginadasDTO
-            {
-                Total = totalPostagens,
-                Dados = postagensPaginadas
-            };
-
-            return Ok(resultado);
+            return Ok(new PostagensPaginadasDTO { Total = total, Dados = dados });
         }
 
         [HttpPost("listar-postagens/filtros")]
         public IActionResult CarregarTodasAsPostagensPorFiltro([FromBody] PostagemResponse filtro)
         {
             if (filtro == null)
-            {
                 return BadRequest("Filtros não fornecidos.");
-            }
 
-            var listaDePostagens = _postagemService.ListarPostagensComFiltro(filtro);
-            if (listaDePostagens == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(listaDePostagens);
+            var lista = _postagemService.ListarPostagensComFiltro(filtro);
+            return lista == null ? NotFound() : Ok(lista);
         }
-
 
         [HttpGet("listar-ultimas-postagens")]
         public IActionResult ListarUltimasPostagens()
         {
-            List<PostagemRequest> listaDePostagens = _postagemService.ListarUltimasPostagens();
-            if (listaDePostagens == null)
-            {
-                return NotFound();
-            }
-            return Ok(listaDePostagens);
+            var lista = _postagemService.ListarUltimasPostagens();
+            return lista == null ? NotFound() : Ok(lista);
         }
 
         [HttpGet("listar-ultimas-postagens-premium")]
         public IActionResult ListarUltimasPostagensPremium()
         {
-            List<PostagemRequest> listaDePostagens = _postagemService.ListarUltimasPostagensPremium();
-            if (listaDePostagens == null)
-            {
-                return NotFound();
-            }
-            return Ok(listaDePostagens);
+            var lista = _postagemService.ListarUltimasPostagensPremium();
+            return lista == null ? NotFound() : Ok(lista);
         }
-
 
         [HttpGet("listar-por-editoria/{idEditoria}")]
         public IActionResult FiltrarPostagensPorEditoria(int idEditoria, int pagina = 1, int quantidade = 10)
         {
             var resultado = _postagemService.FiltrarPostagensPorEditoria(idEditoria, pagina, quantidade);
-
-            if (resultado == null || resultado.Dados == null || !resultado.Dados.Any())
-            {
-                return NotFound("Nenhuma postagem encontrada.");
-            }
-
-            return Ok(resultado);
+            return resultado?.Dados?.Any() == true ? Ok(resultado) : NotFound("Nenhuma postagem encontrada.");
         }
 
         [HttpPost("criar-noticia")]
+        [Authorize(Policy = "CadastrarPostsSimples")]
         public IActionResult CreatePost([FromBody] PostagemResponse postagemResponse)
         {
-
-            // Validação do corpo da requisição
-            if (postagemResponse is null)
-            {
+            if (postagemResponse == null)
                 return BadRequest("Objeto preenchido incorretamente.");
-            }
 
-            // Criar a postagem
             var postagem = _postagemService.CriarPostagem(postagemResponse);
-
-            return Ok(postagem); // Retorna a postagem criada com status 200
+            return Ok(postagem);
         }
 
         [HttpPut("editar/{idPostagem}")]
+        [Authorize(Policy = "EditarPostsSimples")]
         public IActionResult UpdatePostagem(int idPostagem, [FromBody] PostagemResponse postagemResponse)
         {
-            try
-            {
-                // Valida se o ID na rota corresponde ao ID no corpo da requisição
-                if (idPostagem != postagemResponse.IdPostagem)
-                {
-                    return BadRequest("Inconsistência entre o ID da URL e o corpo da requisição.");
-                }
+            if (idPostagem != postagemResponse.IdPostagem)
+                return BadRequest("Inconsistência entre o ID da URL e o corpo da requisição.");
 
-                // Chama o serviço para atualizar a postagem
-                var postagemAtualizada = _postagemService.EditarPostagem(postagemResponse);
-
-                if (postagemAtualizada == null)
-                {
-                    return NotFound($"Postagem com ID {idPostagem} não encontrada.");
-                }
-
-                return Ok(postagemAtualizada);
-            }
-            catch (Exception ex)
-            {
-                // Log da exceção (não exibido aqui)
-                return StatusCode(500, $"Erro interno no servidor: {ex.Message}");
-            }
+            var atualizada = _postagemService.EditarPostagem(postagemResponse);
+            return atualizada == null ? NotFound($"Postagem com ID {idPostagem} não encontrada.") : Ok(atualizada);
         }
 
         [HttpPut("ativar-desativar/{idPostagem}")]
+        [Authorize(Policy = "AlterarStatus")]
         public IActionResult SwapFlagColaborador(int idPostagem)
         {
             try
             {
-                var colaborador = _postagemService.TrocarFlagAtivaPostagem(idPostagem);
-                return Ok(colaborador);
+                var resultado = _postagemService.TrocarFlagAtivaPostagem(idPostagem);
+                return Ok(resultado);
             }
             catch (KeyNotFoundException ex)
             {
@@ -183,7 +122,7 @@ namespace Aisentona.API.Controllers.Postagens
         {
             try
             {
-                List<EditoriaDTO> editorias = _postagemService.ListarEditorias();
+                var editorias = _postagemService.ListarEditorias();
                 return Ok(editorias);
             }
             catch (KeyNotFoundException ex)
@@ -197,7 +136,7 @@ namespace Aisentona.API.Controllers.Postagens
         {
             try
             {
-                List<StatusDTO> status = _postagemService.ListarStatus();
+                var status = _postagemService.ListarStatus();
                 return Ok(status);
             }
             catch (KeyNotFoundException ex)
@@ -207,13 +146,11 @@ namespace Aisentona.API.Controllers.Postagens
         }
 
         [HttpGet("mais-lidas-semana")]
-
         [ProducesResponseType(typeof(List<PostagemRequest>), StatusCodes.Status200OK)]
         public ActionResult<List<PostagemRequest>> ObterMaisLidas()
         {
             var maisLidas = _postagemService.ObterMaisLidasUltimaSemana();
             return Ok(maisLidas);
         }
-
     }
 }

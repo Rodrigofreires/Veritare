@@ -1,23 +1,28 @@
 .painel-noticias {
   display: flex;
-  gap: 20px; /* Espaçamento entre os elementos */
-  margin: 0 auto;
+  flex-wrap: wrap; /* permite quebra para telas menores */
+  gap: 20px;
+  margin: 0 auto 40px auto;
   width: 100%;
-  margin-bottom: 40px;
-  border: none;
+  background-color: #fff;
   box-shadow: none;
-  background-color: #F9F9F9;
+  border: none;
 }
 
 .listagem-de-noticias {
-  width: 60%; /* A largura da lista de notícias */
+  flex: 1 1 60%;
   display: flex;
   flex-direction: column;
-  background-color: #F9F9F9 !important;
+  background-color: #fff !important;
+  min-width: 300px;
+}
+
+.nome-categoria{
+  margin-top: 20px !important;
 }
 
 .barra-de-widgets {
-  width: 40%; /* A largura do widget de clima */
+  flex: 1 1 35%;
   display: flex;
   flex-direction: column;
   border: 1px solid #e0e0e0;
@@ -25,42 +30,35 @@
   padding: 16px;
   box-sizing: border-box;
   margin-bottom: 20px;
+  overflow: hidden;
+  min-width: 280px;
 }
 
 .barra-de-widgets > *:last-child {
-  margin-bottom: 10px; /* Espaçamento de 10px abaixo do último item */
+  margin-bottom: 10px;
 }
 
-.barra-de-widgets {
-  display: inline-flex; /* Ajusta conforme o conteúdo, mas ainda flex */
-  flex-direction: column;
-}
-
-.barra-de-widgets {
-  overflow: hidden;
-}
-
-/* Restante do estilo das notícias */
+/* Estilos dos cards de notícia */
 .item-noticia {
-  width: 100%; /* A largura da notícia */
+  width: 100%;
   display: flex;
   flex-direction: row;
   gap: 16px;
-  align-items: stretch; /* Garante que a imagem e o texto tenham a mesma altura */
+  align-items: stretch;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 16px;
-  box-shadow: none !important;
   background-color: #fff;
   cursor: pointer;
   margin-bottom: 20px;
+  box-shadow: none !important;
 }
 
 .imagem-noticia {
-  width: 35%; /* Imagem ocupa 35% na horizontal */
-  height: 100%; /* Imagem ocupa 100% na vertical */
-  object-fit: cover; /* Garante que a imagem se ajuste sem distorcer */
-  border-radius: 4px; /* Ajuste nos cantos da imagem */
+  width: 35%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
 .detalhes-texto {
@@ -95,6 +93,69 @@
   margin: 8px 0;
 }
 
-.botao-global{
+.botao-global {
   margin-bottom: 30px;
+}
+
+/* ========================== */
+/* RESPONSIVIDADE             */
+/* ========================== */
+
+/* Telas até 1024px (tablets) */
+@media (max-width: 1024px) {
+  .painel-noticias {
+    flex-direction: column;
+  }
+
+  .listagem-de-noticias,
+  .barra-de-widgets {
+    width: 100%;
+  }
+
+  .item-noticia {
+    flex-direction: column;
+  }
+
+  .imagem-noticia {
+    width: 100%;
+    height: 200px;
+  }
+}
+
+/* Telas até 768px (celulares grandes) */
+@media (max-width: 768px) {
+  .nome-editoria {
+    font-size: 1.1rem;
+  }
+
+  .titulo-noticia {
+    font-size: 1.2rem;
+  }
+
+  .descricao-noticia {
+    font-size: 0.9rem;
+  }
+
+  .imagem-noticia {
+    height: 180px;
+  }
+}
+
+/* Telas até 480px (celulares pequenos) */
+@media (max-width: 480px) {
+  .titulo-noticia {
+    font-size: 1rem;
+  }
+
+  .descricao-noticia {
+    font-size: 0.85rem;
+  }
+
+  .imagem-noticia {
+    height: 150px;
+  }
+
+  .botao-global {
+    width: 100%;
+  }
 }

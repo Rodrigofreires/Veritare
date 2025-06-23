@@ -1,70 +1,282 @@
-
-.informacoes-do-perfil {
-    display: flex;
-    justify-content: space-between;
-    width: 40%;
-    max-width: 1200px;
-    margin-bottom: 20px;
+/* Container principal da página */
+.container-perfil-usuario {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    padding: 20px;
+    max-width: 1200px; /* Aumentado para acomodar duas colunas grandes */
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
+/* Título principal do perfil */
+h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #3f51b5;
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+/* Container geral do perfil de usuário */
 .perfil-usuario {
     display: flex;
-    flex-direction: row; /* Alinha as divisões na horizontal */
-    justify-content: space-between; /* Adiciona espaçamento entre elas */
-    align-items: flex-start; /* Alinha os elementos no topo */
-    gap: 20px; /* Espaçamento entre as divisões */
+    flex-direction: column; /* Padrão em coluna para mobile */
+    gap: 30px;
+    padding: 0 15px;
 }
 
-.informacoes-basicas {
-    padding: 15px;
-    border-radius: 8px;
-}
-
-.selo-premium {
+/* Informações do perfil (contém informacoes-basicas e a nova coluna de imagem) */
+.informacoes-do-perfil {
     display: flex;
-    width: 60%;
-    padding: 15px;
-    border-radius: 8px;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column; /* Padrão em coluna para mobile */
+    width: 100%;
+    gap: 30px; /* Espaçamento entre as duas colunas quando empilhadas */
 }
 
+/* Informações básicas do usuário (coluna da esquerda) */
+.informacoes-basicas {
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid #e8e8e8;
+    height: 100%; /* Garante que o card ocupe a altura total da coluna */
+    display: flex; /* Para centralizar o conteúdo verticalmente dentro dele se necessário */
+    flex-direction: column;
+    justify-content: center; /* Centraliza conteúdo dentro da caixa */
+}
+
+/* Container das informações de perfil (nome, email, etc.) */
+.informacoes-perfil {
+    h3.nome-perfil {
+        font-size: 2.2rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 25px; /* Espaçamento abaixo do nome e selo */
+        /* justify-content-center e justify-content-md-start já vêm do HTML */
+    }
+
+    p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 12px;
+
+        strong {
+            color: #555;
+            display: inline-block;
+            min-width: 130px; /* Aumenta a largura mínima para labels para melhor alinhamento */
+        }
+        span {
+            color: #222;
+        }
+    }
+}
+
+/* Estilo para o selo premium (mantido do último feedback) */
+.premium-badge {
+    display: inline-flex;
+    align-items: center;
+    background-color: #ffc107;
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e0a800;
+    transition: all 0.3s ease;
+
+    .premium-icon {
+        font-size: 1.1em;
+        margin-right: 6px;
+        color: #e65100;
+    }
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* Seção da imagem premium ou call-to-action */
+.premium-image-section, .premium-call-to-action {
+    background-color: #e8f5e9; /* Fundo mais claro para premium (verde pastel) */
+    border-radius: 10px;
+    padding: 25px;
+    height: 100%; /* Ocupa a altura total da coluna */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* Sombra suave */
+    border: 1px solid #c8e6c9; /* Borda suave */
+    display: flex
+    flex-direction, align-items-center, justify-content-center já vêm do HTML
+}
+
+.premium-call-to-action {
+    background-color: #e3f2fd; /* Fundo azul claro para call-to-action */
+    border: 1px solid #bbdefb;
+    .mat-icon {
+        color: #2196f3 !important; /* Cor do ícone */
+    }
+}
+
+.premium-illustration {
+    max-width: 80%; /* Garante que a imagem não seja muito grande */
+    height: auto;
+    display: block; /* Remove espaçamento extra abaixo da imagem */
+    margin: 0 auto; /* Centraliza a imagem */
+}
+
+
+/* Seção de botões (Editar/Sair) */
 .editar-sair {
     display: flex;
-    justify-content: center; /* Centraliza os botões */
-    gap: 20px; /* Espaçamento entre os botões */
-    margin-bottom: 200px; /* Espaçamento inferior */
+    justify-content: center;
+    gap: 25px;
+    margin-top: 40px;
+    margin-bottom: 80px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
 }
 
+/* Estilos para botões personalizados */
 .custom-button {
-    padding: 15px 30px; /* Aumenta o tamanho dos botões */
-    font-size: 18px; /* Texto maior */
-    font-weight: bold; /* Deixa o texto em negrito */
-    border-radius: 10px; /* Bordas arredondadas */
-    cursor: pointer; /* Mostra o ponteiro ao passar */
-    border: none; /* Remove as bordas padrão */
-    transition: all 0.3s ease; /* Transição suave para hover */
+    padding: 15px 35px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .custom-button.primary {
-    background-color:#7070AC; /* Azul para o botão de edição */
-    color: white; /* Texto branco */
-}
-
-.custom-button.primary:hover {
-    background-color: #1E1E2E; /* Azul mais escuro no hover */
-    transform: scale(1.05); /* Aumenta levemente no hover */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra */
+    background-color: #7070AC;
+    color: white;
+    &:hover {
+        background-color: #5a5a8a;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
 }
 
 .custom-button.warn {
-    background-color: #FF4C4C; /* Vermelho para o botão de exclusão */
-    color: white; /* Texto branco */
+    background-color: #FF4C4C;
+    color: white;
+    &:hover {
+        background-color: #d13030;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
 }
 
-.custom-button.warn:hover {
-    background-color: #cc0000; /* Vermelho mais escuro no hover */
-    transform: scale(1.05); /* Aumenta levemente no hover */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra */
+/* ------------------------------------------- */
+/* Responsividade (Bootstrap Grid)             */
+/* ------------------------------------------- */
+
+/* Para telas grandes (min-width de 992px - lg do Bootstrap) */
+@media (min-width: 992px) {
+    .perfil-usuario {
+        flex-direction: row; /* Coloca as principais seções lado a lado */
+        gap: 40px; /* Mais espaçamento entre as colunas */
+    }
+
+    .informacoes-do-perfil {
+        flex-direction: row; /* Mantém as colunas internas lado a lado */
+        gap: 0; /* Remove gap extra aqui, pois as cols já gerenciam isso */
+    }
+
+    /* .informacoes-basicas {
+        // Altura pode ser ajustada ou deixar flex para o container do lado
+    } */
+
+    .nome-perfil {
+        text-align: left; /* Alinha o nome à esquerda em telas maiores */
+        justify-content: flex-start; /* Alinha nome e selo à esquerda */
+    }
 }
 
+/* Para telas médias e grandes (min-width de 768px - md do Bootstrap) */
+@media (min-width: 768px) {
+    .informacoes-do-perfil {
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+    }
+    
+    /* // Ajustes para o alinhamento das infos dentro da coluna
+    .informacoes-basicas {
+        padding: 35px; /* Mais padding em telas maiores */
+    } */
+
+    .informacoes-perfil p strong {
+        min-width: 140px; /* Garante que os labels tenham espaço suficiente */
+    }
+
+
+/* Para telas pequenas (max-width de 767.98px - xs/sm do Bootstrap) */
+@media (max-width: 767.98px) {
+    .container-perfil-usuario {
+        margin-top: 25px;
+        margin-bottom: 25px;
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    .informacoes-basicas {
+        padding: 18px;
+    }
+
+    .informacoes-perfil {
+        h3.nome-perfil {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            flex-direction: column; /* Nome e selo empilhados */
+            align-items: center; /* Centraliza nome e selo */
+        }
+        .premium-badge {
+            margin-top: 10px; /* Espaço entre nome e selo */
+            margin-left: 0 !important; /* Remove margem lateral em mobile */
+        }
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            strong {
+                display: block; /* Título em sua própria linha */
+                margin-bottom: 5px;
+                min-width: auto;
+            }
+        }
+    }
+
+    .editar-sair {
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 30px;
+        margin-bottom: 50px;
+    }
+
+    .custom-button {
+        width: 100%;
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+
+    .premium-image-section, .premium-call-to-action {
+        padding: 20px;
+    }
+    .premium-illustration {
+        max-width: 90%; /* Aumenta um pouco em mobile */
+    }
+}

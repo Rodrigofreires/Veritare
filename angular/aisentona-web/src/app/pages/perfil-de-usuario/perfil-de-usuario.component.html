@@ -1,34 +1,73 @@
 <app-container class="container-perfil-usuario">
-    <h2>PERFIL DE USUÁRIO</h2>
+  <h2 class="section-title text-center mb-4">Perfil de Usuário</h2>
 
-    <div class="perfil-usuario">
-        <div class="informacoes-do-perfil">
-            <div class="informacoes-basicas">
-                <div class="informacoes-perfil">
-                        <h3 class="nome-perfil"> {{ infosPerfilUsuario?.nome }} </h3>
-                        <p><strong>E-mail:</strong> {{ infosPerfilUsuario?.email || 'Não informado' }}</p>
-                        <p><strong>Contato:</strong> {{ infosPerfilUsuario?.contato  || 'Não informado' }}</p>
-                        <p><strong>Tipo de Usuário:</strong> {{ infosPerfilUsuario?.nomeTipoDeUsuario }}</p>
-                        <p><strong>Tempo de Acesso:</strong> 
-                          {{ infosPerfilUsuario?.tempoDeAcesso ? (infosPerfilUsuario?.tempoDeAcesso | date:'dd/MM/yyyy') : 'Não disponível' }}
-                        </p>
-                        <p><strong>Data de Nascimento:</strong> 
-                          {{ infosPerfilUsuario?.dataDeNascimento ? (infosPerfilUsuario?.dataDeNascimento | date:'dd/MM/yyyy') : 'Não informado' }}
-                        </p>
-                        <p><strong>CPF:</strong> {{ infosPerfilUsuario?.cpf }}</p>
-                        <p><strong>Acesso Premium:</strong> {{ infosPerfilUsuario?.acessoPremium ? 'Sim' : 'Não' }}</p>
-                        <p><strong>Premium expira em:</strong> 
-                          {{ infosPerfilUsuario?.premiumExpiraEm ? (infosPerfilUsuario?.premiumExpiraEm | date:'dd/MM/yyyy') : 'VIRE PREMIUM' }}
-                        </p>
-                                      
-                </div>
-            </div>
-        </div>
-    </div>
+  <div class="perfil-usuario card shadow-sm p-4">
+    <div class="informacoes-do-perfil row">
+      <div class="col-12 col-lg-7">
+        <section class="informacoes-basicas">
+          <div class="informacoes-perfil">
+            <h3 class="nome-perfil d-flex align-items-center justify-content-center justify-content-md-start mb-3">
+              {{ infosPerfilUsuario?.nome || 'Usuário' }}
+              <ng-container *ngIf="infosPerfilUsuario?.acessoPremium">
+                <span class="premium-badge ms-3">
+                  <mat-icon class="premium-icon text-success me-1">verified</mat-icon> Premium
+                </span>
+              </ng-container>
+            </h3>
 
-    <div class="editar-sair">
-        <!-- <button class="custom-button primary" >Editar dados pessoais</button> -->
-        <button class="custom-button warn" (click)="excluirPerfil()">Excluir conta</button>
+            <mat-divider class="mb-4"></mat-divider>
+
+            <p class="info-item"><strong>E-mail:</strong> {{ infosPerfilUsuario?.email || 'Não informado' }}</p>
+            <p class="info-item"><strong>Contato:</strong> {{ infosPerfilUsuario?.contato || 'Não informado' }}</p>
+            <p class="info-item"><strong>Tipo de Usuário:</strong> {{ infosPerfilUsuario?.nomeTipoDeUsuario }}</p>
+            <p class="info-item">
+              <strong>Tempo de Acesso:</strong>
+              {{ infosPerfilUsuario?.tempoDeAcesso ? (infosPerfilUsuario?.tempoDeAcesso | date: 'dd/MM/yyyy') : 'Não disponível' }}
+            </p>
+            <p class="info-item">
+              <strong>Data de Nascimento:</strong>
+              {{ infosPerfilUsuario?.dataDeNascimento ? (infosPerfilUsuario?.dataDeNascimento | date: 'dd/MM/yyyy') : 'Não informado' }}
+            </p>
+            <p class="info-item"><strong>CPF:</strong> {{ infosPerfilUsuario?.cpf || 'Não informado' }}</p>
+            <p class="info-item"><strong>Acesso Premium:</strong> {{ infosPerfilUsuario?.acessoPremium ? 'Sim' : 'Não' }}</p>
+            <p class="info-item premium-expiration">
+              <strong>Premium expira em:</strong>
+              {{ infosPerfilUsuario?.premiumExpiraEm ? (infosPerfilUsuario?.premiumExpiraEm | date: 'dd/MM/yyyy') : 'VIRE PREMIUM' }}
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <div class="col-12 col-lg-5 mt-4 mt-lg-0 d-flex align-items-center justify-content-center">
+        <ng-container *ngIf="infosPerfilUsuario?.acessoPremium; else callToAction">
+          <section class="premium-content-section text-center p-4 rounded bg-light-blue shadow-sm">
+            <mat-icon class="premium-large-icon text-success mb-3">auto_awesome</mat-icon>
+            <h4 class="fw-bold text-dark-blue mb-2">Seu Acesso Premium Está Ativo!</h4>
+            <p class="text-muted small-text">
+              Desfrute de notícias **imparciais** e **liberdade de expressão** aprimoradas com **Inteligência Artificial**.
+            </p>
+            <p class="text-muted small-text mt-3">
+              Mantenha-se à frente com insights exclusivos e uma experiência de leitura sem igual.
+            </p>
+          </section>
+        </ng-container>
+
+        <ng-template #callToAction>
+          <section class="premium-call-to-action text-center p-4 rounded bg-light-gray shadow-sm">
+            <mat-icon color="primary" class="mb-3 premium-large-icon">workspace_premium</mat-icon>
+            <h4 class="fw-bold text-primary mb-2">Desbloqueie o Premium!</h4>
+            <p class="text-muted small-text mb-3">
+              Tenha acesso a **notícias exclusivas com IA**, priorizando **imparcialidade** e **liberdade de expressão**. Não perca tempo!
+            </p>
+            <button color="primary" class="mt-3 action-button botao-bonito">Seja Premium Agora</button>
+          </section>
+        </ng-template>
+      </div>
     </div>
-    
+  </div>
+
+  <div class="action-buttons-group d-flex justify-content-center mt-5">
+    <button color="warn" class="me-3 botao-bonito" (click)="excluirPerfil()">Excluir Conta</button>
+    <button color="accent" class="botao-bonito">Editar Perfil</button>
+  </div>
 </app-container>

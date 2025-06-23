@@ -118,21 +118,21 @@ export class AuthService {
     return decodedToken?.IdUsuario || null;
   }
 
-  getUserPermissions(): string[] {
-    const decodedToken = this.getDecodedToken();
-    return decodedToken?.role || [];
-  }
+getUserPermissions(): string[] {
+  const decodedToken = this.getDecodedToken();
+  return decodedToken?.Permission || []; 
+}
 
   // Método para verificar se o usuário tem permissão para ver conteúdo premium
-  podeVisualizarNoticiaPremium(): boolean {
-    const decodedToken = this.getDecodedToken();
-    if (!decodedToken) {
-      return false;
-    }
-    const userPermissions = decodedToken?.role || [];
-    // Verifica se o usuário tem a permissão 'VisualizarPostsPremium'
-    return userPermissions.includes('VisualizarPostsPremium');
+podeVisualizarNoticiaPremium(): boolean {
+  const decodedToken = this.getDecodedToken();
+  if (!decodedToken) {
+    return false;
   }
+  const userPermissions = this.getUserPermissions(); 
+  // Verifica se o array de permissões inclui 'VisualizarPostsPremium'
+  return userPermissions.includes('VisualizarPostsPremium');
+}
 
   // Método para mostrar o modal de conteúdo bloqueado
   exibirModalNoticiaBloqueada(): void {

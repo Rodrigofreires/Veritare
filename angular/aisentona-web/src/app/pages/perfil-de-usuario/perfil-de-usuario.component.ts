@@ -11,6 +11,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmacaoDialogComponent } from '../../shared/dialogs/confirmacao-dialog.component';
 import { Router, RouterModule } from '@angular/router';
 import { LoginService } from '../../services/login.service';
+import {MatCardModule} from '@angular/material/card';
+import {MatListModule} from '@angular/material/list';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-perfil-de-usuario',
@@ -21,6 +24,10 @@ import { LoginService } from '../../services/login.service';
   imports: [
     ContainerComponent,
     CommonModule,
+    MatCardModule,
+    MatListModule,
+    MatIconModule,
+
   ],
 
 })
