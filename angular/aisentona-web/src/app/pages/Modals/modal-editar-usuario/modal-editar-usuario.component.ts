@@ -115,10 +115,5 @@ export class ModalEditarUsuarioComponent {
     DataValidators.permitirSomenteNumeros(event);
   }
   
-  // debugaaaaaaaaaaaaa(): void {
-  //   console.log('ListaDeTiposDeUsuarios:', JSON.stringify(this.ListaDeTiposDeUsuarios, null, 2));
-  //   console.log('premiumComumProcurado:', JSON.stringify(this.premiumComumProcurado, null, 2));
-  //   console.log('Infos Carregadas:', JSON.stringify(this.perfilSelecionado, null, 2));
-
 
 }

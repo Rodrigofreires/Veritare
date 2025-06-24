@@ -1,33 +1,100 @@
 
-.app-editoria{
 
-.editoria-header{
-    background-color:#7070AC ;
+/* --- Estilos para o Cabeçalho da Editoria (mat-toolbar) --- */
+.editoria-header {
+    background-color: #7070AC;
     color: white;
     padding: 0 10%;
     display: flex;
-    
     justify-content: space-around;
+    flex-wrap: wrap; /* Permite que os botões quebrem para a linha seguinte */
+    align-items: center;
+    min-height: 56px;
 }
 
-.botao-editoria{
-    background-color: transparent; /* Remove qualquer fundo */
-    border: none; /* Remove a borda padrão */
-    box-shadow: none; /* Sem box-shadow inicialmente */
-    color: #fff ; /* Define a cor do texto */
-    transition: box-shadow 0.3s ease; /* Transição suave para box-shadow */
+/* --- Estilos para os Botões de Editoria Individuais (Desktop) --- */
+.botao-editoria {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    color: #fff;
+    transition: box-shadow 0.3s ease;
     font-size: medium;
+    padding: 10px 15px;
+    flex-shrink: 0;
+    margin: 5px;
 }
 
-
-.botao-editoria:hover{
+.botao-editoria:hover {
     color: #A29BFE !important;
     background-color: transparent;
 }
 
+/* --- Estilos para o Botão do Menu Mobile --- */
+.mobile-menu-button {
+    background-color: transparent;
+    color: #fff;
+    font-size: 1rem;
+    padding: 10px 15px;
+    display: flex; /* Para alinhar o texto e o ícone */
+    align-items: center;
+    gap: 5px; /* Espaçamento entre texto e ícone */
+}
+
+/* --- Estilos para a Borda de Botões Outlined (se usados) --- */
 .mat-mdc-outlined-button:not(:disabled) {
     border-color: white;
 }
 
+/* ========================== */
+/* RESPONSIVIDADE             */
+/* ========================== */
 
+/* --- Telas até 1024px (tablets em paisagem e desktops menores) --- */
+@media (max-width: 1024px) {
+    .editoria-header {
+        padding: 0 5%;
+        justify-content: center;
+    }
+
+    .botao-editoria {
+        font-size: 0.95rem;
+        padding: 8px 12px;
+    }
+}
+
+/* --- Telas até 768px (celulares grandes e tablets em retrato) --- */
+@media (max-width: 768px) {
+    .editoria-header {
+        padding: 0 2%;
+        justify-content: center; /* Centraliza o botão do menu mobile */
+        height: auto;
+        min-height: 56px; /* Altura mínima para o toolbar com o botão único */
+    }
+
+    /* Oculta os botões individuais de editoria em telas menores */
+    .botao-editoria {
+        display: none;
+    }
+
+    /* Garante que o botão do menu mobile seja exibido */
+    .mobile-menu-button {
+        display: flex; /* Exibe o botão do menu mobile */
+        width: auto; /* Permite que a largura se ajuste ao conteúdo */
+        margin: 0 auto; /* Centraliza o botão */
+    }
+}
+
+/* --- Telas até 480px (celulares pequenos) --- */
+@media (max-width: 480px) {
+    .editoria-header {
+        padding: 0 1%;
+    }
+
+    /* .mobile-menu-button já está configurado para ser responsivo com o flex.
+       Você pode ajustar o font-size se quiser que ele seja ainda menor aqui. */
+    .mobile-menu-button {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
 }

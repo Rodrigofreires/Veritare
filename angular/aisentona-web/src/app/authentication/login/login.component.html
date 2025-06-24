@@ -1,88 +1,84 @@
-<div class="container">
-    <div class="signup-wrapper">
-      <!-- Side Info Section -->
-      <div class="info-section">
-        <video autoplay muted loop width="600" height="750" onloadedmetadata="this.currentTime=1;">
-          <source src="assets/videos/veritaIa.mp4" type="video/mp4;">
-          Seu navegador não suporta vídeos HTML5.
-        </video>
-      </div>
-  
-      <!-- Sign-Up Section -->
-      <div class="form-section">
-        <h2>Bem-Vindo!</h2>
-        <p class="botao-cadastro">
-          Não possui uma conta?
-          <a routerLink="/cadastro-de-usuario"> Registre-se</a>
-        </p>
-  
-        <!-- Adicionado formulário para capturar o ENTER -->
-        <form (ngSubmit)="login()" class="signup-form">
-          <input
-            matInput
-            type="text"
-            placeholder="Digite seu e-mail"
-            [(ngModel)]="loginRequest.Email"
-            name="Email"
-            required
-            class="input-email"
-            (blur)="onBlurEmail()"
-          />
-          <span *ngIf="emailTouched && !loginRequest.Email" class="error">
-            O e-mail é obrigatório.
-          </span>
-          <span *ngIf="emailTouched && loginRequest.Email && !loginRequest.Email.includes('@')" class="error">
-            E-mail inválido.
-          </span>
-  
-          <input
-            matInput
-            type="password"
-            placeholder="Digite sua senha"
-            [(ngModel)]="loginRequest.Senha"
-            name="Senha"
-            required
-            class="input-senha"
-            (blur)="onBlurSenha()"
-          />
-          <span *ngIf="senhaTouched && !loginRequest.Senha" class="error">
-            A senha é obrigatória.
-          </span>
-          <span *ngIf="senhaTouched && loginRequest.Senha && loginRequest.Senha.length < 6" class="error">
-            A senha deve ter no mínimo 6 caracteres.
-          </span>
+    <div class="container">
+      <div class="signup-wrapper">
+        <!-- Seção com vídeo -->
+        <div class="info-section">
+          <video autoplay muted loop width="100%" height="100%" onloadedmetadata="this.currentTime=1;">
+            <source src="assets/videos/veritaIa.mp4" type="video/mp4" />
+            Seu navegador não suporta vídeos HTML5.
+          </video>
+        </div>
 
-                  <!-- Link para redefinição de senha -->
-          <p class="forgot-password">
-            <a routerLink="/esqueci-minha-senha">Esqueceu sua senha?</a>
+        <!-- Seção de formulário -->
+        <div class="form-section">
+          <h2>Bem-Vindo!</h2>
+          <p class="botao-cadastro">
+            Não possui uma conta?
+            <a routerLink="/cadastro-de-usuario">Registre-se</a>
           </p>
-    
-          <span *ngIf="!loginValid" class="error">
-            E-mail ou Senha incorretos.
-          </span>
-  
-          <div class="alternative-login">
-            <!-- Botão de login -->
-            <button
-              class="botão-entrar"
-              type="submit"
-              [disabled]="!isValid()"
-            >
-              Entrar
-            </button>
-  
-            <!-- Botão de login com Google -->
-            <!-- <button
-              class="google-login"
-              type="button"
-              (click)="loginWithGoogle()"
-            >
-              <img src="assets/icones/google-icon.png" alt="Google Icon" />
-              Conecte-se pelo Google
-            </button> -->
-          </div>
-        </form>
+
+          <form (ngSubmit)="login()" class="signup-form">
+            <input
+              matInput
+              type="text"
+              placeholder="Digite seu e-mail"
+              [(ngModel)]="loginRequest.Email"
+              name="Email"
+              required
+              class="input-email"
+              (blur)="onBlurEmail()"
+            />
+            <span *ngIf="emailTouched && !loginRequest.Email" class="error">
+              O e-mail é obrigatório.
+            </span>
+            <span *ngIf="emailTouched && loginRequest.Email && !loginRequest.Email.includes('@')" class="error">
+              E-mail inválido.
+            </span>
+
+            <input
+              matInput
+              type="password"
+              placeholder="Digite sua senha"
+              [(ngModel)]="loginRequest.Senha"
+              name="Senha"
+              required
+              class="input-senha"
+              (blur)="onBlurSenha()"
+            />
+            <span *ngIf="senhaTouched && !loginRequest.Senha" class="error">
+              A senha é obrigatória.
+            </span>
+            <span *ngIf="senhaTouched && loginRequest.Senha && loginRequest.Senha.length < 6" class="error">
+              A senha deve ter no mínimo 6 caracteres.
+            </span>
+
+            <p class="forgot-password">
+              <a routerLink="/esqueci-minha-senha">Esqueceu sua senha?</a>
+            </p>
+
+            <span *ngIf="!loginValid" class="error">
+              E-mail ou Senha incorretos.
+            </span>
+
+            <div class="alternative-login">
+              <button
+                class="botão-entrar"
+                type="submit"
+                [disabled]="!isValid()"
+              >
+                Entrar
+              </button>
+
+              <!-- Login com Google (ativar se necessário) -->
+              <!-- <button
+                class="google-login"
+                type="button"
+                (click)="loginWithGoogle()"
+              >
+                <img src="assets/icones/google-icon.png" alt="Google Icon" />
+                Conecte-se pelo Google
+              </button> -->
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-  

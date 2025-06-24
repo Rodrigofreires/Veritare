@@ -1,12 +1,33 @@
 <header class="app-editoria">
   <mat-toolbar class="editoria-header">
-    <button
-      mat-button
-      class="botao-editoria"
-      *ngFor="let editoria of listaDeEditorias"
-      (click)="selecionarEditoria(editoria.id, editoria.nome)"
-    >
-      {{ editoria.nome }}
-    </button>
+    <ng-container *ngIf="!isMobile">
+      <button
+        mat-button
+        class="botao-editoria"
+        *ngFor="let editoria of listaDeEditorias"
+        (click)="selecionarEditoria(editoria.id, editoria.nome)"
+      >
+        {{ editoria.nome }}
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="isMobile">
+      <button
+        mat-button
+        [matMenuTriggerFor]="editoriaMenu"
+        class="mobile-menu-button"
+      >
+        Editorias <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #editoriaMenu="matMenu">
+        <button
+          mat-menu-item
+          *ngFor="let editoria of listaDeEditorias"
+          (click)="selecionarEditoria(editoria.id, editoria.nome)"
+        >
+          {{ editoria.nome }}
+        </button>
+      </mat-menu>
+    </ng-container>
   </mat-toolbar>
 </header>

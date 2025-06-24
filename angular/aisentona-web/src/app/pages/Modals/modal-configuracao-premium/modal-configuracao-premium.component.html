@@ -1,0 +1,57 @@
+<h2 mat-dialog-title>Configurar Permissões Premium</h2>
+<mat-dialog-content class="perfil-usuario">
+  <p>INFORMAÇÕES DO USUÁRIO</p>
+  <form #premiumForm="ngForm" novalidate>
+    <div class="informacoes-do-perfil grid-container">
+      <div class="grid-item">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nome do Usuário</mat-label>
+          <input matInput [ngModel]="perfilSelecionado.nome" name="nomeUsuario" disabled>
+        </mat-form-field>
+      </div>
+
+      <div class="grid-item">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>E-mail</mat-label>
+          <input matInput [ngModel]="perfilSelecionado.email" name="emailUsuario" disabled>
+        </mat-form-field>
+      </div>
+
+      <div class="grid-item">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Premium Expira em</mat-label>
+          <input matInput [ngModel]="perfilSelecionado.premiumExpiraEm | date: 'dd/MM/yyyy'" name="premiumExpiraEm" disabled>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <p>CONFIGURAÇÃO PREMIUM</p>
+    <div class="informacoes-do-perfil grid-container">
+      <div class="grid-item">
+        <mat-slide-toggle
+          [(ngModel)]="premiumAtivo"
+          name="premiumStatus"
+          color="primary"
+          (change)="onPremiumToggleChange()">
+          Usuário {{ premiumAtivo ? 'Premium' : 'Comum' }}
+        </mat-slide-toggle>
+      </div>
+
+      <div class="grid-item" *ngIf="premiumAtivo">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tipo de Plano Premium</mat-label>
+          <mat-select [(ngModel)]="planoPremiumSelecionado" name="tipoPlanoPremium" required>
+            <mat-option *ngFor="let plano of tiposDePlanoPremium" [value]="plano.id">
+              {{ plano.nome }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button color="warn" (click)="onNoClick()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="ConfigurarPremiumDoUsuario()" [disabled]="premiumForm.invalid">Salvar</button>
+</mat-dialog-actions>

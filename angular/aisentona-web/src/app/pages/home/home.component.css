@@ -4,3 +4,10 @@
     margin-top: 25px;
     margin-bottom: 50px;
 }
+
+/* --- Media Query para ocultar a imagem em telas mobile --- */
+@media (max-width: 768px) {
+    .imagem-assine {
+        display: none; /* Isso fará a imagem desaparecer completamente */
+    }
+}

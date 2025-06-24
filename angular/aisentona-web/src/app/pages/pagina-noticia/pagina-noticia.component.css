@@ -5,7 +5,7 @@
   padding: 20px;
   border: none; /* Remove qualquer borda padrão */
   box-shadow: none; /* Remove sombra do Material Design */
-  background-color: #F9F9F9  !important;
+  background-color: #FFFF  !important;
 }
 
 .noticia-container {
@@ -18,7 +18,7 @@
     margin: 20px auto;
     max-width: 900px;
     width: 100%;
-    background-color: #F9F9F9  !important;
+    background-color: #FFFF  !important;
   }
   
   .cabecalho-pagina {
@@ -313,6 +313,7 @@
   }
   
   .alert-list-container {
+    min-height: 500px; /* Aumentando a altura mínima do container */
     padding: 32px; /* Aumentando o padding geral */
     background-color: #f5f5f5;
     border-radius: 8px;
@@ -335,7 +336,7 @@
     max-width: 100%;
     word-wrap: break-word;
     word-break: break-word;
-    height: 300px !important ; /* Definindo uma altura fixa para os itens */
+    height: 500px !important ; /* Definindo uma altura fixa para os itens */
   }
   
   .alert-list-item:hover {

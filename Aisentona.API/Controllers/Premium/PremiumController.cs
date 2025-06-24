@@ -2,6 +2,7 @@
 using Aisentona.Entities.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Aisentona.API.Controllers.Premium
 {
@@ -17,6 +18,7 @@ namespace Aisentona.API.Controllers.Premium
         }
 
         [HttpPost("tornar-premium")]
+        [Authorize(Roles = "Administrador")]
         public IActionResult TornarUsuarioPremium([FromBody] PremiumResponse premiumResponse)
         {
             if (premiumResponse == null)
@@ -38,6 +40,7 @@ namespace Aisentona.API.Controllers.Premium
         }
 
         [HttpPost("tirar-premium")]
+        [Authorize(Roles = "Administrador")] 
         public IActionResult TirarUsuarioPremium([FromBody] PremiumResponse premiumResponse)
         {
             if (premiumResponse == null)

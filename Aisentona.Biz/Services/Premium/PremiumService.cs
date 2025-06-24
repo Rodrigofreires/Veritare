@@ -28,7 +28,7 @@ namespace Aisentona.Biz.Services.Premium
 
 
                 // Atualiza as datas de acesso conforme o plano
-                AtualizarDatasDeAcesso(colaborador, premiumResponse);
+                AtualizarDatasDeAcesso(colaborador);
             }
 
             _context.CF_Colaborador.Update(colaborador);
@@ -51,7 +51,7 @@ namespace Aisentona.Biz.Services.Premium
             }
         }
 
-        private void AtualizarDatasDeAcesso(Colaborador colaborador, PremiumResponse premiumResponse)
+        private void AtualizarDatasDeAcesso(Colaborador colaborador)
         {
             // Obtém o ID do tipo de plano associado ao acesso
             var idAcessoPremium = colaborador.AcessoUsuario.Id_Plano;
@@ -69,7 +69,7 @@ namespace Aisentona.Biz.Services.Premium
             {
                 colaborador.AcessoUsuario.Dt_FimAcesso = dataInicioAcesso.AddMonths(6);
             }
-            else if (idAcessoPremium == (int)TipoDePlanoPremium.Mensal)  // Anual
+            else if (idAcessoPremium == (int)TipoDePlanoPremium.Anual)  // Anual
             {
                 colaborador.AcessoUsuario.Dt_FimAcesso = dataInicioAcesso.AddYears(1);
             }

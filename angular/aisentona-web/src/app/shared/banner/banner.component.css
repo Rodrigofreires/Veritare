@@ -1,105 +1,355 @@
-.painel-noticias {
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* Espaçamento entre os cards */
+/* --- Estilos Gerais para o Container de Notícias Premium --- */
+.noticias-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between; /* Espaçamento igual entre os cards */
+    flex-wrap: wrap; /* Permite que os cards quebrem para a próxima linha em telas menores */
 }
 
-.card-noticia {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  margin-bottom: 20px; /* Espaçamento inferior entre os cards */
+/* --- Estilos para o Card de Notícia Premium Individual --- */
+.card-premium {
+    position: relative; /* Necessário para posicionar o texto e a etiqueta sobre a imagem */
+    width: 32%; /* Cada card ocupa aproximadamente 1/3 da largura em telas grandes */
+    height: 450px; /* Altura fixa para o card */
+    border-radius: 8px; /* Cantos arredondados */
+    overflow: hidden; /* Garante que o conteúdo não vaze dos cantos arredondados */
+    cursor: pointer; /* Indica que o card é clicável */
+    margin-bottom: 20px; /* Adiciona espaço abaixo dos cards quando eles se empilham */
 }
 
-.card-noticia-destaque {
-  position: relative;
-  width: 100%;
-  margin-top: 50px;
-  border-radius: 8px;
-  overflow: hidden;
-  cursor: pointer;
+.imagem-container {
+    position: relative; /* Necessário para posicionar a etiqueta */
+    width: 100%;
 }
 
-.card-noticia-destaque img {
-  width: 100%;
-  height: 400px;
-  object-fit: cover; /* Mantém a proporção e cobre toda a área */
-  border-radius: 8px;
+/* --- Estilos para a Etiqueta Fixa "Premium" --- */
+.veritare-card-premium {
+    position: absolute; /* Posicionamento absoluto em relação ao seu pai (.imagem-container) */
+    top: 10px; /* 10px do topo */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translateX(-50%); /* Ajuste fino para centralização perfeita */
+    width: 170px; /* Largura da imagem da etiqueta */
+    background: transparent; /* Fundo transparente */
+    z-index: 1; /* Garante que a etiqueta fique acima da imagem */
 }
 
-/* Texto sobreposto na imagem */
+.mat-card-image {
+    background: transparent !important; /* Garante fundo transparente para a imagem do material card */
+}
+
+/* --- Estilos para a Imagem do Banner Premium --- */
+.imagem-banner-premium {
+    width: 100%; /* Ocupa toda a largura do seu container */
+    height: 450px; /* Altura fixa da imagem */
+    object-fit: cover; /* Corta a imagem para cobrir a área sem distorcer, mantendo a proporção */
+    border-radius: 8px; /* Cantos arredondados para a imagem */
+}
+
+/* --- Estilos para o Texto Sobreposto na Imagem Premium --- */
 .texto-sobre-imagem {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 20px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3), transparent);
-  color: white;
-  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
-  box-sizing: border-box;
+    position: absolute; /* Posicionamento absoluto em relação ao card pai (.card-premium) */
+    bottom: 0; /* Alinha na parte inferior */
+    left: 0; /* Alinha na parte esquerda */
+    width: 100%; /* Ocupa toda a largura */
+    padding: 20px; /* Espaçamento interno */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3), transparent); /* Gradiente para escurecer a parte inferior da imagem */
+    color: white; /* Cor do texto */
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7); /* Sombra para o texto, melhorando a leitura */
+    box-sizing: border-box; /* Inclui padding e borda na largura/altura total */
 }
 
 .texto-sobre-imagem h2 {
-  margin: 0;
-  font-size: 1.8rem;
-  font-weight: bold;
+    margin: 0; /* Remove margem padrão */
+    font-size: 1.4rem; /* Tamanho da fonte para o título */
+    font-weight: bold; /* Negrito */
 }
 
 .texto-sobre-imagem p {
-  margin: 5px 0;
-  font-size: 1rem;
+    margin: 5px 0; /* Margem vertical para o parágrafo */
+    font-size: 1rem; /* Tamanho da fonte para a descrição */
 }
 
-/* Lista de notícias */
+/* --- Ajustes para o Mat-Card (Material Design) --- */
+/* Estes estilos sobrescrevem padrões do Material Design para remover bordas e sombras extras */
+.mat-card {
+    background-color: transparent; /* Fundo transparente */
+    border-radius: 0; /* Remove arredondamento padrão */
+    box-shadow: none; /* Remove sombra padrão */
+}
+
+
+/* --- Para telas menores que 1024px (ex: tablets e desktops menores) --- */
+@media (max-width: 1024px) {
+    .card-premium {
+        width: 48%; /* Cada card ocupa 48% da largura, permitindo dois cards por linha */
+    }
+}
+
+/* --- Para telas menores que 768px (ex: tablets em retrato e celulares maiores) --- */
+@media (max-width: 768px) {
+    .noticias-container {
+        flex-direction: column; /* Empilha os cards verticalmente */
+        align-items: center; /* Centraliza os cards empilhados */
+    }
+
+    .card-premium {
+        width: 90%; /* Quase largura total para um layout de coluna única */
+        height: 350px; /* Ajusta a altura do card para telas menores */
+    }
+
+    .imagem-banner-premium {
+        height: 350px; /* Ajusta a altura da imagem para corresponder ao card */
+    }
+
+    .texto-sobre-imagem h2 {
+        font-size: 1.2rem; /* Reduz o tamanho da fonte do título */
+    }
+
+    .texto-sobre-imagem p {
+        font-size: 0.9rem; /* Reduz o tamanho da fonte da descrição */
+    }
+
+    .veritare-card-premium {
+        display: none; /* **Faz a imagem "Premium" desaparecer nesta resolução** */
+    }
+}
+
+/* --- Para telas menores que 480px (ex: a maioria dos celulares) --- */
+@media (max-width: 480px) {
+    .card-premium {
+        height: 300px; /* Altura ainda menor para cards */
+    }
+
+    .imagem-banner-premium {
+        height: 300px; /* Altura da imagem correspondente */
+    }
+
+    .texto-sobre-imagem {
+        padding: 15px; /* Reduz o padding do texto */
+    }
+
+    .texto-sobre-imagem h2 {
+        font-size: 1rem; /* Font size menor para o título */
+    }
+
+    .texto-sobre-imagem p {
+        font-size: 0.85rem; /* Font size menor para o parágrafo */
+    }
+}
+
+
+/* --- Container Principal do Painel de Notícias --- */
+.painel-noticias {
+    display: flex; /* Usa flexbox para o layout principal */
+    flex-direction: column; /* Organiza os itens em uma coluna */
+    gap: 20px; /* Espaçamento entre o destaque e a lista de notícias */
+}
+
+/* --- Estilos Gerais para Cards de Notícias (não usados especificamente aqui, mas mantidos se houver outros cards) --- */
+.card-noticia {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 20px; /* Espaçamento inferior entre os cards */
+}
+
+/* --- Estilos para o Card de Notícia em Destaque --- */
+.card-noticia-destaque {
+    position: relative; /* Necessário para o texto sobreposto */
+    width: 100%; /* Ocupa toda a largura disponível */
+    margin-top: 50px; /* Margem superior para separação */
+    border-radius: 8px; /* Cantos arredondados */
+    overflow: hidden; /* Garante que o conteúdo não vaze */
+    cursor: pointer; /* Indica que é clicável */
+}
+
+.card-noticia-destaque img {
+    width: 100%; /* Ocupa toda a largura do container */
+    height: 500px; /* Altura fixa para a imagem de destaque */
+    object-fit: cover; /* Corta a imagem para cobrir a área mantendo a proporção */
+    border-radius: 8px; /* Cantos arredondados */
+}
+
+/* --- Texto Sobreposto na Imagem de Destaque (compartilhado com a seção premium) --- */
+/*
+    Atenção: A classe `texto-sobre-imagem` é a mesma usada anteriormente para os cards premium.
+    Certifique-se de que os estilos específicos para `h2` e `p` dentro dela, definidos abaixo,
+    sejam adequados para ambos os contextos ou crie classes separadas se as necessidades divergirem.
+*/
+.texto-sobre-imagem {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3), transparent);
+    color: white;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+    box-sizing: border-box;
+}
+
+.texto-sobre-imagem h2 {
+    margin: 0;
+    font-size: 1.8rem; /* Tamanho da fonte para o título de destaque */
+    font-weight: bold;
+}
+
+.texto-sobre-imagem p {
+    margin: 5px 0;
+    font-size: 1rem; /* Tamanho da fonte para a descrição de destaque */
+}
+
+/* --- Estilos para a Lista de Notícias (cards menores) --- */
 .lista-noticias {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+    display: grid; /* Usa Grid para o layout dos cards da lista */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Cria colunas que se auto-ajustam, com mínimo de 300px e máximo de 1fr */
+    gap: 20px; /* Espaçamento entre os itens da grid */
 }
 
 .lista-noticias mat-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 10px;
-  background-color: #fff;
-  margin-bottom: 20px;
+    border: 1px solid #e0e0e0; /* Borda sutil */
+    border-radius: 8px; /* Cantos arredondados */
+    padding: 10px; /* Espaçamento interno */
+    background-color: #fff; /* Fundo branco */
+    margin-bottom: 20px; /* Margem inferior para espaçamento quando empilhados */
 }
 
 .lista-noticias mat-card h2 {
-  font-size: 1.5rem;
-  margin: 0 0 10px 0;
-  color: #333;
+    font-size: 1.5rem; /* Tamanho da fonte para o título da lista */
+    margin: 0 0 10px 0; /* Margem para o título */
+    color: #333; /* Cor do texto */
 }
 
 .lista-noticias mat-card p {
-  font-size: 0.9rem;
-  margin: 0;
-  color: #666;
+    font-size: 0.9rem; /* Tamanho da fonte para a descrição da lista */
+    margin: 0;
+    color: #666; /* Cor do texto */
 }
 
 .lista-noticias mat-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
+    width: 100%; /* Ocupa toda a largura do card */
+    height: 200px; /* Altura fixa para as imagens da lista */
+    object-fit: cover; /* Corta para cobrir a área */
+    border-radius: 8px; /* Cantos arredondados */
+    margin-bottom: 10px; /* Espaçamento abaixo da imagem */
 }
 
-/* Ajustes para os cards */
+/* --- Ajustes Gerais para o Mat-Card --- */
 .mat-card-content {
-  font-size: 0.9rem;
-  margin: 10px 0;
+    font-size: 0.9rem;
+    margin: 10px 0;
 }
 
 .mat-card-actions {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
+/* --- Efeitos de Interatividade --- */
 mat-card img {
-  cursor: pointer;
-  transition: transform 0.3s ease;
+    cursor: pointer; /* Altera o cursor para indicar que é clicável */
+    transition: transform 0.3s ease; /* Transição suave para o efeito de zoom */
 }
 
 mat-card img:hover {
-  transform: scale(1.05);
+    transform: scale(1.05); /* Aumenta ligeiramente a imagem ao passar o mouse */
+}
+
+
+/* --- Para telas menores que 1024px (ex: tablets e desktops menores) --- */
+@media (max-width: 1024px) {
+    .card-noticia-destaque img {
+        height: 400px; /* Ajusta a altura da imagem de destaque */
+    }
+
+    .texto-sobre-imagem h2 {
+        font-size: 1.6rem; /* Ajusta o tamanho da fonte do título de destaque */
+    }
+
+    .texto-sobre-imagem p {
+        font-size: 0.9rem; /* Ajusta o tamanho da fonte da descrição de destaque */
+    }
+
+    .lista-noticias {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Ajusta o minmax para mais flexibilidade nas colunas */
+        gap: 15px; /* Reduz ligeiramente o espaçamento entre os cards da lista */
+    }
+
+    .lista-noticias mat-card img {
+        height: 180px; /* Ajusta a altura das imagens da lista */
+    }
+
+    .lista-noticias mat-card h2 {
+        font-size: 1.3rem; /* Ajusta o tamanho da fonte dos títulos da lista */
+    }
+}
+
+/* --- Para telas menores que 768px (ex: tablets em retrato e celulares maiores) --- */
+@media (max-width: 768px) {
+    .card-noticia-destaque {
+        margin-top: 20px; /* Reduz a margem superior do card de destaque */
+    }
+
+    .card-noticia-destaque img {
+        height: 300px; /* Ajusta ainda mais a altura da imagem de destaque */
+    }
+
+    .texto-sobre-imagem {
+        padding: 15px; /* Reduz o padding do texto de destaque */
+    }
+
+    .texto-sobre-imagem h2 {
+        font-size: 1.4rem; /* Ajusta a fonte do título de destaque */
+    }
+
+    .texto-sobre-imagem p {
+        font-size: 0.85rem; /* Ajusta a fonte da descrição de destaque */
+    }
+
+    .lista-noticias {
+        grid-template-columns: 1fr; /* **Empilha os itens da lista em uma única coluna** */
+        gap: 10px; /* Reduz o espaçamento quando empilhados */
+    }
+
+    .lista-noticias mat-card {
+        width: 95%; /* Faz os cards da lista ocuparem quase toda a largura */
+        margin: 0 auto 15px auto; /* Centraliza os cards e adiciona margem inferior */
+    }
+
+    .lista-noticias mat-card img {
+        height: 150px; /* Ajusta a altura das imagens da lista */
+    }
+
+    .lista-noticias mat-card h2 {
+        font-size: 1.2rem; /* Ajusta a fonte dos títulos da lista */
+    }
+}
+
+/* --- Para telas menores que 480px (ex: a maioria dos celulares) --- */
+@media (max-width: 480px) {
+    .card-noticia-destaque img {
+        height: 250px; /* Altura mínima para a imagem de destaque */
+    }
+
+    .texto-sobre-imagem {
+        padding: 10px; /* Padding mínimo para o texto de destaque */
+    }
+
+    .texto-sobre-imagem h2 {
+        font-size: 1.2rem; /* Tamanho de fonte mínimo para o título de destaque */
+    }
+
+    .texto-sobre-imagem p {
+        font-size: 0.8rem; /* Tamanho de fonte mínimo para a descrição de destaque */
+    }
+
+    .lista-noticias mat-card {
+        padding: 8px; /* Padding mínimo para os cards da lista */
+    }
+
+    .lista-noticias mat-card img {
+        height: 120px; /* Altura mínima para as imagens da lista */
+    }
+
+    .lista-noticias mat-card h2 {
+        font-size: 1rem; /* Tamanho de fonte mínimo para os títulos da lista */
+    }
 }

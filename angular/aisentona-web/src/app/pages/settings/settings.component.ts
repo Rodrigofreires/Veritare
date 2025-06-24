@@ -13,25 +13,22 @@ import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatPaginator } from '@angular/material/paginator';
-import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
-import { ActivatedRoute, RouterModule , Router } from '@angular/router';
+import { RouterModule , Router } from '@angular/router';
 import { ConfirmacaoDialogComponent } from '../../shared/dialogs/confirmacao-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { timeout } from 'rxjs';
-import { TwitterService } from '../../services/twitter.service';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { EditoriaRequest } from '../../core/interfaces/Request/Editorias';
-import { StatusRequest } from '../../core/interfaces/Request/Status';
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { PerfilDeUsuarioRequest } from '../../core/interfaces/Request/PerfilDeUsuario';
 import { PerfilService } from '../../services/perfil-service';
 import { PerfilDeUsuarioResponse } from '../../core/interfaces/Response/PerfilDeUsuario';
-import { provideNgxMask, NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
+import { provideNgxMask, NgxMaskPipe } from 'ngx-mask';
 import { AuthService } from '../../services/auth.service';
 import { TipoDeUsuarioRequest } from '../../core/interfaces/Request/TipoDeUsuário';
 import { ModalEditarUsuarioComponent } from '../Modals/modal-editar-usuario/modal-editar-usuario.component';
+import { ModalConfigurarPremiumComponent } from '../Modals/modal-configuracao-premium/modal-configuracao-premium.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-painel-de-controle',
@@ -60,6 +57,7 @@ import { ModalEditarUsuarioComponent } from '../Modals/modal-editar-usuario/moda
     DatePipe, 
     NgxMaskPipe,
     MatDialogModule,
+    MatTooltipModule, 
  
   ],
   
@@ -219,6 +217,7 @@ export class SettingsComponent {
         }
         this._router.navigate(['/perfil-de-usuario/', IdUsuario]);
         }
+
         abrirModalEditarUsuario(idUsuario: number): void {
           this._perfilService.carregarPerfilDoUsuario(idUsuario).subscribe(
             (perfilSelecionado) => {
@@ -247,6 +246,35 @@ export class SettingsComponent {
           );
         }
     
+      abrirModalConfigurarPremium(idUsuario: number): void {
+        this._perfilService.carregarPerfilDoUsuario(idUsuario).subscribe(
+          (perfilSelecionado) => {
+            console.log("Perfil selecionado para configuração Premium:", perfilSelecionado);
+
+            const dialogRef = this.dialog.open(ModalConfigurarPremiumComponent, {
+              width: '40vw', // You might want a different width for this modal
+              maxWidth: '40vw', // You might want a different max width for this modal
+              data: {
+                perfilSelecionado: perfilSelecionado,
+                // You can pass other data here if needed for the premium configuration modal
+              }
+            });
+
+            // After the modal closes, update the user list
+            dialogRef.afterClosed().subscribe((premiumConfigAtualizada) => {
+              if (premiumConfigAtualizada) {
+                this.carregarTodosOsUsuarios(); // Refresh the user list to show updated premium status
+              }
+            });
+          },
+          (error) => {
+            console.error("Erro ao carregar o perfil do usuário para configuração Premium:", error);
+          }
+        );
+      }
+
+
+
     verBotaoExcluirUsuario(): boolean {
       return this._authService.podeExcluirUsuario();
     }

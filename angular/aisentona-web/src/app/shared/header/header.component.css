@@ -1,52 +1,152 @@
-.app-header{    
-    .mat-toolbar{
-      background-color: #1E1E2E !important;
-    }
-  
-    button {
-      margin: 0 16px;
-  
-    }
-    .spacer {
-      flex: 1 1 auto;
-    }
-  
-    .mat-toolbar{
-      background-color: black;
-      color: white;
-      padding: 0 10%;
-      justify-content: space-between;
-    }
-  
-    .mat-mdc-outlined-button:not(:disabled) {
-      border-color: white;
-    }
+/* --- Estilos para o Container do Header --- */
+.app-header {
+  width: 100%;
+  position: relative;
+  z-index: 1000;
+  min-height: 56px; /* Altura mínima para a barra de ferramentas */
+}
+
+/* --- Estilos para a Toolbar Principal --- */
+.tool-bar {
+  background-color: #1E1E2E !important;
+  color: white;
+  padding: 0 10%;
+  display: flex; /* Garante que a toolbar seja um container flexível */
+  justify-content: space-between; /* Espaço entre o logo e o grupo de botões */
+  align-items: center; /* Alinha verticalmente ao centro */
+  min-height: 64px; /* Altura mínima para desktop */
+  box-sizing: border-box; /* Inclui padding na largura total */
+}
+
+/* --- Estilos para o Link do Logo "VERITARE" --- */
+.home-link {
+  text-decoration: none;
+  color: inherit;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-right: auto; /* Empurra os botões/menu para a direita */
+  flex-shrink: 0; /* Impede que o logo encolha em telas pequenas */
+}
+
+.home-link:hover {
+  color: #A29BFE;
+}
+
+/* --- Estilos para os Botões do Header (Desktop) --- */
+.botao-header {
+  background-color: transparent;
+  color: #FFFFFF;
+  margin: 0 8px;
+  transition: color 0.3s ease;
+  flex-shrink: 0; /* Impede que os botões encolham em telas menores (desktop) */
+}
+
+.botao-header:hover {
+  color: #A29BFE !important;
+}
+
+/* --- Estilos para o container de login/usuário (Desktop) --- */
+.login {
+  display: flex; /* Usa flexbox para organizar os botões internos do login */
+  align-items: center;
+  flex-shrink: 0; /* Impede que o container de login encolha */
+  flex-grow: 1;
+  justify-content: flex-end; /* Alinha os itens do login à direita dentro do seu container */
+  margin-right: 8px; /* Espaçamento entre o login e o botão "Sobre" */
+}
+
+/* --- Estilos para o contêiner da navegação desktop --- */
+.desktop-nav {
+  display: flex; /* POR PADRÃO, visível em desktop */
+  align-items: center;
+  gap: 8px; /* Mantém o espaçamento entre os botões */
+}
+
+/* --- Estilos para o nome do usuário (se for reativado) --- */
+.user-name {
+  font-size: medium;
+  margin-right: 16px;
+}
+
+/* --- Sobrescrita de estilos Material Design (se aplicável) --- */
+.mat-mdc-outlined-button:not(:disabled) {
+  border-color: white;
+}
+
+/* --- OCULTA o botão de menu mobile POR PADRÃO (em desktop) --- */
+.mobile-menu-button {
+  display: none !important; /* Garante que o botão de hambúrguer esteja oculto em telas grandes */
+}
 
 
-  .botao-header{
-      background-color: transparent;
-      color: #FFFFFF;     
+/* ========================== */
+/* RESPONSIVIDADE             */
+/* ========================== */
+
+/* --- Telas até 1024px (tablets em paisagem e desktops menores) --- */
+@media (max-width: 1024px) {
+  .tool-bar {
+    padding: 0 5%;
+    min-height: 60px; /* Leve ajuste de altura */
   }
 
-  ::ng-deep .botao-header:hover {
-    color: #A29BFE !important;
+  .home-link {
+    font-size: 22px;
+  }
+
+  .botao-header {
+    font-size: 0.9rem;
+    margin: 0 6px;
   }
   
-
-    .home-link {
-      text-decoration: none;
-      color: inherit;
-      font-size: 24px; /* Ajuste o tamanho da fonte conforme necessário */
-      font-weight: bold; /* Se desejar um texto mais destacado */
-      cursor: pointer;
-    }
-    
-    .home-link:hover {
-      color: #A29BFE; /* Cor ao passar o mouse, ajuste conforme o tema */
-    }
-
-    .user-name{
-      font-size: medium;
-    }
-
+  .login {
+      margin-right: 6px; /* Ajusta espaçamento */
   }
+}
+
+/* --- Telas até 768px (celulares grandes e tablets em retrato) --- */
+@media (max-width: 768px) {
+  .tool-bar {
+    padding: 0 2%;
+    justify-content: space-between; /* Mantém o espaço entre logo e menu */
+    min-height: 56px; /* Altura padrão para mobile */
+  }
+
+  .home-link {
+    font-size: 20px;
+  }
+
+  /* **MUITO IMPORTANTE:** OCULTA o contêiner de navegação de desktop */
+  .desktop-nav {
+    display: none !important; /* Força a ocultação em mobile */
+  }
+
+  /* **MUITO IMPORTANTE:** EXIBE o botão de menu mobile */
+  .mobile-menu-button {
+    display: block !important; /* Força a exibição do ícone de hambúrguer */
+    color: white; /* Cor do ícone */
+    font-size: 28px; /* Tamanho do ícone, para ser bem visível e tocável */
+    width: 48px; /* Tamanho padrão de botões de ícone do Material */
+    height: 48px; /* Tamanho padrão de botões de ícone do Material */
+    margin: 0; /* Remove qualquer margem que possa interferir */
+  }
+}
+
+/* --- Telas até 480px (celulares pequenos) --- */
+@media (max-width: 480px) {
+  .tool-bar {
+    padding: 0 1%;
+    min-height: 52px; /* Pode reduzir um pouco mais para telas muito pequenas */
+  }
+
+  .home-link {
+    font-size: 18px;
+  }
+
+  .mobile-menu-button {
+    font-size: 24px; /* Leve redução no tamanho do ícone para telas menores ainda */
+    width: 40px;
+    height: 40px;
+  }
+}

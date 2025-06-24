@@ -1,155 +1,165 @@
-<div class="container">
-    <div class="signup-wrapper">
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro de Usuário - VeritaIA</title>
+    <!-- Stylesheets globais e Angular Material (adicione seus links ou imports aqui) -->
+  </head>
+  <body>
+    <div class="container">
+      <div class="signup-wrapper">
+        <!-- Formulário de Cadastro -->
         <div class="form-section">
           <h2>Cadastro de Usuário!</h2>
           <p class="botao-cadastro">Preencha os campos para fazer parte dessa reforma!</p>
+
           <div class="signup-form">
-            <input 
-            matInput 
-            type="text" 
-            placeholder="Digite seu nome Completo" 
-            [(ngModel)]="infosColaborador.Nome" 
-            name="nome" 
-            #info="ngModel"
-            (blur)="nomeTouched = true" 
-            required 
-          />
-          <span *ngIf="(nomeTouched || info.touched) && !infosColaborador.Nome" class="error">
-            O Nome é obrigatório.
-          </span>
-      
-            <input 
-            matInput 
-            type="text" 
-            placeholder="Digite seu CPF" 
-            [(ngModel)]="infosColaborador.CPF" 
-            name="cpf" 
-            maxlength="14" 
-            (input)="formatarCPF()" 
-            (keypress)="permitirSomenteNumeros($event)" 
-            (blur)="validarCPF()" 
-            required 
-          />
-          <span *ngIf="cpfInvalido" class="error">Por favor, insira um CPF válido.</span>
-      
-            <input 
-              matInput 
-              type="email" 
-              placeholder="Digite seu e-mail" 
-              [(ngModel)]="infosColaborador.Email" 
-              name="usuario" 
-              #email="ngModel" 
-              (blur)="emailTouched = true" 
-              required 
-              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+            <!-- Nome -->
+            <input
+              matInput
+              type="text"
+              name="nome"
+              placeholder="Digite seu nome completo"
+              [(ngModel)]="infosColaborador.Nome"
+              #info="ngModel"
+              (blur)="nomeTouched = true"
+              required
             />
-            <!-- Mensagem de erro para e-mail vazio -->
+            <span *ngIf="(nomeTouched || info.touched) && !infosColaborador.Nome" class="error">
+              O Nome é obrigatório.
+            </span>
+
+            <!-- CPF -->
+            <input
+              matInput
+              type="text"
+              name="cpf"
+              placeholder="Digite seu CPF"
+              [(ngModel)]="infosColaborador.CPF"
+              maxlength="14"
+              (input)="formatarCPF()"
+              (keypress)="permitirSomenteNumeros($event)"
+              (blur)="validarCPF()"
+              required
+            />
+            <span *ngIf="cpfInvalido" class="error">Por favor, insira um CPF válido.</span>
+
+            <!-- E-mail -->
+            <input
+              matInput
+              type="email"
+              name="usuario"
+              placeholder="Digite seu e-mail"
+              [(ngModel)]="infosColaborador.Email"
+              #email="ngModel"
+              (blur)="emailTouched = true"
+              required
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+            />
             <span *ngIf="(emailTouched || email.touched) && !infosColaborador.Email" class="error">
               O campo E-mail é obrigatório.
             </span>
-            <!-- Mensagem de erro para formato inválido -->
             <span *ngIf="(emailTouched || email.touched) && !email.valid && infosColaborador.Email" class="error">
               Digite um E-mail válido.
             </span>
-                
-            <input 
-                  matInput 
-                  type="text" 
-                  placeholder="Digite seu número de celular" 
-                  [(ngModel)]="infosColaborador.Celular" 
-                  name="telefone" 
-                  #telefone="ngModel" 
-                  (input)="formatarCelular()" 
-                  (blur)="celularTouched = true" 
-                  required 
-                  pattern="^\(\d{2}\) \d{5}-\d{4}$" 
-                  maxlength="15"
-                />
-                <!-- Mensagem de erro para número inválido -->
-                <span *ngIf="(celularTouched || telefone.touched) && !infosColaborador.Celular" class="error">
-                  O número de celular é obrigatório.
-                </span>
-                <span *ngIf="(celularTouched || telefone.touched) && telefone.invalid && infosColaborador.Celular" class="error">
-                  Digite um número de celular válido no formato (XX) XXXXX-XXXX.
-                </span>
-                
-            <input 
-            matInput 
-            type="password" 
-            placeholder="Digite sua senha" 
-            [(ngModel)]="infosColaborador.Senha" 
-            name="senha" 
-            #senha="ngModel" 
-            required 
-            minlength="8"
-          />
-          <!-- Mensagens de Erro -->
-            <!-- Mensagem de erro para e-mail vazio -->
-            <span *ngIf="(senhaTouched || senha.touched) && !infosColaborador.Senha" class="error">
-                O campo Senha é obrigatório.
-              </span>
-              <!-- Mensagem de erro para formato inválido -->
-              <span *ngIf="(senhaTouched || senha.touched) && !senha.valid && infosColaborador.Senha" class="error">
-                A senha deve conter pelo menos 8 caracteres.
-              </span>
 
-               <!-- Campo de Confirmação de Senha -->
-              <input 
-              matInput 
-              type="password" 
-              placeholder="Confirme sua senha" 
-              [(ngModel)]="senhaConfirmacao" 
-              name="senhaConfirmacao" 
-              #senhaConfirmacaoField="ngModel" 
-              required
-            />
-            <!-- Mensagens de Erro da Confirmação -->
-            <span 
-              *ngIf="(senhaConfirmacao || senhaConfirmacaoField.touched) && !senhaConfirmacao" 
-              class="error">
-              O campo Confirmação de Senha é obrigatório.
-            </span>
-            <span 
-              *ngIf="senhaConfirmacao && senhaConfirmacao !== infosColaborador.Senha" 
-              class="error">
-              As senhas não coincidem.
-            </span> 
-      
-          <div class="datepicker-container">
+            <!-- Celular -->
             <input
               matInput
-              [matDatepicker]="picker"
-              placeholder="Data de Nascimento"
-              [(ngModel)]="infosColaborador.DataNascimento"
-              name="dataNascimento"
+              type="text"
+              name="telefone"
+              placeholder="Digite seu número de celular"
+              [(ngModel)]="infosColaborador.Celular"
+              #telefone="ngModel"
+              (input)="formatarCelular()"
+              (blur)="celularTouched = true"
               required
-              #dataNascimento="ngModel"
-              readonly
+              maxlength="15"
+              pattern="^\(\d{2}\) \d{5}-\d{4}$"
             />
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </div>
-          <span class="error" *ngIf="dataNascimento.invalid && (dataNascimento.dirty || dataNascimento.touched)">
-            A data de nascimento é obrigatória.
-          </span>
-      
+            <span *ngIf="(celularTouched || telefone.touched) && !infosColaborador.Celular" class="error">
+              O número de celular é obrigatório.
+            </span>
+            <span *ngIf="(celularTouched || telefone.touched) && telefone.invalid && infosColaborador.Celular" class="error">
+              Digite um número válido no formato (XX) XXXXX-XXXX.
+            </span>
+
+            <!-- Senha -->
+            <input
+              matInput
+              type="password"
+              name="senha"
+              placeholder="Digite sua senha"
+              [(ngModel)]="infosColaborador.Senha"
+              #senha="ngModel"
+              required
+              minlength="8"
+            />
+            <span *ngIf="(senhaTouched || senha.touched) && !infosColaborador.Senha" class="error">
+              O campo Senha é obrigatório.
+            </span>
+            <span *ngIf="(senhaTouched || senha.touched) && !senha.valid && infosColaborador.Senha" class="error">
+              A senha deve conter pelo menos 8 caracteres.
+            </span>
+
+            <!-- Confirmação de Senha -->
+            <input
+              matInput
+              type="password"
+              name="senhaConfirmacao"
+              placeholder="Confirme sua senha"
+              [(ngModel)]="senhaConfirmacao"
+              #senhaConfirmacaoField="ngModel"
+              required
+            />
+            <span *ngIf="(senhaConfirmacao || senhaConfirmacaoField.touched) && !senhaConfirmacao" class="error">
+              O campo Confirmação de Senha é obrigatório.
+            </span>
+            <span *ngIf="senhaConfirmacao && senhaConfirmacao !== infosColaborador.Senha" class="error">
+              As senhas não coincidem.
+            </span>
+
+            <!-- Data de Nascimento -->
+            <div class="datepicker-container">
+              <input
+                matInput
+                [matDatepicker]="picker"
+                placeholder="Data de Nascimento"
+                [(ngModel)]="infosColaborador.DataNascimento"
+                name="dataNascimento"
+                required
+                #dataNascimento="ngModel"
+                readonly
+              />
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </div>
+            <span *ngIf="dataNascimento.invalid && (dataNascimento.dirty || dataNascimento.touched)" class="error">
+              A data de nascimento é obrigatória.
+            </span>
+
+            <!-- Botão -->
             <div class="alternative-login">
-              <button 
-                class="botão-entrar" 
-                [disabled]="!infosColaborador.Email || !infosColaborador.Senha" 
-                (click)="validarFormulario() && Cadastro()">
+              <button
+                class="botão-entrar"
+                [disabled]="!infosColaborador.Email || !infosColaborador.Senha"
+                (click)="validarFormulario() && Cadastro()"
+              >
                 Cadastre-se
               </button>
             </div>
           </div>
         </div>
-        <div class="info-section">
-          <video autoplay muted loop width="600" height="750" onloadedmetadata="this.currentTime=1;">
-              <source src="assets/videos/veritaIa.mp4" type="video/mp4;" />
-              Seu navegador não suporta vídeos HTML5.
-          </video>
-      </div>
-      </div>     
-       
-    </div>
 
+        <!-- Seção com Vídeo -->
+        <div class="info-section">
+          <video autoplay muted loop width="100%" height="100%" onloadedmetadata="this.currentTime=1;">
+            <source src="assets/videos/veritaIa.mp4" type="video/mp4;" />
+            Seu navegador não suporta vídeos HTML5.
+          </video>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

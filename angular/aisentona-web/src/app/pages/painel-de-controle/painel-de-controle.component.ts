@@ -27,6 +27,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { EditoriaRequest } from '../../core/interfaces/Request/Editorias';
 import { StatusRequest } from '../../core/interfaces/Request/Status';
 import { PostagemResponse } from '../../core/interfaces/Response/Postagem';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-painel-de-controle',
@@ -55,6 +56,7 @@ import { PostagemResponse } from '../../core/interfaces/Response/Postagem';
     MatNativeDateModule,
     DatePipe,
     MatPaginatorModule,
+    MatTooltipModule,
   ],
   templateUrl: './painel-de-controle.component.html',
   styleUrls: ['./painel-de-controle.component.css'],

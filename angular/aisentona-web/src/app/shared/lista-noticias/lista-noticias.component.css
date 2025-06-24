@@ -1,100 +1,223 @@
+/* --- Estilos Gerais para o Painel de Notícias --- */
 .painel-noticias {
-  display: flex;
-  gap: 20px; /* Espaçamento entre os elementos */
-  margin: 0 auto;
-  width: 100%;
-  margin-bottom: 40px;
-  border: none;
-  box-shadow: none;
-  background-color: #F9F9F9;
+    display: flex; /* Usa flexbox para organizar as seções de notícias e widgets */
+    flex-wrap: wrap; /* Permite que as seções quebrem para a próxima linha em telas menores */
+    gap: 20px; /* Espaçamento entre as seções (listagem de notícias e barra de widgets) */
+    margin: 0 auto 40px auto; /* Centraliza o painel e adiciona margem inferior */
+    width: 100%; /* Ocupa toda a largura disponível */
+    background-color: #fff; /* Fundo branco */
+    box-shadow: none; /* Remove sombra padrão */
+    border: none; /* Remove borda padrão */
 }
 
+/* --- Estilos para a Listagem Principal de Notícias --- */
 .listagem-de-noticias {
-  width: 60%; /* A largura da lista de notícias */
-  display: flex;
-  flex-direction: column;
-  background-color: #F9F9F9 !important;
+    flex: 1 1 60%; /* Ocupa 60% da largura em telas grandes, mas pode encolher e crescer */
+    display: flex; /* Usa flexbox para organizar os itens de notícia */
+    flex-direction: column; /* Organiza os itens de notícia em uma coluna */
+    background-color: #fff !important; /* Fundo branco para a listagem */
+    min-width: 300px; /* Largura mínima para evitar que a listagem fique muito pequena */
 }
 
+/* --- Estilos para o Nome da Categoria (Editoria) --- */
+.nome-categoria {
+    margin-top: 20px !important; /* Ajuste de margem superior para o nome da categoria */
+}
+
+/* --- Estilos para a Barra Lateral de Widgets --- */
 .barra-de-widgets {
-  width: 40%; /* A largura do widget de clima */
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 16px;
-  box-sizing: border-box;
-  margin-bottom: 20px;
+    flex: 1 1 35%; /* Ocupa 35% da largura em telas grandes, mas pode encolher e crescer */
+    display: flex; /* Usa flexbox para organizar os widgets internamente */
+    flex-direction: column; /* Organiza os widgets em uma coluna */
+    border: 1px solid #e0e0e0; /* Borda sutil para a barra de widgets */
+    border-radius: 8px; /* Cantos arredondados */
+    padding: 16px; /* Espaçamento interno */
+    box-sizing: border-box; /* Garante que padding e borda não aumentem a largura total */
+    margin-bottom: 20px; /* Margem inferior, útil quando a barra de widgets se empilha */
+    overflow: hidden; /* Garante que o conteúdo não vaze */
+    min-width: 280px; /* Largura mínima para a barra de widgets */
 }
 
 .barra-de-widgets > *:last-child {
-  margin-bottom: 10px; /* Espaçamento de 10px abaixo do último item */
+    margin-bottom: 10px; /* Adiciona uma pequena margem inferior ao último item dentro da barra de widgets */
 }
 
-.barra-de-widgets {
-  display: inline-flex; /* Ajusta conforme o conteúdo, mas ainda flex */
-  flex-direction: column;
-}
-
-.barra-de-widgets {
-  overflow: hidden;
-}
-
-/* Restante do estilo das notícias */
+/* --- Estilos para os Cards Individuais de Notícia na Listagem --- */
 .item-noticia {
-  width: 100%; /* A largura da notícia */
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-  align-items: stretch; /* Garante que a imagem e o texto tenham a mesma altura */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: none !important;
-  background-color: #fff;
-  cursor: pointer;
-  margin-bottom: 20px;
+    width: 100%; /* Ocupa toda a largura disponível dentro da listagem */
+    display: flex; /* Usa flexbox para organizar imagem e texto lado a lado */
+    flex-direction: row; /* Coloca imagem e texto em linha */
+    gap: 16px; /* Espaçamento entre a imagem e o texto */
+    align-items: stretch; /* Garante que os itens se estiquem para preencher a altura */
+    border: 1px solid #ddd; /* Borda para o card */
+    border-radius: 8px; /* Cantos arredondados */
+    padding: 16px; /* Espaçamento interno */
+    background-color: #fff; /* Fundo branco */
+    cursor: pointer; /* Indica que o card é clicável */
+    margin-bottom: 20px; /* Espaçamento entre os cards de notícia */
+    box-shadow: none !important; /* Remove sombra padrão do Material Card */
 }
 
 .imagem-noticia {
-  width: 35%; /* Imagem ocupa 35% na horizontal */
-  height: 100%; /* Imagem ocupa 100% na vertical */
-  object-fit: cover; /* Garante que a imagem se ajuste sem distorcer */
-  border-radius: 4px; /* Ajuste nos cantos da imagem */
+    width: 270px !important; /* Largura fixa para a imagem da notícia */
+    height: 220px !important; /* Altura fixa para a imagem da notícia */
+    object-fit: cover; /* Corta a imagem para cobrir a área sem distorcer, mantendo a proporção */
+    border-radius: 4px; /* Cantos levemente arredondados para a imagem */
+}
+
+.imagem-descricao {
+    display: flex; /* Usa flexbox para o container de descrição */
+    flex-direction: column; /* Coloca o texto em coluna */
+    justify-content: space-between; /* Distribui o espaço entre os elementos de texto */
 }
 
 .detalhes-texto {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+    flex: 1; /* Permite que este container de texto ocupe o espaço disponível */
+    display: flex; /* Usa flexbox para os detalhes do texto */
+    flex-direction: column; /* Organiza os elementos de texto em coluna */
 }
 
 .nome-editoria {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #7070AC;
-  margin: 0;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #7070AC; /* Cor específica para o nome da editoria */
+    margin: 0; /* Remove margem padrão */
 }
 
 .titulo-noticia {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #333;
-  margin: 8px 0;
-  cursor: pointer;
-  text-decoration: none;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+    margin: 8px 0; /* Margem vertical para o título */
+    cursor: pointer;
+    text-decoration: none; /* Remove sublinhado padrão de links */
 }
 
 .titulo-noticia:hover {
-  color: darkblue;
+    color: darkblue; /* Altera a cor do título ao passar o mouse */
 }
 
 .descricao-noticia {
-  font-size: 1rem;
-  color: #666;
-  margin: 8px 0;
+    font-size: 1rem;
+    color: #666;
+    margin: 8px 0; /* Margem vertical para a descrição */
 }
 
-.botao-global{
-  margin-bottom: 30px;
+/* --- Estilos para o Botão "Carregar Mais" --- */
+.botao-carregar-mais {
+    text-align: center; /* Centraliza o botão */
+    margin-top: 20px; /* Margem superior */
+}
+
+.botao-global {
+    margin-bottom: 30px; /* Margem inferior para o botão */
+    /* Adicione aqui quaisquer estilos gerais do seu botão se houver */
+}
+
+/* ========================== */
+/* RESPONSIVIDADE             */
+/* ========================== */
+
+/* --- Telas até 1024px (tablets em paisagem e desktops menores) --- */
+@media (max-width: 1024px) {
+    .painel-noticias {
+        flex-direction: column; /* Empilha as colunas (notícias e widgets) */
+        align-items: center; /* Centraliza o conteúdo quando empilhado */
+    }
+
+    .listagem-de-noticias,
+    .barra-de-widgets {
+        width: 95%; /* Ocupa quase a largura total da tela */
+        flex: none; /* Remove a flexibilidade para que a largura seja fixa em 95% */
+        min-width: unset; /* Remove o min-width fixo para permitir que encolha se necessário */
+    }
+
+    .item-noticia {
+        flex-direction: column; /* Empilha a imagem e o texto dentro de cada card de notícia */
+        gap: 10px; /* Ajusta o espaçamento quando empilhado */
+        padding: 10px; /* Reduz o padding do card */
+    }
+
+    .imagem-noticia {
+        width: 100% !important; /* Faz a imagem ocupar 100% da largura do card */
+        height: 200px !important; /* Ajusta a altura da imagem */
+    }
+
+    .nome-editoria {
+        margin-top: 10px !important; /* Ajusta a margem superior da editoria */
+    }
+}
+
+/* --- Telas até 768px (celulares grandes e tablets em retrato) --- */
+@media (max-width: 768px) {
+    .listagem-de-noticias,
+    .barra-de-widgets {
+        width: 98%; /* Aumenta a largura para ocupar quase toda a tela */
+        margin-left: auto; /* Centraliza o bloco */
+        margin-right: auto; /* Centraliza o bloco */
+    }
+
+    .nome-editoria {
+        font-size: 1.1rem; /* Reduz o tamanho da fonte da editoria */
+    }
+
+    .titulo-noticia {
+        font-size: 1.2rem; /* Reduz o tamanho da fonte do título */
+        margin: 5px 0; /* Ajusta a margem do título */
+    }
+
+    .descricao-noticia {
+        font-size: 0.9rem; /* Reduz o tamanho da fonte da descrição */
+        margin: 5px 0; /* Ajusta a margem da descrição */
+    }
+
+    .imagem-noticia {
+        height: 180px !important; /* Ajusta a altura da imagem */
+    }
+
+    .barra-de-widgets {
+        padding: 10px; /* Reduz o padding da barra de widgets */
+    }
+}
+
+/* --- Telas até 480px (celulares pequenos) --- */
+@media (max-width: 480px) {
+    .painel-noticias {
+        gap: 15px; /* Reduz o espaçamento geral */
+    }
+
+    .item-noticia {
+        padding: 8px; /* Reduz ainda mais o padding do card */
+        gap: 8px; /* Reduz o espaçamento interno do card */
+        margin-bottom: 15px; /* Reduz a margem entre os cards */
+    }
+
+    .titulo-noticia {
+        font-size: 1rem; /* Tamanho de fonte mínimo para o título */
+        margin: 3px 0; /* Pequena margem para o título */
+    }
+
+    .descricao-noticia {
+        font-size: 0.85rem; /* Tamanho de fonte mínimo para a descrição */
+        margin: 3px 0; /* Pequena margem para a descrição */
+    }
+
+    .imagem-noticia {
+        height: 150px !important; /* Altura mínima para a imagem */
+    }
+
+    .nome-editoria {
+        font-size: 1rem; /* Ajuste final para a fonte da editoria */
+    }
+
+    .botao-global {
+        width: 90%; /* Faz o botão ocupar mais largura */
+        font-size: 0.9rem; /* Reduz o tamanho da fonte do botão */
+        padding: 10px 15px; /* Ajusta o padding do botão */
+    }
+
+    .botao-carregar-mais {
+        margin-top: 10px; /* Reduz a margem superior do container do botão */
+        margin-bottom: 20px; /* Ajusta a margem inferior do container do botão */
+    }
 }

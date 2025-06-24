@@ -1,5 +1,5 @@
 <app-container class="container-criar-noticia">
-    <h2>CRIAÇÃO DE NOTÍCIAS</h2>
+    <h2 class="cricao-de-noticias">CRIAÇÃO DE NOTÍCIAS</h2>
   
     <div class="cabecalho-noticia">
       <mat-form-field class="titulo">
@@ -50,13 +50,11 @@
           [style.height]="'500px'"
         ></quill-editor>
   
-        <h3>ALERTAS</h3>
+        <h3 class="marcacoes" >MARCAÇÕES DE OPINIÃO DO TEXTO </h3>
         <div *ngFor="let alerta of infosPostagem.alertas; let i = index" class="alerta-item">
           <mat-form-field class="alerta">
             <mat-label>Alerta {{ alerta.numeroAlerta }}</mat-label>
             <textarea
-              maxlength="300"
-              placeholder="Máximo de 300 caracteres"
               matInput
               [(ngModel)]="alerta.mensagem"
             ></textarea>
@@ -67,10 +65,10 @@
         </div>
   
         <button mat-raised-button color="accent" (click)="adicionarAlerta()" [disabled]="infosPostagem.alertas.length >= 20">
-          <mat-icon>add</mat-icon> Adicionar Alerta
+          <mat-icon>add</mat-icon> Adicionar Marcação
         </button>
   
-        <h3>MATÉRIA GERADA POR VERITARE</h3>
+        <h3 class="materia-gerada">MATÉRIA GERADA POR VERITARE</h3>
         <quill-editor
           class="texto-da-noticia"
           [(ngModel)]="infosPostagem.textoAlteradoPorIA"

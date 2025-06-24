@@ -1,28 +1,34 @@
 <footer class="app-footer">
-    <app-container>
-      <div class="inner">
-        <ul>
-          <li>
-            Portifólio de Desenvolvedor
-          </li>
-          <li>
-            Desenvolvido por Rodrigo Soares.
-          </li>
-        </ul>
-        <ul class="socials">
-          <li>Acesse nossas redes:</li>
-          <li>
-            <button mat-icon-button>
-              <img src="assets/icones/whatsapp.png"  alt="Ícone do whatsapp">
-            </button>
-            <button mat-icon-button>
-              <img src="assets/icones/instagram.png" alt="Ícone do instagram">
-            </button>
-            <button mat-icon-button>
-              <img src="assets/icones/twitter.png" alt="Ícone do twitter">
-            </button>
-          </li>
-        </ul>
+  <app-container>
+    <div class="inner d-flex justify-content-between align-items-center">
+      <!-- Informações de texto -->
+      <ul class="footer-info mb-0">
+        <li>Portfólio de Desenvolvedor</li>
+        <li>Desenvolvido por Rodrigo Soares.</li>
+      </ul>
+
+      <!-- Links de navegação -->
+      <ul class="footer-links mb-0 d-flex">
+        <li><a href="http://localhost:4200/sobre" class="footer-link">Sobre</a></li>
+        <li><a href="http://localhost:4200/assine" class="footer-link">Assine</a></li>
+        <li><a href="http://localhost:4200/sobre#sobre-o-prompt" class="footer-link">Nosso Prompt</a></li>
+      </ul>
+
+      <!-- Ícones de redes sociais -->
+      <div class="social-share d-flex justify-content-center">
+        <a href="#" class="share-icon mx-2" id="facebook">
+          <i class="fab fa-facebook"></i> <!-- Ícone do Facebook -->
+        </a>
+        <a href="#" class="share-icon mx-2" id="whatsapp">
+          <i class="fab fa-whatsapp"></i> <!-- Ícone do WhatsApp -->
+        </a>
+        <a href="#" class="share-icon mx-2" id="instagram">
+          <i class="fab fa-instagram"></i> <!-- Ícone do Instagram -->
+        </a>
+        <a href="#" class="share-icon mx-2" id="x">
+          <i class="fab fa-x-twitter"></i> <!-- Ícone do X (antigo Twitter) -->
+        </a>
       </div>
-    </app-container>
-  </footer>
+    </div>
+  </app-container>
+</footer>
