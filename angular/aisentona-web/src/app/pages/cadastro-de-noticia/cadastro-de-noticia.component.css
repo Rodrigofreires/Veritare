@@ -117,10 +117,26 @@
   }
   
   .alerta {
+
     flex: 1; /* Faz com que o mat-form-field ocupe o máximo de espaço disponível */
     margin-right: 8px; /* Adiciona espaço entre o campo de texto e o botão */
   }
   
+  .materia-gerada{
+    margin-top: 20px !important;
+    margin-top: 20px !important;
+  }
+
+  .marcacoes{
+    margin-bottom: 20px !important;
+    margin-top: 20px !important;
+  }
+
+  .cricao-de-noticias{
+    margin-bottom: 20px !important;
+    margin-top: 20px !important;
+  }
+
   button {
     flex-shrink: 0; /* Garante que o botão mantenha seu tamanho fixo */
   }

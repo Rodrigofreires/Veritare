@@ -1,8 +1,19 @@
+<mat-sidenav-container class="app-sidenav-container">
+  <mat-sidenav #sidenav mode="over" class="app-mobile-sidenav">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/home" (click)="sidenav.close()">Home</a>
+      <a mat-list-item *ngIf="headerRef?.isLoggedIn && headerRef?.acessarPainelDeControle()" routerLink="/painel-de-controle" (click)="sidenav.close()">PAINEL DE CONTROLE</a>
+      <a mat-list-item routerLink="/sobre" (click)="sidenav.close()">Sobre</a>
+      <a mat-list-item *ngIf="!headerRef?.isLoggedIn" routerLink="/cadastro-de-usuario" (click)="sidenav.close()">Cadastre-se</a>
+      <a mat-list-item *ngIf="!headerRef?.isLoggedIn" routerLink="/login" (click)="sidenav.close()">Login</a>
+      <a mat-list-item *ngIf="headerRef?.isLoggedIn" [routerLink]="['/perfil-de-usuario', headerRef?.idUsuario]" (click)="sidenav.close()">Perfil</a>
+      <a mat-list-item *ngIf="headerRef?.isLoggedIn" (click)="headerRef?.logout(); sidenav.close()">Logout</a>
+    </mat-nav-list>
+  </mat-sidenav>
 
-<div style="background-color: #FFFF;">
-    <app-header></app-header>
-    <app-editoria></app-editoria>
+  <mat-sidenav-content>
+    <app-header (toggleSidenav)="sidenav.toggle()" #headerRef></app-header>
+
     <router-outlet></router-outlet>
-
-</div>
-<app-footer></app-footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

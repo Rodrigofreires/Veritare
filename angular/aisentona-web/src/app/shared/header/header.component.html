@@ -2,23 +2,34 @@
   <mat-toolbar class="tool-bar">
     <a routerLink="/home" class="home-link">VERITARE</a>
 
-    <button *ngIf="isLoggedIn && acessarPainelDeControle()" mat-flat-button class="botao-header" routerLink="/painel-de-controle">PAINEL DE CONTROLE</button>
-    <div class="login">
-      
-      <!-- Exibe o nome do usuário, se ele estiver logado -->
-      <!-- <span *ngIf="isLoggedIn" class="user-name">Bem-vindo, {{ userName }}!</span> -->
+    <!-- Botão do Menu Mobile (Hambúrguer) -->
+    <!-- Este botão será visível APENAS em telas menores, controlado pelo CSS. -->
+    <button mat-icon-button class="mobile-menu-button" (click)="toggleMobileMenu()">
+      <mat-icon>menu</mat-icon>
+    </button>
 
-      <button  mat-flat-button class="botao-header" routerLink="/sobre">Sobre</button>
+    <!-- Contêiner para a Navegação Desktop -->
+    <!-- Este DIV contém TODOS os botões de desktop. Será ocultado em telas menores via CSS. -->
+    <div class="desktop-nav">
+      <!-- Botão "PAINEL DE CONTROLE" -->
+      <!-- Exibido apenas se o usuário estiver logado E tiver permissão de acesso ao painel. -->
+      <button *ngIf="isLoggedIn && acessarPainelDeControle()" mat-flat-button class="botao-header" routerLink="/painel-de-controle">PAINEL DE CONTROLE</button>
 
-      <!-- Botões para usuários não logados -->
-      <button *ngIf="!isLoggedIn" mat-flat-button class="botao-header" routerLink="/cadastro-de-usuario">Cadastre-se</button>
-      <button *ngIf="!isLoggedIn" mat-flat-button class="botao-header" routerLink="/login">Login</button>
+      <!-- Grupo de Botões de Login/Perfil/Sobre -->
+      <div class="login">
+        <!-- Botão "Sobre" - Sempre visível -->
+        <button mat-flat-button class="botao-header" routerLink="/sobre">Sobre</button>
 
-      <!-- Botões para usuários logados -->
+        <!-- Botões para usuários NÃO logados -->
+        <!-- Exibidos apenas se o usuário NÃO estiver logado. -->
+        <button *ngIf="!isLoggedIn" mat-flat-button class="botao-header" routerLink="/cadastro-de-usuario">Cadastre-se</button>
+        <button *ngIf="!isLoggedIn" mat-flat-button class="botao-header" routerLink="/login">Login</button>
 
-      <button *ngIf="isLoggedIn" mat-flat-button class="botao-header" [routerLink]="['/perfil-de-usuario', idUsuario]">Perfil</button>
-      <button *ngIf="isLoggedIn" mat-flat-button class="botao-header" (click)="logout()">Logout</button>
-
+        <!-- Botões para usuários LOGADOS -->
+        <!-- Exibidos apenas se o usuário estiver logado. -->
+        <button *ngIf="isLoggedIn" mat-flat-button class="botao-header" [routerLink]="['/perfil-de-usuario', idUsuario]">Perfil</button>
+        <button *ngIf="isLoggedIn" mat-flat-button class="botao-header" (click)="logout()">Logout</button>
+      </div>
     </div>
   </mat-toolbar>
 </header>

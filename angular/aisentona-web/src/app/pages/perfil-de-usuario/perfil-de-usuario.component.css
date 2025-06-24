@@ -210,10 +210,7 @@ h2 {
         align-items: flex-start;
     }
     
-    /* // Ajustes para o alinhamento das infos dentro da coluna
-    .informacoes-basicas {
-        padding: 35px; /* Mais padding em telas maiores */
-    } */
+    } 
 
     .informacoes-perfil p strong {
         min-width: 140px; /* Garante que os labels tenham espaço suficiente */
