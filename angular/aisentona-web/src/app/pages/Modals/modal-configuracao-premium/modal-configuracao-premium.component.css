@@ -1,0 +1,125 @@
+/* modal-configurar-premium.component.css */
+
+/* Estilo geral do modal */
+.mat-mdc-dialog-container .mat-mdc-dialog-surface {
+    padding: 24px; /* Aumenta o preenchimento em torno de todo o conteúdo do diálogo */
+    border-radius: 12px; /* Cantos levemente arredondados para um visual moderno */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Sombra mais suave e pronunciada */
+}
+
+/* Estilo do título */
+h2.mat-dialog-title {
+    color: #3f51b5; /* Cor primária do Material Design */
+    font-size: 1.8em; /* Título um pouco maior */
+    font-weight: 600; /* Título mais encorpado */
+    margin-bottom: 20px; /* Mais espaço abaixo do título */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Separador sutil */
+    padding-bottom: 15px;
+}
+
+/* Estilo dos cabeçalhos de seção */
+p {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #555;
+    margin-top: 25px; /* Mais espaço acima das novas seções */
+    margin-bottom: 15px; /* Espaço abaixo do título da seção */
+    text-transform: uppercase; /* Deixa os títulos de seção em maiúsculas para destaque */
+    letter-spacing: 0.5px;
+}
+
+/* Contêiner do formulário e layout de grade */
+.perfil-usuario {
+    padding: 0 10px; /* Pequeno preenchimento dentro da área de conteúdo */
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Colunas de grade responsivas */
+    gap: 20px; /* Espaço entre os itens da grade */
+    margin-bottom: 20px; /* Espaço abaixo de cada seção da grade */
+}
+
+.grid-item {
+    padding: 0; /* Não é necessário preenchimento interno para os itens da grade */
+}
+
+.full-width {
+    width: 100%; /* Garante que os campos do formulário ocupem a largura total do item da grade */
+}
+
+/* Campos de formulário Material Design */
+mat-form-field {
+    margin-bottom: 10px; /* Espaçamento consistente abaixo de cada campo do formulário */
+}
+
+/* Espaçamento específico do Mat Slide Toggle */
+mat-slide-toggle {
+    margin-top: 15px; /* Ajusta o espaçamento acima do toggle */
+    margin-bottom: 15px; /* Ajusta o espaçamento abaixo do toggle */
+    font-size: 1.05em;
+    font-weight: 500;
+}
+
+/* Ações do diálogo (botões) */
+mat-dialog-actions {
+    padding-top: 20px; /* Mais espaço acima dos botões de ação */
+    border-top: 1px solid rgba(0, 0, 0, 0.1); /* Separador sutil acima dos botões */
+    margin-top: 20px; /* Garante espaço do conteúdo acima */
+}
+
+mat-dialog-actions button {
+    min-width: 120px; /* Define uma largura mínima consistente para os botões */
+    height: 44px; /* Deixa os botões um pouco mais altos */
+    font-size: 1em; /* Tamanho de fonte legível */
+    font-weight: 500;
+    border-radius: 8px; /* Botões ligeiramente mais arredondados */
+    transition: all 0.2s ease-in-out; /* Transições suaves para efeitos de hover */
+}
+
+mat-dialog-actions button:first-child {
+    margin-right: 15px; /* Espaço entre os botões */
+}
+
+mat-dialog-actions button[color="primary"]:not([disabled]) {
+    background-color: #3f51b5;
+    color: white;
+}
+
+mat-dialog-actions button[color="primary"]:not([disabled]):hover {
+    background-color: #303f9f; /* Tom mais escuro no hover */
+    transform: translateY(-2px); /* Efeito de elevação sutil */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+mat-dialog-actions button[color="warn"]:not([disabled]) {
+    background-color: #f44336;
+    color: white;
+}
+
+mat-dialog-actions button[color="warn"]:not([disabled]):hover {
+    background-color: #d32f2f; /* Tom mais escuro no hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo dos botões desabilitados */
+mat-dialog-actions button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Estados de foco para acessibilidade e feedback visual */
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
+    color: #3f51b5 !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-outline {
+    border-color: #3f51b5 !important;
+}
+
+.mat-mdc-select.mat-focused .mat-mdc-select-trigger {
+    color: #3f51b5 !important;
+}

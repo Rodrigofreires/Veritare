@@ -1,88 +1,101 @@
 /* --- Estilos para o Container do Header --- */
 .app-header {
-  width: 100%;
-  position: relative;
-  z-index: 1000;
-  min-height: 56px; /* Altura mínima para a barra de ferramentas */
+    width: 100%;
+    position: relative;
+    z-index: 1000;
+    min-height: 56px; /* Altura mínima para a barra de ferramentas */
 }
 
 /* --- Estilos para a Toolbar Principal --- */
 .tool-bar {
-  background-color: #1E1E2E !important;
-  color: white; /* Cor padrão para elementos que herdam na toolbar */
-  padding: 0 10%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 64px;
-  box-sizing: border-box;
+    background-color: #1E1E2E !important;
+    color: white; /* Cor padrão para elementos que herdam na toolbar */
+    padding: 0 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 64px;
+    box-sizing: border-box;
 }
 
 /* ---------------------------------------------------------------------------------- */
-/* AS MUDANÇAS CHAVE PARA DEIXAR TODOS OS ITENS DO TOOLBAR BRANCOS */
+/* AS MUDANÇAS CHAVE PARA DEIXAR TODOS OS ITENS DO TOOLBAR BRANCOS E SEM CONTORNO AZUL */
 /* ---------------------------------------------------------------------------------- */
 
 /* Força a cor branca para o link do logo */
 .home-link {
-  text-decoration: none;
-  color: white !important; /* FORÇA O BRANCO */
-  font-size: 24px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-right: auto;
-  flex-shrink: 0;
+    text-decoration: none;
+    color: white !important; /* FORÇA O BRANCO */
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: auto;
+    flex-shrink: 0;
 }
 
 .home-link:hover {
-  color: #A29BFE !important; /* Mantém o hover com a cor de destaque */
+    color: #A29BFE !important; /* Mantém o hover com a cor de destaque */
 }
 
 /* Força a cor branca para todos os botões do header */
 .botao-header {
-  background-color: transparent;
-  color: white !important; /* FORÇA O BRANCO */
-  margin: 0 8px;
-  transition: color 0.3s ease;
-  flex-shrink: 0;
+    background-color: transparent;
+    color: white !important; /* FORÇA O BRANCO */
+    margin: 0 8px;
+    transition: color 0.3s ease;
+    flex-shrink: 0;
 
-  /* --- NOVAS REGRAS PARA REMOVER O CONTORNO AZUL --- */
-  border: none !important; /* Garante que não haja bordas inesperadas */
-  outline: none !important; /* Remove o contorno padrão do navegador */
-}
-
-/* Garante que o contorno de foco do Material Design também seja removido */
-/* Esta regra é bem agressiva e pode afetar a acessibilidade de teclado, use com cautela. */
-.botao-header.mat-mdc-button:focus:not(.mat-mdc-button-disabled) .mat-mdc-button-persistent-ripple {
-    opacity: 0 !important; /* Remove o ripple (se ele for o contorno azul) */
-    outline: none !important; /* Garante que não haja outline */
-    border: none !important; /* Garante que não haja borda */
-}
-/* Alvo específico para o foco visível, para remover o outline azul */
-.botao-header:focus-visible {
-    outline: none !important;
-    box-shadow: none !important; /* Garante que não haja sombra de foco */
+    /* --- REGRAS PARA REMOVER O CONTORNO E O BRILHO AZUL --- */
     border: none !important;
+    outline: none !important; /* Remove o contorno padrão do navegador */
+    box-shadow: none !important; /* Remove qualquer sombra inesperada */
 }
 
-/* Garante que o ripple não afete a cor, se for o caso */
-.botao-header .mat-mdc-button-persistent-ripple {
+/* Alvo específico para remover o outline e o ripple de foco do Material Design */
+/* ATENÇÃO: Desabilitar completamente o outline pode impactar a acessibilidade por teclado. */
+/* É crucial testar a navegação por teclado para garantir que usuários ainda saibam onde está o foco. */
+.botao-header.mat-mdc-button,
+.botao-header.mat-mdc-button .mat-mdc-button-persistent-ripple {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    /* Para o ripple, podemos apenas torná-lo transparente se ele for o problema */
     background-color: transparent !important;
+}
+
+/* Regra específica para o estado de foco do Material Design */
+.botao-header.mat-mdc-button:focus,
+.botao-header.mat-mdc-button.cdk-focused:not(.cdk-program-focused) {
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Se o problema for o "ripple" de foco, podemos tentar ocultá-lo */
+.botao-header .mat-mdc-button-persistent-ripple {
+    opacity: 0 !important;
+    background-color: transparent !important; /* Apenas para garantir que não haja cor de fundo */
+}
+
+/* Outras classes de foco do Material Design que podem precisar de override */
+.mat-mdc-focus-indicator {
+    display: none !important; /* Esconde o indicador de foco padrão do MDC */
 }
 
 
 .botao-header:hover {
-  color: #A29BFE !important; /* Mantém o hover com a cor de destaque */
+    color: #A29BFE !important; /* Mantém o hover com a cor de destaque */
 }
 
 /* Força a cor branca para o ícone do botão de menu mobile */
 .mobile-menu-button mat-icon {
-  color: white !important; /* FORÇA O BRANCO NO ÍCONE */
+    color: white !important; /* FORÇA O BRANCO NO ÍCONE */
 }
 
 /* Força a cor branca para qualquer span de texto dentro do .login ou diretamente na tool-bar */
 .tool-bar span,
 .login span {
-  color: white !important; /* Garante que 'Bem-vindo, {{ userName }}!' seja branco se reativado */
+    color: white !important; /* Garante que 'Bem-vindo, {{ userName }}!' seja branco se reativado */
 }
 
 /* ---------------------------------------------------------------------------------- */
@@ -92,37 +105,37 @@
 
 /* --- Estilos para o container de login/usuário (Desktop) --- */
 .login {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  flex-grow: 1;
-  justify-content: flex-end;
-  margin-right: 8px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    flex-grow: 1;
+    justify-content: flex-end;
+    margin-right: 8px;
 }
 
 /* --- Estilos para o contêiner da navegação desktop --- */
 .desktop-nav {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /* --- Estilos para o nome do usuário (se for reativado) --- */
 /* Certifica que a cor permanece branca, se a linha for descomentada */
 .user-name {
-  font-size: medium;
-  margin-right: 16px;
-  color: white !important;
+    font-size: medium;
+    margin-right: 16px;
+    color: white !important;
 }
 
 /* --- Sobrescrita de estilos Material Design (se aplicável) --- */
 .mat-mdc-outlined-button:not(:disabled) {
-  border-color: white;
+    border-color: white;
 }
 
 /* --- OCULTA o botão de menu mobile POR PADRÃO (em desktop) --- */
 .mobile-menu-button {
-  display: none !important;
+    display: none !important;
 }
 
 
@@ -132,67 +145,67 @@
 
 /* --- Telas até 1024px (tablets em paisagem e desktops menores) --- */
 @media (max-width: 1024px) {
-  .tool-bar {
-    padding: 0 5%;
-    min-height: 60px;
-  }
+    .tool-bar {
+        padding: 0 5%;
+        min-height: 60px;
+    }
 
-  .home-link {
-    font-size: 22px;
-  }
+    .home-link {
+        font-size: 22px;
+    }
 
-  .botao-header {
-    font-size: 0.9rem;
-    margin: 0 6px;
-  }
-  
-  .login {
-      margin-right: 6px;
-  }
+    .botao-header {
+        font-size: 0.9rem;
+        margin: 0 6px;
+    }
+
+    .login {
+        margin-right: 6px;
+    }
 }
 
 /* --- Telas até 768px (celulares grandes e tablets em retrato) --- */
 @media (max-width: 768px) {
-  .tool-bar {
-    padding: 0 2%;
-    justify-content: space-between;
-    min-height: 56px;
-  }
+    .tool-bar {
+        padding: 0 2%;
+        justify-content: space-between;
+        min-height: 56px;
+    }
 
-  .home-link {
-    font-size: 20px;
-  }
+    .home-link {
+        font-size: 20px;
+    }
 
-  /* OCULTA o contêiner de navegação de desktop */
-  .desktop-nav {
-    display: none !important;
-  }
+    /* OCULTA o contêiner de navegação de desktop */
+    .desktop-nav {
+        display: none !important;
+    }
 
-  /* EXIBE o botão de menu mobile */
-  .mobile-menu-button {
-    display: block !important;
-    color: white; /* Cor do botão de hambúrguer em si, mas o ícone é mais específico acima */
-    font-size: 28px;
-    width: 48px;
-    height: 48px;
-    margin: 0;
-  }
+    /* EXIBE o botão de menu mobile */
+    .mobile-menu-button {
+        display: block !important;
+        color: white; /* Cor do botão de hambúrguer em si, mas o ícone é mais específico acima */
+        font-size: 28px;
+        width: 48px;
+        height: 48px;
+        margin: 0;
+    }
 }
 
 /* --- Telas até 480px (celulares pequenos) --- */
 @media (max-width: 480px) {
-  .tool-bar {
-    padding: 0 1%;
-    min-height: 52px;
-  }
+    .tool-bar {
+        padding: 0 1%;
+        min-height: 52px;
+    }
 
-  .home-link {
-    font-size: 18px;
-  }
+    .home-link {
+        font-size: 18px;
+    }
 
-  .mobile-menu-button {
-    font-size: 24px;
-    width: 40px;
-    height: 40px;
-  }
+    .mobile-menu-button {
+        font-size: 24px;
+        width: 40px;
+        height: 40px;
+    }
 }

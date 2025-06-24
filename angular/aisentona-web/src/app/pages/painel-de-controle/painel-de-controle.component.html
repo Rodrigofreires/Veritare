@@ -1,169 +1,155 @@
-<mat-sidenav-container class="dashboard-container">    
+<mat-sidenav-container class="dashboard-container">
     <mat-sidenav mode="side" opened class="sidenav">
-      <div class="painel-de-controle">
-        <h3>
-          <a routerLink="/painel-de-controle" class="clickable-link">Painel de Controle</a>
-        </h3>
-        <p><a routerLink="/home" class="clickable-link">veritare.com.br</a></p>
-      </div>
-      
-      
-      <mat-nav-list>
-        <a mat-list-item  routerLink="/painel-de-controle">
-          <mat-icon>dashboard</mat-icon>
-          <span>Publicações</span>
-        </a>
-        <a mat-list-item [routerLink]="'/cadastro-de-noticia'">
-          <mat-icon>article</mat-icon>
-          <span>Criar nova publicação</span>
-        </a> 
-        
-        <a mat-list-item routerLink="painel-de-controle/analytics">
-          <mat-icon>bar_chart</mat-icon>
-          <span>Analytics</span>
-        </a>
-        
-        <a mat-list-item routerLink="settings">
-          <mat-icon>settings</mat-icon>
-          <span>Painel de Usuários</span>
-        </a>
+        <div class="painel-de-controle">
+            <h3>
+                <a routerLink="/painel-de-controle" class="clickable-link">Painel de Controle</a>
+            </h3>
+            <p><a routerLink="/home" class="clickable-link">veritare.com.br</a></p>
+        </div>
 
-        <a mat-list-item routerLink="widgets">
-          <mat-icon>smart_display</mat-icon>
-          <span>Painel Youtube</span>
-        </a>
-      </mat-nav-list>
+
+        <mat-nav-list>
+            <a mat-list-item routerLink="/painel-de-controle">
+                <mat-icon>dashboard</mat-icon>
+                <span>Publicações</span>
+            </a>
+            <a mat-list-item [routerLink]="'/cadastro-de-noticia'">
+                <mat-icon>article</mat-icon>
+                <span>Criar nova publicação</span>
+            </a>
+
+            <a mat-list-item routerLink="painel-de-controle/analytics">
+                <mat-icon>bar_chart</mat-icon>
+                <span>Analytics</span>
+            </a>
+
+            <a mat-list-item routerLink="settings">
+                <mat-icon>settings</mat-icon>
+                <span>Painel de Usuários</span>
+            </a>
+
+            <a mat-list-item routerLink="widgets">
+                <mat-icon>smart_display</mat-icon>
+                <span>Painel Youtube</span>
+            </a>
+        </mat-nav-list>
     </mat-sidenav>
-  
+
     <mat-sidenav-content>
-      <div class="content">
-        <mat-toolbar cl >
-          <span>Painel de Publicações</span>
-        </mat-toolbar>
+        <div class="content">
+            <mat-toolbar cl>
+                <span>Painel de Publicações</span>
+            </mat-toolbar>
 
-        <mat-card class="painel-de-publicacoes">
-          <p>Filtros</p>
-          <div class="filters">
-            <mat-form-field appearance="outline">
-              <mat-label>Título</mat-label>
-              <input matInput placeholder="Search" [(ngModel)]="tituloProcurado" />
-            </mat-form-field>
-          
-            <mat-form-field appearance="outline">
-              <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="statusDaPublicacao">
-                <mat-option *ngFor="let status of ListaDeStatus" [value]="status.id">
-                  {{ status.descricao }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          
-            <mat-form-field appearance="outline">
-              <mat-label>Editoria</mat-label>
-              <mat-select [(ngModel)]="editoriaProcurada">
-                <mat-option *ngFor="let editoria of listaDeEditorias" [value]="editoria.id">
-                  {{ editoria.nome }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <mat-card class="painel-de-publicacoes">
+                <p>Filtros</p>
+                <div class="filters">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Título</mat-label>
+                        <input matInput placeholder="Buscar por título" [(ngModel)]="tituloProcurado" />
+                    </mat-form-field>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Tipo de Publicação</mat-label>
-              <mat-select [(ngModel)]="tipoSelecionado" name="tipoSelecionado">
-                <mat-option *ngFor="let tipo of tipoDePublicacao" [value]="tipo">
-                  {{ tipo }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-                   
-            <mat-form-field appearance="outline">
-              <mat-label>Data de publicação</mat-label>
-              <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" [value]="selectedDate" />
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-          
-            <div class="actions">
-              <button mat-raised-button color="primary" (click)="aplicarFiltros()">
-                Aplicar Filtros
-              </button>
-            </div>
-            <button mat-raised-button color="warn" (click)="resetarFiltros()">
-              Resetar Filtros
-            </button>
-          </div>
-          
-          <table mat-table [dataSource]="infosTodasAsPostagem" class="mat-elevation-z8">
-  
-            <!-- Título Column -->
-            <ng-container matColumnDef="titulo">
-              <th mat-header-cell *matHeaderCellDef> Título </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.titulo }} </td>
-            </ng-container>
-          
-            <!-- Descrição Column -->
-            <ng-container matColumnDef="descricao">
-              <th mat-header-cell *matHeaderCellDef> Descrição </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.descricao }} </td>
-            </ng-container>
-          
-            <!-- Categoria Column -->
-            <ng-container matColumnDef="nomeCategoria">
-              <th mat-header-cell *matHeaderCellDef> Categoria </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.nomeCategoria }} </td>
-            </ng-container>
-          
-            <!-- Status Column -->
-            <ng-container matColumnDef="nomeStatus">
-              <th mat-header-cell *matHeaderCellDef> Status </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.nomeStatus || 'Status não disponível' }} </td>
-            </ng-container>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Status</mat-label>
+                        <mat-select [(ngModel)]="statusDaPublicacao">
+                            <mat-option *ngFor="let status of ListaDeStatus" [value]="status.id">
+                                {{ status.descricao }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
 
-            <ng-container matColumnDef="premiumOuComum">
-              <th mat-header-cell *matHeaderCellDef> Premium/Comum </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.premiumOuComum === true ? 'Premium' : 'Comum' }} </td>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Editoria</mat-label>
+                        <mat-select [(ngModel)]="editoriaProcurada">
+                            <mat-option *ngFor="let editoria of listaDeEditorias" [value]="editoria.id">
+                                {{ editoria.nome }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
 
-            </ng-container>
-            <!-- Data de Criação Column -->
-            <ng-container matColumnDef="dataCriacao">
-              <th mat-header-cell *matHeaderCellDef> Data de Criação </th>
-              <td mat-cell *matCellDef="let postagem"> {{ postagem.dataCriacao | date:'dd/MM/yyyy HH:mm' }} </td>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tipo de Publicação</mat-label>
+                        <mat-select [(ngModel)]="tipoSelecionado" name="tipoSelecionado">
+                            <mat-option *ngFor="let tipo of tipoDePublicacao" [value]="tipo">
+                                {{ tipo }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
 
-            </ng-container>
-          
-            <!-- Ações Column -->
-            <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef> Ações </th>
-              <td mat-cell *matCellDef="let postagem">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Data de publicação</mat-label>
+                        <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" [value]="selectedDate" />
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
 
-                <button mat-icon-button (click)="editarNoticia(postagem.idPostagem)">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button (click)="excluirNoticia(postagem.idPostagem)">
-                  <mat-icon>delete</mat-icon>
-                </button>
-                <button mat-icon-button (click)="visualizarNoticia(postagem.idPostagem)">
-                  <mat-icon>visibility</mat-icon>
-                </button>
-              </td>
-            </ng-container>
-          
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>         
-          </table>
-          
-          <mat-paginator
-          [length]="totalDePostagens"
-          [pageSize]="quantidadePorPagina"
-          [pageSizeOptions]="[10, 20, 50]"
-          showFirstLastButtons
-          (page)="aoMudarPagina($event)">
-        </mat-paginator>
-        
-        
-          
-        </mat-card>
-      </div>
+                    <div class="actions">
+                        <button mat-raised-button color="primary" (click)="aplicarFiltros()">
+                            Aplicar Filtros
+                        </button>
+                    </div>
+                    <button mat-raised-button color="warn" (click)="resetarFiltros()">
+                        Resetar Filtros
+                    </button>
+                </div>
+
+                <table mat-table [dataSource]="infosTodasAsPostagem" class="mat-elevation-z8">
+
+                    <ng-container matColumnDef="titulo">
+                        <th mat-header-cell *matHeaderCellDef> Título </th>
+                        <td mat-cell *matCellDef="let postagem"> {{ postagem.titulo }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="descricao">
+                        <th mat-header-cell *matHeaderCellDef> Descrição </th>
+                        <td mat-cell *matCellDef="let postagem"> {{ postagem.descricao }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="nomeCategoria">
+                        <th mat-header-cell *matHeaderCellDef> Categoria </th>
+                        <td mat-cell *matCellDef="let postagem"> {{ postagem.nomeCategoria }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="nomeStatus">
+                        <th mat-header-cell *matHeaderCellDef> Status </th>
+                        <td mat-cell *matCellDef="let postagem"> {{ postagem.nomeStatus || 'Status não disponível' }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="premiumOuComum">
+                        <th mat-header-cell *matHeaderCellDef> Premium/Comum </th>
+                        <td mat-cell *matCellDef="let postagem"> {{ postagem.premiumOuComum === true ? 'Premium' : 'Comum' }} </td>
+
+                    </ng-container>
+                    <ng-container matColumnDef="dataCriacao">
+                        <th mat-header-cell *matHeaderCellDef> Data de Criação </th>
+                        <td mat-cell *matCellDef="let postagem"> {{ postagem.dataCriacao | date:'dd/MM/yyyy HH:mm' }} </td>
+
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef> Ações </th>
+                        <td mat-cell *matCellDef="let postagem">
+
+                            <button mat-icon-button (click)="editarNoticia(postagem.idPostagem)" matTooltip="Editar Publicação">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="excluirNoticia(postagem.idPostagem)" matTooltip="Excluir Publicação">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="visualizarNoticia(postagem.idPostagem)" matTooltip="Visualizar Publicação">
+                                <mat-icon>visibility</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <mat-paginator [length]="totalDePostagens" [pageSize]="quantidadePorPagina" [pageSizeOptions]="[10, 20, 50]"
+                    showFirstLastButtons (page)="aoMudarPagina($event)">
+                </mat-paginator>
+            </mat-card>
+        </div>
     </mat-sidenav-content>
-  </mat-sidenav-container>
-  
+</mat-sidenav-container>
