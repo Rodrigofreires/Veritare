@@ -3,7 +3,7 @@
   
     <div class="cabecalho-noticia">
       <mat-form-field class="titulo">
-        <mat-label>TÍTULO DA NOTÍCIA</mat-label>
+        <mat-label class="titulo-de-sessao">TÍTULO DA NOTÍCIA</mat-label>
         <textarea
           placeholder="Máximo de 200 caracteres"
           maxlength="200"
@@ -13,7 +13,7 @@
       </mat-form-field>
   
       <mat-form-field class="descricao">
-        <mat-label>DESCRIÇÃO DA NOTÍCIA</mat-label>
+        <mat-label class="titulo-de-sessao">DESCRIÇÃO DA NOTÍCIA</mat-label>
         <textarea
           maxlength="300"
           placeholder="Máximo de 300 caracteres"
@@ -43,7 +43,7 @@
       </div>
   
       <div class="textos-principais">
-        <h3>ANÁLISE VERITARE</h3>
+        <h3 class="titulo-de-sessao">ANÁLISE VERITARE</h3>
         <quill-editor
           class="texto-da-noticia"
           [(ngModel)]="infosPostagem.conteudo"
@@ -52,11 +52,10 @@
   
         <h3 class="marcacoes" >MARCAÇÕES DE OPINIÃO DO TEXTO </h3>
         <div *ngFor="let alerta of infosPostagem.alertas; let i = index" class="alerta-item">
-          <mat-form-field class="alerta">
-            <mat-label>Alerta {{ alerta.numeroAlerta }}</mat-label>
+          <mat-form-field> <mat-label>Alerta {{ alerta.numeroAlerta }}</mat-label>
             <textarea
               matInput
-              [(ngModel)]="alerta.mensagem"
+              class="alerta" [(ngModel)]="alerta.mensagem"
             ></textarea>
           </mat-form-field>
           <button mat-icon-button color="warn" (click)="removerAlerta(i)">
@@ -68,14 +67,14 @@
           <mat-icon>add</mat-icon> Adicionar Marcação
         </button>
   
-        <h3 class="materia-gerada">MATÉRIA GERADA POR VERITARE</h3>
+        <h3 class="titulo-de-sessao">MATÉRIA GERADA POR VERITARE</h3>
         <quill-editor
           class="texto-da-noticia"
           [(ngModel)]="infosPostagem.textoAlteradoPorIA"
           [style.height]="'800px'"
         ></quill-editor>
   
-        <h3>FONTE DA MATÉRIA ANALISADA</h3>
+        <h3 class="titulo-de-sessao" >FONTE DA MATÉRIA ANALISADA</h3>
         <quill-editor
           class="texto-da-noticia"
           [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"

@@ -124,3 +124,47 @@
     border-radius: 4px;
     padding: 5px;
   }
+
+.alerta-item {
+  display: flex;
+  align-items: flex-start; /* Keep this to align the delete button at the top */
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* Estilo para o mat-form-field que contém o textarea */
+.alerta-item mat-form-field {
+  flex: 1; /* Permite que o mat-form-field ocupe o espaço disponível */
+  margin-right: 8px;
+  /* Importante: mat-form-field do Material possui suas próprias propriedades de min-height e display.
+     Precisamos garantir que ele não force uma altura maior do que seu conteúdo.
+     Definir height: auto e overflow: visible geralmente funciona bem aqui.
+  */
+  height: auto; /* Permite que o mat-form-field se adapte ao seu conteúdo (o textarea) */
+  overflow: visible; /* Impede qualquer corte pelo próprio mat-form-field */
+}
+
+/* Estilo para o textarea com a classe 'alerta' */
+.alerta {
+  height: 350px !important; /* Usa !important para sobrescrever os estilos padrão do Material */
+  min-height: 350px !important; /* Garante que não encolha abaixo desta altura */
+  max-height: 350px !important; /* Garante que não cresça além desta altura */
+  overflow-y: auto !important; /* Adiciona barra de rolagem vertical se o conteúdo transbordar */
+  resize: none !important; /* Impede o redimensionamento manual pelo usuário */
+  width: 100%; /* Garante que ocupe a largura total do seu contêiner */
+  box-sizing: border-box; /* Inclui preenchimento e borda na largura e altura totais do elemento */
+}
+
+/* Pode ser necessário direcionar o elemento de entrada interno do mat-form-field se o acima não for suficiente */
+.mat-mdc-form-field-flex { /* Este direciona o contêiner flexível dentro do mat-form-field */
+  align-items: flex-start !important; /* Garante que o conteúdo se alinhe ao topo dentro do campo */
+}
+
+.mat-mdc-form-field-subscript-wrapper { /* Este direciona o wrapper de dica/erro */
+    height: 0 !important; /* Oculta o espaço reservado para dicas/erros, se não for necessário, para evitar empurrar o conteúdo */
+}
+
+.titulo-de-sessao{
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+}

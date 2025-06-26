@@ -109,18 +109,41 @@
     padding: 5px;
   }
 
-  .alerta-item {
-    display: flex;
-    align-items: center;
-    width: 100%; /* Ocupa toda a largura do container */
-    margin-bottom: 16px; /* Espaço entre os alertas */
-  }
-  
-  .alerta {
+/* Estilo para o contêiner flexível de cada item de alerta */
+.alerta-item {
+  display: flex;
+  align-items: flex-start; /* Alinha os itens ao topo para posicionar o botão de exclusão corretamente */
+  width: 100%; /* Ocupa toda a largura disponível */
+  margin-bottom: 16px; /* Espaçamento entre os alertas */
+}
 
-    flex: 1; /* Faz com que o mat-form-field ocupe o máximo de espaço disponível */
-    margin-right: 8px; /* Adiciona espaço entre o campo de texto e o botão */
-  }
+/* Estilo para o mat-form-field que envolve o textarea */
+.alerta-item mat-form-field {
+  flex: 1; /* Permite que o mat-form-field ocupe o máximo de espaço possível */
+  margin-right: 8px; /* Espaçamento à direita, antes do botão de exclusão */
+  height: auto; /* Permite que o mat-form-field se adapte à altura do seu conteúdo (o textarea) */
+  overflow: visible; /* Garante que nenhum conteúdo seja cortado pelo mat-form-field */
+}
+
+/* Estilo para o textarea real com a classe 'alerta' */
+.alerta {
+  height: 350px !important; /* Altura fixa desejada para o textarea, usando !important para sobrescrever estilos padrão */
+  min-height: 350px !important; /* Garante que o textarea não encolha abaixo desta altura */
+  max-height: 350px !important; /* Garante que o textarea não cresça acima desta altura */
+  overflow-y: auto !important; /* Adiciona uma barra de rolagem vertical se o conteúdo exceder a altura */
+  resize: none !important; /* Impede que o usuário redimensione o textarea manualmente */
+  width: 100%; /* Garante que o textarea ocupe a largura total de seu contêiner */
+  box-sizing: border-box; /* Inclui padding e borda na largura e altura totais do elemento */
+}
+
+/* Ajustes para classes internas do Angular Material, se necessário */
+.mat-mdc-form-field-flex {
+  align-items: flex-start !important; /* Garante que o conteúdo dentro do mat-form-field se alinhe ao topo */
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  height: 0 !important; /* Remove o espaço reservado para dicas/erros se não estiverem em uso */
+}
   
   .materia-gerada{
     margin-top: 20px !important;
@@ -141,3 +164,7 @@
     flex-shrink: 0; /* Garante que o botão mantenha seu tamanho fixo */
   }
   
+  .titulo-de-sessao{
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+}

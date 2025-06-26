@@ -59,11 +59,11 @@ export class CadastroDeNoticiaComponent implements OnInit {
     idUsuario: 0,
     imagem: '',
     textoAlteradoPorIA: '',
-    palavrasRetiradasPorIA: '',
+    palavrasRetiradasPorIA: '', // Será preenchido em ngOnInit
     premiumOuComum: '',
     dataCriacao: null,
     alertas: [],
-    visualizacoes: 0,  
+    visualizacoes: 0,
   };
 
   constructor(
@@ -77,8 +77,23 @@ export class CadastroDeNoticiaComponent implements OnInit {
   ngOnInit(): void {
     this.carregarEditorias();
     this.carregarStatus();
+    this.definirTextoPadraoFonteMateria(); // Chama a nova função para definir o texto padrão
   }
 
+
+definirTextoPadraoFonteMateria(): void {
+  // Só define o texto padrão se a propriedade estiver vazia ou nula
+  if (!this.infosPostagem.palavrasRetiradasPorIA || this.infosPostagem.palavrasRetiradasPorIA.trim() === '') {
+    this.infosPostagem.palavrasRetiradasPorIA = `
+      <p><strong>NOME DO JORNAL/PORTAL/BLOG ANALISADO</strong></p>
+      <p><strong><a href="[INSERIR LINK COMPLETO AQUI]" target="_blank">[LINK DA MATÉRIA ANALISADA]</a></strong></p>
+      <br>
+      <p><strong>Aviso de direitos autorais</strong></p>
+      <p><i>A Veritare realiza apenas a análise da matéria, sem republicá-la integralmente ou reproduzi-la de forma indevida. Nosso objetivo não é copiar ou cometer plágio, mas oferecer uma análise imparcial das informações publicadas.<i></p>
+      <p><i>A Veritare examina conteúdos de diversos portais de notícias nacionais e internacionais com a missão de entregar aos usuários informações livres de viés ideológico. Nosso compromisso é com o jornalismo, garantindo que a informação seja clara, objetiva e fundamentada nos fatos.<i></p>
+    `;
+  }
+}
 
   adicionarAlerta(): void {
     if (this.infosPostagem?.alertas && this.infosPostagem.alertas.length < 20) {
@@ -88,12 +103,11 @@ export class CadastroDeNoticiaComponent implements OnInit {
       });
     }
   }
-  
-  
+
   removerAlerta(index: number): void {
     if (this.infosPostagem?.alertas && this.infosPostagem.alertas.length > 0) {
       this.infosPostagem.alertas.splice(index, 1);
-  
+
       // Atualiza a numeração dos alertas para manter a sequência correta
       this.infosPostagem.alertas.forEach((alerta, i) => {
         alerta.numeroAlerta = i + 1;
@@ -101,30 +115,29 @@ export class CadastroDeNoticiaComponent implements OnInit {
     }
   }
 
-
   carregarEditorias(): void {
     this._noticiaService.buscarListaDeEditorias().subscribe({
       next: (data) => (this.listaDeEditorias = data),
-      error: (error) => console.error('Erro ao carregar editorias:', error)
+      error: (error) => console.error('Erro ao carregar editorias:', error),
     });
   }
 
   carregarStatus(): void {
     this._noticiaService.buscarListaDeStatus().subscribe({
       next: (data) => (this.listaDeStatus = data),
-      error: (error) => console.error('Erro ao carregar status:', error)
+      error: (error) => console.error('Erro ao carregar status:', error),
     });
   }
 
   publicarNoticia(): void {
     if (!this.validarCamposObrigatorios()) return;
-  
+
     const idUsuarioToken: number = this._authService.getUserId();
     if (!idUsuarioToken) {
       this._snackBarService.MostrarErro('Usuário não autenticado.');
       return;
     }
-  
+
     const novaPostagem: PostagemRequest = {
       ...this.infosPostagem,
       idCategoria: this.editoriaSelecionada ?? 0, // Garante que seja um número
@@ -132,10 +145,10 @@ export class CadastroDeNoticiaComponent implements OnInit {
       premiumOuComum: this.tipoSelecionado.includes('Publicação Premium'),
       idUsuario: idUsuarioToken,
       dataCriacao: this.infosPostagem.dataCriacao ?? new Date().toDateString(),
-      nomeCategoria: this.carregarEditorias.name,
-      alertas: this.infosPostagem.alertas ?? []
+      nomeCategoria: this.carregarEditorias.name, // Isso parece um erro, deveria ser um nome de categoria, não o nome da função
+      alertas: this.infosPostagem.alertas ?? [],
     };
-  
+
     this._noticiaService.criarPostagem(novaPostagem).subscribe({
       next: () => {
         this._snackBarService.MostrarSucesso('Notícia salva com sucesso!');

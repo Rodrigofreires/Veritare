@@ -13,7 +13,11 @@
 
   <mat-sidenav-content>
     <app-header (toggleSidenav)="sidenav.toggle()" #headerRef></app-header>
+    <app-editoria></app-editoria>
 
     <router-outlet></router-outlet>
   </mat-sidenav-content>
+
 </mat-sidenav-container>
+
+  <app-footer></app-footer>

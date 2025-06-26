@@ -4,19 +4,23 @@ import { RouterOutlet, RouterModule } from '@angular/router'; // <-- ADICIONE Ro
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../shared/header/header.component'; // Ajuste o caminho para seu HeaderComponent
+import { HeaderComponent } from '../shared/header/header.component';
+import { EditoriaComponent } from "../shared/editoria/editoria.component";
+import { FooterComponent } from "../shared/footer/footer.component"; // Ajuste o caminho para seu HeaderComponent
 
 @Component({
   selector: 'app-main-layout',
   standalone: true,
   imports: [
     RouterOutlet,
-    RouterModule,   
+    RouterModule,
     HeaderComponent,
     MatSidenavModule,
     MatListModule,
     CommonModule,
-  ],
+    EditoriaComponent,
+    FooterComponent
+],
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.css']
 })
