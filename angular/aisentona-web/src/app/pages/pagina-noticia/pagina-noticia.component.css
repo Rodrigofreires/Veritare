@@ -1,385 +1,473 @@
-
+/* --- Estilos Gerais da Notícia --- */
+.noticia-container {
+  max-width: 900px; /* Limita a largura para melhor legibilidade */
+  margin: 40px auto; /* Centraliza e adiciona espaço */
+  padding: 0 20px; /* Padding nas laterais para telas menores */
+}
 
 .noticia-card {
-  width: 100%;
-  padding: 20px;
-  border: none; /* Remove qualquer borda padrão */
-  box-shadow: none; /* Remove sombra do Material Design */
-  background-color: #FFFF  !important;
+  padding: 30px; /* Espaçamento interno generoso */
+  border-radius: 12px; /* Cantos mais suaves */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
 }
 
-.noticia-container {
-    display: flex;
-    flex-direction: column; /* Empilha os elementos verticalmente */
-    gap: 20px; /* Espaçamento entre os elementos */
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 900px;
-    width: 100%;
-    background-color: #FFFF  !important;
-  }
-  
-  .cabecalho-pagina {
-    display: flex;
-    align-items: center; /* Alinha verticalmente os itens */
-    justify-content: space-between; /* Coloca o botão e o texto nas extremidades */
-    margin-bottom: 20px; /* Adiciona espaço abaixo do cabeçalho */
-  }
-
-  .nome-categoria {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 0;
-  }
-
-  .botao-editar {
-    font-size: 14px;
-    padding: 8px 16px;
-  }
-
-  .titulo-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Alinha os textos à esquerda */
-    gap: 4px; /* Espaço entre título, subtítulo e data */
-  }
-  
-  .noticia-titulo {
-    font-size: 40px;
-    font-weight: bold;
-    line-height: 1.2;
-  }
-  
-  .noticia-subtitulo {
-    font-size: 18px;
-    color: #757575;
-  }
-  
-  .data-criacao {
-    font-size: 14px;
-    color: #757575;
-    margin-top: 0; /* Remove margem superior extra */
-  }
-  
-  .imagem-da-noticia {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px auto;
-    max-width: 100%;
-  }
-  
-  .imagem-da-noticia img {
-    max-width: 100%;
-    max-height: 500px;
-    width: auto;
-    height: auto;
-    border: none;
-    border-radius: 4px;
-    padding: 5px;
-  }
-
-  .noticia-conteudo {
-    font-size: 18px !important;
-    line-height: 2.5 !important;
-    color: #333;
-  }
-
-  .mat-card-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-  }
-  
-  /* Estilo da div que contém os botões */
-.botoes-controle {
+/* --- Cabeçalho da Página (Categoria e Botão EDITAR) --- */
+.cabecalho-pagina {
   display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 20px;
-  /* Garantir que os botões dentro da div sejam tratados sem conflito */
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
 }
 
-/* Estilo global dos botões */
-.botao-global {
-  background: linear-gradient(135deg, #070C18, #14153E, #0A0C1B);
-  color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
-  padding: 1rem 2rem;
-  border-radius: 50px;
-  border: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: background 0.3s ease, transform 0.2s ease;
+.nome-categoria {
+  font-size: 1.3em;
+  color: var(--mdc-theme-primary, #6200EE); /* Cor primária do Material Design */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.botao-editar {
+  min-width: 100px;
+  padding: 8px 15px;
+  font-size: 0.9em;
+  font-weight: 500;
+  border-radius: 8px;
+}
+
+/* --- Cabeçalho da Notícia (Título, Subtítulo, Data, Compartilhar) --- */
+.cabecalho-noticia {
+  margin-bottom: 30px;
+  padding: 0; /* Remove padding padrão do mat-card-header */
+}
+
+.titulo-container {
+  width: 100%;
+}
+
+.noticia-titulo {
+  font-size: 2.5em; /* Título maior */
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.noticia-subtitulo {
+  font-size: 1.2em;
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.data-criacao p {
+  font-size: 0.9em;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.social-share {
+  display: flex;
+  gap: 15px; /* Espaçamento entre os ícones */
+  margin-top: 20px;
+  border-top: 1px dashed #eee;
+  padding-top: 20px;
+}
+
+.share-icon {
+  font-size: 1.8em;
+  color: #777; /* Cor padrão para os ícones */
+  transition: color 0.3s ease;
   cursor: pointer;
 }
 
-/* Hover do botão */
-.botao-global:hover {
-  background-color: #71e77f; /* Altera a cor do fundo ao passar o mouse */
-  transform: translateY(-2px); /* Eleva o botão ao passar o mouse */
+.share-icon:hover {
+  color: var(--mdc-theme-primary, #6200EE); /* Cor ao passar o mouse */
 }
 
-/* Estado de clique no botão */
-.botao-global:active {
-  transform: translateY(0); /* Reseta a elevação ao clicar */
+/* Cores específicas para as redes sociais */
+#facebook i { color: #3b5998; }
+#whatsapp i { color: #25d366; }
+#instagram i { color: #C13584; } /* Ou um gradiente para o Instagram */
+#x i { color: #000; } /* Preto para o X */
+#copyLink i { color: #888; }
+
+#facebook:hover i { color: #3b5998; filter: brightness(1.2); }
+#whatsapp:hover i { color: #25d366; filter: brightness(1.2); }
+#instagram:hover i { color: #C13584; filter: brightness(1.2); }
+#x:hover i { color: #000; filter: brightness(1.2); }
+#copyLink:hover i { color: #6200EE; }
+
+
+/* --- Imagem da Notícia --- */
+.imagem-da-noticia {
+  margin-bottom: 30px;
+  border-radius: 8px;
+  overflow: hidden; /* Garante que a imagem respeite o border-radius */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
-/* Lógica para o botão selecionado */
-.botao-selecionado-global {
-  background-color: #4CAF50; /* Cor de destaque verde */
-  border: 2px solid #000000; /* Borda para realçar o botão selecionado */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Sombra mais forte */
+.noticia-imagem {
+  width: 100%;
+  height: auto;
+  display: block; /* Remove espaço extra abaixo da imagem */
+  object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
 }
 
-/* Hover do botão selecionado */
-.botao-selecionado-global:hover {
-  background-color: #45a049; /* Cor mais escura ao passar o mouse */
+/* --- Conteúdo Principal (Abas) --- */
+.conteudo-principal {
+  padding: 0 0 20px 0; /* Ajusta padding para que o mat-card-content não adicione muito espaço superior */
+}
+
+mat-tab-group {
+  margin-top: 25px; /* Espaçamento acima do grupo de abas */
+  border-radius: 8px;
+  overflow: hidden; /* Para garantir que o arredondamento funcione bem */
+}
+
+/* Estilo para a barra de abas */
+.mat-mdc-tab-header {
+  background-color: #f5f5f5; /* Fundo mais claro para a barra de abas */
+  border-bottom: 1px solid #ddd;
+}
+
+/* Estilo para as abas individuais */
+.mat-mdc-tab .mdc-tab__text-label {
+  font-weight: 600;
+  font-size: 1.05em;
+}
+
+/* Cor da aba selecionada */
+.mat-mdc-tab.mat-mdc-tab-active .mdc-tab__text-label {
+  color: var(--mdc-theme-primary, #6200EE);
+}
+
+/* Cor da linha inferior da aba selecionada */
+.mat-mdc-tab-group.mat-primary .mat-ink-bar {
+  background-color: var(--mdc-theme-primary, #6200EE);
 }
 
 
-  .noticia-link {
-    text-decoration: underline;
-    color: blue;
-    font-size: 1rem;
-    font-weight: 800;
-    cursor: pointer; /* Garante o ponteiro de link */
-    pointer-events: auto; /* Certifica que o link está clicável */
-  }
-  
-  .noticia-link:hover {
-    color: darkblue; /* Escurece a cor do link ao passar o mouse */
-  }
+/* Estilo para o conteúdo dentro de cada aba */
+.tab-content {
+  padding: 25px 0; /* Padding vertical para o conteúdo dentro da aba */
+  line-height: 1.7;
+}
 
-  .painel-noticias-relacionadas {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin: 0 auto;
-    width: 100%;
-    margin-bottom: 40px;
-  }
-  
-  .item-noticia-relacionadas {
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    align-items: flex-start;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-  }
-  
-  .imagem-descricao-relacionadas {
-    display: flex;
-    gap: 16px;
-    align-items: stretch; /* Garante que a imagem e o texto tenham a mesma altura */
-  }
-  
-  .imagem-noticia-relacionadas {
-    width: 350px; /* Largura ligeiramente aumentada */
-    height: 300Px; /* A altura preenche o card */
-    object-fit: cover; /* Cobre o espaço do card mantendo a proporção */
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  .detalhes-texto-relacionadas {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+.tab-title {
+  font-size: 1.7em; /* Títulos menores dentro das abas */
+  color: var(--mdc-theme-primary, #6200EE);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e0e0e0;
+  font-weight: 600;
+}
 
-  }
-  
-  .nome-editoria-relacionadas {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #7070AC;
-    margin: 0;
-  }
-  
-  .titulo-noticia-relacionadas {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: #333;
-    margin: 8px 0;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  
-  .titulo-noticia-relacionadas:hover {
-    color: darkblue;
-  }
-  
-  .descricao-noticia-relacionadas {
-    font-size: 1.2rem;
-    color: #666;
-    margin: 8px 0;
-  }
-  
-  .botao-ver-mais {
+/* Estilo para o conteúdo do Quill Editor */
+.noticia-conteudo {
+  font-size: 1.1em;
+  color: #444;
+  line-height: 1.7;
+  text-align: justify; /* Justifica o texto para melhor leitura */
+}
+
+/* Estilos específicos para a fonte da análise */
+.fonte-titulo {
+  margin-top: 40px; /* Mais espaço para separar da análise principal */
+  border-top: 1px dashed #ccc;
+  padding-top: 25px;
+}
+
+.fonte-card-content {
+  padding-bottom: 0; /* Remove padding inferior extra se mat-card-content adicionar */
+}
+
+/* Ajustes para superscritos no Quill */
+.noticia-conteudo sup {
+  vertical-align: super;
+  font-size: 0.7em; /* Tamanho menor para o sobrescrito */
+  color: var(--mdc-theme-accent, #FF4081); /* Cor de destaque para referência */
+  cursor: pointer;
+  background-color: rgba(var(--mdc-theme-accent-rgb, 255, 64, 129), 0.1);
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin-left: 2px;
+  font-weight: bold;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.noticia-conteudo sup:hover {
+  background-color: rgba(var(--mdc-theme-accent-rgb, 255, 64, 129), 0.25);
+  color: var(--mdc-theme-accent, #FF4081);
+}
+
+/* --- Alerta Flutuante (Tooltip) --- */
+.alerta-popup {
+  position: fixed; /* Fixado para seguir o mouse */
+  background-color: #333;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  z-index: 10000; /* Garante que fique acima de outros elementos */
+  pointer-events: none; /* Permite clicar nos elementos abaixo */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  max-width: 250px; /* Limita a largura */
+  word-wrap: break-word; /* Quebra palavras longas */
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.alerta-popup.visible { /* Adicionar esta classe via ngClass ou dinamicamente quando alertaVisivel for true */
+  opacity: 1;
+}
+
+.alerta-texto {
+  margin: 0;
+}
+
+/* --- Lista de Alertas/Opiniões (aba "O que Está por Trás da Notícia Analisada") --- */
+.alert-list-container {
+  padding: 0; /* Ajusta padding se mat-card-content adicionar extra */
+  margin-top: 15px;
+
+}
+
+.alert-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-wrap: break-word;
+  /* Removido height fixo aqui também */
+}
+
+.alert-list-item {
+  height: 300px !important;
+  overflow-wrap: break-word !important ;
+  display: flex;
+  align-items: flex-start; /* Alinha o ícone e o texto ao topo */
+  margin-bottom: 20px;
+  background-color: #fdfdfd;
+  padding: 18px 22px; /* Aumentado o padding para mais altura interna */
+  border-left: 6px solid var(--mdc-theme-accent, #FF4081); /* Borda mais espessa */
+  border-radius: 10px; /* Cantos mais arredondados */
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); /* Sombra um pouco mais pronunciada */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.alert-list-item:hover {
+  transform: translateY(-4px); /* Efeito de elevação um pouco maior */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18); /* Sombra maior no hover */
+}
+
+.alert-icon {
+  color: var(--mdc-theme-accent, #FF4081);
+  margin-right: 18px; /* Mais espaço entre ícone e texto */
+  font-size: 32px; /* Ícone ainda maior */
+  flex-shrink: 0; /* Garante que o ícone não encolha */
+  padding-top: 2px; /* Pequeno ajuste para alinhar o ícone com o texto */
+}
+
+.alert-list-item p {
+  white-space: normal;      /* Permite quebra normal de linha */
+  word-wrap: break-word;    /* Suporta quebra em palavras longas */
+  overflow-wrap: break-word;
+  hyphens: auto;            /* Hifenização automática (se suportada) */
+}
+
+
+.no-alerts-message {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-style: italic;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  margin-top: 30px;
+}
+
+/* --- Notícias Relacionadas (Veja também) --- */
+.painel-noticias-relacionadas {
+  margin-top: 50px;
+  padding: 30px 0;
+  border-top: 1px solid #eee;
+}
+
+.painel-noticias-relacionadas h2 {
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: 700;
+}
+
+.item-noticia-relacionadas {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 15px; /* Adicionado padding interno ao card relacionado */
+}
+
+.item-noticia-relacionadas:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.imagem-descricao-relacionadas {
+  display: flex;
+  align-items: flex-start; /* Alinhar imagem e texto ao topo para mais flexibilidade */
+  width: 100%;
+}
+
+.imagem-noticia-relacionadas {
+  width: 150px; /* Largura da imagem aumentada */
+  height: 100px; /* Altura da imagem aumentada */
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.detalhes-texto-relacionadas {
+  flex-grow: 1;
+  padding-right: 10px; /* Pequeno ajuste no padding */
+}
+
+.detalhes-texto-relacionadas p {
+  margin: 0;
+}
+
+.nome-editoria {
+  font-size: 0.85em; /* Ligeiramente maior */
+  color: var(--mdc-theme-primary, #6200EE);
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 8px; /* Mais espaço abaixo da categoria */
+}
+
+.titulo-noticia-relacionadas {
+  font-size: 1.2em; /* Título maior */
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px; /* Mais espaço abaixo do título */
+  line-height: 1.4; /* Melhorar espaçamento entre linhas */
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Manter limite de 2 linhas para o título */
+  line-clamp: 2; /* Padrão para compatibilidade */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adiciona reticências se o texto for cortado */
+}
+
+.descricao-noticia-relacionadas {
+  font-size: 1em; /* Descrição maior */
+  color: #666; /* Cor um pouco mais escura */
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limita a descrição a 3 linhas */
+  line-clamp: 3; /* Padrão para compatibilidade */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adiciona reticências se o texto for cortado */
+  line-height: 1.5; /* Melhorar espaçamento entre linhas */
+}
+
+/* --- Responsividade --- */
+@media (max-width: 768px) {
+  .noticia-container {
     margin: 20px auto;
-    width: 200px;
-    font-size: large;
-    padding: 10px;
-    background-color: #7070AC;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  .botao-ver-mais:hover {
-    background-color: #0056b3;
+    padding: 0 15px;
   }
 
-  .alerta-flutuante {
-    position:fixed;
-    z-index: 9999; /* Garante que o alerta fique acima de outros elementos */
-    background-color: rgba(0, 0, 0, 0.8); /* Fundo semitransparente */
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
+  .noticia-card {
+    padding: 20px;
+  }
 
+  .noticia-titulo {
+    font-size: 1.8em;
+  }
 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    pointer-events: none; /* Para não bloquear interações com o conteúdo abaixo */
+  .noticia-subtitulo {
+    font-size: 1em;
   }
 
   .social-share {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;    
-    gap: 10px;               
-  }
-  
-  
-  
-  .share-icon {
-    font-size: 30px;
-    color: #333;
-    transition: color 0.3s ease;
-    cursor: pointer;
-    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-    padding: 10px;
-    border-radius: 50%;
-    background-color: #f1f1f1;
-    width: 45px;
-    height: 45px;
   }
-  
-  .share-icon:hover {
-    transform: scale(1.1);
+
+  .tab-title {
+    font-size: 1.4em;
   }
-  
-  #facebook:hover {
-    color: #3b5998; /* Azul do Facebook */
-    background-color: #e9f1fa;
+
+  .noticia-conteudo {
+    font-size: 1em;
   }
-  
-  #whatsapp:hover {
-    color: #25D366; /* Verde do WhatsApp */
-    background-color: #e1f8e1;
+
+  .item-noticia-relacionadas {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
   }
-  
-  #instagram:hover {
-    color: #E4405F; /* Vermelho/rosa do Instagram */
-    background-color: #f8e1e1;
+
+  .imagem-noticia-relacionadas {
+    width: 100%;
+    height: 150px;
+    margin-right: 0;
+    margin-bottom: 15px;
   }
-  
-  #x:hover {
-    color: #1d9bf0; /* Azul do X (Twitter) */
-    background-color: #e1f4fa;
+
+  .detalhes-texto-relacionadas {
+    width: 100%;
+    padding-right: 0;
   }
-  
-  #copyLink:hover {
-    color: #6c757d;
-    background-color: #f0f0f0;
+
+  .titulo-noticia-relacionadas {
+    font-size: 1.1em; /* Ajuste para telas menores */
   }
-  
-  /* Efeito de hover e animação */
-  .share-icon:hover {
-    cursor: pointer;
-    transform: scale(1.1);
+
+  .descricao-noticia-relacionadas {
+    font-size: 0.9em; /* Ajuste para telas menores */
   }
-  
-  .alert-list-container {
-    min-height: 500px; /* Aumentando a altura mínima do container */
-    padding: 32px; /* Aumentando o padding geral */
-    background-color: #f5f5f5;
-    border-radius: 8px;
+}
+
+@media (max-width: 480px) {
+  .noticia-titulo {
+    font-size: 1.5em;
   }
-  
-  .alert-list {
-    margin: 0;
-    padding: 0;
+
+  .noticia-subtitulo {
+    font-size: 0.9em;
   }
-  
+
+  .social-share {
+    gap: 10px;
+  }
+
+  .share-icon {
+    font-size: 1.5em;
+  }
+
+  .tab-title {
+    font-size: 1.2em;
+  }
+
   .alert-list-item {
-    display: flex;
-    align-items: start;
-    margin-bottom: 24px; /* Aumentando o espaçamento entre os itens */
-    padding: 24px; /* Aumentando o padding para itens maiores */
-    background-color: white;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Sombras mais suaves */
-    transition: transform 0.2s ease-in-out;
-    max-width: 100%;
-    word-wrap: break-word;
-    word-break: break-word;
-    height: 500px !important ; /* Definindo uma altura fixa para os itens */
+    padding: 12px 18px; /* Ajuste o padding para telas menores */
   }
-  
-  .alert-list-item:hover {
-    transform: translateY(-5px); /* Efeito de hover suave */
-  }
-  
+
   .alert-icon {
-    margin-right: 30px; /* Aumentando o espaço entre o ícone e o texto */
-    color: #4caf50;
-    font-size: 36px; /* Aumentando o tamanho do ícone */
+    font-size: 26px; /* Ajuste o ícone para telas menores */
+    margin-right: 12px;
   }
-  
-  .alert-list-item div {
-    flex-grow: 1;
-    display: block;
-  }
-  
-  .alert-list-item strong {
-    font-weight: bold;
-    color: #2c3e50;
-    font-size: 20px; /* Aumentando o tamanho do número do alerta */
-  }
-  
+
   .alert-list-item p {
-    margin: 0;
-    color: #333;
-    font-size: 20px; /* Aumentando o tamanho da fonte do texto */
-    line-height: 2; /* Aumentando o espaçamento entre as linhas */
-    white-space: pre-line;
-    word-wrap: break-word;
-    max-width: 100%; /* Fazendo o texto ocupar toda a largura disponível */
-    word-break: break-word; /* Garantindo que as palavras longas quebrem de forma adequada */
+    font-size: 1em; /* Ajuste o texto para telas menores */
   }
-  
-  .alert-list-item p::before {
-    content: "• ";
-    color: #4caf50;
-    font-size: 24px;
-    font-weight: bold;
-    margin-right: 15px; /* Aumentando o espaço entre o bullet e o texto */
-  }
-  
-  
-  
-  
-  
+}

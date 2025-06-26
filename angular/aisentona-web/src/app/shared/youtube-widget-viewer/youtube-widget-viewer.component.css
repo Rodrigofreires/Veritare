@@ -1,42 +1,78 @@
+/* Container for the grid of widgets */
 .widgets-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  .widget-card {
-    background-color: #FFFF;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
-  }
-  
-  .widget-card:hover {
-    transform: scale(1.02);
-  }
-  
-  .widget-card iframe {
-    width: 100%;
-    height: 180px;
-    border-radius: 16px 16px 0 0;
-  }
-  
-  .widget-info {
-    padding: 1rem;
-    text-align: center;
-  }
-  
-  .widget-info h3 {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .widget-info .tipo {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 20px;
-  }
-  
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Base styles for each widget card */
+.youtube-widget-card {
+  background-color: #ffffff; /* Pure white background */
+  border-radius: 12px; /* Slightly smaller border-radius for a modern feel */
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Softer, more diffuse shadow */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transition for hover effects */
+  display: flex; /* Use flexbox for internal layout */
+  flex-direction: column; /* Stack elements vertically */
+}
+
+/* Hover effect for the card */
+.youtube-widget-card:hover {
+  transform: translateY(-5px); /* Lift effect on hover */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12); /* More pronounced shadow on hover */
+}
+
+/* Title within the widget card */
+.youtube-widget-title {
+  padding: 1rem 1.25rem 0.5rem; /* Adjusted padding for better spacing */
+  font-size: 1.1rem; /* Slightly smaller title for a refined look */
+  font-weight: 600; /* Medium-bold */
+  color: #333333; /* Darker grey for better contrast */
+  text-align: center; /* Center the title */
+  margin-bottom: 0; /* Remove default margin */
+}
+
+/* Divider below the title */
+.youtube-widget-divider {
+  border-color: #eeeeee; /* Lighter divider line */
+  margin: 0 1.25rem; /* Match horizontal padding of the title */
+}
+
+/* Container for the YouTube iframe */
+.youtube-widget-container {
+  padding: 1.25rem; /* Add padding around the iframe */
+  flex-grow: 1; /* Allow container to take available space */
+  display: flex; /* Use flexbox to center iframe if needed */
+  justify-content: center;
+  align-items: center;
+}
+
+/* Styles for the YouTube iframe */
+.youtube-iframe {
+  width: 100%;
+  height: 315px; /* Height remains unchanged as per your request */
+  border-radius: 8px; /* Slightly rounded corners for the iframe itself */
+  background-color: #000; /* Black background for video placeholder */
+}
+
+/* These classes were in your original CSS but not in the provided HTML snippet.
+   I've included them here with some modern adjustments in case they are used elsewhere. */
+
+/* Placeholder for widget information */
+.widget-info {
+  padding: 1rem 1.25rem; /* Consistent padding */
+  text-align: center;
+}
+
+.widget-info h3 {
+  margin: 0 0 0.5rem; /* Small margin below heading */
+  font-size: 1.1rem; /* Consistent with new title size */
+  font-weight: 600;
+  color: #333;
+}
+
+.widget-info .tipo {
+  font-size: 0.85rem; /* Slightly smaller font size */
+  color: #777; /* Softer grey */
+  margin-bottom: 0; /* Remove extra margin if this is the last element */
+}

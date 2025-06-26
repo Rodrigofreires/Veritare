@@ -25,7 +25,7 @@ namespace Aisentona.Biz.Services.Postagens
                 .Include(p => p.Status)
                 .Where(p => p.Fl_Ativo == true && p.Fl_Premium == false) // Filtra apenas as postagens ativas
                 .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
-                .Take(4) // Limita a 4 postagens
+                .Take(3) // Limita a 4 postagens
                 .ToList();
 
             // Mapeia as postagens para PostagemDTO
@@ -34,14 +34,13 @@ namespace Aisentona.Biz.Services.Postagens
 
         public List<PostagemRequest> ListarUltimasPostagensPremium()
         {
-            // Busca as últimas 4 postagens ativas, ordenadas pela data de criação
 
+            // Busca as últimas 3 postagens ativas, premium e publicadas
             List<Postagem> ultimasPostagens = _context.CF_Postagem
-                .Include(p => p.Categoria) // Inclui a relação com a Categoria
-                .Include(p => p.Status)
-                .Where(p => p.Fl_Ativo == true && p.Fl_Premium == true) // Filtra apenas as postagens ativas e Premium
-                .OrderByDescending(p => p.DT_Criacao) // Ordena pela data de criação (mais recentes primeiro)
-                .Take(3) // Limita a 4 postagens
+                .Include(p => p.Categoria) 
+                .Where(p => p.Fl_Ativo == true && p.Fl_Premium == true && p.Id_Status == 2) // Status 2 = Publicado
+                .OrderByDescending(p => p.DT_Criacao)
+                .Take(3)
                 .ToList();
 
             // Mapeia as postagens para PostagemDTO
@@ -263,6 +262,15 @@ namespace Aisentona.Biz.Services.Postagens
                 if (!permissions.Contains("EditarPostsSimples") && !permissions.Contains("EditarPostsPremium"))
                 {
                     throw new UnauthorizedAccessException("Usuário não possui permissão para editar postagens.");
+                }
+
+                if (postagemResponse.PremiumOuComum == "false")
+                {
+                    postagem.Fl_Premium = false;
+                }
+                else
+                {
+                    postagem.Fl_Premium = true;
                 }
 
                 postagem.Titulo = postagemResponse.Titulo;

@@ -6,42 +6,40 @@
       appearance="outlined"
       (click)="navegarParaNoticia(postagem)"
     >
-      <!-- Imagem -->
-      <img
-        class="imagem-noticia"
-        mat-card-image 
-        [src]="postagem.imagem"
-        alt="Imagem da notícia"
-      />
+      <div class="imagem-noticia-wrapper">
+        <img
+          class="imagem-noticia"
+          mat-card-image
+          [src]="postagem.imagem"
+          alt="Imagem da notícia"
+        />
+      </div>
       <div class="imagem-descricao">
-        <!-- Nome da Editoria -->
         <div class="detalhes-texto">
           <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
-          <!-- Título -->
-          <h3 class="titulo-noticia">
-            {{ postagem.titulo }}
-          </h3>
-          <!-- Data Criação -->
-          <p class="descricao-noticia">{{ postagem.dataCriacao | date: 'dd/MM/yyyy  HH:mm' }}</p>
+          <h3 class="titulo-noticia">{{ postagem.titulo }}</h3>
+          <p class="data-criacao-noticia">
+            {{ postagem.dataCriacao | date : 'dd/MM/yyyy HH:mm' }}
+          </p>
         </div>
       </div>
     </mat-card>
   </div>
 
-  <div class="barra-de-widgets">
+  <!-- Widgets agora soltos abaixo das notícias -->
+  <div class="widgets-soltos">
     <app-youtube-widget-viewer [widgetId]="14"></app-youtube-widget-viewer>
-    <!-- <app-weather class="weather-widget"></app-weather> -->
     <app-mais-lidas></app-mais-lidas>
   </div>
-
-
 </div>
 
-
-  <!-- Botão "Carregar mais" -->
-  <div class="botao-carregar-mais">
-    <button class="botao-global" (click)="carregarMaisPostagens()" *ngIf="!carregandoMais">
-      Carregar mais
-    </button>
-    <p *ngIf="carregandoMais">Carregando...</p>
-  </div>
+<div class="container-carregar-mais">
+  <button
+    class="botao-global"
+    (click)="carregarMaisPostagens()"
+    *ngIf="!carregandoMais"
+  >
+    Carregar mais notícias
+  </button>
+  <p *ngIf="carregandoMais" class="mensagem-carregando">Carregando...</p>
+</div>

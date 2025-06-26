@@ -84,12 +84,12 @@ export const routes: Routes = [
     component: AuthLayoutComponent,
     children: [
       { path: 'login', component: LoginComponent },
-      { path: 'cadastro-de-usuario', component: CadastroUsuarioComponent },
       { path: 'assine', component: PricingComponent },
       { path: 'ativacao/sucesso', component: AtivacaoSucessoComponent },
       { path: 'redefinir-senha', component: RedefinirSenhaComponent },
       { path: 'esqueci-minha-senha', component: EsqueciMinhaSenhaComponent },
-      {path: 'sobre', component: SobreVeritareComponent}, // Substitua pelo componente correto
+      { path: 'cadastro-de-usuario', component: CadastroUsuarioComponent },
+      {path: 'sobre', component: SobreVeritareComponent}, 
       //{ path: '**', redirectTo: 'login' }
     ],
   },

@@ -1,46 +1,56 @@
 <app-faixa-assine-veritare></app-faixa-assine-veritare>
 
 <app-container>
-  <h2 class="nome-categoria">{{ nomeCategoria }}</h2>
 
-  <div class="painel-noticias">
-    <mat-card
-      *ngFor="let postagem of noticiasRelacionadas"
-      class="item-noticia"
-      appearance="outlined"
-      (click)="navegarParaNoticia(postagem)"
-    >
-      <!-- Imagem -->
-      <div class="imagem-descricao">
-        <img
-          class="imagem-noticia"
-          mat-card-image
-          [src]="postagem.imagem"
-          alt="Imagem da notícia"
-        />
-        <!-- Detalhes da Notícia -->
-        <div class="detalhes-texto">
-          <p class="nome-editoria">{{ postagem.nomeCategoria }}</p>
-          <h3 class="titulo-noticia" (click)="navegarParaNoticia(postagem)">
-            {{ postagem.titulo }}
-          </h3>
-          <p class="descricao-noticia">{{ postagem.descricao }}</p>
-        </div>
-      </div>
-    </mat-card>
-  </div>
+  <header class="header-editoria" aria-label="Informações da editoria">
+    <h1 class="nome-editoria-titulo">{{ nomeCategoria }}</h1>
+    <p class="descricao-editoria">
+      Confira as últimas notícias da editoria {{ nomeCategoria }}.
+    </p>
+  </header>
 
-  <!-- Botão para carregar mais notícias -->
-  <div *ngIf="noticiasRelacionadas.length < totalDeNoticias">
-    <button class="botao-global" (click)="carregarMaisNoticias()" [disabled]="carregandoMais">
+  <section class="painel-noticias" [attr.aria-label]="'Lista de notícias da editoria ' + nomeCategoria">
+    <ul class="lista-noticias" role="list">
+      <li *ngFor="let postagem of noticiasRelacionadas" 
+          class="item-noticia"
+          role="listitem"
+          tabindex="0"
+          (click)="navegarParaNoticia(postagem)"
+          (keyup.enter)="navegarParaNoticia(postagem)"
+          [attr.aria-label]="'Notícia: ' + postagem.titulo">
+
+        <article class="conteudo-noticia">
+          <img
+            class="imagem-noticia"
+            [src]="postagem.imagem"
+            [alt]="'Imagem da notícia: ' + postagem.titulo"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="texto-noticia">
+            <h2 class="titulo-noticia">{{ postagem.titulo }}</h2>
+            <p class="descricao-noticia">{{ postagem.descricao }}</p>
+            <time class="data-criacao-noticia" [attr.datetime]="postagem.dataCriacao">
+              {{ postagem.dataCriacao | date : 'dd/MM/yyyy HH:mm' }}
+            </time>
+          </div>
+        </article>
+      </li>
+    </ul>
+  </section>
+
+  <div class="botao-container" *ngIf="noticiasRelacionadas.length < totalDeNoticias">
+    <button 
+      class="botao-global" 
+      (click)="carregarMaisNoticias()" 
+      [disabled]="carregandoMais"
+      aria-label="Carregar mais notícias">
       {{ carregandoMais ? 'Carregando...' : 'Ver Mais' }}
     </button>
   </div>
 
-  <div class="youtube-widget">
+  <div class="youtube-widget" aria-label="Widget do YouTube">
     <app-youtube-widget-viewer [widgetId]="13"></app-youtube-widget-viewer>
-
   </div>
-
 
 </app-container>

@@ -1,142 +1,127 @@
-/* Container que envolve as três notícias */
-.noticias-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between; /* Espaçamento entre os cards */
-    flex-wrap: wrap; /* Allows items to wrap to the next line on smaller screens */
+/* --- Estilo Geral do Banner de Notícias Premium --- */
+.noticias-premium-wrapper {
+  position: relative;
+  width: 100%;
+  margin: 40px auto;
+  max-width: 1200px;
+  padding: 0 20px;
+  margin-bottom: 100px;
 }
 
-/* Card de cada notícia */
+.premium-news-carousel {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-item {
+  position: relative;
+}
+
 .card-premium {
-    position: relative;
-    width: 32%; /* Each card occupies 1/3 of the page width */
-    height: 450px;
-    border-radius: 8px;
-    overflow: hidden;
-    cursor: pointer;
-    margin-bottom: 20px; /* Add some space between cards when they stack */
+  position: relative;
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .imagem-container {
-    position: relative;
-    width: 100%;
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 16px;
 }
 
-/* Fixed label at the top of the image */
-.veritare-card-premium {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 170px;
-    background: transparent;
-    z-index: 1; /* Ensure the label is above the image */
-}
-
-.mat-card-image {
-    background: transparent !important;
-}
-
-/* Image of each news item */
 .imagem-banner-premium {
-    width: 100%;
-    height: 450px; /* Setting a fixed height for the image */
-    object-fit: cover;
-    border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  filter: brightness(0.7);
 }
 
-/* Text overlay on the image */
+.card-premium:hover .imagem-banner-premium {
+  transform: scale(1.03);
+  filter: brightness(0.6);
+}
+
+.veritare-card-premium-label {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  height: auto;
+  z-index: 2;
+}
+
 .texto-sobre-imagem {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 20px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3), transparent);
-    color: white;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
-    box-sizing: border-box;
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  right: 30px;
+  z-index: 2;
+  color: white;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.75);
+  padding: 20px;
+  border-radius: 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 60%, transparent 100%);
+}
+
+.texto-sobre-imagem .categoria-premium {
+  font-size: 0.9em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #ffc107;
+  margin-bottom: 8px;
+  display: inline-block;
 }
 
 .texto-sobre-imagem h2 {
-    margin: 0;
-    font-size: 1.4rem;
-    font-weight: bold;
+  font-size: 2.2em;
+  font-weight: 700;
+  margin: 0 0 10px;
 }
 
 .texto-sobre-imagem p {
-    margin: 5px 0;
-    font-size: 1rem;
+  font-size: 1.1em;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.4;
 }
 
-/* Adjust mat-card so it has no extra borders and shadow */
-.mat-card {
-    background-color: transparent;
-    border-radius: 0;
-    box-shadow: none;
+.loading-premium-news {
+  text-align: center;
+  font-style: italic;
+  color: #777;
+  padding: 30px;
+  font-size: 1.2em;
 }
 
-/* --- Media Queries for Responsiveness --- */
-
-/* For screens smaller than 1024px (e.g., tablets and smaller desktops) */
-@media (max-width: 1024px) {
-    .card-premium {
-        width: 48%; /* Two cards per row */
-    }
-}
-
-/* For screens smaller than 768px (e.g., tablets in portrait and larger phones) */
 @media (max-width: 768px) {
-    .noticias-container {
-        flex-direction: column; /* Stack cards vertically */
-        align-items: center; /* Center the stacked cards */
-    }
+  .imagem-container {
+    height: 350px;
+  }
 
-    .card-premium {
-        width: 90%; /* Almost full width for single column layout */
-        height: 350px; /* Adjust height for smaller screens */
-    }
+  .texto-sobre-imagem {
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    padding: 15px;
+  }
 
-    .imagem-banner-premium {
-        height: 350px; /* Adjust image height to match card */
-    }
+  .texto-sobre-imagem h2 {
+    font-size: 1.5em;
+  }
 
-    .texto-sobre-imagem h2 {
-        font-size: 1.2rem;
-    }
+  .texto-sobre-imagem p {
+    font-size: 1em;
+  }
 
-    .texto-sobre-imagem p {
-        font-size: 0.9rem;
-    }
-
-    .veritare-card-premium {
-        width: 140px; /* Adjust label size */
-    }
-}
-
-/* For screens smaller than 480px (e.g., most mobile phones) */
-@media (max-width: 480px) {
-    .card-premium {
-        height: 300px;
-    }
-
-    .imagem-banner-premium {
-        height: 300px;
-    }
-
-    .texto-sobre-imagem {
-        padding: 15px;
-    }
-
-    .texto-sobre-imagem h2 {
-        font-size: 1rem;
-    }
-
-    .texto-sobre-imagem p {
-        font-size: 0.85rem;
-    }
-
-    .veritare-card-premium {
-        width: 120px; /* Further adjust label size */
-    }
+  .veritare-card-premium-label {
+    width: 90px;
+    top: 15px;
+    right: 15px;
+  }
 }

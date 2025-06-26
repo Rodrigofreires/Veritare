@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,10 +9,13 @@ import { NoticiaService } from '../../services/noticia-service';
 import { SnackbarService } from '../../services/snackbar.service';
 import { MatListModule } from '@angular/material/list';
 import { QuillEditorComponent, QuillModule } from 'ngx-quill';
-import { AuthService } from '../../services/auth.service';
-import { NavigationService } from '../../services/navigation.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { YoutubeWidgetViewerComponent } from "../../shared/youtube-widget-viewer/youtube-widget-viewer.component";
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { AuthService } from '../../services/auth.service';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   standalone: true,
@@ -26,20 +29,21 @@ import { YoutubeWidgetViewerComponent } from "../../shared/youtube-widget-viewer
     QuillModule,
     MatTooltipModule,
     YoutubeWidgetViewerComponent,
-],
+    MatTabsModule,
+    MatIconModule,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './pagina-noticia.component.html',
   styleUrls: ['./pagina-noticia.component.css']
 })
-export class PaginaNoticiaComponent {
-  
-  url: string = window.location.href;;
+export class PaginaNoticiaComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  url: string = window.location.href;
   alertaVisivel = false;
   alertaTexto: string = '';
-  alertaPosicao = { x: 30, y: 0 };
-  posicaoTooltip = { top: 30, left: 0 };
+  posicaoTooltip = { x: 0, y: 0 };
   quantidadeNoticias = 10;
-  textoSelecionado = 'humano';
+
   infosPostagem: PostagemRequest = {
     titulo: '',
     descricao: '',
@@ -55,10 +59,14 @@ export class PaginaNoticiaComponent {
     dataCriacao: '',
     premiumOuComum: false,
     alertas: [],
-    visualizacoes: 0,  
+    visualizacoes: 0,
   };
   noticiasRelacionadas: PostagemRequest[] = [];
   isLoggedIn = false;
+
+  @ViewChild('tabGroup') tabGroup: any;
+
+  private analiseTabLoadedOnce = false;
 
   constructor(
     private _noticiaService: NoticiaService,
@@ -69,31 +77,51 @@ export class PaginaNoticiaComponent {
     private dialog: MatDialog,
     private _snackBarService: SnackbarService,
     private el: ElementRef,
-  ) {}
+  ) {
+    this.atualizarPosicaoAlerta = this.atualizarPosicaoAlerta.bind(this);
+  }
 
   ngOnInit(): void {
     this.isLoggedIn = this._authService.isLoggedIn() ?? false;
     this._route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.carregaNoticia();
-        this.carregaNoticiasRelacionadas();
+        this.carregaNoticia(id);
+        // Garante que o estado do componente seja resetado para a nova notícia
+        // mesmo se o componente não for recriado, apenas os parâmetros mudarem.
+        this.resetComponentState();
       }
     });
   }
 
   ngAfterViewInit(): void {
-    this.adicionarEventosNosSobrescritos();
+    if (this.tabGroup) {
+      this.tabGroup.selectedTabChange.subscribe((event: MatTabChangeEvent) => {
+        if (event.index === 1) { // Aba "Análise da Veritare"
+          this.tentarAdicionarEventosNosSobrescritos();
+        }
+      });
+    }
   }
-  
 
-  mostrarTexto(opcao: string): void {
-    this.textoSelecionado = opcao;
+  ngOnDestroy(): void {
+    window.removeEventListener('mousemove', this.atualizarPosicaoAlerta);
   }
 
-  carregaNoticia(): void {
-    const id = this._route.snapshot.paramMap.get('id'); 
-    
+  /**
+   * Reseta o estado do componente (ex: volta para a primeira aba, redefine flags)
+   * para uma nova notícia ser exibida de forma "limpa".
+   */
+  private resetComponentState(): void {
+    this.analiseTabLoadedOnce = false;
+    // Volta para a primeira aba (índice 0) para que o usuário sempre comece na "Matéria da Veritare"
+    if (this.tabGroup) {
+      this.tabGroup.selectedIndex = 0;
+    }
+    // Outros resets de estado visual ou flags podem ser adicionados aqui
+  }
+
+  carregaNoticia(id: string): void {
     if (!id) {
       this._snackBarService.MostrarErro('ID inválido ou ausente na URL');
       return;
@@ -103,7 +131,6 @@ export class PaginaNoticiaComponent {
       (dados) => {
         this.infosPostagem = dados;
 
-        // Verifica se a notícia é premium e se o usuário tem acesso
         if (this.infosPostagem?.premiumOuComum === true) {
           if (!this._authService.podeVisualizarNoticiaPremium()) {
             this._authService.acessarNoticiaPremium();
@@ -111,15 +138,42 @@ export class PaginaNoticiaComponent {
           }
         }
 
-        // Carrega notícias relacionadas, se existir a categoria
         if (this.infosPostagem?.idCategoria) {
           this.carregaNoticiasRelacionadas();
+        }
+        
+        // Tenta adicionar eventos nos sobrescritos se a aba de análise for a padrão inicial
+        // ou se o conteúdo for carregado nela.
+        if (this.tabGroup && this.tabGroup.selectedIndex === 1) {
+            this.tentarAdicionarEventosNosSobrescritos();
         }
       },
       (erro) => {
         this._snackBarService.MostrarErro('Erro ao carregar a notícia:', erro);
+        console.error('Detalhes do erro ao carregar notícia:', erro);
+        // Opcional: Em caso de erro, redirecionar para uma página de erro ou home
+        // this._router.navigate(['/home']);
       }
     );
+  }
+
+  tentarAdicionarEventosNosSobrescritos(attempts = 0): void {
+    const maxAttempts = 10;
+    const delay = 200 * (attempts + 1);
+
+    if (attempts >= maxAttempts) {
+      console.error('Quill editor: Não foi possível adicionar eventos após múltiplas tentativas.');
+      return;
+    }
+
+    const quillAnaliseElement = this.el.nativeElement.querySelector('mat-tab[label="Análise da Veritare"] quill-view .ql-editor');
+
+    if (quillAnaliseElement && quillAnaliseElement.innerHTML.length > 0) {
+      this.adicionarEventosNosSobrescritos();
+      this.analiseTabLoadedOnce = true;
+    } else {
+      setTimeout(() => this.tentarAdicionarEventosNosSobrescritos(attempts + 1), delay);
+    }
   }
 
   editarNoticia(): void {
@@ -133,17 +187,17 @@ export class PaginaNoticiaComponent {
 
   carregaNoticiasRelacionadas(): void {
     if (!this.infosPostagem?.idCategoria) {
-      console.warn('ID da categoria não encontrado.');
+      console.warn('ID da categoria não encontrado para carregar notícias relacionadas.');
       return;
     }
-  
+
     const pagina = 1;
     const quantidade = 6;
-  
+
     this._noticiaService.carregarPostagensPorEditoria(this.infosPostagem.idCategoria, pagina, quantidade)
       .subscribe({
         next: (resposta) => {
-          this.noticiasRelacionadas = resposta.dados;
+          this.noticiasRelacionadas = resposta.dados.filter(n => n.idPostagem !== this.infosPostagem.idPostagem);
         },
         error: (erro) => {
           console.error('Erro ao carregar notícias relacionadas:', erro);
@@ -151,109 +205,95 @@ export class PaginaNoticiaComponent {
         }
       });
   }
-  
+
   acessarEditarNoticia(): boolean {
     return this._authService.acessarEditarNoticia();
   }
 
+  /**
+   * Navega para uma notícia relacionada utilizando o NavigationService,
+   * e então força a rolagem da página para o topo para dar a percepção de recarregamento.
+   */
   navegarParaNoticia(infosPostagem: PostagemRequest): void {
     this._noticiaService.buscarListaDeEditorias().subscribe(listaDeEditorias => {
       const categoria = listaDeEditorias.find(editoria => editoria.id === infosPostagem.idCategoria);
       if (categoria) {
+        // Delega a navegação ao NavigationService.
+        // Assumimos que o NavigationService já está construindo a URL corretamente
+        // (ex: `/noticia/NomeDaCategoria/ID`).
         this._navigationService.onAbrirNoticia(infosPostagem, categoria);
+
+        // Após a navegação (que altera a URL e dispara o ngOnInit para recarregar dados),
+        // forçamos a rolagem para o topo para a percepção de "recarregamento".
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Além disso, resetamos o estado do componente (ex: aba selecionada)
+        // para que a nova notícia comece na primeira aba, se desejar.
+        this.resetComponentState();
+
       } else {
         console.error('Categoria não encontrada para a postagem');
+        this._snackBarService.MostrarErro('Não foi possível encontrar a categoria da notícia.');
       }
     });
   }
 
   adicionarEventosNosSobrescritos(): void {
-    const elementos = this.el.nativeElement.querySelectorAll('.ql-editor sup');
-    elementos.forEach((element: HTMLElement) => {
-      // Adicionando o evento de mouseenter para mostrar o alerta
-      element.addEventListener('mouseenter', (event: MouseEvent) => this.mostrarAlerta(event));
-      // Adicionando o evento de mouseleave para esconder o alerta
-      element.addEventListener('mouseleave', () => this.esconderAlerta());
-    });
+    const quillAnaliseElement = this.el.nativeElement.querySelector('mat-tab[label="Análise da Veritare"] quill-view .ql-editor');
+
+    if (quillAnaliseElement) {
+      // Remove listeners existentes para evitar duplicação
+      const oldSupElements = quillAnaliseElement.querySelectorAll('sup');
+      oldSupElements.forEach((element: HTMLElement) => {
+        element.removeEventListener('mouseenter', this.mostrarAlerta.bind(this));
+        element.removeEventListener('mouseleave', this.esconderAlerta.bind(this));
+      });
+
+      // Adiciona novos listeners
+      const newSupElements = quillAnaliseElement.querySelectorAll('sup');
+      newSupElements.forEach((element: HTMLElement) => {
+        element.addEventListener('mouseenter', this.mostrarAlerta.bind(this));
+        element.addEventListener('mouseleave', this.esconderAlerta.bind(this));
+      });
+    }
   }
-  
+
   mostrarAlerta(event: MouseEvent): void {
     const elementoTexto = (event.target as HTMLElement).innerText;
-    
-    // Extraindo o número do texto (assumindo o formato correto com colchetes [10], [11], etc.)
     const numeroExtraido = this.converterSobrescritoParaNumero(elementoTexto);
-  
-    // Verificando se o número extraído corresponde a um alerta válido
+
     const textoAlerta = this.infosPostagem.alertas.find(alerta =>
       alerta.numeroAlerta === numeroExtraido
     );
-  
+
     if (textoAlerta) {
       this.alertaTexto = textoAlerta.mensagem;
       this.alertaVisivel = true;
-      // Adiciona o ouvinte para mover o alerta conforme o mouse se move
+      this.posicaoTooltip = {
+        x: event.clientX + 10,
+        y: event.clientY - 40,
+      };
       window.addEventListener('mousemove', this.atualizarPosicaoAlerta);
     } else {
-      this.alertaVisivel = false;
+      this.esconderAlerta();
     }
   }
-  
-  
-  getAlertStyle() {
-    return {
-      top: `${this.alertaPosicao.y}px`,   // A posição vertical do alerta
-      left: `${this.alertaPosicao.x}px`,  // A posição horizontal do alerta
-    };
-  }
-  
+
   atualizarPosicaoAlerta = (event: MouseEvent) => {
-    this.alertaPosicao = {
-      x: event.clientX,
-      y: event.clientY - 80, // Apenas um número, não a unidade 'px'
+    this.posicaoTooltip = {
+      x: event.clientX + 10,
+      y: event.clientY - 40,
     };
   };
-  
-    
-    esconderAlerta(): void {
-      this.alertaVisivel = false;
-      window.removeEventListener('mousemove', this.atualizarPosicaoAlerta);
-    }
-  
 
-    converterSobrescritoParaNumero(sobrescrito: string): number {
-      // Remove os colchetes e tenta converter diretamente para número
-      const numero = sobrescrito.replace('[', '').replace(']', '');
-      return parseInt(numero, 10) || -1;  // Retorna -1 se não for um número válido
-    }
+  esconderAlerta(): void {
+    this.alertaVisivel = false;
+    window.removeEventListener('mousemove', this.atualizarPosicaoAlerta);
+  }
 
-  detectarReferenciasNaTela(): void {
-    if (!this.infosPostagem || !this.infosPostagem.conteudo) {
-      return;
-    }
-  
-    // Expressão regular para detectar números entre 1 até 20 entre colchetes
-    const regex = /\[(1[0-9]|20|[1-9])\]/g; // Captura números de 1 até 20 entre colchetes
-
-    const numerosEncontrados = this.infosPostagem.conteudo.match(regex);
-  
-    if (numerosEncontrados) {
-      numerosEncontrados.forEach((numSobrescrito) => {
-        // Extrai o número do texto dentro dos colchetes
-        const numeroIndice = parseInt(numSobrescrito.replace('[', '').replace(']', ''), 10);
-  
-        // Verifica se o número está entre 1 e 20 (isso é redundante, mas garante que estamos na faixa certa)
-        if (numeroIndice >= 1 && numeroIndice <= 20) {
-          // Verifica se o número não foi adicionado antes
-          const alertaExistente = this.infosPostagem.alertas.find(alerta => alerta.numeroAlerta === numeroIndice);
-          if (!alertaExistente) {
-            this.infosPostagem.alertas.push({
-              numeroAlerta: numeroIndice,
-              mensagem: `Alerta ${numeroIndice} - Descrição do alerta...`
-            });
-          }
-        }
-      });
-    }
+  converterSobrescritoParaNumero(sobrescrito: string): number {
+    const numero = sobrescrito.replace('[', '').replace(']', '');
+    return parseInt(numero, 10) || -1;
   }
 
   copyLink(): void {
@@ -263,7 +303,4 @@ export class PaginaNoticiaComponent {
       this._snackBarService.MostrarErro('Falha ao copiar o link');
     });
   }
-
-
-  
 }

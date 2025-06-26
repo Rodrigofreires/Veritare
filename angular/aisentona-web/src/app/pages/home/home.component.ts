@@ -6,7 +6,7 @@ import { ListaNoticiasComponent } from '../../shared/lista-noticias/lista-notici
 import { WeatherComponent } from "../../shared/weather/weather.component";
 import { BannerNoticiasPremiumComponent } from "../../shared/banner-noticias-premium/banner-noticias-premium.component";
 import { FaixaAssineVeritareComponent } from "../../shared/faixa-assine-veritare/faixa-assine-veritare.component";
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { YoutubeWidgetViewerComponent } from '../../shared/youtube-widget-viewer/youtube-widget-viewer.component';
 
@@ -18,6 +18,7 @@ import { YoutubeWidgetViewerComponent } from '../../shared/youtube-widget-viewer
     ListaNoticiasComponent, 
     BannerNoticiasPremiumComponent, 
     FaixaAssineVeritareComponent,
+    RouterModule,
     //YoutubeWidgetViewerComponent,
   
   ],

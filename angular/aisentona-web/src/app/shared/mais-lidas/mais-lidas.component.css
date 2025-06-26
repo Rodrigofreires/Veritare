@@ -1,45 +1,138 @@
+/*
+ * CSS para o componente "Mais Lidas da Semana"
+ * Este estilo foi criado para modernizar o visual, adicionando toques criativos como gradientes,
+ * sombras suaves e animações sutis, sem comprometer a usabilidade.
+*/
+
+/* --- Estilos Gerais do Card "Mais Lidas" --- */
 .mais-lidas-card {
-    margin: 1rem;
-    padding: 1rem;
+  margin: 1.5rem; /* Margem externa para espaçamento do card em relação a outros elementos */
+  padding: 1.5rem; /* Preenchimento interno para dar 'ar' dentro do card */
+  border-radius: 16px; /* Bordas arredondadas para um visual mais suave e moderno */
+  /* Fundo com gradiente sutil para adicionar profundidade e interesse visual */
+  background: linear-gradient(135deg, #f9fbfd 0%, #f0f2f5 100%);
+  /* Sombra mais profunda e suave para um efeito de "flutuação" e modernidade */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out; /* Transição suave para o efeito de hover */
+}
+
+/* Efeito ao passar o mouse sobre o card */
+.mais-lidas-card:hover {
+  transform: translateY(-5px); /* Move o card ligeiramente para cima no hover */
+}
+
+/* --- Título do Card --- */
+.mais-lidas-title {
+  font-size: 1.6rem; /* Tamanho da fonte maior para o título, destacando-o */
+  font-weight: 700; /* Negrito mais forte para o título */
+  color: #2c3e50; /* Cor azul-acinzentada escura e sofisticada para o título */
+  text-align: center; /* Centraliza o título para melhor impacto visual */
+  margin-bottom: 1rem; /* Espaço abaixo do título antes do divisor */
+}
+
+/* --- Divisor (Linha Horizontal) --- */
+.mais-lidas-divider {
+  border-color: #e0e0e0; /* Cor da linha divisória mais clara e sutil */
+  margin-bottom: 1.5rem; /* Espaço maior abaixo do divisor para separar o título da lista */
+}
+
+/* --- Lista de Notícias Mais Lidas --- */
+.mais-lidas-lista {
+  display: flex; /* Usa flexbox para organizar os itens da lista */
+  flex-direction: column; /* Organiza os itens em coluna */
+  gap: 1.2rem; /* Espaçamento entre cada item da notícia na lista */
+}
+
+/* --- Item Individual da Notícia na Lista --- */
+.mais-lidas-item {
+  display: flex; /* Usa flexbox para alinhar o número e o título */
+  align-items: center; /* Alinha verticalmente os itens no centro */
+  gap: 1rem; /* Distância entre o "badge" de ranking e o título da notícia */
+  padding: 0.75rem 0; /* Preenchimento vertical para cada item, dando 'respiro' */
+  /* Linha inferior sutil para separar os itens, com baixa opacidade */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease, transform 0.2s ease; /* Transições suaves para hover */
+}
+
+/* Remove a borda inferior do último item para um acabamento limpo */
+.mais-lidas-item:last-child {
+  border-bottom: none;
+}
+
+/* Efeito ao passar o mouse sobre um item da notícia */
+.mais-lidas-item:hover {
+  background-color: rgba(230, 240, 250, 0.4); /* Fundo azul claro no hover */
+  transform: translateX(5px); /* Desliza o item ligeiramente para a direita no hover */
+  border-radius: 4px; /* Leve arredondamento no fundo do hover */
+}
+
+/* --- Estilo do Badge de Ranking (Número 1, 2, 3...) --- */
+.ranking-badge {
+  display: flex; /* Usa flexbox para centralizar o número dentro do badge */
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+  width: 38px; /* Largura fixa para manter o tamanho do círculo consistente */
+  height: 38px; /* Altura fixa */
+  border-radius: 50%; /* Transforma o elemento em um círculo perfeito */
+  /* Gradiente padrão para os badges que não estão no top 3 */
+  background: linear-gradient(45deg, #6c5ce7, #a29bfe); /* Gradiente roxo vibrante */
+  /* Sombra que combina com a cor do badge para um efeito 3D */
+  box-shadow: 0 3px 10px rgba(108, 92, 231, 0.4);
+  color: #ffffff; /* Cor branca para o número dentro do badge */
+  font-size: 1.1rem; /* Tamanho da fonte do número */
+  font-weight: bold; /* Negrito para o número */
+  flex-shrink: 0; /* Previne que o badge encolha */
+  animation: scaleIn 0.3s ease-out forwards; /* Animação suave de aparecimento */
+}
+
+/* Estilo específico para o 1º lugar (ouro) */
+.mais-lidas-item:nth-child(1) .ranking-badge {
+  background: linear-gradient(45deg, #ffc107, #ff9800); /* Gradiente dourado */
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.6); /* Sombra mais forte para destaque */
+  font-size: 1.25rem; /* Número maior para o 1º lugar */
+}
+
+/* Estilo específico para o 2º lugar (prata) */
+.mais-lidas-item:nth-child(2) .ranking-badge {
+  background: linear-gradient(45deg, #a8b0bd, #7b8d9b); /* Gradiente prateado */
+  box-shadow: 0 4px 12px rgba(168, 176, 189, 0.6); /* Sombra mais forte para destaque */
+  font-size: 1.2rem; /* Número maior para o 2º lugar */
+}
+
+/* Estilo específico para o 3º lugar (bronze) */
+.mais-lidas-item:nth-child(3) .ranking-badge {
+  background: linear-gradient(45deg, #cd7f32, #d68e3a); /* Gradiente bronze */
+  box-shadow: 0 4px 12px rgba(205, 127, 50, 0.6); /* Sombra mais forte para destaque */
+  font-size: 1.15rem; /* Número maior para o 3º lugar */
+}
+
+/* --- Título da Notícia (Link) --- */
+.titulo-noticia {
+  font-size: 1.05rem; /* Tamanho da fonte ligeiramente maior e mais legível */
+  font-weight: 500; /* Peso da fonte médio */
+  color: #4a69bd; /* Cor azul moderna e atraente para o link */
+  text-decoration: none; /* Remove o sublinhado padrão do link */
+  cursor: pointer; /* Indica que o item é clicável */
+  flex-grow: 1; /* Permite que o título ocupe o espaço restante */
+  white-space: normal; /* Permite que o texto do título quebre a linha se for muito longo */
+  line-height: 1.4; /* Melhora a legibilidade de títulos com múltiplas linhas */
+}
+
+/* Efeito ao passar o mouse sobre o título da notícia */
+.titulo-noticia:hover {
+  color: #3b509d; /* Tom de azul mais escuro no hover */
+  text-decoration: underline; /* Adiciona sublinhado no hover para indicar interatividade */
+}
+
+/* --- Animações CSS --- */
+/* Animação para o aparecimento suave dos badges de ranking */
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.5); /* Começa menor */
+    opacity: 0; /* Começa invisível */
   }
-  
-  .mais-lidas-lista {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem; /* espaçamento entre as notícias */
-    margin-top: 1rem;
+  100% {
+    transform: scale(1); /* Cresce até o tamanho normal */
+    opacity: 1; /* Torna-se totalmente visível */
   }
-  
-  .mais-lidas-item {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem; /* distância entre o número e o título */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .ranking-numero {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #1E1E2E;
-    min-width: 30px;
-    text-align: right;
-    flex-shrink: 0;
-  }
-  
-  .titulo-noticia {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #7070AC;
-    text-decoration: none;
-    cursor: pointer;
-    flex-grow: 1;
-    white-space: normal; /* permite o título quebrar linha se for grande */
-  }
-  
-  .titulo-noticia:hover {
-    color: #5a5a8a;
-    text-decoration: underline;
-  }
-  
+}

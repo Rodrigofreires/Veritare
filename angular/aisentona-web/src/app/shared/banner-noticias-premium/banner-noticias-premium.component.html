@@ -1,19 +1,44 @@
-<div class="noticias-container">
-  <mat-card class="card-premium" *ngFor="let postagem of infosPostagem; let i = index" (click)="navegarParaNoticia(postagem)">
-    
-    <!-- Container para a imagem do banner com a etiqueta fixa -->
-    <div class="imagem-container">
-      <img class="imagem-banner-premium" mat-card-image [src]="postagem.imagem" [alt]="postagem.titulo">
-      
-      <!-- Etiqueta fixa no topo -->
-      <img class="veritare-card-premium" src="/assets/images/card-premium-transparent.png">
+<div class="noticias-premium-wrapper">
+  <div id="premiumNewsBootstrapCarousel" class="carousel slide premium-news-carousel" data-bs-ride="carousel" *ngIf="infosPostagem.length > 0">
+    <div class="carousel-indicators">
+      <button
+        *ngFor="let postagem of infosPostagem; let i = index"
+        type="button"
+        [attr.data-bs-target]="'#premiumNewsBootstrapCarousel'"
+        [attr.data-bs-slide-to]="i"
+        [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null"
+        [attr.aria-label]="'Slide ' + (i + 1)"
+      ></button>
     </div>
 
-    <!-- Texto sobreposto na imagem -->
-    <div class="texto-sobre-imagem">
-      <h2>{{ postagem.titulo }}</h2>
-      <p>{{ postagem.descricao }}</p>
+    <div class="carousel-inner">
+      <div class="carousel-item" [class.active]="i === 0" *ngFor="let postagem of infosPostagem; let i = index">
+        <mat-card class="card-premium" (click)="navegarParaNoticia(postagem)">
+          <div class="imagem-container">
+            <img class="imagem-banner-premium d-block w-100" [src]="postagem.imagem" [alt]="postagem.titulo">
+            <img class="veritare-card-premium-label" src="/assets/images/card-premium-transparent.png" alt="Veritare Premium Label">
+          </div>
+
+          <div class="texto-sobre-imagem">
+            <span class="categoria-premium">{{ postagem.nomeCategoria || 'Premium' }}</span>
+            <h2>{{ postagem.titulo }}</h2>
+            <p>{{ postagem.descricao }}</p>
+          </div>
+        </mat-card>
+      </div>
     </div>
-    
-  </mat-card>
+
+    <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#premiumNewsBootstrapCarousel'" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#premiumNewsBootstrapCarousel'" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Próximo</span>
+    </button>
+  </div>
+
+  <div *ngIf="infosPostagem.length === 0" class="loading-premium-news">
+    Carregando as últimas notícias premium...
+  </div>
 </div>

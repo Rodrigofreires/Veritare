@@ -1,11 +1,25 @@
-
 <app-faixa-assine-veritare></app-faixa-assine-veritare>
 
 <app-container>
-    <app-banner-noticias-premium></app-banner-noticias-premium>
-    <app-banner></app-banner>
-    <img src="assets/images/veritare-assine.png" alt="imagem-assine" class="imagem-assine" (click)="navigateToAssine()" style="cursor:pointer;">
-    <app-lista-noticias></app-lista-noticias>
-    
+  <app-banner-noticias-premium></app-banner-noticias-premium>
+
+  <app-banner></app-banner>
+
+  <a [routerLink]="['/assine']" style="cursor: pointer">
+    <img
+      src="assets/images/veritare-assine.png"
+      alt="imagem-assine"
+      class="imagem-assine"
+    />
+  </a>
+
+  <app-lista-noticias></app-lista-noticias>
 </app-container>
 
+<div class="container-fluid my-4 px-0">
+  <div class="faixa-assine text-center py-4 px-3">
+    <div class="row justify-content-center">
+      
+    </div>
+  </div>
+</div>

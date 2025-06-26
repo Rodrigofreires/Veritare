@@ -18,6 +18,7 @@
     box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.2);
     width: 90%;
     max-width: 1200px;
+    position: relative; /* Adicionado para posicionar o loading-overlay corretamente */
 }
 
 /* Seção do Vídeo */
@@ -76,6 +77,13 @@
     font-size: 1rem;
 }
 
+/* Estilo para input desabilitado durante o carregamento */
+.signup-form input:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+
 .botão-entrar {
     background: #a29bfe;
     color: white;
@@ -89,6 +97,13 @@
 
 .botão-entrar:hover {
     background: #8c82fc;
+}
+
+/* Estilo para botão desabilitado durante o carregamento */
+.botão-entrar:disabled {
+    background: #5e5a8c; /* Cor mais escura para indicar desabilitado */
+    cursor: not-allowed;
+    opacity: 0.8;
 }
 
 .voltar-login {
@@ -117,6 +132,40 @@
     font-size: 0.9rem;
 }
 
+/* --- ESTILOS PARA O LOADING (CARREGAMENTO) --- */
+
+.loading-overlay {
+  position: absolute; /* Posição absoluta em relação ao .signup-wrapper */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(30, 30, 46, 0.9); /* Fundo semi-transparente, usando uma cor existente no tema */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Garante que o overlay fique por cima de outros elementos */
+  border-radius: 16px; /* Para combinar com o borderRadius do signup-wrapper */
+  color: #ffffff; /* Cor do texto de carregamento */
+  font-size: 1.1rem;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.2); /* Cor da borda do spinner */
+  border-left-color: #a29bfe; /* Cor principal do spinner, combinando com o botão */
+  border-radius: 50%;
+  width: 50px; /* Tamanho maior para o spinner */
+  height: 50px; /* Tamanho maior para o spinner */
+  animation: spin 1s linear infinite; /* Animação de rotação */
+  margin-bottom: 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Responsividade */
 @media (max-width: 992px) {
     .signup-wrapper {
@@ -129,6 +178,10 @@
     .form-section {
         padding: 30px;
     }
+    /* O overlay precisa se ajustar também quando a flex-direction muda */
+    .loading-overlay {
+        border-radius: 0 0 16px 16px; /* Ajusta o border-radius para quando está em coluna */
+    }
 }
 
 @media (max-width: 600px) {
@@ -139,5 +192,12 @@
     .botão-entrar {
         font-size: 0.9rem;
         padding: 10px;
+    }
+    .spinner {
+        width: 40px;
+        height: 40px;
+    }
+    .loading-overlay p {
+        font-size: 1rem;
     }
 }

@@ -1,14 +1,15 @@
 <mat-card class="mais-lidas-card">
-    <mat-card-title>Mais Lidas da Semana</mat-card-title>
-    <mat-divider></mat-divider>
-  
-    <div class="mais-lidas-lista">
-      <div *ngFor="let noticia of maisLidas; index as i" class="mais-lidas-item">
-        <span class="ranking-numero">{{ i + 1 }}.</span>
-        <a (click)="navegarParaNoticia(noticia)" class="titulo-noticia">
-          {{ noticia.titulo }}
-        </a>
+  <mat-card-title class="mais-lidas-title">Destaques da Semana</mat-card-title>
+  <mat-divider class="mais-lidas-divider"></mat-divider>
+
+  <div class="mais-lidas-lista">
+    <div *ngFor="let noticia of maisLidas; index as i" class="mais-lidas-item">
+      <div class="ranking-badge">
+        <span class="ranking-numero">{{ i + 1 }}</span>
       </div>
+      <a (click)="navegarParaNoticia(noticia)" class="titulo-noticia">
+        {{ noticia.titulo }}
+      </a>
     </div>
-  </mat-card>
-  
+  </div>
+</mat-card>

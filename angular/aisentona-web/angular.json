@@ -22,7 +22,6 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              
               {
                 "glob": "**/*",
                 "input": "public",
@@ -40,7 +39,9 @@
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
               "src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" 
+            ],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "ssr": {

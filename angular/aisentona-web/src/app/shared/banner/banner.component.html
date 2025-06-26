@@ -1,32 +1,32 @@
-<div class="painel-noticias">
-<!-- Destaque -->
-<div class="conteudo-destaque">
-  <mat-card class="card-noticia-destaque" appearance="outlined" 
-            (click)="navegarParaNoticia(infosPostagem[0])">
-    
-    <!-- Imagem da notícia -->
-    <img class="imagem-banner-destaque" mat-card-image src="{{ infosPostagem[0].imagem }}"  
-         alt="Imagem da notícia destacada">    
+<div class="mosaico-tres-quadrinhos" *ngIf="infosPostagem.length >= 3">
+  <!-- Quadro grande 50% -->
+  <div class="quadro-grande" (click)="navegarParaNoticia(infosPostagem[0])">
+    <img class="imagem-quadro" [src]="infosPostagem[0].imagem" [alt]="'Imagem da notícia: ' + infosPostagem[0].titulo" />
+    <div class="texto-sobreposto">
+      <span class="categoria">{{ infosPostagem[0].nomeCategoria }}</span>
+      <h3 class="titulo">{{ infosPostagem[0].titulo }}</h3>
+      <p class="descricao">{{ infosPostagem[0].descricao }}</p>
+    </div>
+  </div>
 
-    <!-- Texto sobreposto na imagem -->
-    <div class="texto-sobre-imagem">
-      <p><strong>{{ infosPostagem[0].nomeCategoria }}</strong> </p> 
-      <h2>{{ infosPostagem[0].titulo }}</h2>
-      <p>{{ infosPostagem[0].descricao }}</p>
-
+  <!-- Coluna direita com dois quadros pequenos empilhados (25% cada) -->
+  <div class="coluna-pequena">
+    <div class="quadro-pequeno" (click)="navegarParaNoticia(infosPostagem[1])">
+      <img class="imagem-quadro" [src]="infosPostagem[1].imagem" [alt]="'Imagem da notícia: ' + infosPostagem[1].titulo" />
+      <div class="texto-sobreposto">
+        <span class="categoria">{{ infosPostagem[1].nomeCategoria }}</span>
+        <h3 class="titulo">{{ infosPostagem[1].titulo }}</h3>
+        <p class="descricao">{{ infosPostagem[1].descricao }}</p>
+      </div>
     </div>
 
-  </mat-card>
-</div>
-
-  <!-- Lista -->
-  <div class="lista-noticias" *ngIf="infosPostagem.length > 1">
-    <mat-card *ngFor="let postagem of infosPostagem.slice(1)" appearance="outlined">
-      <p style="color: #7070AC; margin-bottom: 10px;"><strong>{{ postagem?.nomeCategoria }}</strong></p>
-      <img class="imagem-banner-maior" mat-card-image src="{{ postagem.imagem }}"
-      (click)="navegarParaNoticia(postagem)" 
-           alt="Imagem da notícia destacada">
-      <h3>{{ postagem?.titulo }}</h3>
-    </mat-card>
+    <div class="quadro-pequeno" (click)="navegarParaNoticia(infosPostagem[2])">
+      <img class="imagem-quadro" [src]="infosPostagem[2].imagem" [alt]="'Imagem da notícia: ' + infosPostagem[2].titulo" />
+      <div class="texto-sobreposto">
+        <span class="categoria">{{ infosPostagem[2].nomeCategoria }}</span>
+        <h3 class="titulo">{{ infosPostagem[2].titulo }}</h3>
+        <p class="descricao">{{ infosPostagem[2].descricao }}</p>
+      </div>
+    </div>
   </div>
 </div>
