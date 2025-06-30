@@ -47,7 +47,7 @@
       Além disso, muitos portais jornalísticos costumam ocultar a maioria das fontes sob o pretexto do sigilo. Entretanto, essas fontes geralmente defendem, muitas vezes de forma irônica ou parcial, apenas o lado ideológico do jornalista responsável pela matéria.
     </p>
         <p class="texto-secao">
-     Confiar unicamente na palavra de um jornalista, sem a possibilidade de verificar a veracidade dos fatos, é no mínimo algo que merece ser questionado.
+      Confiar unicamente na palavra de um jornalista, sem a possibilidade de verificar a veracidade dos fatos, é no mínimo algo que merece ser questionado.
     </p>
     <p class="texto-secao">
       Outro ponto importante é que é comum encontrar especialistas que defendem exclusivamente as opiniões que o portal apoia. Por isso, a simples citação de especialistas não garante uma fonte confiável ou imparcial.
@@ -84,33 +84,40 @@
     <form class="formulario-prompt" [formGroup]="form" (ngSubmit)="enviarFormulario()">
       <mat-form-field appearance="outline" class="campo-form">
         <mat-label>Nome</mat-label>
-        <input matInput formControlName="nome" placeholder="Digite seu nome" />
-        <mat-error *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched">
+        <input matInput formControlName="Nome" placeholder="Digite seu nome" /> <!-- Alterado para 'Nome' -->
+        <mat-error *ngIf="form.get('Nome')?.invalid && form.get('Nome')?.touched">
           O nome é obrigatório.
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="campo-form">
         <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" placeholder="Digite seu e-mail" />
+        <input matInput type="email" formControlName="Email" placeholder="Digite seu e-mail" /> <!-- Alterado para 'Email' -->
 
-        <mat-error *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)">
-          <ng-container *ngIf="form.get('email')?.errors?.['required']">
+        <mat-error *ngIf="form.get('Email')?.invalid && (form.get('Email')?.dirty || form.get('Email')?.touched)">
+          <ng-container *ngIf="form.get('Email')?.errors?.['required']">
             O e-mail é obrigatório.
           </ng-container>
-          <ng-container *ngIf="form.get('email')?.errors?.['email'] && !form.get('email')?.errors?.['required']">
+          <ng-container *ngIf="form.get('Email')?.errors?.['email'] && !form.get('Email')?.errors?.['required']">
             Por favor, digite um e-mail válido.
           </ng-container>
         </mat-error>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" class="botao-global" type="submit">
-        RECEBER PROMPT
+      <button mat-raised-button color="primary" class="botao-global" type="submit" [disabled]="carregando">
+        <span *ngIf="!carregando">RECEBER PROMPT</span>
+        <mat-spinner *ngIf="carregando" [diameter]="20" color="accent"></mat-spinner>
       </button>
     </form>
 
-    <div class="mensagem-sucesso" *ngIf="enviado">
-      <p> Seu pedido foi enviado com sucesso! Verifique seu e-mail.</p>
+  <!-- Mensagem de Sucesso -->
+    <div class="mensagem-sucesso" *ngIf="mensagemSucesso">
+      <p>{{ mensagemSucesso }}</p>
+    </div>
+
+    <!-- Mensagem de Erro -->
+    <div class="mensagem-erro" *ngIf="mensagemErro">
+      <p>{{ mensagemErro }}</p>
     </div>
   </section>
 

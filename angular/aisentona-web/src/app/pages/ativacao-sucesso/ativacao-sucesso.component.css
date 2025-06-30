@@ -1,9 +1,137 @@
-.container {
-    text-align: center;
-    margin-top: 50px;
+/* Container principal para centralizar o conteúdo vertical e horizontalmente */
+.container-full-height {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ocupa a altura total da viewport */
+  background-color: #0a0c1b; /* Cor de fundo escura para combinar com o tema */
+  padding: 15px; /* Espaçamento interno responsivo */
+  box-sizing: border-box; /* Inclui padding na altura/largura */
+  overflow-y: auto; /* Permite rolagem se o conteúdo for maior que a tela */
+  -webkit-overflow-scrolling: touch; /* Rolagem suave em iOS */
+}
+
+/* Container para o conteúdo da mensagem */
+.container-content {
+  text-align: center;
+  background-color: #1a1d3d; /* Fundo mais claro para o card */
+  padding: 30px; /* Padding responsivo */
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); /* Sombra mais pronunciada */
+  max-width: 500px; /* Largura máxima para o conteúdo */
+  width: 100%; /* Garante que ocupe a largura disponível */
+  color: #ddd; /* Cor do texto */
+  margin: auto; /* Centraliza o card se a altura do conteúdo for menor que a viewport */
+}
+
+/* Estilo para o título */
+h2 {
+  font-size: 2em; /* Tamanho base responsivo */
+  color: #00bfa5; /* Cor de destaque (verde água) */
+  margin-bottom: 1.2em; /* Margem responsiva */
+  font-weight: 700;
+  line-height: 1.2; /* Altura da linha para melhor legibilidade */
+}
+
+/* Estilo para o parágrafo */
+p {
+  font-size: 1em; /* Tamanho base responsivo */
+  line-height: 1.6;
+  margin-bottom: 1.5em; /* Margem responsiva */
+  color: #ccc;
+}
+
+/* Grupo de botões para espaçamento */
+.button-group {
+  display: flex;
+  flex-direction: column; /* Botões empilhados em telas pequenas por padrão */
+  gap: 15px; /* Espaçamento entre os botões */
+  margin-top: 20px;
+}
+
+/* Estilo para os botões do Material Angular */
+.mat-raised-button.mat-primary,
+.mat-button.mat-accent {
+  width: 100%; /* Ocupa a largura total em telas pequenas */
+  padding: 12px 25px;
+  font-size: 1em; /* Tamanho da fonte responsivo */
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+  box-sizing: border-box; /* Inclui padding na largura */
+}
+
+.mat-raised-button.mat-primary {
+  background-color: #00796b; /* Cor primária do seu tema */
+  color: white;
+}
+
+.mat-raised-button.mat-primary:hover {
+  background-color: #004d40; /* Tom mais escuro no hover */
+  transform: translateY(-2px); /* Efeito de leve elevação */
+}
+
+.mat-button.mat-accent {
+  color: #00bfa5; /* Cor de destaque (verde água) */
+  background-color: transparent; /* Garante que não tenha fundo padrão */
+  border: 1px solid #00bfa5; /* Adiciona uma borda para visibilidade */
+}
+
+.mat-button.mat-accent:hover {
+  background-color: rgba(0, 191, 165, 0.1); /* Fundo sutil no hover */
+  color: #00e6cb; /* Tom mais claro no hover */
+}
+
+/* Media Queries para Responsividade */
+
+/* Para telas muito pequenas (smartphones em modo retrato) */
+@media (max-width: 380px) {
+  .container-content {
+    padding: 20px;
   }
-  
-  button {
-    margin-top: 20px;
+  h2 {
+    font-size: 1.8em;
   }
-  
+  p {
+    font-size: 0.95em;
+  }
+  .mat-raised-button.mat-primary,
+  .mat-button.mat-accent {
+    padding: 10px 15px;
+    font-size: 0.9em;
+  }
+}
+
+/* Para tablets e smartphones maiores (modo paisagem) */
+@media (min-width: 600px) {
+  .container-content {
+    padding: 40px;
+  }
+  h2 {
+    font-size: 2.5em;
+  }
+  p {
+    font-size: 1.1em;
+  }
+  .button-group {
+    flex-direction: row; /* Botões lado a lado em telas maiores */
+    justify-content: center;
+  }
+  .mat-raised-button.mat-primary,
+  .mat-button.mat-accent {
+    width: auto; /* Permite que os botões tenham largura automática */
+    min-width: 180px; /* Garante um tamanho mínimo */
+  }
+}
+
+/* Para desktops e telas maiores */
+@media (min-width: 992px) {
+  .container-content {
+    padding: 50px;
+  }
+  h2 {
+    font-size: 3em;
+  }
+  p {
+    font-size: 1.2em;
+  }
+}

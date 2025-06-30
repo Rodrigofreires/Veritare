@@ -14,8 +14,8 @@ namespace Aisentona.Entities.Request
             Email = email;
         }
 
-        public required string Nome  { get; set; }
-        public required string Email { get; set; }
+        public string Nome  { get; set; }
+        public string Email { get; set; }
 
 
     }

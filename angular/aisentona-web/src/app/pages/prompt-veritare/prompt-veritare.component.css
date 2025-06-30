@@ -252,6 +252,26 @@ input[matInput],
   margin-bottom: 5rem;
 }
 
+.mensagem-sucesso {
+  background-color: #12142B; /* Verde claro */
+  color: #2e7d32 !important; /* Verde escuro */
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.mensagem-erro {
+  background-color: #12142B; /* Vermelho claro */
+  color: #c62828 important ; /* Vermelho escuro */
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
 
 
 /* ------------------------------------- */
@@ -294,5 +314,8 @@ input[matInput],
   .secao {
     padding: 3rem 1rem;
   }
+
+
+
 
 }

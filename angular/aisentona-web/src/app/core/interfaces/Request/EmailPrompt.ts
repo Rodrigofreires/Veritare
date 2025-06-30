@@ -1,4 +1,4 @@
 export interface EmailPromptRequest {
-  nome: string;
-  email: string;
+  Nome: string;
+  Email: string;
 }

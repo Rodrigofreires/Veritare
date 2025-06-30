@@ -8,7 +8,10 @@ import { CommonModule } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { EmailPromptRequest } from '../../core/interfaces/Request/EmailPrompt';
+import { EmailPromptRequest } from '../../core/interfaces/Request/EmailPrompt'; // Certifique-se de que o caminho está correto
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Para o spinner de carregamento
+import { MatCardModule } from '@angular/material/card'; // Adicionado para MatCard se for usar no HTML
+import { PromptService } from '../../services/prompt.service';
 
 @Component({
   selector: 'app-prompt-veritare',
@@ -25,8 +28,9 @@ import { EmailPromptRequest } from '../../core/interfaces/Request/EmailPrompt';
     MatError,
     MatButtonModule,
     MatInputModule,
-    // Se MatCard, MatCardContent, MatCardTitle forem usados no HTML, adicione-os aqui:
-    // MatCard,
+    MatProgressSpinnerModule, // Adicionado para o spinner
+    MatCardModule, // Adicionado para MatCard
+    // Se MatCardContent, MatCardTitle forem usados no HTML, adicione-os aqui:
     // MatCardContent,
     // MatCardTitle,
   ],
@@ -35,16 +39,20 @@ export class PromptVeritareComponent implements OnInit {
 
   form!: FormGroup;
   enviado: boolean = false;
+  carregando: boolean = false; // Novo estado para controle de carregamento
+  mensagemErro: string = ''; // Novo estado para mensagens de erro
+  mensagemSucesso: string = ''; // Nova variável para mensagem de sucesso
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private promptService: PromptService // Injetar o PromptService
   ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
-      nome: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]]
+      Nome: ['', Validators.required],  // Alterado de 'nome' para 'Nome'
+      Email: ['', [Validators.required, Validators.email]] // Alterado de 'email' para 'Email'
     });
   }
 
@@ -67,33 +75,79 @@ export class PromptVeritareComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  enviarFormulario() {
+    enviarFormulario() {
+    // Limpa mensagens anteriores
+    this.enviado = false;
+    this.mensagemErro = '';
+    this.mensagemSucesso = '';
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.enviado = false;
       return;
     }
 
-    // Tipando o valor do formulário com a interface EmailPrompt
+    this.carregando = true; // Inicia o estado de carregamento
+
     const emailData: EmailPromptRequest = this.form.value;
 
-    console.log('Formulário enviado!', emailData);
-    this.enviado = true;
-    this.form.reset();
+    this.promptService.solicitarPrompt(emailData).subscribe({
+      next: (response) => {
+        this.carregando = false; // Finaliza o carregamento
+        let parsedResponse: any = response;
 
-    // Opcional: Aqui você faria a chamada real para um serviço de backend
-    // Exemplo usando o tipo EmailPrompt:
-    // this.seuServicoDeEnvio.enviarEmail(emailData).subscribe(
-    //   response => {
-    //     console.log('Sucesso!', response);
-    //     this.enviado = true;
-    //     this.form.reset();
-    //   },
-    //   error => {
-    //     console.error('Erro ao enviar:', error);
-    //     this.enviado = false;
-    //     // Poderia mostrar uma mensagem de erro ao usuário aqui
-    //   }
-    // );
+        // Tenta parsear a resposta se for uma string (caso o Content-Type não seja application/json no backend)
+        if (typeof response === 'string') {
+          try {
+            parsedResponse = JSON.parse(response);
+          } catch (e) {
+            // Se não for JSON válido, loga um aviso e exibe um erro genérico
+            console.warn('Resposta de sucesso não é um JSON válido e veio como string:', response);
+            this.mensagemErro = 'Resposta de sucesso em formato inesperado. Tente novamente.';
+            return; // Sai da função para não processar mais
+          }
+        }
+
+        if (parsedResponse && parsedResponse.mensagem) { // Verifica se há uma mensagem de sucesso na resposta JSON
+          this.enviado = true;
+          this.mensagemSucesso = parsedResponse.mensagem;
+          this.form.reset(); // Limpa o formulário
+        } else {
+
+          // Caso a API retorne um sucesso sem a propriedade 'mensagem', ou um formato inesperado
+          
+          this.mensagemErro = 'Resposta de sucesso da API em formato inesperado (sem a propriedade "mensagem"). Tente novamente.';
+        }
+        console.log('Resposta da API (sucesso):', parsedResponse);
+      },
+      error: (error) => {
+        this.carregando = false; // Finaliza o carregamento
+        console.error('Erro completo da requisição:', error); // Loga o objeto de erro completo para depuração
+
+        let parsedError: any = error.error;
+
+        // Tenta parsear error.error se for uma string que parece JSON
+        if (typeof error.error === 'string') {
+          try {
+            parsedError = JSON.parse(error.error);
+          } catch (e) {
+            // Não é uma string JSON válida, mantém como está
+          }
+        }
+
+        // Tenta acessar a propriedade 'erro' do objeto de erro retornado pela API ou do parsedError
+        if (parsedError && parsedError.erro) {
+          this.mensagemErro = parsedError.erro;
+        } else if (typeof error.error === 'string') {
+          // Fallback se era uma string, mas não JSON com propriedade 'erro'
+          this.mensagemErro = error.error;
+        } else if (error.message) {
+          // Erro de rede ou erro genérico do HttpClient
+          this.mensagemErro = `Ocorreu um erro: ${error.message}`;
+        } else {
+          // Fallback para qualquer outro caso
+          this.mensagemErro = 'Não foi possível enviar a solicitação. Tente novamente mais tarde.';
+        }
+      }
+    });
   }
 }
