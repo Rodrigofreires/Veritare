@@ -1,5 +1,6 @@
 ﻿using Aisentona.DataBase;
 using Aisentona.DataBase.YourNamespace;
+using Aisentona.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Aisentona.DataBase
@@ -23,6 +24,7 @@ namespace Aisentona.DataBase
         public DbSet<TipoPlano> CF_TipoPlano { get; set; }
         public DbSet<JobExpiracaoPremiumLog> Job_ExpiracaoPremium_Log { get; set; }
         public DbSet<YoutubeWidget> CF_YoutubeWidget { get; set; }
+        public DbSet<HistoricoEnvioPrompt> CF_HistoricoEnvioPrompt { get; set; }
 
 
 

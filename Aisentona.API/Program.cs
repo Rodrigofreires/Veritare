@@ -43,6 +43,7 @@ builder.Services.AddScoped<PremiumService>();
 builder.Services.AddScoped<EmailAtivacaoService>();
 builder.Services.AddScoped<EmailRedefinirSenhaService>();
 builder.Services.AddScoped<YoutubeWidgetsService>();
+builder.Services.AddScoped<EmailEnviarPromptService>();
 
 // --- Configuração de Hosted Services (serviços em background) ---
 builder.Services.AddHostedService<PremiumExpirationService>();

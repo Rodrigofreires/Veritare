@@ -1,0 +1,298 @@
+/* ------------------------------------- */
+/* BASE GLOBAL */
+/* ------------------------------------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0a0c1b;
+  margin: 0;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  color: #ddd;
+}
+
+p {
+  color: #ddd;
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+
+ul {
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.8rem;
+}
+
+.container-principal{
+    padding-bottom: 2rem;
+}
+
+/* ------------------------------------- */
+/* BARRA DE NAVEGAÇÃO */
+/* ------------------------------------- */
+
+.navbar {
+  background-color: #111 !important;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .logo {
+  font-weight: bold;
+  font-size: 1.6rem;
+}
+
+.navbar .spacer {
+  flex-grow: 1;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row{
+    height: auto !important;
+}
+
+/* ------------------------------------- */
+/* BOTÃO GLOBAL */
+/* ------------------------------------- */
+
+.botao-global {
+  font-size: 1rem;
+  color: white;
+  background-color: #00796b;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.botao-global:hover {
+  background-color: #004d40;
+}
+
+/* ------------------------------------- */
+/* FORMULÁRIO PROMPT */
+/* ------------------------------------- */
+
+.formulario-prompt {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 3rem 2rem;
+  background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+.campo-form {
+  width: 100%;
+}
+
+mat-form-field.campo-form {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  color: #fff;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #888;
+  border-color: #444;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+  color: #00bfa5;
+  border-color: #00bfa5;
+}
+
+.mat-form-field-label {
+  color: #bbb !important;
+  font-weight: 500;
+}
+
+input[matInput], 
+.mat-input-element {
+  color: #fff !important;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+  padding: 0.8rem 0;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-start,
+.mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-radius: 8px;
+}
+
+/* ------------------------------------- */
+/* VÍDEO YOUTUBE */
+/* ------------------------------------- */
+
+.video-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  padding: 0 1rem;
+}
+
+.video-container iframe {
+  width: 100%;
+  max-width: 800px;
+  height: 450px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+}
+
+/* ------------------------------------- */
+/* SEÇÕES GERAIS */
+/* ------------------------------------- */
+
+.secao {
+  padding: 5rem 1.5rem;
+  background: linear-gradient(135deg, #0a0c1b, #1a1d3d, #0a0c1b);
+  scroll-margin-top: 80px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+  margin: 2rem auto;
+  max-width: 1100px;
+}
+
+.titulo-secao {
+  font-size: 2.75rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+
+.texto-secao {
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  font-size: 1.25rem;
+  line-height: 2.4rem;
+  text-align: justify;
+  color: #ddd;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* ------------------------------------- */
+/* LISTAS PERSONALIZADAS */
+/* ------------------------------------- */
+
+.lista-personalizada {
+  max-width: 900px;
+  margin: 0 auto 2.5rem;
+  padding-left: 2rem;
+  color: #ccc;
+  font-size: 1.15rem;
+  line-height: 2rem;
+}
+
+.lista-personalizada li {
+  margin-bottom: 1rem;
+  position: relative;
+  padding-left: 1.2rem;
+}
+
+.lista-personalizada li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #00bfa5;
+  font-weight: bold;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+:host ::ng-deep .social-share {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 2rem;
+}
+
+:host ::ng-deep .share-icon {
+  width: 50px;
+  height: 50px;
+  background-color: #ffffff18;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 1.5rem;
+  border: 1px solid #888;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+:host ::ng-deep .share-icon:hover {
+  transform: scale(1.2);
+  background-color: #ffffff30;
+  color: #00ffe7;
+}
+
+#nossas-redes {
+  margin-bottom: 5rem;
+}
+
+
+
+/* ------------------------------------- */
+/* RESPONSIVIDADE */
+/* ------------------------------------- */
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar .logo {
+    font-size: 1.3rem;
+  }
+
+  .botao-global {
+    font-size: 0.95rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .titulo-secao {
+    font-size: 2.2rem;
+  }
+
+  .texto-secao {
+    font-size: 1.1rem;
+    line-height: 1.8rem;
+    text-align: left;
+  }
+
+  .formulario-prompt {
+    padding: 2rem 1.5rem;
+  }
+
+  .video-container iframe {
+    height: 300px;
+  }
+
+  .secao {
+    padding: 3rem 1rem;
+  }
+
+}

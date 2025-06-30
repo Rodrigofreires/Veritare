@@ -12,7 +12,7 @@
     <ul class="menu-lista">
       <li><a href="javascript:void(0)" (click)="navigateToSection('sobre-veritare')">Sobre a Veritare</a></li>
       <li>
-        <a href="javascript:void(0)" (click)="navigateToSection('missao-visao-valores')">Missão, Visão e Valores</a>
+        <a href="javascript:void(0)" (click)="navigateToSection('missao-visao-valores')">Missão, e Valores</a>
       </li>
       <li><a href="javascript:void(0)" (click)="navigateToSection('sobre-o-prompt')">Nosso Prompt</a></li>
       <li><a href="javascript:void(0)" (click)="navigateToSection('veritare-youtube')">Veritare no YouTube</a></li>
@@ -58,26 +58,45 @@
 
   <!-- MISSÃO, VISÃO E VALORES -->
   <section id="missao-visao-valores" class="secao">
-    <h2 class="titulo-secao">Missão, Visão e Valores</h2>
+    <h2 class="titulo-secao">Missão e Valores</h2>
     <div class="cards-container">
       <mat-card class="card-info">
         <mat-card-title>Missão</mat-card-title>
         <mat-card-content>
-          <p>Transformar o jornalismo nacional por meio da tecnologia, da ética e da inteligência artificial, entregando informação precisa e imparcial.</p>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="card-info">
-        <mat-card-title>Visão</mat-card-title>
-        <mat-card-content>
-          <p>Ser a principal referência em jornalismo automatizado e transparente da América Latina, promovendo uma nova era de confiança na informação.</p>
+          <p>Ética, verdade e respeito para com o leitor são os pilares fundantes e que sustentam a
+              Veritare. Ética para dar ao leitor informações checadas e devidamente apuradas, garantindo que
+              os títulos, subtítulos, legendas e fotos sejam fidedignos com a realidade dos fatos. Com o
+              objetivo de produzir conteúdo que não leve o leitor ao engano, ao utilizar de títulos
+              hiperbólicos, subtítulos que contradizem o título e um texto que traga descrições dos fatos e sua
+              cronologia, não utilizando de eufemismos para mascarar as opiniões pessoais.
+              A missão é retirar sobrecarga ideológica contida nos portais de informação e entregar,
+              não necessariamente uma imparcialidade, e sim transparência quanto aos valores do portal.
+              Assim, você recebe conteúdo mais fidedigno possível, pois Veritare é um portal que trata os
+              leitores com respeito, devido ao diferencial do prompt de IA desenvolvido pelo seu fundador.
+              Com ele, seguidores e concorrentes poderão atestar a proposta do portal e fazer seu julgamento
+              com tudo que lhe é disponível, fato que acreditamos ser praticamente inexistente em qualquer
+              outro veículo de comunicação.
+            </p>
         </mat-card-content>
       </mat-card>
 
       <mat-card class="card-info">
         <mat-card-title>Valores</mat-card-title>
         <mat-card-content>
-          <p>Ética, verdade, independência editorial, inovação tecnológica e respeito ao leitor são os pilares que sustentam a Veritare.</p>
+          <p>O pilar fundamental deste trabalho são os valores que sempre estarão explícitos em todo o
+            campo editorial. A preocupação em entregar o melhor conteúdo informativo perpassa
+            exatamente o filtro dos princípios que norteia a Veritare.
+            As matérias autorais condizem com as motivações e saberes dos autores do portal. Somos
+            guiados pelo valor da vida intelectual, religiosidade e defesa da vida. Sendo assim, o conteúdo
+            trará matérias que peguem diversas vertentes do saber e suas expressões culturais; propagar
+            diversas informações ocultadas sobre a Cristandade, esta que é por muitos defenestrada e
+            relativizada; defesa de um princípio basilar que é a própria condição de transformação,
+            continuidade, sentido do mundo que é a vida humana.
+
+            Esses valores estão difundidos nos ensinamentos do Cristianismo, a referência principal
+            para trabalharmos com o mais próximo julgo de valores e propósitos. O mundo tem tons de
+            cinza e é com este alicerce que toda a produção de conteúdo do Veritare será guiada.
+          </p>
         </mat-card-content>
       </mat-card>
     </div>
@@ -85,38 +104,73 @@
 
   <!-- SOBRE O NOSSO PROMPT -->
   <section id="sobre-o-prompt" class="secao">
-    <h2 class="titulo-secao">Sobre o Nosso Prompt</h2>
-    <p class="texto-secao">
-      O nosso prompt foi criado para identificar e destacar possíveis vieses ideológicos nas notícias, sejam eles intencionais ou disfarçados. Ele analisa as matérias de diferentes veículos de comunicação e ajuda a separar os fatos das opiniões. A Veritare realiza uma análise detalhada de portais famosos, identificando, ao longo do texto, elementos como:
-    </p>
-    <p class="texto-secao">
-      - **Opinião pessoal** (por exemplo, uma avaliação sem dados objetivos);
-      - **Viés ideológico** (como uma inclinação política clara);
-      - **Conjectura** (como previsões sem qualquer evidência concreta);
-      - **Citações subjetivas sem fonte** (como falas vagas ou opinativas sem respaldo).
-    </p>
-    <p class="texto-secao">
-      Após identificar esses elementos, o nosso sistema destaca e fornece contexto para que o leitor compreenda o que está sendo apresentado. Além disso, o Veritare vai além: a partir dessa análise, ele gera uma versão da notícia sem qualquer viés, apresentando apenas os fatos concretos e objetivos. Por fim, disponibilizamos a **fonte original** do portal analisado, para que o leitor tenha a experiência completa e possa conferir a notícia original, sem alterações.
-    </p>
-    <p class="texto-secao">
-      Sabemos que outras empresas também criam prompts com a promessa de eliminar o viés ideológico das notícias. No entanto, surge uma pergunta: onde estão esses prompts? Por que muitos jornais optam por não compartilhar como suas IA funcionam? Podemos realmente confiar que a inteligência artificial é completamente isenta de viés?
-    </p>
-    <p class="texto-secao">
-      A resposta é simples: não podemos! Assim como um jornalista pode escrever uma matéria cheia de opiniões escondidas entre os fatos, é possível que um prompt de IA também carregue viés ideológico, mesmo sem intenção. O problema é que esse viés pode ser disfarçado de uma maneira que só especialistas consigam perceber.
-    </p>
-    <p class="texto-secao">
-      É por isso que a Veritare é diferente: somos o primeiro jornal no Brasil a oferecer acesso total ao prompt de inteligência artificial que usamos. Isso significa que qualquer um de nossos leitores pode ver, entender e até usar o nosso prompt para analisar notícias de sua escolha. Quer copiar o nosso código e pedir para outra IA analisar uma notícia? Você pode fazer isso!
-    </p>
-    <p class="texto-secao">
-      Nosso compromisso não é com o nosso prompt, mas com a transparência e a verdade nas informações que oferecemos. Vale ressaltar que, como qualquer sistema, o prompt da Veritare está sujeito a eventuais erros ou falhas. Por isso, ele é constantemente aprimorado e ajustado por nossa equipe de desenvolvimento, garantindo que sua precisão e imparcialidade sejam sempre melhoradas.
-    </p>
-    <p class="texto-secao">
-      A Veritare se sustenta com a receita do AdSense e com assinaturas premium de nossos leitores.
-    </p>
+      <h2 class="titulo-secao">Sobre o Nosso Prompt</h2>
+
+      <p class="texto-secao">
+        O nosso prompt foi criado para identificar e destacar possíveis vieses ideológicos nas notícias, sejam eles intencionais ou disfarçados. Ele analisa as matérias de diferentes veículos de comunicação e ajuda a separar os fatos das opiniões.
+      </p>
+
+      <p class="texto-secao">
+        A Veritare realiza uma análise detalhada de portais famosos, identificando, ao longo do texto, elementos como:
+      </p>
+
+      <ul class="texto-secao">
+        <li><strong>Opinião pessoal</strong> – por exemplo, uma avaliação sem dados objetivos;</li>
+        <li><strong>Viés ideológico</strong> – como uma inclinação política clara;</li>
+        <li><strong>Conjectura</strong> – como previsões sem qualquer evidência concreta;</li>
+        <li><strong>Citações subjetivas sem fonte</strong> – como falas vagas ou opinativas sem respaldo.</li>
+      </ul>
+
+      <p class="texto-secao">
+        Após identificar esses elementos, o nosso sistema destaca e fornece contexto para que o leitor compreenda o que está sendo apresentado.
+      </p>
+
+      <p class="texto-secao">
+        Além disso, o Veritare vai além: a partir dessa análise, ele gera uma versão da notícia sem qualquer viés, apresentando apenas os fatos concretos e objetivos.
+      </p>
+
+      <p class="texto-secao">
+        Por fim, disponibilizamos a <strong>fonte original</strong> do portal analisado, para que o leitor tenha a experiência completa e possa conferir a notícia original, sem alterações.
+      </p>
+
+      <p class="texto-secao">
+        Sabemos que outras empresas também criam prompts com a promessa de eliminar o viés ideológico das notícias. No entanto, surge uma pergunta: onde estão esses prompts? Por que muitos jornais optam por não compartilhar como suas IA funcionam? Podemos realmente confiar que a inteligência artificial é completamente isenta de viés?
+      </p>
+
+      <p class="texto-secao">
+        A resposta é simples: <strong>não podemos!</strong> Assim como um jornalista pode escrever uma matéria cheia de opiniões escondidas entre os fatos, é possível que um prompt de IA também carregue viés ideológico, mesmo sem intenção. O problema é que esse viés pode ser disfarçado de uma maneira que só especialistas consigam perceber.
+      </p>
+
+      <p class="texto-secao">
+        É por isso que a Veritare é diferente: somos o primeiro jornal no Brasil a oferecer <strong>acesso total ao prompt de inteligência artificial</strong> que usamos.
+      </p>
+
+      <p class="texto-secao">
+        Isso significa que qualquer um de nossos leitores pode ver, entender e até usar o nosso prompt para analisar notícias de sua escolha. Quer copiar o nosso código e pedir para outra IA analisar uma notícia? Você pode fazer isso!
+      </p>
+
+      <p class="texto-secao">
+        Nosso compromisso não é com o nosso prompt, mas com a <strong>transparência e a verdade</strong> nas informações que oferecemos.
+      </p>
+
+      <p class="texto-secao">
+        Vale ressaltar que, como qualquer sistema, o prompt da Veritare está sujeito a eventuais erros ou falhas. Por isso, ele é constantemente aprimorado e ajustado por nossa equipe de desenvolvimento, garantindo que sua precisão e imparcialidade sejam sempre melhoradas.
+      </p>
+
+      <p class="texto-secao">
+        A Veritare se sustenta com a receita do AdSense de suas rede sociais e com assinaturas premium de nossos leitores.
+      </p>
+
     <div style="text-align: center; margin-top: 2rem;">
-      <button class="botao-global">ASSINE O VERITARE</button>
+      <a routerLink="/prompt-veritare" style="text-decoration: none;">
+        <button class="botao-global" aria-label="Assinar o Veritare">
+          TENHA ACESSO AO PROMPT VERITARE
+        </button>
+      </a>
     </div>
+
   </section>
+
 
   <!-- VERITARE NO YOUTUBE -->
   <section id="veritare-youtube" class="secao">
@@ -131,16 +185,19 @@
     </div>
   </section>
 
-  <!-- ASSINE O VERITARE -->
-  <section id="assine-veritare" class="secao">
-    <h2 class="titulo-secao">Assine o Veritare</h2>
-    <p class="texto-secao">
-      Assine o Veritare e ajude a financiar o jornalismo imparcial e transparente. Com a sua assinatura, você terá acesso a conteúdos exclusivos e poderá participar de nossa comunidade de leitores.
-    </p>
-    <div style="text-align: center; margin-top: 2rem;">
+<!-- ASSINE O VERITARE -->
+<section id="assine-veritare" class="secao">
+  <h2 class="titulo-secao">Assine o Veritare</h2>
+  <p class="texto-secao">
+    Assine o Veritare e ajude a financiar o jornalismo imparcial e transparente. Com a sua assinatura, você terá acesso a conteúdos exclusivos e poderá participar de nossa comunidade de leitores.
+  </p>
+  <div style="text-align: center; margin-top: 2rem;">
+    <a routerLink="/assine">
       <button class="botao-global">ASSINE AGORA</button>
-    </div>
-  </section>
+    </a>
+  </div>
+</section>
+
 
   <section id="nossas-redes" class="secao">
     <div class="social-share">

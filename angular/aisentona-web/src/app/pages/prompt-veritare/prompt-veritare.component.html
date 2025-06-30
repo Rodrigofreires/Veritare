@@ -1,0 +1,154 @@
+<div class="container-principal">
+
+  <!-- BARRA DE NAVEGAÇÃO -->
+  <mat-toolbar color="primary" class="navbar">
+    <span class="logo">VERITARE</span>
+    <span class="spacer"></span>
+    <button class="botao-global" (click)="navigateToHome()">VOLTAR AO INÍCIO</button>
+  </mat-toolbar>
+
+  <!-- Introdução -->
+<section class="secao">
+  <h2 class="titulo-secao">Transparência Total: Conheça Nosso Prompt</h2>
+  <p class="texto-secao">
+    A Veritare é o primeiro jornal digital do Brasil a disponibilizar seu prompt de Inteligência Artificial na íntegra. Nosso objetivo é claro: garantir <strong>transparência absoluta</strong> na forma como processamos e limpamos as notícias.
+  </p>
+  <p class="texto-secao">
+    Aqui, o leitor tem acesso direto à ferramenta utilizada para transformar reportagens em <strong>notícias imparciais</strong>, filtrando vieses ideológicos, conjecturas e opiniões pessoais.
+  </p>
+  <p class="texto-secao">
+    Isso garante que você receba apenas os fatos, da forma mais limpa e honesta possível.
+  </p>
+  <p class="texto-secao">
+    A Veritare não tem <strong>qualquer pretensão</strong> de dar o famoso <em>"furo jornalístico"</em> — termo usado para designar a divulgação de informações exclusivas em primeira mão. Tampouco praticamos o chamado jornalismo de <em>hard news</em>, focado em notícias rápidas e imediatas.
+  </p>
+  <p class="texto-secao">
+    Nosso foco está na produção de conteúdos especiais, elaborados com profundidade, sensatez e responsabilidade — sejam reportagens pontuais ou edições exclusivas para apoiadores — sempre com o objetivo maior de <strong>edificar a vida do leitor</strong>.
+  </p>
+  <p class="texto-secao">
+    O trabalho diário da equipe envolve a análise crítica de matérias publicadas nos principais portais jornalísticos do Brasil e do mundo, incluindo também blogs, colunas de opinião e conteúdos de influenciadores de grande alcance. A Veritare expõe, sem interferência humana, as opiniões, notícias e pseudo-informações contidas nesses espaços, permitindo ao leitor identificar com clareza o que é fato e o que é interpretação.
+  </p>
+  <p class="texto-secao">
+    A proposta da Veritare é examinar essas fontes com lupa, identificar eventuais distorções ou inclinações ideológicas e entregar ao leitor um conteúdo mais limpo, confiável e livre de manipulações.
+  </p>
+  <p class="texto-secao">
+    Sabemos que a inteligência artificial não é infalível. Por isso, todo material publicado passa por uma revisão humana criteriosa — não apenas para atender à legislação brasileira, mas sobretudo para preservar aquilo que consideramos mais importante: a dignidade da vida humana.
+  </p>
+</section>
+
+
+  <!-- Importância -->
+  <section class="secao">
+    <h2 class="titulo-secao">Por que a Notícia Imparcial é Essencial?</h2>
+    <p class="texto-secao">
+      Vivemos em uma era de sobrecarga informativa. Por trás de manchetes chamativas, muitas vezes se escondem opiniões disfarçadas de fatos. A imparcialidade jornalística nunca foi tão urgente quanto agora.
+    </p>
+    <p class="texto-secao">
+      Além disso, muitos portais jornalísticos costumam ocultar a maioria das fontes sob o pretexto do sigilo. Entretanto, essas fontes geralmente defendem, muitas vezes de forma irônica ou parcial, apenas o lado ideológico do jornalista responsável pela matéria.
+    </p>
+        <p class="texto-secao">
+     Confiar unicamente na palavra de um jornalista, sem a possibilidade de verificar a veracidade dos fatos, é no mínimo algo que merece ser questionado.
+    </p>
+    <p class="texto-secao">
+      Outro ponto importante é que é comum encontrar especialistas que defendem exclusivamente as opiniões que o portal apoia. Por isso, a simples citação de especialistas não garante uma fonte confiável ou imparcial.
+    </p>
+    <p class="texto-secao">
+      O Veritare expõe essas práticas ao leitor, mostrando de forma transparente essas nuances e permitindo que você busque e confira fontes realmente confiáveis, construindo assim uma opinião fundamentada na verdade.
+    </p>
+  </section>
+
+  <!-- IA Veritare -->
+  <section class="secao">
+    <h2 class="titulo-secao">Como Funciona Nossa IA?</h2>
+    <p class="texto-secao">
+      Nossa Inteligência Artificial foi treinada para analisar padrões linguísticos em matérias jornalísticas, destacando e filtrando trechos com:
+    </p>
+    <ul class="lista-personalizada texto-secao">
+      <li>Opiniões pessoais</li>
+      <li>Conjecturas sem base factual</li>
+      <li>Expressões ideológicas implícitas</li>
+      <li>Frases subjetivas sem fontes confiáveis</li>
+    </ul>
+    <p class="texto-secao">
+      Após o filtro, a IA reconstrói a notícia de forma objetiva, fornecendo também as fontes originais para você comparar e formar sua própria opinião.
+    </p>
+  </section>
+
+  <!-- Formulário -->
+  <section class="secao">
+    <h2 class="titulo-secao">Receba o Prompt da Veritare</h2>
+    <p class="texto-secao">
+      Quer estudar nosso prompt, usá-lo em sua própria análise ou apenas conhecer como ele funciona por dentro? Preencha os dados abaixo e receba o código completo por e-mail.
+    </p>
+
+    <form class="formulario-prompt" [formGroup]="form" (ngSubmit)="enviarFormulario()">
+      <mat-form-field appearance="outline" class="campo-form">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="nome" placeholder="Digite seu nome" />
+        <mat-error *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched">
+          O nome é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="campo-form">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="Digite seu e-mail" />
+
+        <mat-error *ngIf="form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)">
+          <ng-container *ngIf="form.get('email')?.errors?.['required']">
+            O e-mail é obrigatório.
+          </ng-container>
+          <ng-container *ngIf="form.get('email')?.errors?.['email'] && !form.get('email')?.errors?.['required']">
+            Por favor, digite um e-mail válido.
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="botao-global" type="submit">
+        RECEBER PROMPT
+      </button>
+    </form>
+
+    <div class="mensagem-sucesso" *ngIf="enviado">
+      <p> Seu pedido foi enviado com sucesso! Verifique seu e-mail.</p>
+    </div>
+  </section>
+
+  <section class="secao">
+    <h2 class="titulo-secao">Veja o Prompt em Ação</h2>
+    <div class="video-container">
+
+      <!-- **ATENÇÃO: Substitua 'VIDEO_ID_DO_PROMPT_EM_ACAO' pelo ID real do seu vídeo do YouTube!** -->
+      <iframe width="800" height="500"
+              src="https://www.youtube.com/embed?listType=user_uploads&list=$5"
+              title="Prompt Veritare em Ação"
+              frameborder="0"
+              allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+<section id="nossas-redes" class="secao">
+  <h2 class="titulo-secao">Conecte-se com o Veritare</h2>
+  <p class="texto-secao text-center">
+    Acompanhe nossos conteúdos também nas redes sociais. Siga o Veritare para receber atualizações, análises e bastidores sobre como construímos a notícia mais limpa do Brasil.
+  </p>
+
+  <div class="social-share">
+    <a href="https://facebook.com/sua-pagina" class="share-icon" id="facebook" target="_blank" aria-label="Facebook">
+      <i class="fab fa-facebook-f"></i>
+    </a>
+    <a href="https://wa.me/seunumerowhats" class="share-icon" id="whatsapp" target="_blank" aria-label="WhatsApp">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+    <a href="https://instagram.com/seuusuario" class="share-icon" id="instagram" target="_blank" aria-label="Instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://twitter.com/seuusuario" class="share-icon" id="x" target="_blank" aria-label="X (Twitter)">
+      <i class="fab fa-x-twitter"></i>
+    </a>
+  </div>
+</section>
+
+
+</div>

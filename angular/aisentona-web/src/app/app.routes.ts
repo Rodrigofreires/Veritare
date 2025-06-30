@@ -21,6 +21,7 @@ import { RedefinirSenhaComponent } from './authentication/redefinir-senha/redefi
 import { EsqueciMinhaSenhaComponent } from './authentication/esqueci-minha-senha/esqueci-minha-senha.component';
 import { YoutubeAdminComponent } from './pages/youtube-admin-component/youtube-admin-component.component';
 import { SobreVeritareComponent } from './pages/sobre-veritare/sobre-veritare.component';
+import { PromptVeritareComponent } from './pages/prompt-veritare/prompt-veritare.component';
 
 
 export const routes: Routes = [
@@ -74,8 +75,8 @@ export const routes: Routes = [
       {
         path: 'painel-de-controle/widgets', 
         component: YoutubeAdminComponent,
-          canActivate: [AuthGuard, RoleGuard],
-          data: { IdTipoDeUsuario: ['1', '2']}
+        canActivate: [AuthGuard, RoleGuard],
+        data: { IdTipoDeUsuario: ['1', '2']}
       },
     ],
   },
@@ -90,6 +91,7 @@ export const routes: Routes = [
       { path: 'esqueci-minha-senha', component: EsqueciMinhaSenhaComponent },
       { path: 'cadastro-de-usuario', component: CadastroUsuarioComponent },
       {path: 'sobre', component: SobreVeritareComponent}, 
+      {path: 'prompt-veritare', component: PromptVeritareComponent}, 
       //{ path: '**', redirectTo: 'login' }
     ],
   },

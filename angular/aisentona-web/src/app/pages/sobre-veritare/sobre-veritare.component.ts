@@ -13,7 +13,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   standalone: true,
-  // imports: [], // Importa o CommonModule e o RouterModule se necessário 
   selector: 'app-sobre-veritare',
   imports: [
     CommonModule,

@@ -38,6 +38,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
   styleUrls: ['./youtube-admin-component.component.css'] // Corrigido
 })
 export class YoutubeAdminComponent implements OnInit {
+[x: string]: any;
 
   widgets: YoutubeWidget[] = [];
 
