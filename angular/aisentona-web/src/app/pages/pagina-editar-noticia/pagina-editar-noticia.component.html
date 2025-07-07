@@ -1,6 +1,6 @@
 <app-container class="container-editar-noticia">
 
-  <h2 class="titulo-de-sessao" >EDIÇÃO DE NOTÍCIA</h2>
+  <h2 class="titulo-de-sessao">EDIÇÃO DE NOTÍCIA</h2>
   <mat-form-field class="titulo">
     <mat-label>TÍTULO DA NOTÍCIA</mat-label>
     <textarea
@@ -48,25 +48,24 @@
   <div>
     <div class="textos-principais-editados">
 
-      <!-- Texto Manual -->
-      <h3 class="titulo-de-sessao" >ANÁLISE VERITARE</h3>
+      <h3 class="titulo-de-sessao">ANÁLISE VERITARE</h3>
       <quill-editor
-      class="texto-da-noticia-editada"
-      [(ngModel)]="infosPostagem.conteudo"
-      [modules]="modules"
-      [style.height]="'500px'"
+        class="texto-da-noticia-editada"
+        [(ngModel)]="infosPostagem.conteudo"
+        
+        [style.height]="'500px'"
       >
-    </quill-editor>
+      </quill-editor>
 
-      <h3 class="titulo-de-sessao" >MARCAÇÕES DE OPINIÃO DO TEXTO </h3>
+      <h3 class="titulo-de-sessao">MARCAÇÕES DE OPINIÃO DO TEXTO </h3>
       <div *ngFor="let alerta of infosPostagem.alertas; let i = index" class="alerta-item">
-        <mat-form-field> <mat-label>Alerta {{ alerta.numeroAlerta }}</mat-label>
-          <textarea
-            matInput
-            class="alerta" [(ngModel)]="alerta.mensagem"
-            [name]="'alerta-' + i"
-          ></textarea>
-        </mat-form-field>
+        <div class="alerta-quill-editor-wrapper">
+          <quill-editor
+            class="alerta-quill-editor"
+            [(ngModel)]="alerta.mensagem"
+            
+            [style.height]="'auto'"  ></quill-editor>
+        </div>
         <button mat-icon-button color="warn" (click)="removerAlerta(i)">
           <mat-icon>delete</mat-icon>
         </button>
@@ -77,28 +76,25 @@
       </button>
 
 
-      <!-- Texto Gerado Pela IASentona -->
-      <h3 class="titulo-de-sessao" >MATÉRIA GERADA POR VERITARE</h3>
+      <h3 class="titulo-de-sessao">MATÉRIA GERADA POR VERITARE</h3>
       <quill-editor
         class="texto-da-noticia-editada"
         [(ngModel)]="infosPostagem.textoAlteradoPorIA"
-        [modules]="modules"
+        
         [style.height]="'800px'"
-        >
+      >
       </quill-editor>
 
-      <!-- Palavras Cortadas -->
-      <h3 class="titulo-de-sessao" >FONTE DA MATÉRIA ANALISADA</h3>
+      <h3 class="titulo-de-sessao">FONTE DA MATÉRIA ANALISADA</h3>
       <quill-editor
         class="texto-da-noticia-editada"
         [(ngModel)]="infosPostagem.palavrasRetiradasPorIA"
-        [modules]="modules"
+        
         [style.height]="'800px'"
-        >
+      >
       </quill-editor>
     </div>
 
-      <!-- Status -->
       <div>
         <mat-form-field class="status">
           <mat-label>STATUS DA NOTÍCIA</mat-label>
@@ -130,7 +126,6 @@
       </div>
   </div>
 
-  <!-- Botão para Confirmar Edição -->
   <div class="botoes-de-envio">
     <button
       class="botao"
@@ -142,4 +137,3 @@
   </div>
 
 </app-container>
-<app-footer></app-footer>

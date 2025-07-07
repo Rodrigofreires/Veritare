@@ -48,14 +48,14 @@
     </div>
 
     <mat-card-content class="conteudo-principal">
-      <mat-tab-group #tabGroup animationDuration="500ms" color="accent" dynamicHeight> <mat-tab label="Matéria Veritare">
+      <mat-tab-group #tabGroup animationDuration="500ms" color="accent" dynamicHeight>
+        <mat-tab label="Matéria Veritare">
           <div class="tab-content">
-            <h3 class="tab-title">NotícIA sem viés ideológico ou entrelinhas</h3>
+            <h3 class="tab-title">Notícia sem viés ideológico ou entrelinhas</h3>
             <quill-view class="noticia-conteudo"
                         [content]="infosPostagem.textoAlteradoPorIA">
             </quill-view>
             <p><i>Esta matéria foi criada por <strong>VERITARE</strong>, nossa inteligência artificial exclusiva, projetada para entregar um jornalismo prático, direto e livre de vieses. Acreditamos na transparência: qualquer leitor pode acessar o prompt utilizado na geração do conteúdo. Uma nova forma de informar — responsável, imparcial e ao alcance de todos.</i></p>
-
           </div>
         </mat-tab>
 
@@ -79,8 +79,8 @@
               <mat-list class="alert-list">
                 <mat-list-item *ngFor="let alerta of infosPostagem.alertas" class="alert-list-item">
                   <mat-icon matListIcon class="alert-icon">info</mat-icon>
-                  <div>
-                    <p>{{ alerta.mensagem }}</p>
+                  <div class="alert-quill-view-wrapper">
+                    <quill-view class="alert-content-quill" [content]="alerta.mensagem"></quill-view>
                   </div>
                 </mat-list-item>
                 <div *ngIf="!infosPostagem.alertas || infosPostagem.alertas.length === 0" class="no-alerts-message">

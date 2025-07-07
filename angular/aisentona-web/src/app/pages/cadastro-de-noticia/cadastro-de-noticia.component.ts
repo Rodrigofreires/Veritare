@@ -20,6 +20,7 @@ import { QuillModule } from 'ngx-quill';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Importar MatProgressSpinnerModule
 
 @Component({
   selector: 'app-cadastro-de-noticia',
@@ -37,6 +38,7 @@ import { PostagemRequest } from '../../core/interfaces/Request/Postagem';
     FormsModule,
     TextFieldModule,
     QuillModule,
+    MatProgressSpinnerModule, // Adicionar MatProgressSpinnerModule aqui
   ],
   templateUrl: './cadastro-de-noticia.component.html',
   styleUrls: ['./cadastro-de-noticia.component.css'],
@@ -49,6 +51,13 @@ export class CadastroDeNoticiaComponent implements OnInit {
   imagemBase64: string = '';
   tipoDePublicacao: string[] = ['Publicação Comum', 'Publicação Premium'];
   tipoSelecionado: string = '';
+
+  dataAgendamentoSelecionada: Date | null = null;
+  horaAgendamentoSelecionada: string = '';
+
+  mostrarCampoAgendamento: boolean = false;
+  isLoading: boolean = false; // Nova propriedade para controlar o spinner
+
   infosPostagem: PostagemResponse = {
     titulo: '',
     descricao: '',
@@ -59,11 +68,12 @@ export class CadastroDeNoticiaComponent implements OnInit {
     idUsuario: 0,
     imagem: '',
     textoAlteradoPorIA: '',
-    palavrasRetiradasPorIA: '', // Será preenchido em ngOnInit
+    palavrasRetiradasPorIA: '',
     premiumOuComum: '',
     dataCriacao: null,
     alertas: [],
     visualizacoes: 0,
+    dataPublicacaoAgendada: null,
   };
 
   constructor(
@@ -77,28 +87,26 @@ export class CadastroDeNoticiaComponent implements OnInit {
   ngOnInit(): void {
     this.carregarEditorias();
     this.carregarStatus();
-    this.definirTextoPadraoFonteMateria(); // Chama a nova função para definir o texto padrão
+    this.definirTextoPadraoFonteMateria();
   }
 
-
-definirTextoPadraoFonteMateria(): void {
-  // Só define o texto padrão se a propriedade estiver vazia ou nula
-  if (!this.infosPostagem.palavrasRetiradasPorIA || this.infosPostagem.palavrasRetiradasPorIA.trim() === '') {
-    this.infosPostagem.palavrasRetiradasPorIA = `
-      <p><strong>NOME DO JORNAL/PORTAL/BLOG ANALISADO</strong></p>
-      <p><strong><a href="[INSERIR LINK COMPLETO AQUI]" target="_blank">[LINK DA MATÉRIA ANALISADA]</a></strong></p>
-      <br>
-      <p><strong>Aviso de direitos autorais</strong></p>
-      <p><i>A Veritare realiza apenas a análise da matéria, sem republicá-la integralmente ou reproduzi-la de forma indevida. Nosso objetivo não é copiar ou cometer plágio, mas oferecer uma análise imparcial das informações publicadas.<i></p>
-      <p><i>A Veritare examina conteúdos de diversos portais de notícias nacionais e internacionais com a missão de entregar aos usuários informações livres de viés ideológico. Nosso compromisso é com o jornalismo, garantindo que a informação seja clara, objetiva e fundamentada nos fatos.<i></p>
-    `;
+  definirTextoPadraoFonteMateria(): void {
+    if (!this.infosPostagem.palavrasRetiradasPorIA || this.infosPostagem.palavrasRetiradasPorIA.trim() === '') {
+      this.infosPostagem.palavrasRetiradasPorIA = `
+        <p><strong>NOME DO JORNAL/PORTAL/BLOG ANALISADO</strong></p>
+        <p><strong><a href="[INSERIR LINK COMPLETO AQUI]" target="_blank">[LINK DA MATÉRIA ANALISADA]</a></strong></p>
+        <br>
+        <p><strong>Aviso de direitos autorais</strong></p>
+        <p><i>A Veritare realiza apenas a análise da matéria, sem republicá-la integralmente ou reproduzi-la de forma indevida. Nosso objetivo não é copiar ou cometer plágio, mas oferecer uma análise imparcial das informações publicadas.<i></p>
+        <p><i>A Veritare examina conteúdos de diversos portais de notícias nacionais e internacionais com a missão de entregar aos usuários informações livres de viés ideológico. Nosso compromisso é com o jornalismo, garantindo que a informação seja clara, objetiva e fundamentada nos fatos.<i></p>
+      `;
+    }
   }
-}
 
   adicionarAlerta(): void {
     if (this.infosPostagem?.alertas && this.infosPostagem.alertas.length < 20) {
       this.infosPostagem.alertas.push({
-        numeroAlerta: this.infosPostagem.alertas.length + 1, // Numeração sequencial
+        numeroAlerta: this.infosPostagem.alertas.length + 1,
         mensagem: '',
       });
     }
@@ -107,8 +115,6 @@ definirTextoPadraoFonteMateria(): void {
   removerAlerta(index: number): void {
     if (this.infosPostagem?.alertas && this.infosPostagem.alertas.length > 0) {
       this.infosPostagem.alertas.splice(index, 1);
-
-      // Atualiza a numeração dos alertas para manter a sequência correta
       this.infosPostagem.alertas.forEach((alerta, i) => {
         alerta.numeroAlerta = i + 1;
       });
@@ -129,27 +135,51 @@ definirTextoPadraoFonteMateria(): void {
     });
   }
 
+  onStatusChange(): void {
+    this.mostrarCampoAgendamento = this.statusSelecionado === 5;
+    if (!this.mostrarCampoAgendamento) {
+      this.dataAgendamentoSelecionada = null;
+      this.horaAgendamentoSelecionada = '';
+    }
+  }
+
   publicarNoticia(): void {
     if (!this.validarCamposObrigatorios()) return;
+
+    this.isLoading = true; // Ativa o spinner
 
     const idUsuarioToken: number = this._authService.getUserId();
     if (!idUsuarioToken) {
       this._snackBarService.MostrarErro('Usuário não autenticado.');
+      this.isLoading = false; // Desativa o spinner em caso de erro
       return;
+    }
+
+    let dataHoraAgendada: string | null = null;
+    if (this.mostrarCampoAgendamento && this.dataAgendamentoSelecionada && this.horaAgendamentoSelecionada) {
+      const data = new Date(this.dataAgendamentoSelecionada);
+      const [horas, minutos] = this.horaAgendamentoSelecionada.split(':').map(Number);
+      data.setHours(horas, minutos, 0, 0);
+      dataHoraAgendada = data.toISOString();
+    } else if (this.mostrarCampoAgendamento && (!this.dataAgendamentoSelecionada || !this.horaAgendamentoSelecionada)) {
+        this._snackBarService.MostrarErro('Por favor, preencha a data e hora de agendamento.');
+        this.isLoading = false; // Desativa o spinner em caso de erro
+        return;
     }
 
     const novaPostagem: PostagemRequest = {
       ...this.infosPostagem,
-      idCategoria: this.editoriaSelecionada ?? 0, // Garante que seja um número
-      idStatus: this.statusSelecionado ?? 0, // Garante que seja um número
+      idCategoria: this.editoriaSelecionada ?? 0,
+      idStatus: this.statusSelecionado ?? 0,
       premiumOuComum: this.tipoSelecionado.includes('Publicação Premium'),
       idUsuario: idUsuarioToken,
       dataCriacao: this.infosPostagem.dataCriacao ?? new Date().toDateString(),
-      nomeCategoria: this.carregarEditorias.name, // Isso parece um erro, deveria ser um nome de categoria, não o nome da função
+      nomeCategoria: '',
       alertas: this.infosPostagem.alertas ?? [],
+      dataPublicacaoAgendada: dataHoraAgendada,
     };
 
-    this._noticiaService.criarPostagem(novaPostagem).subscribe({
+    const subscription = this._noticiaService.criarPostagem(novaPostagem).subscribe({
       next: () => {
         this._snackBarService.MostrarSucesso('Notícia salva com sucesso!');
         this._router.navigate(['/painel-de-controle']);
@@ -157,7 +187,10 @@ definirTextoPadraoFonteMateria(): void {
       error: (error) => {
         console.error('Erro ao publicar notícia:', error);
         this._snackBarService.MostrarErro('Não foi possível publicar a notícia.');
-      },
+      }
+    });
+    subscription.add(() => {
+      this.isLoading = false; // Desativa o spinner sempre, no sucesso ou no erro
     });
   }
 
@@ -181,6 +214,10 @@ definirTextoPadraoFonteMateria(): void {
     if (!this.imagemBase64) {
       this._snackBarService.MostrarErro('Por favor, selecione uma imagem para a notícia.');
       return false;
+    }
+    if (this.mostrarCampoAgendamento && (!this.dataAgendamentoSelecionada || !this.horaAgendamentoSelecionada)) {
+        this._snackBarService.MostrarErro('Para uma publicação planejada, a data e hora de agendamento são obrigatórias.');
+        return false;
     }
     return true;
   }

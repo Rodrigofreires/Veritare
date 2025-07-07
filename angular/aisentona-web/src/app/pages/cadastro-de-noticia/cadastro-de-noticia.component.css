@@ -1,170 +1,405 @@
-.cabecalho-noticia{
-    margin: 10px;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-}
-
-.titulo {
-    width: 100%;
-}
-.descricao{
-    width: 100%;
-    margin: 0;
-    padding: 0;
-
-} 
-.editoria{
-    width: 33%;
-    margin: 0;
-    padding: 0;
-} 
-.status{
-    width: 33%;
-    margin: 0;
-    padding: 0;
-}
-
-.premiumOuComum{
-  width: 33%;
-  margin: 0;
-  padding: 0;
-}
-
-.corpo-da-noticia{
-    margin: 10px;
-    padding: 10px;
-    gap: 2%;
-    display: flex;
-    flex-direction: column;
-}
-
-.texto-da-noticia{
-    width: 100%;
-    min-height: 300px;
-    justify-content: space-between;
-    border: none; /* Remove a borda padrão */
-    outline: none; /* Remove a borda ao focar no elemento */
-    box-shadow: none; /* Remove qualquer sombra aplicada */
-    resize: none; /* Impede o redimensionamento manual */
-   
+/* General Page Styling - Applied to both */
+app-container {
+  font-family: 'Roboto', sans-serif; /* Modern font */
+  padding: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Softer, modern shadow */
 }
 
 
-.titulo-pagina{
-    font-size: 30px;
-    padding: 10px;
-    gap: 10px;
+
+/* Titles - Standardized for all main section titles */
+.titulo-de-sessao {
+  font-size: 2.5em; /* Larger, more impactful title */
+  color: #333333;
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 40px; /* Adjust top margin for sections */
+  font-weight: 700; /* Bolder */
+  position: relative;
+  padding-bottom: 15px; /* Space for the underline */
 }
 
-.campos-iniciais{
-
-    font-size: 20px;
-    width: 100%;
+.titulo-de-sessao::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: #007bff; /* Primary brand color */
+  border-radius: 2px;
 }
 
+/* Input Fields (Title & Description) - Modern Material Design Focus */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 25px; /* Spacing between form fields */
+  font-size: 1rem;
+}
+
+mat-form-field .mat-label {
+  color: #666666; /* Softer label color */
+}
+
+mat-form-field .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+mat-form-field .mat-form-field-underline {
+  background-color: #007bff; /* Underline color */
+}
+
+/* Specific textarea styles for title and description fields */
+textarea.titulo,
+textarea.descricao {
+  padding: 10px 0; /* Padding relative to the mat-form-field */
+  line-height: 1.5;
+  color: #333333;
+  height: auto !important; /* Let content dictate height, but control with min/max */
+  min-height: 80px; /* Minimum height for better visibility */
+  max-height: 200px; /* Max height to prevent excessive growth */
+  resize: vertical; /* Allow vertical resizing for these specific textareas */
+  overflow-y: auto; /* Add scroll if content overflows */
+  box-sizing: border-box; /* Ensures padding and border are included in height calculation */
+}
+
+/* Image Preview */
+.imagem-pre-visualizar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px auto; /* Increased margin */
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px dashed #ced4da; /* Dashed border for preview area */
+  max-width: 100%; /* Ensure it doesn't overflow container */
+}
+
+.imagem-pre-visualizar h3 {
+  color: #555555;
+  margin-bottom: 15px;
+  font-weight: 500;
+  font-size: 1.3em;
+}
+
+.imagem-pre-visualizar img {
+  max-width: 100%;
+  max-height: 400px; /* Slightly reduced max height for better fit */
+  width: auto;
+  height: auto;
+  border: 5px solid #007bff; /* Highlight border with brand color */
+  border-radius: 8px;
+  padding: 3px; /* Reduced padding */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* General Buttons */
 .botoes-de-envio {
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Alinha verticalmente se necessário */
-    margin-bottom: 20px; /* Adiciona margem inferior */
-  }
-  
-  .botao {
-    padding: 10px 20px; /* Aumenta o espaço interno do botão */
-    font-size: 16px; /* Aumenta o tamanho da fonte */
-    font-weight: bold; /* Deixa o texto em negrito */
-    border-radius: 8px; /* Arredonda as bordas */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona sombra ao botão */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
-  }
-  
-  .botao:hover {
-    background-color: #71e77f; /* Altera a cor do fundo ao passar o mouse */
-    transform: translateY(-2px); /* Eleva o botão ao passar o mouse */
-  }
-  
-  .botao-finalizar:active {
-    transform: translateY(0); /* Reseta a elevação ao clicar */
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  margin-bottom: 30px; /* Increased margin for better separation */
+  position: relative;
+  gap: 20px; /* Space between buttons if multiple */
+}
 
-  /* CSS DAS IMAGENS DA TELA */
+.botao {
+  /* Target buttons directly or with common class name */
+  padding: 12px 28px; /* More generous padding */
+  font-size: 1.1em;
+  font-weight: 600; /* Slightly less bold than title */
+  border-radius: 30px; /* Pill-shaped buttons */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+  transition: all 0.3s ease;
+  text-transform: uppercase; /* Uppercase text */
+  letter-spacing: 0.8px;
+  background-color: #007bff; /* Primary button color */
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
 
-  .imagem-pre-visualizar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px auto;
-    max-width: 100%;
-  }
-  
-  .imagem-pre-visualizar img {
-    max-width: 100%;
-    max-height: 500px;
-    width: auto;
-    height: auto;
-    border: 5px solid black;
-    border-radius: 4px;
-    padding: 5px;
-  }
+.botao:hover {
+  background-color: #0056b3; /* Darker on hover */
+  transform: translateY(-3px); /* More noticeable lift */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
 
-/* Estilo para o contêiner flexível de cada item de alerta */
+.botao:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Text Editors & Main Content */
+.textos-principais-editados {
+  /* This class is now used on both pages for consistency */
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Spacing between sections */
+}
+
+/* Quill Editor specific styling for borders and padding */
+.texto-da-noticia-editada {
+  /* Applied to all quill-editors for main content */
+  width: 100%;
+  min-height: 350px; /* Adjusted min-height, can be overridden by inline style */
+  border: 1px solid #e0e0e0; /* Subtle border for editors */
+  border-radius: 8px;
+  overflow: hidden; /* Ensures quill editor fits well */
+  background-color: #fdfdfd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Light shadow */
+}
+
+.texto-da-noticia-editada .ql-container {
+  border: none !important; /* Remove Quill's default border */
+  display: flex; /* Makes the editor content flex item for full height */
+  flex-direction: column;
+}
+
+.texto-da-noticia-editada .ql-toolbar {
+  border-bottom: 1px solid #e0e0e0 !important;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color: #f0f0f0;
+  padding: 10px; /* More padding for toolbar buttons */
+}
+
+.texto-da-noticia-editada .ql-editor {
+  flex-grow: 1; /* Allows editor content to take available height */
+  min-height: inherit; /* Allow min-height from parent */
+  padding: 15px; /* More padding inside editor */
+  line-height: 1.6;
+  font-size: 1.1em; /* Consistent font size for main content */
+  color: #333333;
+  overflow-y: auto; /* Ensure scrolling within editor */
+}
+
+/* Alert Section - Modernized */
 .alerta-item {
   display: flex;
-  align-items: flex-start; /* Alinha os itens ao topo para posicionar o botão de exclusão corretamente */
-  width: 100%; /* Ocupa toda a largura disponível */
-  margin-bottom: 16px; /* Espaçamento entre os alertas */
+  align-items: flex-start; /* Align text to top */
+  width: 100%;
+  margin-bottom: 20px; /* Increased margin */
+  padding: 15px;
+  background-color: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Soft shadow */
+  transition: all 0.2s ease-in-out;
+  gap: 15px; /* Space between textarea and button */
 }
 
-/* Estilo para o mat-form-field que envolve o textarea */
-.alerta-item mat-form-field {
-  flex: 1; /* Permite que o mat-form-field ocupe o máximo de espaço possível */
-  margin-right: 8px; /* Espaçamento à direita, antes do botão de exclusão */
-  height: auto; /* Permite que o mat-form-field se adapte à altura do seu conteúdo (o textarea) */
-  overflow: visible; /* Garante que nenhum conteúdo seja cortado pelo mat-form-field */
+.alerta-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #f2f2f2;
 }
 
-/* Estilo para o textarea real com a classe 'alerta' */
-.alerta {
-  height: 350px !important; /* Altura fixa desejada para o textarea, usando !important para sobrescrever estilos padrão */
-  min-height: 350px !important; /* Garante que o textarea não encolha abaixo desta altura */
-  max-height: 350px !important; /* Garante que o textarea não cresça acima desta altura */
-  overflow-y: auto !important; /* Adiciona uma barra de rolagem vertical se o conteúdo exceder a altura */
-  resize: none !important; /* Impede que o usuário redimensione o textarea manualmente */
-  width: 100%; /* Garante que o textarea ocupe a largura total de seu contêiner */
-  box-sizing: border-box; /* Inclui padding e borda na largura e altura totais do elemento */
+.alerta-quill-editor-wrapper {
+  flex: 1; /* Allows the wrapper to occupy available space */
+  display: flex;
+  flex-direction: column; /* Allows editor and toolbar to stack if needed */
+  height: auto; /* Allows mat-form-field to adapt to its content (textarea) */
+  overflow: visible; /* Prevents any cutting by mat-form-field itself */
 }
 
-/* Ajustes para classes internas do Angular Material, se necessário */
-.mat-mdc-form-field-flex {
-  align-items: flex-start !important; /* Garante que o conteúdo dentro do mat-form-field se alinhe ao topo */
+.alerta-quill-editor {
+  min-height: 150px; /* Minimum height for alert editor */
+  border: 1px solid #dcdcdc; /* Subtle border for alert specific quill */
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #ffffff;
+  flex-grow: 1; /* Allow quill editor to fill its wrapper */
 }
 
-.mat-mdc-form-field-subscript-wrapper {
-  height: 0 !important; /* Remove o espaço reservado para dicas/erros se não estiverem em uso */
+.alerta-quill-editor .ql-editor {
+  min-height: inherit; /* Inherit min-height from parent */
+  padding: 12px;
 }
-  
-  .materia-gerada{
-    margin-top: 20px !important;
-    margin-top: 20px !important;
+
+.alerta-quill-editor .ql-toolbar {
+  background-color: #e9ecef; /* Lighter toolbar for alerts */
+  border-bottom: 1px solid #dcdcdc !important;
+}
+
+.alerta-item button.mat-icon-button {
+  flex-shrink: 0;
+  margin-top: 5px; /* Align icon better */
+  color: #dc3545; /* Danger color for delete */
+  transition: transform 0.2s ease;
+}
+
+.alerta-item button.mat-icon-button:hover {
+  transform: scale(1.1);
+  color: #c82333;
+}
+
+/* Add Alert Button */
+button.mat-raised-button.mat-accent {
+  background-color: #28a745; /* Success green */
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px; /* Space above button */
+}
+
+button.mat-raised-button.mat-accent:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Status, Editoria, Tipo de Publicação Selectors */
+.status,
+.editoria,
+.premiumOuComum {
+  width: calc(33.333% - 20px); /* Adjust for gap */
+  margin-bottom: 20px;
+}
+
+/* Group for these selectors */
+.selector-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px; /* Spacing between dropdowns */
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03); /* Inner shadow for group */
+}
+
+/* Agendamento Fields */
+.campos-agendamento {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px; /* Increased gap */
+  margin-bottom: 30px;
+  padding: 25px; /* More padding */
+  border: 1px solid #d1ecf1; /* Light blue border for info */
+  border-radius: 12px;
+  background-color: #e2f3f8; /* Light blue background */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.data-agendamento,
+.hora-agendamento {
+  flex: 1;
+  min-width: 280px; /* Slightly wider min-width */
+}
+
+/* Spinner Overlay */
+.spinner-overlay {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.85); /* Whiter, slightly more opaque */
+  border-radius: 8px;
+  z-index: 10;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  app-container {
+    padding: 15px;
   }
 
-  .marcacoes{
-    margin-bottom: 20px !important;
-    margin-top: 20px !important;
+  .titulo-de-sessao {
+    font-size: 2em;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 
-  .cricao-de-noticias{
-    margin-bottom: 20px !important;
-    margin-top: 20px !important;
+  textarea.titulo,
+  textarea.descricao {
+    min-height: 60px;
   }
 
-  button {
-    flex-shrink: 0; /* Garante que o botão mantenha seu tamanho fixo */
+  .texto-da-noticia-editada {
+    min-height: 250px;
   }
-  
-  .titulo-de-sessao{
-  margin-top: 20px !important;
-  margin-bottom: 20px !important;
+
+  .alerta-item {
+    flex-direction: column; /* Stack items vertically */
+    align-items: stretch;
+    gap: 10px; /* Smaller gap when stacked */
+  }
+
+  .alerta-quill-editor-wrapper {
+    margin-right: 0; /* Remove right margin */
+  }
+
+  .alerta-item button.mat-icon-button {
+    align-self: flex-end; /* Align delete button to the right */
+  }
+
+  .status,
+  .editoria,
+  .premiumOuComum {
+    width: 100%; /* Full width on smaller screens */
+  }
+
+  .selector-group {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .campos-agendamento {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .data-agendamento,
+  .hora-agendamento {
+    min-width: unset; /* Remove min-width constraint */
+  }
+}
+
+@media (max-width: 480px) {
+  app-container {
+    padding: 10px;
+  }
+
+  .titulo-de-sessao {
+    font-size: 1.8em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .botoes-de-envio .botao {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+
+  .imagem-pre-visualizar {
+    margin: 20px auto;
+  }
+
+  .texto-da-noticia-editada .ql-toolbar {
+    padding: 5px; /* Smaller padding for toolbar buttons */
+  }
+
+  .texto-da-noticia-editada .ql-editor {
+    padding: 10px; /* Smaller padding inside editor */
+  }
+
+  .alerta-quill-editor .ql-editor {
+    min-height: 80px; /* Smaller default height for alerts */
+    max-height: 200px;
+  }
 }

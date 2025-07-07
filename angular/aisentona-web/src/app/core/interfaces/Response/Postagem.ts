@@ -15,4 +15,5 @@ export interface PostagemResponse {
     dataCriacao: string | null;
     alertas: AlertaResponse[];
     visualizacoes: number;
+    dataPublicacaoAgendada?: string | null;
   }

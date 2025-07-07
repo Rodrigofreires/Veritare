@@ -47,6 +47,7 @@ builder.Services.AddScoped<EmailEnviarPromptService>();
 
 // --- Configuração de Hosted Services (serviços em background) ---
 builder.Services.AddHostedService<PremiumExpirationService>();
+builder.Services.AddHostedService<PublicacaoAgendadaService>();
 
 // --- Configuração do CORS ---
 builder.Services.AddCors(options =>
@@ -85,8 +86,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         var audience = jwtSettings["Audience"];
 
         // Adicionando logs explícitos para depuração da Audiência e Issuer
-        Console.WriteLine($"🔍 JwtSettings:Issuer carregado: {issuer ?? "NULL/EMPTY"}");
-        Console.WriteLine($"🔍 JwtSettings:Audience carregado: {audience ?? "NULL/EMPTY"}");
+        Console.WriteLine($" JwtSettings:Issuer carregado: {issuer ?? "NULL/EMPTY"}");
+        Console.WriteLine($" JwtSettings:Audience carregado: {audience ?? "NULL/EMPTY"}");
 
         if (string.IsNullOrEmpty(issuer))
         {
@@ -213,13 +214,10 @@ app.UseHttpsRedirection();
 // Habilita o CORS com a política definida
 app.UseCors("AllowSpecificOrigin");
 
-// Habilita a autenticação (DEVE VIR ANTES de UseAuthorization)
 app.UseAuthentication();
 
-// Habilita a autorização (DEVE VIR DEPOIS de UseAuthentication)
 app.UseAuthorization();
 
-// Mapeia os endpoints dos controladores
 app.MapControllers();
 
 // Configuração para ambiente de Desenvolvimento (Swagger UI)
@@ -233,5 +231,4 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// Inicia a aplicação
 app.Run();

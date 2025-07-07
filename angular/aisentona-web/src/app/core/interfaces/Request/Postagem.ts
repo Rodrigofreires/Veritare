@@ -17,4 +17,5 @@ export interface PostagemRequest {
     premiumOuComum: boolean;
     alertas: AlertaResponse[];
     visualizacoes: number;
+    dataPublicacaoAgendada?: string | null;
   }

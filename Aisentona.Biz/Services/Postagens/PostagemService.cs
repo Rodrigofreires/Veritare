@@ -5,16 +5,19 @@ using Aisentona.Entities.Response;
 using Aisentona.Entities.ViewModels;
 using Aisentona.Enumeradores;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Aisentona.Biz.Services.Postagens
 {
     public class PostagemService
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<PostagemService> _logger;
 
-        public PostagemService(ApplicationDbContext postagemContext )
+        public PostagemService(ApplicationDbContext postagemContext, ILogger<PostagemService> logger)
         {
             _context = postagemContext;
+            _logger = logger;
         }
         public List<PostagemRequest> ListarUltimasPostagens()
         {
@@ -52,7 +55,7 @@ namespace Aisentona.Biz.Services.Postagens
             var postagens = _context.CF_Postagem
                 .Include(p => p.Categoria)
                 .Include(p => p.Status)
-                .Where(p => p.Fl_Ativo == true)
+                .Where(p => p.Fl_Ativo == true || p.Id_Status == 5)
                 .OrderByDescending(p => p.DT_Criacao)
                 .Skip((pagina - 1) * quantidadePorPagina) // Pula os registros das páginas anteriores
                 .Take(quantidadePorPagina) // Pega apenas a quantidade necessária
@@ -208,7 +211,7 @@ namespace Aisentona.Biz.Services.Postagens
             var postagemConvertida = ConverterPostagem(postagemResponse);
             var novaPostagem = postagemConvertida;
 
-            var nomeUsuario = _context.CF_Colaborador.FirstOrDefault(x => x.Id_Usuario == postagemResponse.IdUsuario); 
+            var nomeUsuario = _context.CF_Colaborador.FirstOrDefault(x => x.Id_Usuario == postagemResponse.IdUsuario);
 
             novaPostagem.Fl_Ativo = true;
             novaPostagem.DT_Criacao = DateTime.Now;
@@ -216,6 +219,21 @@ namespace Aisentona.Biz.Services.Postagens
             novaPostagem.DT_UltimaAlteracao = null;
             novaPostagem.Id_Usuario = postagemResponse.IdUsuario;
             novaPostagem.Fl_Premium = bool.Parse(postagemResponse.PremiumOuComum);
+
+
+            // --- Início da Lógica de Agendamento ---
+            if (postagemResponse.IdStatus == 5) // Se o status for "Planejado"
+            {
+                // Chama o método auxiliar para planejar a publicação
+                PlanejarPublicacao(novaPostagem, postagemResponse.DataPublicacaoAgendada);
+            }
+            else // Se não for planejado, a publicação é imediata (ou segue outro fluxo)
+            {
+                novaPostagem.Id_Status = postagemResponse.IdStatus; 
+                novaPostagem.DT_PublicacaoAgendada = null;
+
+            }
+            // --- Fim da Lógica de Agendamento ---
 
             _context.CF_Postagem.Add(novaPostagem);
             _context.SaveChanges();
@@ -238,60 +256,181 @@ namespace Aisentona.Biz.Services.Postagens
             return novaPostagem;
         }
 
+        /// <summary>
+        /// Método auxiliar para planejar uma publicação.
+        /// Define o status da postagem como 'Planejado' (5) e a data de agendamento.
+        /// </summary>
+        /// <param name="postagem">A entidade Postagem a ser planejada.</param>
+        /// <param name="dataAgendamento">A data e hora para a publicação (assumindo que já vem no fuso horário local desejado).</param>
+        private void PlanejarPublicacao(Postagem postagem, DateTime? dataAgendamento)
+        {
+            postagem.Id_Status = 5;
 
+            if (dataAgendamento.HasValue)
+            {
+                // **ATRIBUIR DIRETAMENTE** - Assumimos que dataAgendamento já está no fuso horário local correto
+                postagem.DT_PublicacaoAgendada = dataAgendamento.Value;
+
+                // Validação: A data agendada deve ser no futuro em relação ao horário local atual
+                if (postagem.DT_PublicacaoAgendada <= DateTime.Now) // Comparando com DateTime.Now (local)
+                {
+                    _logger.LogWarning($"Data de publicação agendada ({dataAgendamento.Value}) não é futura. Ajustando para null ou tratando como erro.");
+                    postagem.DT_PublicacaoAgendada = null;
+                }
+            }
+            else
+            {
+                postagem.DT_PublicacaoAgendada = null;
+            }
+
+            postagem.Fl_Ativo = false;
+        }
 
         public Postagem EditarPostagem(PostagemResponse postagemResponse)
         {
+            // 1. Encontra a postagem existente no banco de dados.
+            // Buscamos a postagem pelo seu ID para garantir que estamos editando a entrada correta.
             Postagem postagem = _context.CF_Postagem.FirstOrDefault(x => x.Id_Postagem == postagemResponse.IdPostagem);
-            
-            if (postagem is not null) 
+
+            // Se a postagem não for encontrada, lançamos uma exceção.
+            if (postagem is null)
             {
-                // Obtém o usuário do banco de dados pelo id_Usuario
-                var usuario = _context.CF_Colaborador.FirstOrDefault(u => u.Id_Usuario == postagemResponse.IdUsuario);
+                throw new UnauthorizedAccessException("Postagem não encontrada");
+            }
 
-                if (usuario == null)
+            // 2. Obtém os dados do usuário que está realizando a edição.
+            // É crucial saber quem está fazendo a alteração para fins de auditoria e permissões.
+            var usuario = _context.CF_Colaborador.FirstOrDefault(u => u.Id_Usuario == postagemResponse.IdUsuario);
+
+            // Lança uma exceção se o usuário não for encontrado no sistema.
+            if (usuario == null)
+            {
+                throw new ApplicationException("Usuário não encontrado.");
+            }
+
+            // 3. Verifica as permissões do usuário para editar postagens.
+            // Garante que apenas usuários autorizados possam modificar o conteúdo.
+            Autorizacao tipoUsuario = (Autorizacao)usuario.Id_TipoUsuario;
+            List<string> permissions = tipoUsuario.GetPermissions();
+
+            // Se o usuário não tiver permissão específica para editar posts simples ou premium, lançamos uma exceção.
+            if (!permissions.Contains("EditarPostsSimples") && !permissions.Contains("EditarPostsPremium"))
+            {
+                throw new UnauthorizedAccessException("Usuário não possui permissão para editar postagens.");
+            }
+
+            // 4. Atualiza os campos da postagem com os novos dados da requisição.
+            // Atualizamos o status premium/comum da postagem.
+            postagem.Fl_Premium = bool.Parse(postagemResponse.PremiumOuComum);
+
+            // Atualiza os campos de conteúdo principal da postagem.
+            postagem.Titulo = postagemResponse.Titulo;
+            postagem.Descricao = postagemResponse.Descricao;
+            postagem.Conteudo = postagemResponse.Conteudo;
+            postagem.Texto_alterado_por_ia = postagemResponse.TextoAlteradoPorIA;
+            postagem.Palavras_retiradas_por_ia = postagemResponse.PalavrasRetiradasPorIA;
+            postagem.Imagem_base64 = postagemResponse.Imagem;
+            postagem.Id_Categoria = postagemResponse.IdCategoria;
+            postagem.Id_Status = postagemResponse.IdStatus; // Permite que o status da postagem seja alterado.
+
+            // Registra a data e o nome do usuário da última alteração.
+            postagem.DT_UltimaAlteracao = DateTime.Now;
+            postagem.Ds_UltimaAlteracao = usuario.Nm_Nome;
+
+            // 5. Lógica de Agendamento: ajusta a data de publicação agendada.
+            // Se o status da postagem for definido como "Planejado" (ID 5), a data de agendamento é atualizada.
+            if (postagemResponse.IdStatus == 5)
+            {
+                postagem.DT_PublicacaoAgendada = postagemResponse.DataPublicacaoAgendada;
+            }
+            else // Para outros status, removemos qualquer agendamento existente.
+            {
+                postagem.DT_PublicacaoAgendada = null;
+            }
+
+            // 6. Sincroniza os alertas da postagem.
+            // Esta é a lógica principal para lidar com adição, remoção e atualização de alertas.
+
+            // Primeiro, obtemos todos os alertas atualmente associados a esta postagem no banco de dados.
+            var alertasAtuais = _context.CF_PostagemAlertas
+                                        .Where(a => a.Id_Postagem == postagem.Id_Postagem)
+                                        .ToList();
+
+            // Preparamos listas para categorizar as operações que precisamos fazer no banco de dados.
+            var alertasParaRemover = new List<PostagemAlerta>();
+            var alertasParaAdicionar = new List<PostagemAlerta>();
+            var alertasParaAtualizar = new List<PostagemAlerta>();
+
+            // Itera sobre os alertas que JÁ EXISTEM no banco de dados.
+            foreach (var alertaAtual in alertasAtuais)
+            {
+                // Tenta encontrar uma correspondência para o alerta atual na lista de alertas recebida na requisição (`postagemResponse`).
+                // A correspondência é feita pelo 'Numero_Alerta', que atua como um identificador único dentro da postagem.
+                var alertaNaResponse = postagemResponse.Alertas?
+                                        .FirstOrDefault(ar => ar.NumeroAlerta == alertaAtual.Numero_Alerta);
+
+                if (alertaNaResponse == null)
                 {
-                    throw new ApplicationException("Usuário não encontrado.");
-                }
-
-                // Verifica o tipo de usuário e suas permissões
-                Autorizacao tipoUsuario = (Autorizacao)usuario.Id_TipoUsuario;
-                List<string> permissions = tipoUsuario.GetPermissions();
-
-                // Verifica se o usuário tem permissão para criar postagens
-                if (!permissions.Contains("EditarPostsSimples") && !permissions.Contains("EditarPostsPremium"))
-                {
-                    throw new UnauthorizedAccessException("Usuário não possui permissão para editar postagens.");
-                }
-
-                if (postagemResponse.PremiumOuComum == "false")
-                {
-                    postagem.Fl_Premium = false;
+                    // Se não encontramos um alerta na requisição com o mesmo 'Numero_Alerta',
+                    // significa que este alerta foi removido na edição e deve ser removido do banco.
+                    alertasParaRemover.Add(alertaAtual);
                 }
                 else
                 {
-                    postagem.Fl_Premium = true;
+                    // Se encontramos uma correspondência, verificamos se a mensagem do alerta foi alterada.
+                    if (alertaAtual.Mensagem != alertaNaResponse.Mensagem)
+                    {
+                        // Se a mensagem for diferente, atualizamos a mensagem do alerta existente.
+                        alertaAtual.Mensagem = alertaNaResponse.Mensagem;
+                        // E o adicionamos à lista de alertas que precisam ser atualizados no banco.
+                        alertasParaAtualizar.Add(alertaAtual);
+                    }
                 }
-
-                postagem.Titulo = postagemResponse.Titulo;
-                postagem.Descricao = postagemResponse.Descricao;
-                postagem.Conteudo = postagemResponse.Conteudo;
-                postagem.Texto_alterado_por_ia = postagemResponse.TextoAlteradoPorIA;
-                postagem.Palavras_retiradas_por_ia = postagemResponse.PalavrasRetiradasPorIA;
-                postagem.Imagem_base64 = postagemResponse.Imagem;
-                postagem.Id_Categoria = postagemResponse.IdCategoria;
-                postagem.Id_Status = postagemResponse.IdStatus;
-                postagem.DT_UltimaAlteracao = DateTime.Now;
-                postagem.Ds_UltimaAlteracao = usuario.Nm_Nome;
-
-
-                _context.CF_Postagem.Update(postagem);
-                _context.SaveChanges();
-                return postagem;
             }
-;
-            throw new UnauthorizedAccessException("Postagem não encontrada");
 
+            // Itera sobre os alertas que foram recebidos na requisição.
+            if (postagemResponse.Alertas?.Any() == true)
+            {
+                foreach (var alertaNaResponse in postagemResponse.Alertas)
+                {
+                    // Verificamos se este alerta (identificado pelo 'Numero_Alerta') já existe no banco de dados.
+                    var alertaExistente = alertasAtuais
+                                        .FirstOrDefault(aa => aa.Numero_Alerta == alertaNaResponse.NumeroAlerta);
+
+                    if (alertaExistente == null)
+                    {
+                        // Se o alerta não existe no banco de dados, significa que é um novo alerta e deve ser adicionado.
+                        alertasParaAdicionar.Add(new PostagemAlerta
+                        {
+                            Id_Postagem = postagem.Id_Postagem, // Associa o novo alerta à postagem sendo editada.
+                            Numero_Alerta = alertaNaResponse.NumeroAlerta,
+                            Mensagem = alertaNaResponse.Mensagem
+                        });
+                    }
+                }
+            }
+
+            // 7. Executa as operações de CRUD para os alertas no banco de dados.
+            if (alertasParaRemover.Any())
+            {
+                _context.CF_PostagemAlertas.RemoveRange(alertasParaRemover);
+            }
+            if (alertasParaAdicionar.Any())
+            {
+                _context.CF_PostagemAlertas.AddRange(alertasParaAdicionar);
+            }
+            // Para 'alertasParaAtualizar', o Entity Framework Core já rastreia as mudanças nos objetos
+            // que foram obtidos do contexto, então um 'UpdateRange' explícito não é estritamente necessário aqui,
+            // pois as modificações já foram feitas nos próprios objetos.
+
+            // 8. Salva todas as alterações da postagem e dos alertas no banco de dados.
+            // 'Update(postagem)' informa ao Entity Framework que a postagem foi modificada.
+            _context.CF_Postagem.Update(postagem);
+            // 'SaveChanges()' persiste todas as mudanças rastreadas (postagem, remoções, adições, atualizações de alertas).
+            _context.SaveChanges();
+
+            // Retorna a postagem que acabou de ser editada.
+            return postagem;
         }
 
         public Postagem TrocarFlagAtivaPostagem(int idPostagem)

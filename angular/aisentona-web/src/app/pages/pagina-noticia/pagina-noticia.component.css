@@ -218,20 +218,24 @@ mat-tab-group {
   word-wrap: break-word; /* Quebra palavras longas */
   opacity: 0;
   transition: opacity 0.2s ease-in-out;
+  width: auto !important; /* Garante que a largura seja automática */
 }
 
 .alerta-popup.visible { /* Adicionar esta classe via ngClass ou dinamicamente quando alertaVisivel for true */
   opacity: 1;
+  width: auto !important; /* Garante que a largura seja automática */
 }
 
 .alerta-texto {
   margin: 0;
+  width: auto !important; /* Garante que a largura seja automática */
 }
 
 /* --- Lista de Alertas/Opiniões (aba "O que Está por Trás da Notícia Analisada") --- */
 .alert-list-container {
   padding: 0; /* Ajusta padding se mat-card-content adicionar extra */
   margin-top: 15px;
+  width: auto !important; /* Garante que a largura seja automática */
 
 }
 
@@ -240,11 +244,12 @@ mat-tab-group {
   padding: 0;
   margin: 0;
   overflow-wrap: break-word;
+  width: auto !important; /* Garante que a largura seja automática */
   /* Removido height fixo aqui também */
 }
 
 .alert-list-item {
-  height: 300px !important;
+  height: auto !important;
   overflow-wrap: break-word !important ;
   display: flex;
   align-items: flex-start; /* Alinha o ícone e o texto ao topo */
@@ -255,11 +260,13 @@ mat-tab-group {
   border-radius: 10px; /* Cantos mais arredondados */
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); /* Sombra um pouco mais pronunciada */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: auto !important; /* Garante que a largura seja automática */
 }
 
 .alert-list-item:hover {
   transform: translateY(-4px); /* Efeito de elevação um pouco maior */
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18); /* Sombra maior no hover */
+  width: auto !important; /* Garante que a largura seja automática */
 }
 
 .alert-icon {
@@ -268,6 +275,8 @@ mat-tab-group {
   font-size: 32px; /* Ícone ainda maior */
   flex-shrink: 0; /* Garante que o ícone não encolha */
   padding-top: 2px; /* Pequeno ajuste para alinhar o ícone com o texto */
+  width: auto !important; /* Garante que a largura seja automática */
+  height: auto !important; /* Garante que a altura seja automática */
 }
 
 .alert-list-item p {
@@ -275,6 +284,7 @@ mat-tab-group {
   word-wrap: break-word;    /* Suporta quebra em palavras longas */
   overflow-wrap: break-word;
   hyphens: auto;            /* Hifenização automática (se suportada) */
+  width: auto !important; /* Garante que a largura seja automática */
 }
 
 
@@ -458,16 +468,11 @@ mat-tab-group {
     font-size: 1.2em;
   }
 
-  .alert-list-item {
-    padding: 12px 18px; /* Ajuste o padding para telas menores */
-  }
+
 
   .alert-icon {
     font-size: 26px; /* Ajuste o ícone para telas menores */
     margin-right: 12px;
   }
 
-  .alert-list-item p {
-    font-size: 1em; /* Ajuste o texto para telas menores */
-  }
 }

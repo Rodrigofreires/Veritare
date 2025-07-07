@@ -1,170 +1,363 @@
-.cabecalho-noticia{
-    margin: 10px;
-    padding: 10px;
-    height: 160px !important;
-    display: flex;
-    flex-direction: column;
-    resize: none !important; 
+/* General Page Styling */
+.container-editar-noticia {
+  font-family: 'Roboto', sans-serif; /* Modern font */
+  padding: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Softer, modern shadow */
 }
 
-.titulo {
-    width: 100%;
-    height: 150px !important;
-    resize: none !important; 
-}
-.descricao{
-    width: 100%;
-    height: 150px !important;
-    margin: 0;
-    padding: 0;
-    resize: none !important; 
-} 
-.editoria{
-    width: 33%;
-    margin: 0;
-    padding: 0;
-} 
-.status{
-    width: 33%;
-    margin: 0;
-    padding: 0;
+.titulo-de-sessao {
+  font-size: 2.5em; /* Larger, more impactful title */
+  color: #333333;
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 40px; /* Adjust top margin for sections */
+  font-weight: 700; /* Bolder */
+  position: relative;
+  padding-bottom: 15px; /* Space for the underline */
 }
 
-.premiumOuComum{
-  width: 33%;
-  margin: 0;
-  padding: 0;
+.titulo-de-sessao::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background-color: #007bff; /* Primary brand color */
+  border-radius: 2px;
 }
 
-
-.corpo-da-noticia{
-    margin: 10px;
-    padding: 10px;
-    gap: 2%;
-    display: flex;
-    flex-direction: column;
+/* Input Fields (Title & Description) - Modern Material Design Focus */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 25px; /* Spacing between form fields */
+  font-size: 1rem;
 }
 
-.texto-da-noticia-editada{
-  font-size: 12px;
-    width: 100%;
-    min-height: 300px;
-    justify-content: space-between;
-    border: none; /* Remove a borda padrão */
-    outline: none; /* Remove a borda ao focar no elemento */
-    box-shadow: none; /* Remove qualquer sombra aplicada */
-    resize: none; /* Impede o redimensionamento manual */
-   /* overflow: hidden;  Oculta a barra de rolagem */
+mat-form-field .mat-label {
+  color: #666666; /* Softer label color */
+}
+
+mat-form-field .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+mat-form-field .mat-form-field-underline {
+  background-color: #007bff; /* Underline color */
+}
+
+textarea.titulo,
+textarea.descricao {
+  padding: 10px 0;
+  line-height: 1.5;
+  color: #333333;
+  height: auto !important; /* Let content dictate height, but control with min/max */
+  min-height: 80px; /* Minimum height for better visibility */
+  max-height: 200px; /* Max height to prevent excessive growth */
+  resize: vertical; /* Allow vertical resizing for these specific textareas */
+  overflow-y: auto; /* Add scroll if content overflows */
+}
+
+/* Image Preview */
+.imagem-pre-visualizar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px auto; /* Increased margin */
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px dashed #ced4da; /* Dashed border for preview area */
+  max-width: 100%; /* Ensure it doesn't overflow container */
+}
+
+.imagem-pre-visualizar h3 {
+  color: #555555;
+  margin-bottom: 15px;
+  font-weight: 500;
+  font-size: 1.3em;
+}
+
+.imagem-pre-visualizar img {
+  max-width: 100%;
+  max-height: 400px; /* Slightly reduced max height for better fit */
+  width: auto;
+  height: auto;
+  border: 5px solid #007bff; /* Highlight border with brand color */
+  border-radius: 8px;
+  padding: 3px; /* Reduced padding */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* General Buttons */
+.botoes-de-envio {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  margin-bottom: 30px; /* Increased margin for better separation */
+  position: relative;
+  gap: 20px; /* Space between buttons if multiple */
+}
+
+.botoes-de-envio .botao { /* Target buttons specifically within this div */
+  padding: 12px 28px; /* More generous padding */
+  font-size: 1.1em;
+  font-weight: 600; /* Slightly less bold than title */
+  border-radius: 30px; /* Pill-shaped buttons */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+  transition: all 0.3s ease;
+  text-transform: uppercase; /* Uppercase text */
+  letter-spacing: 0.8px;
+  background-color: #007bff; /* Primary button color */
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
+
+.botoes-de-envio .botao:hover {
+  background-color: #0056b3; /* Darker on hover */
+  transform: translateY(-3px); /* More noticeable lift */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.botoes-de-envio .botao:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Text Editors & Main Content */
+.textos-principais-editados { /* Adjusted class name for clarity in edit component */
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Spacing between sections */
+}
+
+/* Quill Editor specific styling for borders and padding */
+.texto-da-noticia-editada { /* Applied to all quill-editors */
+  width: 100%;
+  min-height: 350px; /* Adjusted min-height, can be overridden by inline style */
+  border: 1px solid #e0e0e0; /* Subtle border for editors */
+  border-radius: 8px;
+  overflow: hidden; /* Ensures quill editor fits well */
+  background-color: #fdfdfd;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Light shadow */
+}
+
+.texto-da-noticia-editada .ql-container {
+  border: none !important; /* Remove Quill's default border */
+  display: flex; /* Makes the editor content flex item for full height */
+  flex-direction: column;
+}
+
+.texto-da-noticia-editada .ql-toolbar {
+  border-bottom: 1px solid #e0e0e0 !important;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color: #f0f0f0;
+  padding: 10px; /* More padding for toolbar buttons */
 }
 
 .texto-da-noticia-editada .ql-editor {
-  font-size: 18px; /* Aumenta o tamanho da fonte */
-  line-height: 1.6; /* Ajusta o espaçamento entre as linhas */
+  flex-grow: 1; /* Allows editor content to take available height */
+  min-height: inherit; /* Allow min-height from parent */
+  padding: 15px; /* More padding inside editor */
+  line-height: 1.6;
+  font-size: 1.1em; /* Consistent font size for main content */
+  color: #333333;
+  overflow-y: auto; /* Ensure scrolling within editor */
 }
 
-
-.ql-code-view::after {
-  content: '</>';
-}
-
-.titulo-pagina{
-    font-size: 30px;
-    padding: 10px;
-    gap: 10px;
-}
-
-.campos-iniciais{
-
-    font-size: 20px;
-    width: 100%;
-}
-
-.botoes-de-envio {
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Alinha verticalmente se necessário */
-    margin-bottom: 20px; /* Adiciona margem inferior */
-  }
-  
-  .botao {
-    padding: 10px 20px; /* Aumenta o espaço interno do botão */
-    font-size: 16px; /* Aumenta o tamanho da fonte */
-    font-weight: bold; /* Deixa o texto em negrito */
-    border-radius: 8px; /* Arredonda as bordas */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adiciona sombra ao botão */
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Transições suaves */
-  }
-  
-  .botao:hover {
-    background-color: #71e77f; /* Altera a cor do fundo ao passar o mouse */
-    transform: translateY(-2px); /* Eleva o botão ao passar o mouse */
-  }
-  
-  .botao-finalizar:active {
-    transform: translateY(0); /* Reseta a elevação ao clicar */
-  }
-  
-
-  /* CSS DAS IMAGENS DA TELA */
-
-  .imagem-pre-visualizar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px auto;
-    max-width: 100%;
-  }
-  
-  .imagem-pre-visualizar img {
-    max-width: 100%;
-    max-height: 500px;
-    width: auto;
-    height: auto;
-    border: 5px solid black;
-    border-radius: 4px;
-    padding: 5px;
-  }
-
+/* Alert Section - Modernized */
 .alerta-item {
   display: flex;
-  align-items: flex-start; /* Keep this to align the delete button at the top */
+  align-items: flex-start; /* Align text to top */
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 20px; /* Increased margin */
+  padding: 15px;
+  background-color: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Soft shadow */
+  transition: all 0.2s ease-in-out;
+  gap: 15px; /* Space between textarea and button */
 }
 
-/* Estilo para o mat-form-field que contém o textarea */
+.alerta-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #f2f2f2;
+}
+
 .alerta-item mat-form-field {
-  flex: 1; /* Permite que o mat-form-field ocupe o espaço disponível */
-  margin-right: 8px;
-  /* Importante: mat-form-field do Material possui suas próprias propriedades de min-height e display.
-     Precisamos garantir que ele não force uma altura maior do que seu conteúdo.
-     Definir height: auto e overflow: visible geralmente funciona bem aqui.
-  */
-  height: auto; /* Permite que o mat-form-field se adapte ao seu conteúdo (o textarea) */
-  overflow: visible; /* Impede qualquer corte pelo próprio mat-form-field */
+  flex: 1; /* Allows the mat-form-field to occupy available space */
+  margin-right: 0; /* Handled by gap property */
+  height: auto; /* Allows mat-form-field to adapt to its content (textarea) */
+  overflow: visible; /* Prevents any cutting by mat-form-field itself */
 }
 
-/* Estilo para o textarea com a classe 'alerta' */
+/* Styling for the textarea with the 'alerta' class */
 .alerta {
-  height: 350px !important; /* Usa !important para sobrescrever os estilos padrão do Material */
-  min-height: 350px !important; /* Garante que não encolha abaixo desta altura */
-  max-height: 350px !important; /* Garante que não cresça além desta altura */
-  overflow-y: auto !important; /* Adiciona barra de rolagem vertical se o conteúdo transbordar */
-  resize: none !important; /* Impede o redimensionamento manual pelo usuário */
-  width: 100%; /* Garante que ocupe a largura total do seu contêiner */
-  box-sizing: border-box; /* Inclui preenchimento e borda na largura e altura totais do elemento */
+  height: 150px !important; /* Set a reasonable height for editing alerts */
+  min-height: 100px !important; /* Ensure it doesn't shrink too much */
+  max-height: 300px !important; /* Prevent it from growing excessively */
+  overflow-y: auto !important; /* Add vertical scrollbar if content overflows */
+  resize: vertical !important; /* Allow vertical resizing for individual alerts */
+  width: 100%; /* Ensures it takes full width of its container */
+  box-sizing: border-box; /* Includes padding and border in the total width/height */
+  line-height: 1.5;
+  padding: 10px; /* Internal padding for text */
 }
 
-/* Pode ser necessário direcionar o elemento de entrada interno do mat-form-field se o acima não for suficiente */
-.mat-mdc-form-field-flex { /* Este direciona o contêiner flexível dentro do mat-form-field */
-  align-items: flex-start !important; /* Garante que o conteúdo se alinhe ao topo dentro do campo */
+/* Adjustments for Angular Material internal classes, if needed */
+.mat-mdc-form-field-flex {
+  align-items: flex-start !important; /* Ensures content aligns to the top within the field */
 }
 
-.mat-mdc-form-field-subscript-wrapper { /* Este direciona o wrapper de dica/erro */
-    height: 0 !important; /* Oculta o espaço reservado para dicas/erros, se não for necessário, para evitar empurrar o conteúdo */
+.mat-mdc-form-field-subscript-wrapper {
+  height: 0 !important; /* Hides space reserved for hints/errors if not needed, to avoid pushing content */
 }
 
-.titulo-de-sessao{
-  margin-top: 20px !important;
-  margin-bottom: 20px !important;
+.alerta-item button.mat-icon-button {
+  flex-shrink: 0;
+  margin-top: 5px; /* Align icon better */
+  color: #dc3545; /* Danger color for delete */
+  transition: transform 0.2s ease;
+}
+
+.alerta-item button.mat-icon-button:hover {
+  transform: scale(1.1);
+  color: #c82333;
+}
+
+/* Add Alert Button */
+button.mat-raised-button.mat-accent {
+  background-color: #28a745; /* Success green */
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px; /* Space above button */
+}
+
+button.mat-raised-button.mat-accent:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Status, Editoria, Tipo de Publicação Selectors */
+.status,
+.editoria,
+.premiumOuComum {
+  width: calc(33.333% - 20px); /* Adjust for gap */
+  margin-bottom: 20px;
+}
+
+/* Group for these selectors */
+.selector-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px; /* Spacing between dropdowns */
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03); /* Inner shadow for group */
+}
+
+/* Adjustments for the structure in HTML */
+.container-editar-noticia > div > mat-form-field,
+.container-editar-noticia > div > div > mat-form-field {
+    margin-bottom: 25px; /* Consistent margin for top-level form fields */
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .container-editar-noticia {
+    padding: 15px;
+  }
+
+  .titulo-de-sessao {
+    font-size: 2em;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  textarea.titulo,
+  textarea.descricao {
+    min-height: 60px;
+  }
+
+  .texto-da-noticia-editada {
+    min-height: 250px;
+  }
+
+  .alerta-item {
+    flex-direction: column; /* Stack items vertically */
+    align-items: stretch;
+    gap: 10px; /* Smaller gap when stacked */
+  }
+
+  .alerta-item mat-form-field {
+    margin-right: 0; /* Remove right margin */
+  }
+
+  .alerta-item button.mat-icon-button {
+    align-self: flex-end; /* Align delete button to the right */
+  }
+
+  .status,
+  .editoria,
+  .premiumOuComum {
+    width: 100%; /* Full width on smaller screens */
+  }
+
+  .selector-group {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-editar-noticia {
+    padding: 10px;
+  }
+
+  .titulo-de-sessao {
+    font-size: 1.8em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .botoes-de-envio .botao {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+
+  .imagem-pre-visualizar {
+    margin: 20px auto;
+  }
+
+  .texto-da-noticia-editada .ql-toolbar {
+    padding: 5px; /* Smaller padding for toolbar buttons */
+  }
+
+  .texto-da-noticia-editada .ql-editor {
+    padding: 10px; /* Smaller padding inside editor */
+  }
+
+  .alerta {
+    height: 120px !important; /* Smaller default height for alerts */
+    min-height: 80px !important;
+    max-height: 200px !important;
+  }
 }
